@@ -19,6 +19,7 @@ public final class DiscordImageLinks {
 	public record Image(String url, String name) {}
 
 	private static final Pattern IMAGEMAP = Pattern.compile("^/?(?:interactivechatdiscordsrv|icd)\\s+imagemap\\s+([0-9a-fA-F-]{36})\\s*$", Pattern.CASE_INSENSITIVE);
+	private static final Pattern DISCORD_URL = Pattern.compile("https://(?:cdn|media)\\.discordapp\\.(?:com|net)/attachments/[A-Za-z0-9._~:/?#@!$&'()*+,;=%-]+");
 	private static final Pattern IMAGE = Pattern.compile("\\.(png|jpe?g|gif|webp)$");
 	private static final Pattern VIDEO = Pattern.compile("\\.(mp4|webm|mov|mkv|m4v)(\\?|$)", Pattern.CASE_INSENSITIVE);
 	private static final Logger LOGGER = LoggerFactory.getLogger("brilliant-server-mod");
@@ -30,7 +31,47 @@ public final class DiscordImageLinks {
 		}
 	};
 
+	private static final Map<String, String> FULL_URLS = new LinkedHashMap<>(16, 0.75f, true) {
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<String, String> eldest) {
+			return size() > MAX_ENTRIES;
+		}
+	};
+
 	private DiscordImageLinks() {}
+
+	static String base(String url) {
+		int cut = url.length();
+		for (char mark : new char[] { '?', '#' }) {
+			int index = url.indexOf(mark);
+			if (index >= 0) {
+				cut = Math.min(cut, index);
+			}
+		}
+		return url.substring(0, cut);
+	}
+
+	static void remember(String text) {
+		Matcher matcher = DISCORD_URL.matcher(text);
+		while (matcher.find()) {
+			String url = matcher.group();
+			if (url.indexOf('?') > 0) {
+				FULL_URLS.put(base(url), url);
+			}
+		}
+	}
+
+	public static URI repair(URI uri) {
+		if (uri == null || uri.getRawQuery() != null) {
+			return uri;
+		}
+		String full = FULL_URLS.get(base(uri.toString()));
+		try {
+			return full == null ? uri : URI.create(full);
+		} catch (IllegalArgumentException e) {
+			return uri;
+		}
+	}
 
 	public static void register() {
 		ClientSendMessageEvents.ALLOW_COMMAND.register(command -> !intercept(command));
@@ -50,7 +91,8 @@ public final class DiscordImageLinks {
 		if (VIDEO.matcher(image.url()).find()) {
 			return false;
 		}
-		Minecraft.getInstance().execute(() -> CommandMenuScreen.setScreen(new ImageViewerScreen(image.url(), image.name())));
+		String url = repair(URI.create(image.url())).toString();
+		Minecraft.getInstance().execute(() -> CommandMenuScreen.setScreen(new ImageViewerScreen(url, image.name())));
 		return true;
 	}
 
@@ -62,7 +104,8 @@ public final class DiscordImageLinks {
 				&& path.startsWith("/attachments/") && IMAGE.matcher(path).find();
 	}
 
-	public static boolean openUrl(URI uri) {
+	public static boolean openUrl(URI clicked) {
+		URI uri = repair(clicked);
 		if (uri == null || !RichPresenceModClient.isOnBrilliantServer() || !ModSettings.get().imageLinks || !isDiscordImage(uri)) {
 			return false;
 		}
@@ -71,6 +114,7 @@ public final class DiscordImageLinks {
 	}
 
 	public static void scan(Component message) {
+		remember(message.getString());
 		String[] pending = new String[1];
 		StringBuilder name = new StringBuilder();
 		message.visit((Style style, String text) -> {
