@@ -38,6 +38,7 @@ public final class ScriptEngine {
 		int counter;
 		int total;
 		String[] args;
+		List<String> items;
 
 		Frame(List<Scripts.Block> list, int index) {
 			this.list = list;
@@ -65,6 +66,14 @@ public final class ScriptEngine {
 		Scripts.Block turnBlock;
 		float targetYaw;
 		float targetPitch;
+		long waitDeadline;
+		boolean timedOut;
+		boolean asking;
+		Scripts.Block walkBlock;
+		long walkStart;
+		double walkBest;
+		long walkProgressAt;
+		java.util.Set<Integer> movedSlots = new java.util.HashSet<>();
 		Scripts.Group group;
 
 		Run(Scripts.Stack stack, Map<String, String> context) {
@@ -98,8 +107,30 @@ public final class ScriptEngine {
 	private static boolean wasFull;
 	private static java.util.Set<String> online;
 	private static String[] channelHeader;
+	private static final java.util.Set<String> LOOP_OPS = java.util.Set.of("repeat", "forever", "repeat_until", "for_each");
+	private static final Map<Scripts.Block, Long> COOLDOWNS = new IdentityHashMap<>();
+	private static final Map<Scripts.Stack, String> DAILY = new IdentityHashMap<>();
+	private static final Map<Scripts.Stack, Boolean> AREAS = new IdentityHashMap<>();
+	private static final Map<Scripts.Stack, Integer> ITEM_COUNTS = new IdentityHashMap<>();
+	private static final boolean[] KEY_DOWN = new boolean[5];
+	private static net.minecraft.client.gui.screens.Screen lastScreen;
+	private static String lastScreenTitle = "";
+	private static boolean wasDead;
+	private static String lastDimension;
+	private static String lastHeld;
+	private static Boolean lastDay;
+	private static String lastAnnouncement;
+	private static long announcementCheckedAt;
+	private static String lastAnswer = "";
+	private static String lastChoice = "";
+	private static final Map<String, String> HEARD = Map.ofEntries(
+			Map.entry("釣魚浮標濺水", "entity.fishing_bobber.splash"), Map.entry("爆炸", "explode"), Map.entry("苦力怕引信", "entity.creeper.primed"),
+			Map.entry("雷聲", "lightning_bolt.thunder"), Map.entry("物品撿起", "entity.item.pickup"), Map.entry("經驗球", "experience_orb.pickup"),
+			Map.entry("升級", "player.levelup"), Map.entry("村民", "entity.villager"), Map.entry("箱子開啟", "chest.open"),
+			Map.entry("鐘聲", "block.bell"), Map.entry("傳送", "teleport"), Map.entry("受傷", "hurt"),
+			Map.entry("附魔", "enchantment_table.use"), Map.entry("鐵砧", "block.anvil"));
 	private static final Map<Scripts.Stack, Boolean> TEXT_SEEN = new IdentityHashMap<>();
-	private static final java.util.Set<String> TEXT_EVENTS = java.util.Set.of("ev_title", "ev_actionbar", "ev_bossbar", "ev_sidebar");
+	private static final java.util.Set<String> TEXT_EVENTS = java.util.Set.of("ev_title", "ev_actionbar", "ev_bossbar", "ev_sidebar", "ev_bossbar_gone");
 	private static int onlineTick;
 	private static final Deque<Outgoing> OUTBOX = new ArrayDeque<>();
 	private static final Map<Scripts.Stack, Long> TIMERS = new IdentityHashMap<>();
@@ -171,6 +202,7 @@ public final class ScriptEngine {
 				if (!top && frame.index < frame.list.size() && frame.list.get(frame.index) == block) {
 					return switch (block.op) {
 						case "repeat" -> (frame.total - frame.counter + 1) + "/" + frame.total;
+						case "for_each" -> (frame.counter + 1) + "/" + frame.total;
 						case "forever", "repeat_until" -> "迴圈中";
 						default -> null;
 					};
@@ -364,6 +396,7 @@ public final class ScriptEngine {
 		}
 		watchPlayer(client, active);
 		watchText(active);
+		watchWorld(client, active, now);
 		for (Run run : List.copyOf(RUNS)) {
 			if (!run.debug) {
 				safeStep(run, now, STEPS_PER_TICK);
@@ -434,8 +467,12 @@ public final class ScriptEngine {
 	}
 
 	private static void startAll(List<Scripts.Stack> active, String op, Predicate<Scripts.Block> filter, Map<String, String> context) {
+		startAll(active, op, filter, context, null);
+	}
+
+	private static void startAll(List<Scripts.Stack> active, String op, Predicate<Scripts.Block> filter, Map<String, String> context, Predicate<Scripts.Stack> gate) {
 		for (Scripts.Stack stack : active) {
-			if (!stack.blocks.isEmpty() && stack.blocks.getFirst().op.equals(op) && filter.test(stack.blocks.getFirst())) {
+			if (!stack.blocks.isEmpty() && stack.blocks.getFirst().op.equals(op) && filter.test(stack.blocks.getFirst()) && (gate == null || gate.test(stack))) {
 				start(stack, context, true);
 			}
 		}
@@ -453,6 +490,7 @@ public final class ScriptEngine {
 				double threshold = number(hat.text(0));
 				return before >= threshold && health < threshold;
 			}, Map.of("message", format(health)));
+			startAll(active, "ev_hurt", hat -> true, Map.of("message", format(Math.round((before - health) * 10) / 10.0)));
 		}
 		lastHealth = health;
 		boolean full = true;
@@ -502,7 +540,7 @@ public final class ScriptEngine {
 		return switch (op) {
 			case "ev_title" -> List.of(ScreenText.title(), ScreenText.subtitle());
 			case "ev_actionbar" -> List.of(ScreenText.actionbar());
-			case "ev_bossbar" -> ScreenText.bossbars().stream().map(ScreenText.Bar::name).toList();
+			case "ev_bossbar", "ev_bossbar_gone" -> ScreenText.bossbars().stream().map(ScreenText.Bar::name).toList();
 			default -> ScreenText.sidebarLines();
 		};
 	}
@@ -517,8 +555,8 @@ public final class ScriptEngine {
 			Scripts.Block hat = stack.blocks.getFirst();
 			String found = findText(hat.text(0), cache.computeIfAbsent(hat.op, ScriptEngine::textsFor));
 			boolean seen = TEXT_SEEN.getOrDefault(stack, false);
-			if (found != null && !seen) {
-				start(stack, Map.of("message", found), true);
+			if (hat.op.equals("ev_bossbar_gone") ? seen && found == null : found != null && !seen) {
+				start(stack, Map.of("message", found == null ? hat.text(0) : found), true);
 			}
 			TEXT_SEEN.put(stack, found != null);
 		}
@@ -652,10 +690,18 @@ public final class ScriptEngine {
 				return;
 			}
 			if (run.waitCondition != null) {
-				if (!truthy(eval(run, run.waitCondition))) {
+				if (truthy(eval(run, run.waitCondition))) {
+					run.waitCondition = null;
+					run.timedOut = false;
+				} else if (run.waitDeadline > 0 && now >= run.waitDeadline) {
+					run.waitCondition = null;
+					run.timedOut = true;
+				} else {
 					return;
 				}
-				run.waitCondition = null;
+			}
+			if (run.asking) {
+				return;
 			}
 			Frame frame = run.frames.peek();
 			if (frame == null) {
@@ -684,6 +730,15 @@ public final class ScriptEngine {
 					}
 					case "forever" -> {
 						run.frames.push(new Frame(owner.body, 0));
+						return;
+					}
+					case "for_each" -> {
+						if (parent.items != null && ++parent.counter < parent.items.size()) {
+							assign(run, owner.text(1), parent.items.get(parent.counter), owner);
+							run.frames.push(new Frame(owner.body, 0));
+						} else {
+							parent.index++;
+						}
 						return;
 					}
 					case "repeat_until" -> {
@@ -726,7 +781,7 @@ public final class ScriptEngine {
 					run.waitUntil = now + INPUT_GAP_MS;
 					return;
 				}
-				case "act_face", "act_turn" -> {
+				case "act_face", "act_turn", "act_face_pos", "act_face_player" -> {
 					LocalPlayer player = player();
 					if (player == null || !playerControl(block)) {
 						run.turnBlock = null;
@@ -744,9 +799,24 @@ public final class ScriptEngine {
 							};
 							run.targetYaw = player.getYRot() + net.minecraft.util.Mth.wrapDegrees(facing - player.getYRot());
 							run.targetPitch = player.getXRot();
-						} else {
+						} else if (block.op.equals("act_turn")) {
 							run.targetYaw = player.getYRot() + (float) Math.clamp(number(eval(run, block.args.get(0))), -360, 360);
 							run.targetPitch = (float) Math.clamp(player.getXRot() + number(eval(run, block.args.get(1))), -90, 90);
+						} else {
+							net.minecraft.world.phys.Vec3 target = block.op.equals("act_face_pos")
+									? new net.minecraft.world.phys.Vec3(number(eval(run, block.args.get(0))) + 0.5, number(eval(run, block.args.get(1))) + 0.5, number(eval(run, block.args.get(2))) + 0.5)
+									: player.level().players().stream().filter(other -> other != player)
+											.min(java.util.Comparator.comparingDouble(other -> other.distanceTo(player)))
+											.map(net.minecraft.world.entity.Entity::getEyePosition).orElse(null);
+							if (target == null) {
+								fail(block, "附近沒有其他玩家");
+								run.turnBlock = null;
+								frame.index++;
+								continue;
+							}
+							float[] look = lookAt(player, target);
+							run.targetYaw = player.getYRot() + net.minecraft.util.Mth.wrapDegrees(look[0] - player.getYRot());
+							run.targetPitch = look[1];
 						}
 					}
 					float yaw = player.getYRot() + Math.clamp(run.targetYaw - player.getYRot(), -TURN_SPEED, TURN_SPEED);
@@ -761,7 +831,7 @@ public final class ScriptEngine {
 					run.waitUntil = now + 1;
 					return;
 				}
-				case "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy" -> {
+				case "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "gui_click_name", "gui_move_all" -> {
 					if (!screenReady(block) && !(run.retryBlock == block && now - run.retryStart >= GUI_WAIT_MS)) {
 						if (run.retryBlock != block) {
 							run.retryBlock = block;
@@ -781,6 +851,12 @@ public final class ScriptEngine {
 					if (block.op.equals("gui_move")) {
 						if (moveStep(run, block)) {
 							run.moveStage = 0;
+							frame.index++;
+						}
+					} else if (block.op.equals("gui_move_all")) {
+						if (moveAllStep(run, block)) {
+							run.moveStage = 0;
+							run.movedSlots.clear();
 							frame.index++;
 						}
 					} else {
@@ -816,7 +892,104 @@ public final class ScriptEngine {
 				}
 				case "wait_until" -> {
 					run.waitCondition = block.args.getFirst();
+					run.waitDeadline = 0;
 					frame.index++;
+				}
+				case "wait_timeout" -> {
+					run.waitCondition = block.args.get(0);
+					run.waitDeadline = now + (long) (Math.clamp(number(eval(run, block.args.get(1))), 0, 3600) * 1000);
+					run.timedOut = false;
+					frame.index++;
+				}
+				case "for_each" -> {
+					List<String> items = new ArrayList<>(listValue(run.group, block.text(0)));
+					if (block.text(1).isEmpty()) {
+						fail(block, "還沒有選擇要存放每一項的變數");
+						frame.index++;
+					} else if (items.isEmpty()) {
+						frame.index++;
+					} else {
+						frame.items = items;
+						frame.counter = 0;
+						frame.total = items.size();
+						assign(run, block.text(1), items.getFirst(), block);
+						run.frames.push(new Frame(block.body, 0));
+					}
+				}
+				case "break", "continue" -> loopJump(run, block, block.op.equals("break"));
+				case "cooldown" -> {
+					long span = (long) (Math.clamp(number(eval(run, block.args.getFirst())), 0, 86400) * 1000);
+					Long last = COOLDOWNS.get(block);
+					if (last != null && now - last < span) {
+						frame.index++;
+					} else {
+						COOLDOWNS.put(block, now);
+						run.frames.push(new Frame(block.body, 0));
+					}
+				}
+				case "if_elif" -> {
+					if (truthy(eval(run, block.args.get(0)))) {
+						run.frames.push(new Frame(block.body, 0));
+					} else if (truthy(eval(run, block.args.get(1)))) {
+						run.frames.push(new Frame(block.elseBody, 0));
+					} else {
+						frame.index++;
+					}
+				}
+				case "fork" -> {
+					if (RUNS.size() >= MAX_RUNS) {
+						fail(block, "同時執行的腳本太多了，背景執行已略過");
+					} else if (!block.body.isEmpty()) {
+						Run child = new Run(run.stack, run.context);
+						child.group = run.group;
+						child.frames.push(new Frame(block.body, 0));
+						RUNS.add(child);
+					}
+					frame.index++;
+				}
+				case "stop_others" -> {
+					RUNS.forEach(other -> {
+						if (other != run && other.group == run.group) {
+							other.done = true;
+						}
+					});
+					frame.index++;
+				}
+				case "ask", "choose" -> {
+					net.minecraft.client.gui.screens.Screen open = screen();
+					if (open != null && !(open instanceof ChatScreen)) {
+						run.waitUntil = now + 1;
+						return;
+					}
+					frame.index++;
+					String prompt = cap(eval(run, block.args.getFirst()));
+					if (Minecraft.getInstance() == null) {
+						continue;
+					}
+					List<String> options = block.op.equals("choose") ? ScriptExtras.split(prompt, ",").stream().limit(8).toList() : null;
+					if (options != null && options.isEmpty()) {
+						fail(block, "選項是空的，請用逗號分開，例如：買,賣,取消");
+						continue;
+					}
+					run.asking = true;
+					boolean choosing = options != null;
+					CommandMenuScreen.setScreen(new AskScreen(choosing ? "請選擇：" : prompt, options, value -> {
+						if (choosing) {
+							lastChoice = value;
+						} else {
+							lastAnswer = value;
+						}
+						run.asking = false;
+					}));
+					return;
+				}
+				case "act_walk_to" -> {
+					if (walkStep(run, block, now)) {
+						run.walkBlock = null;
+						frame.index++;
+					}
+					run.waitUntil = now + 1;
+					return;
 				}
 				case "repeat" -> {
 					int times = (int) Math.min(100000, Math.round(number(eval(run, block.args.getFirst()))));
@@ -875,7 +1048,8 @@ public final class ScriptEngine {
 
 	private static final java.util.Set<String> CLIENT_ACTIONS = java.util.Set.of("insert", "local", "local_color", "actionbar", "sound", "copy", "title",
 			"act_tap", "act_press", "act_release", "act_release_all", "act_hotbar", "act_face", "act_turn",
-			"key_press", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "gui_close");
+			"key_press", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "gui_close", "gui_click_name",
+			"act_hotbar_find", "note", "notify");
 
 	static net.minecraft.client.gui.screens.Screen screen() {
 		Minecraft client = Minecraft.getInstance();
@@ -915,7 +1089,7 @@ public final class ScriptEngine {
 		if (screen == null) {
 			return false;
 		}
-		return !(block.op.equals("gui_click_slot") || block.op.equals("gui_move")) || screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?>
+		return !(block.op.equals("gui_click_slot") || block.op.equals("gui_move") || block.op.equals("gui_click_name") || block.op.equals("gui_move_all")) || screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?>
 				|| screen instanceof ScriptEditorScreen || screen instanceof ScriptTemplateScreen || screen instanceof ScriptImportScreen;
 	}
 
@@ -1217,6 +1391,130 @@ public final class ScriptEngine {
 					fail(block, "這個介面不能直接關閉（玩家按 ESC 也關不掉），已略過");
 				} else if (screen != null) {
 					screen.onClose();
+				}
+			}
+			case "act_hotbar_find" -> {
+				LocalPlayer player = client.player;
+				int slot = ScriptExtras.hotbarFind(player, eval(run, block.args.getFirst()));
+				if (player != null && playerControl(block)) {
+					if (slot == 0) {
+						fail(block, "快捷欄裡沒有名稱含有「" + eval(run, block.args.getFirst()).strip() + "」的物品");
+					} else {
+						player.getInventory().setSelectedSlot(slot - 1);
+					}
+				}
+			}
+			case "gui_click_name" -> {
+				net.minecraft.client.gui.screens.Screen screen = targetScreen(block, true);
+				if (screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> container) {
+					String needle = eval(run, block.args.get(0)).strip().toLowerCase(Locale.ROOT);
+					var found = needle.isEmpty() ? null : container.getMenu().slots.stream()
+							.filter(slot -> slot.isActive() && slot.hasItem() && slot.getItem().getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle)).findFirst().orElse(null);
+					if (found == null) {
+						fail(block, "介面裡找不到名稱含有「" + needle + "」的物品");
+					} else {
+						String kind = switch (block.text(1)) {
+							case "Shift+左鍵" -> "QUICK_MOVE";
+							case "丟出" -> "THROW";
+							default -> "PICKUP";
+						};
+						click(screen, found, block.text(1).equals("右鍵") ? 1 : 0, kind);
+					}
+				}
+			}
+			case "monitor_field" -> ScriptMonitor.setField(cap(eval(run, block.args.get(0))), eval(run, block.args.get(1)));
+			case "monitor_bar" -> ScriptMonitor.setBar(cap(eval(run, block.args.get(0))), number(eval(run, block.args.get(1))));
+			case "monitor_clear" -> ScriptMonitor.clearFields();
+			case "note" -> {
+				var instrument = switch (block.text(0)) {
+					case "貝斯" -> SoundEvents.NOTE_BLOCK_BASS;
+					case "鐘" -> SoundEvents.NOTE_BLOCK_BELL;
+					case "長笛" -> SoundEvents.NOTE_BLOCK_FLUTE;
+					case "吉他" -> SoundEvents.NOTE_BLOCK_GUITAR;
+					case "鐵琴" -> SoundEvents.NOTE_BLOCK_XYLOPHONE;
+					case "風鈴" -> SoundEvents.NOTE_BLOCK_CHIME;
+					case "牛鈴" -> SoundEvents.NOTE_BLOCK_COW_BELL;
+					case "班鳩琴" -> SoundEvents.NOTE_BLOCK_BANJO;
+					case "電子琴" -> SoundEvents.NOTE_BLOCK_PLING;
+					case "大鼓" -> SoundEvents.NOTE_BLOCK_BASEDRUM;
+					case "小鼓" -> SoundEvents.NOTE_BLOCK_SNARE;
+					case "敲擊" -> SoundEvents.NOTE_BLOCK_HAT;
+					default -> SoundEvents.NOTE_BLOCK_HARP;
+				};
+				double pitch = Math.pow(2, (Math.clamp(number(eval(run, block.args.get(1))), 0, 24) - 12) / 12.0);
+				client.getSoundManager().play(SimpleSoundInstance.forUI(instrument, (float) pitch));
+			}
+			case "notify" -> {
+				String heading = cap(eval(run, block.args.get(0)));
+				String body = cap(eval(run, block.args.get(1)));
+				//? if >=26.2 {
+				var toasts = client.gui.toastManager();
+				//?} else {
+				/*var toasts = client.getToastManager();
+				*///?}
+				net.minecraft.client.gui.components.toasts.SystemToast.add(toasts, net.minecraft.client.gui.components.toasts.SystemToast.SystemToastId.PERIODIC_NOTIFICATION,
+						Component.literal(heading), Component.literal(body));
+				if (!client.isWindowActive()) {
+					//? if >=26.3 {
+					/*org.lwjgl.sdl.SDLVideo.SDL_FlashWindow(client.getWindow().handle(), org.lwjgl.sdl.SDLVideo.SDL_FLASH_UNTIL_FOCUSED);
+					*///?} else {
+					org.lwjgl.glfw.GLFW.glfwRequestWindowAttention(client.getWindow().handle());
+					//?}
+				}
+			}
+			case "file_log" -> {
+				String error = ScriptExtras.appendLog(eval(run, block.args.get(0)), cap(eval(run, block.args.get(1))));
+				if (error != null) {
+					fail(block, error);
+				}
+			}
+			case "list_insert" -> {
+				List<String> list = list(run, block, 0);
+				if (list == null) {
+					return;
+				}
+				int index = (int) Math.clamp(number(eval(run, block.args.get(1))), 1, list.size() + 1) - 1;
+				if (list.size() >= Scripts.MAX_LIST_ITEMS) {
+					fail(block, "清單最多 " + Scripts.MAX_LIST_ITEMS + " 項，這次沒有插入");
+				} else {
+					list.add(index, cap(eval(run, block.args.get(2))));
+					valuesDirty = true;
+				}
+			}
+			case "list_sort", "list_shuffle" -> {
+				List<String> list = list(run, block, 0);
+				if (list != null) {
+					if (block.op.equals("list_sort")) {
+						ScriptExtras.sort(list, block.text(1).equals("由大到小"));
+					} else {
+						java.util.Collections.shuffle(list);
+					}
+					valuesDirty = true;
+				}
+			}
+			case "list_from_text" -> {
+				List<String> list = list(run, block, 2);
+				if (list != null) {
+					list.clear();
+					ScriptExtras.split(eval(run, block.args.get(0)), eval(run, block.args.get(1))).stream().limit(Scripts.MAX_LIST_ITEMS).map(ScriptEngine::cap).forEach(list::add);
+					valuesDirty = true;
+				}
+			}
+			case "map_set" -> {
+				List<String> list = list(run, block, 0);
+				if (list != null) {
+					if (list.size() >= Scripts.MAX_LIST_ITEMS && !ScriptExtras.mapHas(list, eval(run, block.args.get(1)))) {
+						fail(block, "清單最多 " + Scripts.MAX_LIST_ITEMS + " 項，這次沒有加入");
+					} else {
+						ScriptExtras.mapSet(list, cap(eval(run, block.args.get(1))), cap(eval(run, block.args.get(2))));
+						valuesDirty = true;
+					}
+				}
+			}
+			case "map_remove" -> {
+				List<String> list = list(run, block, 0);
+				if (list != null && ScriptExtras.mapRemove(list, eval(run, block.args.get(1)))) {
+					valuesDirty = true;
 				}
 			}
 			case "monitor_show" -> Scripts.data().monitor = true;
@@ -1600,6 +1898,98 @@ public final class ScriptEngine {
 				}
 				yield Integer.toString(free);
 			}
+			case "s_hotbar_find" -> Integer.toString(ScriptExtras.hotbarFind(player(), arg(run, block, 0)));
+			case "s_gui_find" -> {
+				String needle = arg(run, block, 0).strip().toLowerCase(Locale.ROOT);
+				if (!(gameScreen() instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> container) || needle.isEmpty()) {
+					yield "0";
+				}
+				var slots = container.getMenu().slots;
+				int found = 0;
+				for (int i = 0; i < slots.size(); i++) {
+					if (slots.get(i).isActive() && slots.get(i).hasItem() && slots.get(i).getItem().getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle)) {
+						found = i + 1;
+						break;
+					}
+				}
+				yield Integer.toString(found);
+			}
+			case "s_entity_count" -> Integer.toString(ScriptExtras.entityCount(player(), number(arg(run, block, 0)), arg(run, block, 1)));
+			case "s_nearest_entity" -> {
+				var entity = ScriptExtras.nearestCreature(player());
+				yield entity == null ? "" : entity.getName().getString();
+			}
+			case "s_nearest_entity_distance" -> {
+				var entity = ScriptExtras.nearestCreature(player());
+				yield entity == null ? "0" : format(Math.round(entity.distanceTo(player()) * 10) / 10.0);
+			}
+			case "s_distance_to" -> {
+				LocalPlayer self = player();
+				yield self == null ? "0" : format(Math.round(Math.sqrt(self.distanceToSqr(number(arg(run, block, 0)) + 0.5, number(arg(run, block, 1)), number(arg(run, block, 2)) + 0.5)) * 10) / 10.0);
+			}
+			case "s_yaw" -> player() == null ? "0" : format(Math.round(net.minecraft.util.Mth.wrapDegrees(player().getYRot()) * 10) / 10.0);
+			case "s_pitch" -> player() == null ? "0" : format(Math.round(player().getXRot() * 10) / 10.0);
+			case "s_sprinting" -> bool(player() != null && player().isSprinting());
+			case "s_flying" -> bool(player() != null && player().getAbilities().flying);
+			case "s_gliding" -> bool(player() != null && player().isFallFlying());
+			case "s_using" -> bool(player() != null && player().isUsingItem());
+			case "s_xp_progress" -> player() == null ? "0" : Integer.toString(Math.round(player().experienceProgress * 100));
+			case "s_air" -> player() == null ? "0" : Integer.toString(Math.max(0, player().getAirSupply()));
+			case "s_attack_cooldown" -> player() == null ? "0" : Integer.toString(Math.round(player().getAttackStrengthScale(0) * 100));
+			case "s_block_at" -> {
+				LocalPlayer self = player();
+				var pos = net.minecraft.core.BlockPos.containing(number(arg(run, block, 0)), number(arg(run, block, 1)), number(arg(run, block, 2)));
+				yield self == null || !self.level().isLoaded(pos) ? "" : self.level().getBlockState(pos).getBlock().getName().getString();
+			}
+			case "s_online_list" -> {
+				Minecraft client = Minecraft.getInstance();
+				var connection = client == null ? null : client.getConnection();
+				yield connection == null ? "" : String.join(", ", connection.getOnlinePlayers().stream().map(info -> info.getProfile().name()).sorted(String.CASE_INSENSITIVE_ORDER).toList());
+			}
+			case "s_focused" -> bool(Minecraft.getInstance() != null && Minecraft.getInstance().isWindowActive());
+			case "s_fps" -> Minecraft.getInstance() == null ? "0" : Integer.toString(Minecraft.getInstance().getFps());
+			case "s_timed_out" -> bool(run.timedOut);
+			case "s_answer" -> lastAnswer;
+			case "s_choice" -> lastChoice;
+			case "s_site_online" -> Integer.toString(OnlineStats.total());
+			case "s_site_server" -> Integer.toString(OnlineStats.server(arg(run, block, 0)));
+			case "s_announcement" -> AnnouncementStore.titleOf(AnnouncementStore.latest());
+			case "s_timestamp" -> Long.toString(System.currentTimeMillis() / 1000);
+			case "op_extract" -> ScriptExtras.extract(arg(run, block, 0), block.text(1), (int) Math.clamp(number(arg(run, block, 2)), 1, 1000));
+			case "op_regex" -> {
+				String result = ScriptExtras.regex(arg(run, block, 0), arg(run, block, 1), (int) Math.clamp(number(arg(run, block, 2)), 1, 1000));
+				if (result == null) {
+					fail(block, "規則寫錯了或太複雜（最多 " + ScriptExtras.MAX_REGEX + " 字），已略過");
+					yield "";
+				}
+				yield result;
+			}
+			case "op_format" -> ScriptExtras.format(number(arg(run, block, 0)), block.text(1));
+			case "op_max" -> format(Math.max(number(arg(run, block, 0)), number(arg(run, block, 1))));
+			case "op_min" -> format(Math.min(number(arg(run, block, 0)), number(arg(run, block, 1))));
+			case "op_pow" -> format(Math.pow(number(arg(run, block, 0)), Math.clamp(number(arg(run, block, 1)), -100, 100)));
+			case "op_case" -> block.text(1).equals("小寫") ? arg(run, block, 0).toLowerCase(Locale.ROOT) : arg(run, block, 0).toUpperCase(Locale.ROOT);
+			case "op_trim" -> arg(run, block, 0).strip();
+			case "op_elapsed" -> format(System.currentTimeMillis() / 1000 - Math.round(number(arg(run, block, 0))));
+			case "op_time_format" -> ScriptExtras.timeFormat(number(arg(run, block, 0)), block.text(1));
+			case "list_index" -> {
+				String needle = arg(run, block, 0).strip();
+				List<String> items = listValue(run.group, block.text(1));
+				int found = 0;
+				for (int i = 0; i < items.size(); i++) {
+					if (items.get(i).strip().equalsIgnoreCase(needle)) {
+						found = i + 1;
+						break;
+					}
+				}
+				yield Integer.toString(found);
+			}
+			case "list_random" -> {
+				List<String> items = listValue(run.group, block.text(0));
+				yield items.isEmpty() ? "" : items.get(ThreadLocalRandom.current().nextInt(items.size()));
+			}
+			case "map_get" -> ScriptExtras.mapGet(listValue(run.group, block.text(0)), arg(run, block, 1));
+			case "map_has" -> bool(ScriptExtras.mapHas(listValue(run.group, block.text(0)), arg(run, block, 1)));
 			case "op_neq" -> bool(compare(arg(run, block, 0), arg(run, block, 1)) != 0);
 			case "op_gte" -> bool(compare(arg(run, block, 0), arg(run, block, 1)) >= 0);
 			case "op_lte" -> bool(compare(arg(run, block, 0), arg(run, block, 1)) <= 0);
@@ -1746,6 +2136,251 @@ public final class ScriptEngine {
 		//?} else {
 		/*return self.level().getDayTime();
 		*///?}
+	}
+
+	static float[] lookAt(LocalPlayer player, net.minecraft.world.phys.Vec3 target) {
+		net.minecraft.world.phys.Vec3 eye = player.getEyePosition();
+		double dx = target.x - eye.x;
+		double dy = target.y - eye.y;
+		double dz = target.z - eye.z;
+		float yaw = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90f;
+		float pitch = (float) Math.clamp(-Math.toDegrees(Math.atan2(dy, Math.sqrt(dx * dx + dz * dz))), -90, 90);
+		return new float[] { yaw, pitch };
+	}
+
+	private static void loopJump(Run run, Scripts.Block block, boolean exit) {
+		List<Frame> frames = new ArrayList<>(run.frames);
+		for (int i = 0; i < frames.size() - 1; i++) {
+			Frame body = frames.get(i);
+			if (body.args != null) {
+				break;
+			}
+			Frame parent = frames.get(i + 1);
+			if (parent.index < parent.list.size()) {
+				Scripts.Block owner = parent.list.get(parent.index);
+				if (LOOP_OPS.contains(owner.op) && owner.body == body.list) {
+					for (int k = 0; k < i; k++) {
+						run.frames.pop();
+					}
+					if (exit) {
+						run.frames.pop();
+						parent.index++;
+					} else {
+						body.index = body.list.size();
+					}
+					return;
+				}
+			}
+		}
+		fail(block, exit ? "「跳出迴圈」要放在重複類的積木裡面" : "「跳過這一次」要放在重複類的積木裡面");
+		frames.getFirst().index++;
+	}
+
+	private static boolean walkStep(Run run, Scripts.Block block, long now) {
+		LocalPlayer player = player();
+		KeyMapping forward = mapping("前進");
+		if (player == null || !playerControl(block)) {
+			release(forward);
+			return true;
+		}
+		double tx = number(eval(run, block.args.get(0))) + 0.5;
+		double tz = number(eval(run, block.args.get(1))) + 0.5;
+		double dx = tx - player.getX();
+		double dz = tz - player.getZ();
+		double distance = Math.sqrt(dx * dx + dz * dz);
+		if (run.walkBlock != block) {
+			run.walkBlock = block;
+			run.walkStart = now;
+			run.walkBest = distance;
+			run.walkProgressAt = now;
+		}
+		if (distance < 0.8) {
+			release(forward);
+			return true;
+		}
+		if (distance < run.walkBest - 0.3) {
+			run.walkBest = distance;
+			run.walkProgressAt = now;
+		}
+		if (now - run.walkProgressAt > 3000) {
+			release(forward);
+			fail(block, "走不過去（可能被擋住或卡住），已停在離目標 " + Math.round(distance) + " 格的地方");
+			return true;
+		}
+		if (now - run.walkStart > 300_000) {
+			release(forward);
+			fail(block, "走了 5 分鐘還沒到，已停止");
+			return true;
+		}
+		float target = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90f;
+		float yaw = player.getYRot() + Math.clamp(net.minecraft.util.Mth.wrapDegrees(target - player.getYRot()), -TURN_SPEED, TURN_SPEED);
+		player.setYRot(yaw);
+		player.setYHeadRot(yaw);
+		hold(run, forward, now + 200, false);
+		return false;
+	}
+
+	private static boolean moveAllStep(Run run, Scripts.Block block) {
+		Minecraft client = Minecraft.getInstance();
+		net.minecraft.client.gui.screens.Screen screen = client == null ? null : targetScreen(block, true);
+		if (screen == null) {
+			return true;
+		}
+		if (screen instanceof net.minecraft.client.gui.screens.inventory.InventoryScreen || screen instanceof net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen) {
+			fail(block, "請先打開箱子等容器，自己的背包沒有「另一邊」可以移過去");
+			return true;
+		}
+		if (!(screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> container)) {
+			return true;
+		}
+		String needle = eval(run, block.args.getFirst()).strip().toLowerCase(Locale.ROOT);
+		var slots = container.getMenu().slots;
+		for (int i = 0; i < slots.size(); i++) {
+			var slot = slots.get(i);
+			if (slot.container instanceof net.minecraft.world.entity.player.Inventory && slot.isActive() && slot.hasItem() && !run.movedSlots.contains(i)
+					&& (needle.isEmpty() || slot.getItem().getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle))) {
+				run.movedSlots.add(i);
+				click(screen, slot, 0, "QUICK_MOVE");
+				return ++run.moveStage >= 64;
+			}
+		}
+		if (run.moveStage == 0) {
+			fail(block, "背包裡沒有名稱含有「" + needle + "」的物品");
+		}
+		return true;
+	}
+
+	public static void onSound(String id, double x, double y, double z) {
+		LocalPlayer player = player();
+		if (player == null || !active()) {
+			return;
+		}
+		double distance = Math.sqrt(player.distanceToSqr(x, y, z));
+		fire("ev_sound", hat -> {
+			String wanted = HEARD.getOrDefault(hat.text(1), "");
+			return distance <= Math.clamp(number(hat.text(0)), 0, 256) && (wanted.isEmpty() || id.contains(wanted));
+		}, Map.of("message", id, "sender", format(Math.round(distance * 10) / 10.0)));
+	}
+
+	private static void watchWorld(Minecraft client, List<Scripts.Stack> active, long now) {
+		java.time.LocalDateTime time = java.time.LocalDateTime.now();
+		String minuteKey = time.toLocalDate() + "T" + time.getHour() + ":" + time.getMinute();
+		DAILY.keySet().retainAll(new java.util.HashSet<>(active));
+		startAll(active, "ev_daily", hat -> {
+			return (int) number(hat.text(0)) == time.getHour() && (int) number(hat.text(1)) == time.getMinute();
+		}, Map.of(), stack -> !minuteKey.equals(DAILY.put(stack, minuteKey)));
+		net.minecraft.client.gui.screens.Screen open = gameScreen();
+		if (open instanceof ChatScreen || open instanceof AskScreen) {
+			open = null;
+		}
+		if (open != lastScreen) {
+			if (open != null) {
+				String title = open.getTitle().getString();
+				startAll(active, "ev_gui_open", hat -> findText(hat.text(0), List.of(title)) != null, Map.of("message", title), null);
+				lastScreenTitle = title;
+			} else {
+				startAll(active, "ev_gui_close", hat -> true, Map.of("message", lastScreenTitle), null);
+			}
+			lastScreen = open;
+		}
+		for (int i = 0; i < KEYS.length; i++) {
+			boolean down = KEYS[i] != null && KEYS[i].isDown();
+			if (KEY_DOWN[i] && !down) {
+				String index = ScriptBlocks.KEYS.get(i);
+				startAll(active, "ev_key_release", hat -> hat.text(0).equals(index), Map.of(), null);
+			}
+			KEY_DOWN[i] = down;
+		}
+		LocalPlayer player = client.player;
+		if (player == null) {
+			return;
+		}
+		boolean dead = player.isDeadOrDying();
+		if (dead && !wasDead) {
+			startAll(active, "ev_death", hat -> true, Map.of(), null);
+		} else if (!dead && wasDead) {
+			startAll(active, "ev_respawn", hat -> true, Map.of(), null);
+		}
+		wasDead = dead;
+		AREAS.keySet().retainAll(new java.util.HashSet<>(active));
+		for (Scripts.Stack stack : active) {
+			if (stack.blocks.isEmpty() || !(stack.blocks.getFirst().op.equals("ev_area_enter") || stack.blocks.getFirst().op.equals("ev_area_leave"))) {
+				continue;
+			}
+			Scripts.Block hat = stack.blocks.getFirst();
+			double x1 = number(hat.text(0));
+			double z1 = number(hat.text(1));
+			double x2 = number(hat.text(2));
+			double z2 = number(hat.text(3));
+			boolean inside = player.getX() >= Math.min(x1, x2) && player.getX() <= Math.max(x1, x2) + 1 && player.getZ() >= Math.min(z1, z2) && player.getZ() <= Math.max(z1, z2) + 1;
+			Boolean before = AREAS.put(stack, inside);
+			if (before != null && before != inside && inside == hat.op.equals("ev_area_enter")) {
+				start(stack, Map.of(), true);
+			}
+		}
+		String dimension = CoordTools.dimensionName(player.level().dimension());
+		if (lastDimension != null && !lastDimension.equals(dimension)) {
+			startAll(active, "ev_dimension", hat -> true, Map.of("message", dimension), null);
+		}
+		lastDimension = dimension;
+		var held = player.getMainHandItem();
+		String heldKey = held.isEmpty() ? "" : held.getItem() + "|" + held.getHoverName().getString();
+		if (lastHeld != null && !lastHeld.equals(heldKey)) {
+			startAll(active, "ev_held", hat -> true, Map.of("message", held.isEmpty() ? "" : held.getHoverName().getString()), null);
+		}
+		lastHeld = heldKey;
+		ITEM_COUNTS.keySet().retainAll(new java.util.HashSet<>(active));
+		for (Scripts.Stack stack : active) {
+			if (stack.blocks.isEmpty() || !stack.blocks.getFirst().op.equals("ev_item_count")) {
+				continue;
+			}
+			int count = ScriptExtras.inventoryCount(player, stack.blocks.getFirst().text(0));
+			Integer before = ITEM_COUNTS.put(stack, count);
+			if (before != null && before != count) {
+				start(stack, Map.of("message", Integer.toString(count)), true);
+			}
+		}
+		long dayTime = dayTime();
+		if (dayTime >= 0) {
+			boolean day = dayTime % 24000 < 12300;
+			if (lastDay != null && lastDay != day) {
+				startAll(active, day ? "ev_dawn" : "ev_dusk", hat -> true, Map.of(), null);
+			}
+			lastDay = day;
+		}
+		boolean wantsAnnouncements = active.stream().anyMatch(stack -> !stack.blocks.isEmpty() && stack.blocks.getFirst().op.equals("ev_announcement"));
+		if (wantsAnnouncements && now - announcementCheckedAt > 300_000) {
+			announcementCheckedAt = now;
+			AnnouncementStore.refreshAll(unread -> client.execute(() -> {
+				var latest = AnnouncementStore.latest();
+				String id = latest == null ? null : latest.id;
+				if (id != null && lastAnnouncement != null && !id.equals(lastAnnouncement) && active()) {
+					fire("ev_announcement", hat -> true, Map.of("message", AnnouncementStore.titleOf(latest)));
+				}
+				if (id != null) {
+					lastAnnouncement = id;
+				}
+			}));
+		}
+	}
+
+	private static void assign(Run run, String name, String value, Scripts.Block block) {
+		if (name.isEmpty()) {
+			fail(block, "還沒有選擇變數，請先在「變數」分類建立一個");
+			return;
+		}
+		String key = Scripts.key(run.group, name);
+		String clean = value.length() > Scripts.MAX_VALUE ? value.substring(0, Scripts.MAX_VALUE) : value;
+		String old = Scripts.data().values.put(key, clean);
+		valuesDirty = true;
+		if (!clean.equals(old == null ? "0" : old) && active()) {
+			for (Scripts.Stack stack : Scripts.activeStacks()) {
+				if (!stack.blocks.isEmpty() && stack.blocks.getFirst().op.equals("ev_var_change")
+						&& Scripts.key(Scripts.groupOf(stack), stack.blocks.getFirst().text(0)).equals(key)) {
+					start(stack, Map.of("message", clean), true);
+				}
+			}
+		}
 	}
 
 	private static String getVariable(Run run, String name) {

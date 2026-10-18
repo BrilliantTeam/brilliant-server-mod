@@ -26,8 +26,7 @@ public final class ScriptEditorScreen extends Screen {
 	private static final int HEADER = 26;
 	private static final int GROUP_BAR = 18;
 	private static final int CATS = 44;
-	private static final int FLYOUT = 196;
-	private static final int PALETTE = CATS + FLYOUT;
+	private static final int MIN_FLYOUT = 150;
 	private static final int SNAP = 18;
 	private static final int WORKSPACE_BG = 0xFF161B20;
 	private static final int RUNNING = 0xFFFFE066;
@@ -119,6 +118,7 @@ public final class ScriptEditorScreen extends Screen {
 	private double mapMinY;
 	private double mapScale = 1;
 	private boolean debugMode;
+	private boolean resizingPalette;
 
 	public ScriptEditorScreen(Screen parent) {
 		super(Component.literal("自動腳本"));
@@ -140,7 +140,7 @@ public final class ScriptEditorScreen extends Screen {
 			}
 		});
 		addRenderableWidget(editor);
-		search = new EditBox(font, CATS + 6, HEADER + 4, FLYOUT - 12, 13, Component.literal("搜尋積木"));
+		search = new EditBox(font, CATS + 6, HEADER + 4, flyout() - 12, 13, Component.literal("搜尋積木"));
 		search.setMaxLength(20);
 		Theme.hint(search, "搜尋積木…（Ctrl+F）");
 		search.setValue(query);
@@ -156,8 +156,20 @@ public final class ScriptEditorScreen extends Screen {
 		}
 	}
 
+	private int flyout() {
+		return Math.clamp(Scripts.data().paletteWidth, MIN_FLYOUT, Math.max(MIN_FLYOUT, width / 2 - CATS));
+	}
+
+	private int palette() {
+		return CATS + flyout();
+	}
+
+	private boolean onDivider(double mx, double my) {
+		return my >= HEADER && Math.abs(mx - palette()) <= 3;
+	}
+
 	private int areaX() {
-		return PALETTE;
+		return palette();
 	}
 
 	private int areaY() {
@@ -643,7 +655,7 @@ public final class ScriptEditorScreen extends Screen {
 	}
 
 	private boolean inPalette(double mx, double my) {
-		return mx < PALETTE && my >= HEADER;
+		return mx < palette() && my >= HEADER;
 	}
 
 	private void layoutWorkspace() {
@@ -882,8 +894,10 @@ public final class ScriptEditorScreen extends Screen {
 		}
 
 		gfx.fill(0, HEADER, CATS, height, 0xFF1A2026);
-		gfx.fill(CATS, HEADER, PALETTE, height, 0xFF20272E);
-		gfx.fill(PALETTE - 1, HEADER, PALETTE, height, Theme.ACCENT_DIM);
+		gfx.fill(CATS, HEADER, palette(), height, 0xFF20272E);
+		boolean dividerActive = resizingPalette || onDivider(mouseX, mouseY) && dragChunk == null && dragReporter == null;
+		gfx.fill(palette() - (dividerActive ? 2 : 1), HEADER, palette() + (dividerActive ? 1 : 0), height, dividerActive ? Theme.ACCENT : Theme.ACCENT_DIM);
+		search.setWidth(flyout() - 12);
 		int cy = HEADER + 6;
 		for (ScriptBlocks.Category category : ScriptBlocks.Category.values()) {
 			int cx = CATS / 2;
@@ -895,11 +909,11 @@ public final class ScriptEditorScreen extends Screen {
 			gfx.centered(font, category.label, 0, cy + 18, CATS, 10, hovered ? Theme.TEXT : Theme.TEXT_SECONDARY);
 			cy += categoryStep();
 		}
-		gfx.scissor(CATS, paletteTop() - 2, PALETTE - 1, height);
+		gfx.scissor(CATS, paletteTop() - 2, palette() - 1, height);
 		Scripts.Group group = Scripts.current();
 		for (PaletteItem item : palette) {
 			if (item.header() != null) {
-				gfx.label(font, font.plainSubstrByWidth(item.header(), FLYOUT - 16), CATS + 8, item.y(), item.h(), item.dim() ? Theme.TEXT_DIM : Theme.TEXT);
+				gfx.label(font, font.plainSubstrByWidth(item.header(), flyout() - 16), CATS + 8, item.y(), item.h(), item.dim() ? Theme.TEXT_DIM : Theme.TEXT);
 			} else if (item.button() != null) {
 				String label = switch (item.button()) {
 					case "var" -> "建立變數";
@@ -1693,6 +1707,10 @@ public final class ScriptEditorScreen extends Screen {
 		if (slotSuggestions != null && slotSuggestions.mouseClicked(event)) {
 			return true;
 		}
+		if (event.button() == InputConstants.MOUSE_BUTTON_LEFT && onDivider(mx, my) && menu == null && popup == null) {
+			resizingPalette = true;
+			return true;
+		}
 		checkpoint();
 		if (editing != null && !(mx >= editor.getX() - 2 && mx < editor.getX() + editor.getWidth() + 2 && my >= editor.getY() - 2 && my < editor.getY() + SLOT_H)) {
 			commitEdit();
@@ -1881,6 +1899,10 @@ public final class ScriptEditorScreen extends Screen {
 	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
 		double mx = event.x();
 		double my = event.y();
+		if (resizingPalette) {
+			Scripts.data().paletteWidth = Math.clamp((int) mx - CATS, MIN_FLYOUT, Math.max(MIN_FLYOUT, width / 2 - CATS));
+			return true;
+		}
 		if (minimapDrag) {
 			centerMinimap(mx, my);
 			return true;
@@ -1943,6 +1965,11 @@ public final class ScriptEditorScreen extends Screen {
 		double mx = event.x();
 		double my = event.y();
 		panning = false;
+		if (resizingPalette) {
+			resizingPalette = false;
+			Scripts.save();
+			return true;
+		}
 		if (minimapDrag || draggingNote != null) {
 			minimapDrag = false;
 			draggingNote = null;
@@ -1994,7 +2021,7 @@ public final class ScriptEditorScreen extends Screen {
 		if (slotSuggestions != null && slotSuggestions.mouseScrolled(scrollY)) {
 			return true;
 		}
-		if (mouseX < PALETTE) {
+		if (mouseX < palette()) {
 			paletteScroll = Math.clamp(paletteScroll - scrollY * 24, 0, Math.max(0, paletteHeight - (height - paletteTop())));
 		} else if (minecraft.hasShiftDown()) {
 			panX -= scrollY * 24 / zoom;

@@ -38,6 +38,9 @@ public final class ScriptMonitor {
 	private static final long ALERT_MS = 4000;
 	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static final Deque<String> LOG = new ArrayDeque<>();
+	private static final int MAX_FIELDS = 10;
+	private static final java.util.Map<String, String> FIELDS = new java.util.LinkedHashMap<>();
+	private static final java.util.Map<String, Double> BARS = new java.util.LinkedHashMap<>();
 	private static ScriptView view;
 	private static double scroll;
 	private static String alert;
@@ -64,6 +67,23 @@ public final class ScriptMonitor {
 		while (LOG.size() > 30) {
 			LOG.removeLast();
 		}
+	}
+
+	public static void setField(String name, String value) {
+		if (FIELDS.containsKey(name) || FIELDS.size() < MAX_FIELDS) {
+			FIELDS.put(name, value.length() > 100 ? value.substring(0, 100) : value);
+		}
+	}
+
+	public static void setBar(String name, double percent) {
+		if (BARS.containsKey(name) || BARS.size() < MAX_FIELDS) {
+			BARS.put(name, Math.clamp(percent, 0, 100));
+		}
+	}
+
+	public static void clearFields() {
+		FIELDS.clear();
+		BARS.clear();
 	}
 
 	public static void alert(String text) {
@@ -100,6 +120,8 @@ public final class ScriptMonitor {
 		for (int i = 0; i < Math.min(MAX_VARIABLES, variables.size()); i++) {
 			lines.add("§" + variables.get(i) + " = " + ScriptEngine.variable(group, variables.get(i)));
 		}
+		FIELDS.forEach((name, value) -> lines.add("\u0003" + name + "：" + value));
+		BARS.forEach((name, value) -> lines.add("\u0001" + name + "\u0002" + value));
 		for (String name : Scripts.listsOf(group)) {
 			List<String> items = ScriptEngine.listValue(group, name);
 			lines.add("§清單 " + name + "（" + items.size() + " 項）" + (items.isEmpty() ? "" : "：" + String.join(", ", items)));
@@ -358,6 +380,24 @@ public final class ScriptMonitor {
 		for (String line : layout.lines()) {
 			if (y + LINE > bottom) {
 				break;
+			}
+			if (line.startsWith("\u0001")) {
+				String[] bar = line.substring(1).split("\u0002", 2);
+				double percent = ScriptEngine.number(bar[1]);
+				String label = font.plainSubstrByWidth(bar[0], frame.w() / 3);
+				gfx.text(font, label, frame.x() + 4, y + 1, Theme.TEXT);
+				int bx = frame.x() + 8 + font.width(label);
+				int bw = frame.x() + frame.w() - 34 - bx;
+				gfx.fill(bx, y + 2, bx + bw, y + 8, 0x60FFFFFF);
+				gfx.fill(bx, y + 2, bx + (int) (bw * percent / 100), y + 8, 0xFF59C059);
+				gfx.text(font, Math.round(percent) + "%", bx + bw + 3, y + 1, Theme.TEXT_SECONDARY);
+				y += LINE;
+				continue;
+			}
+			if (line.startsWith("\u0003")) {
+				gfx.text(font, font.plainSubstrByWidth(line.substring(1), frame.w() - 8), frame.x() + 4, y + 1, 0xFF4C97FF);
+				y += LINE;
+				continue;
 			}
 			boolean variable = line.startsWith("§");
 			boolean warning = line.length() > 9 && line.charAt(9) == '⚠';

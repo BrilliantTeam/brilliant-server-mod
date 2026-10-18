@@ -104,6 +104,7 @@ public final class Scripts {
 		public int monitorY = 40;
 		public int monitorWidth = 200;
 		public boolean tutorialSeen;
+		public int paletteWidth = 196;
 		public int monitorHeight = 170;
 	}
 
@@ -354,6 +355,7 @@ public final class Scripts {
 		clean.monitorY = Math.clamp(input.monitorY, 0, 4000);
 		clean.monitorWidth = Math.clamp(input.monitorWidth, 160, 2000);
 		clean.tutorialSeen = input.tutorialSeen;
+		clean.paletteWidth = Math.clamp(input.paletteWidth == 0 ? 196 : input.paletteWidth, 150, 1000);
 		clean.monitorHeight = Math.clamp(input.monitorHeight, 60, 2000);
 		clean.variables = cleanNames(input.variables, MAX_VARIABLES);
 		clean.lists = cleanNames(input.lists, MAX_LISTS);

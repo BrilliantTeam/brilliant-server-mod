@@ -10,9 +10,10 @@ public final class ScriptLint {
 	public static final int TRADE_COOLDOWN = 1200;
 	private static final Set<String> PACED = Set.of("act_tap", "key_press", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "act_face", "act_turn");
 	private static final Set<String> SENDS = Set.of("say", "command", "msg", "say_channel", "reply");
-	private static final Set<String> LOOPS = Set.of("forever", "repeat", "repeat_until");
+	private static final Set<String> LOOPS = Set.of("forever", "repeat", "repeat_until", "for_each");
 	private static final Set<String> MESSAGE_EVENTS = Set.of("ev_message", "ev_channel", "ev_private", "ev_mention", "ev_player_join", "ev_player_leave", "ev_res_enter", "ev_res_leave",
-			"ev_title", "ev_actionbar", "ev_bossbar", "ev_sidebar");
+			"ev_title", "ev_actionbar", "ev_bossbar", "ev_sidebar", "ev_bossbar_gone", "ev_sound", "ev_gui_open", "ev_gui_close", "ev_hurt",
+			"ev_dimension", "ev_held", "ev_item_count", "ev_announcement", "ev_health", "ev_var_change");
 	private static final Set<String> MESSAGE_READERS = Set.of("s_message", "s_sender", "s_contains", "s_channel");
 
 	private ScriptLint() {}
@@ -111,6 +112,13 @@ public final class ScriptLint {
 					issues.put(hat, "關鍵字是空的，這個事件永遠不會觸發");
 				}
 			}
+			case "ev_daily" -> {
+				double hour = ScriptEngine.number(hat.text(0));
+				double minute = ScriptEngine.number(hat.text(1));
+				if (hour < 0 || hour > 23 || minute < 0 || minute > 59 || hour != Math.floor(hour) || minute != Math.floor(minute)) {
+					issues.put(hat, "時間要是 0～23 點、0～59 分的整數，否則永遠不會觸發");
+				}
+			}
 			case "ev_health" -> {
 				double threshold = ScriptEngine.number(hat.text(0));
 				if (threshold <= 0) {
@@ -181,7 +189,7 @@ public final class ScriptLint {
 				total += ScriptEngine.INPUT_GAP_MS / 1000.0;
 			} else if (block.op.equals("act_hold")) {
 				total += block.args.get(1).block != null ? 1 : Math.min(ScriptEngine.MAX_HOLD_SECONDS, ScriptEngine.number(block.text(1)));
-			} else if (block.op.equals("wait_until")) {
+			} else if (block.op.equals("wait_until") || block.op.equals("wait_timeout") || block.op.equals("ask") || block.op.equals("choose") || block.op.equals("act_walk_to")) {
 				return Double.POSITIVE_INFINITY;
 			}
 			if (block.op.equals("if_else")) {
@@ -206,7 +214,7 @@ public final class ScriptLint {
 				Context inner = context;
 				if (LOOPS.contains(block.op)) {
 					double wait = waits(block.body);
-					if (!block.op.equals("repeat") && wait <= 0) {
+					if (!block.op.equals("repeat") && !block.op.equals("for_each") && wait <= 0) {
 						issues.put(block, "迴圈裡沒有「等待」積木，會不停地快速重複，建議加上「等待 1 秒」");
 					}
 					inner = new Context(context.hat(), context.keyword(), context.inLoop() ? Math.min(context.loopWait(), wait) : wait, context.waits());
@@ -264,6 +272,18 @@ public final class ScriptLint {
 		if ((block.op.equals("title") && "ev_title".equals(context.hat()) || block.op.equals("actionbar") && "ev_actionbar".equals(context.hat()))
 				&& literal(block, 0) && !context.keyword().isEmpty() && block.text(0).toLowerCase(Locale.ROOT).contains(context.keyword())) {
 			issues.put(block, "顯示的文字含有觸發關鍵字「" + context.keyword() + "」，消失後再出現會再次觸發自己");
+			return;
+		}
+		if ((block.op.equals("break") || block.op.equals("continue")) && !context.inLoop()) {
+			issues.put(block, "要放在「重複」或「對清單的每一項」等迴圈裡面才有作用");
+			return;
+		}
+		if (block.op.equals("file_log") && literal(block, 0) && block.text(0).isBlank()) {
+			issues.put(block, "請填寫紀錄檔名稱");
+			return;
+		}
+		if (block.op.equals("op_regex") && literal(block, 0) && block.text(0).length() > ScriptExtras.MAX_REGEX) {
+			issues.put(block, "規則太長，最多 " + ScriptExtras.MAX_REGEX + " 個字");
 			return;
 		}
 		if (block.op.equals("proc_arg") && !"proc_def".equals(context.hat())) {

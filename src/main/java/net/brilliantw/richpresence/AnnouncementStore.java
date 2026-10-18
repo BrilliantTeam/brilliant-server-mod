@@ -229,6 +229,34 @@ public final class AnnouncementStore {
 		});
 	}
 
+	public static Message latest() {
+		Message best = null;
+		for (BoardState state : STATES.values()) {
+			for (Message message : state.messages) {
+				if (best == null || message.time > best.time) {
+					best = message;
+				}
+			}
+		}
+		return best;
+	}
+
+	public static String titleOf(Message message) {
+		if (message == null || message.lines == null) {
+			return "";
+		}
+		for (Line line : message.lines) {
+			StringBuilder text = new StringBuilder();
+			if (line.r != null) {
+				line.r.forEach(run -> text.append(run.t == null ? "" : run.t));
+			}
+			if (!text.toString().isBlank()) {
+				return text.toString().strip();
+			}
+		}
+		return "";
+	}
+
 	public static int compareIds(String a, String b) {
 		return a.length() != b.length() ? Integer.compare(a.length(), b.length()) : a.compareTo(b);
 	}
