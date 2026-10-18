@@ -21,6 +21,7 @@ public final class ModSettings {
 		public boolean recipeFix = true;
 		public boolean slotNumbers = true;
 		public boolean scoreboardLayout = true;
+		public boolean anvilCost = true;
 		public boolean anyServer;
 		public long anyServerAcceptedAt;
 		public String anyServerAcceptedVersion = "";
