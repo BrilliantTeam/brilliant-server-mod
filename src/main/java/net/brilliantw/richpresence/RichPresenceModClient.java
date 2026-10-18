@@ -37,17 +37,27 @@ public final class RichPresenceModClient implements ClientModInitializer {
 			String joined = brilliantHost(client);
 			if (joined == null) {
 				endSession();
+				if (ModSettings.get().anyServer) {
+					showMessage(Component.literal("｜").withStyle(ChatFormatting.GRAY)
+							.append(Component.literal("輝煌模組").withStyle(ChatFormatting.RED))
+							.append(Component.literal("｜").withStyle(ChatFormatting.GRAY))
+							.append(Component.literal("危險設定已開啟：模組功能正在非輝煌伺服器上運作，請自行確認此伺服器允許使用，後果自負。可在「選單 → 模組設定」關閉。").withStyle(ChatFormatting.YELLOW)));
+				}
 				return;
 			}
 			ticks = POLL_TICKS - 40;
 			updateTicks = 0;
-			ModUpdate.check();
+			if (ModSettings.get().updateCheck) {
+				ModUpdate.check();
+			}
 			if (session == handler.getConnection() && host != null) {
 				return;
 			}
 			session = handler.getConnection();
 			host = joined;
-			presence.start(label(host), state(host), imageKey(host));
+			if (ModSettings.get().discordPresence) {
+				presence.start(label(host), state(host), imageKey(host));
+			}
 			ScriptEngine.onJoin();
 			AnnouncementStore.refreshAll(RichPresenceModClient::notifyUnread);
 		});
@@ -61,7 +71,17 @@ public final class RichPresenceModClient implements ClientModInitializer {
 			ScriptEngine.tick(client);
 			if (host != null && ++updateTicks >= ModUpdate.CHECK_TICKS) {
 				updateTicks = 0;
-				ModUpdate.check();
+				if (ModSettings.get().updateCheck) {
+					ModUpdate.check();
+				}
+			}
+			boolean wantPresence = host != null && ModSettings.get().discordPresence;
+			if (wantPresence != presence.isActive()) {
+				if (wantPresence) {
+					presence.start(label(host), state(host), imageKey(host));
+				} else {
+					presence.stop();
+				}
 			}
 			if (session != null && !session.isConnected()) {
 				endSession();
@@ -81,6 +101,10 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		return brilliantHost(Minecraft.getInstance()) != null;
 	}
 
+	public static boolean featuresActive() {
+		return isOnBrilliantServer() || ModSettings.get().anyServer && Minecraft.getInstance().player != null;
+	}
+
 	private static String brilliantHost(Minecraft client) {
 		ServerData server = client.getCurrentServer();
 		if (server == null || server.ip == null) {
@@ -93,7 +117,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 
 	private static void notifyUnread(int unread) {
 		Minecraft client = Minecraft.getInstance();
-		if (unread <= 0 || client.player == null || !isOnBrilliantServer()) {
+		if (unread <= 0 || client.player == null || !isOnBrilliantServer() || !ModSettings.get().announcements) {
 			return;
 		}
 		String boards = AnnouncementStore.BOARDS.stream()

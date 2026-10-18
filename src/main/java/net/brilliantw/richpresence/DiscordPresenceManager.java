@@ -49,6 +49,10 @@ public final class DiscordPresenceManager {
 		send(client);
 	}
 
+	public boolean isActive() {
+		return active;
+	}
+
 	public synchronized void stop() {
 		active = false;
 		closeClient();

@@ -981,7 +981,7 @@ public final class ScriptEditorScreen extends Screen {
 			hint = status;
 		} else if (!Scripts.data().enabled) {
 			hint = "腳本已停用，點右上角「已停用」開啟";
-		} else if (!RichPresenceModClient.isOnBrilliantServer()) {
+		} else if (!RichPresenceModClient.featuresActive()) {
 			hint = "腳本只會在輝煌伺服器上執行";
 		} else if (Scripts.current().stacks.isEmpty()) {
 			hint = "從左邊拖曳積木到這裡開始組合腳本，最上面要放一個「事件」積木";

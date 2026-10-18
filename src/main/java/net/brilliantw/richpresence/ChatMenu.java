@@ -122,13 +122,16 @@ public final class ChatMenu {
 		};
 	}
 
+	private static final java.util.Set<String> ANYWHERE = java.util.Set.of("聊天紀錄", "常用訊息", "自訂指令", "分享座標", "自動腳本", "記分板位置", "模組設定");
+
 	static List<Item> items() {
 		List<Item> items = new ArrayList<>();
 		ModUpdate.Latest update = ModUpdate.available();
 		if (update != null) {
 			items.add(new Item("資訊", "更新至 " + ModUpdate.label(update), update.notes.isEmpty() ? "輝煌模組有新版本" : update.notes, Theme.WARNING, page(UpdateScreen::new)));
 		}
-		items.addAll(baseItems());
+		boolean brilliant = RichPresenceModClient.isOnBrilliantServer();
+		baseItems().stream().filter(item -> brilliant || ANYWHERE.contains(item.label())).forEach(items::add);
 		return items;
 	}
 
@@ -146,6 +149,7 @@ public final class ChatMenu {
 				new Item("工具", "分享座標", "插入目前座標與地獄換算", TOOL, screen -> insert(CoordTools.shareText()).accept(screen)),
 				new Item("工具", "自動腳本", "用積木組合自動化腳本", TOOL, page(ScriptEditorScreen::new)),
 				new Item("工具", "記分板位置", "拖曳移動、滾輪縮放記分板", TOOL, page(ScoreboardEditScreen::new)),
+				new Item("工具", "模組設定", "開關各項模組功能與進階設定", TOOL, page(ModSettingsScreen::new)),
 				new Item("伺服器", "伺服器選單", "/menu", INFO, command("menu")),
 				new Item("伺服器", "切換分流", "/bs", INFO, command("bs")),
 				new Item("資訊欄", "開關", "/sbt 顯示或隱藏記分板", INFO, command("sbt")),
@@ -166,7 +170,7 @@ public final class ChatMenu {
 
 	private static List<Item> searchable() {
 		List<Item> all = new ArrayList<>(items());
-		for (ChannelBar.Row row : ChannelBar.ROWS) {
+		for (ChannelBar.Row row : RichPresenceModClient.isOnBrilliantServer() ? ChannelBar.ROWS : List.<ChannelBar.Row>of()) {
 			for (ChannelBar.Action action : row.actions()) {
 				all.add(new Item("頻道", row.name() + "・" + action.label(), "/" + action.command(), row.color(), command(action.command())));
 			}

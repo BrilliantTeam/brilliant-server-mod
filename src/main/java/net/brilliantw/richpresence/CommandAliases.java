@@ -65,7 +65,7 @@ public final class CommandAliases {
 	}
 
 	public static boolean send(ClientPacketListener connection, String command) {
-		if (sending) {
+		if (sending || !ModSettings.get().aliases) {
 			return false;
 		}
 		String expanded = expand(command.strip(), all());
@@ -93,7 +93,7 @@ public final class CommandAliases {
 	public static void install() {
 		Minecraft client = Minecraft.getInstance();
 		ClientPacketListener connection = client == null ? null : client.getConnection();
-		if (connection == null) {
+		if (connection == null || !ModSettings.get().aliases) {
 			return;
 		}
 		CommandDispatcher<ClientSuggestionProvider> dispatcher = connection.getCommands();
@@ -120,6 +120,9 @@ public final class CommandAliases {
 	}
 
 	public static String rewriteSuggestion(int id, String input) {
+		if (!ModSettings.get().aliases) {
+			return null;
+		}
 		boolean slash = input.startsWith("/");
 		String body = slash ? input.substring(1) : input;
 		int space = body.indexOf(' ');

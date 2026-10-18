@@ -65,7 +65,7 @@ public final class ChannelBar {
 	private ChannelBar() {}
 
 	private static boolean active() {
-		return RichPresenceModClient.isOnBrilliantServer();
+		return RichPresenceModClient.featuresActive();
 	}
 
 	public static void close() {
@@ -85,7 +85,7 @@ public final class ChannelBar {
 
 	public static String applyPrefix(String message) {
 		String prefix = CHANNELS.get(selected).prefix();
-		if (prefix.isEmpty() || message.isBlank() || message.startsWith("/") || !active()) {
+		if (prefix.isEmpty() || message.isBlank() || message.startsWith("/") || !RichPresenceModClient.isOnBrilliantServer()) {
 			return message;
 		}
 		return prefix + message;
@@ -101,6 +101,9 @@ public final class ChannelBar {
 
 	private static List<Button<Integer>> chips(Font font, ChatScreen screen) {
 		List<Button<Integer>> buttons = new ArrayList<>();
+		if (!RichPresenceModClient.isOnBrilliantServer()) {
+			return buttons;
+		}
 		int x = 2;
 		for (int i = 0; i < CHANNELS.size(); i++) {
 			int width = buttonWidth(font, CHANNELS.get(i).name());
@@ -204,7 +207,7 @@ public final class ChannelBar {
 			tooltip = Component.literal(extra.isEmpty() ? "功能選單：公告、官網、常用訊息、互動與更多" : "功能選單（" + extra + "）");
 		}
 
-		if (settingsOpen) {
+		if (settingsOpen && RichPresenceModClient.isOnBrilliantServer()) {
 			Button<Void> panel = panel(font, screen);
 			gfx.fill(panel.x(), panel.y(), panel.x() + panel.width(), panel.y() + panel.height(), 0xD0000000);
 			for (int i = 0; i < ROWS.size(); i++) {
@@ -251,7 +254,7 @@ public final class ChannelBar {
 			}
 			return true;
 		}
-		if (!settingsOpen) {
+		if (!settingsOpen || !RichPresenceModClient.isOnBrilliantServer()) {
 			return false;
 		}
 		Button<Void> panel = panel(font, screen);

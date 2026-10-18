@@ -36,7 +36,7 @@ public final class DiscordImageLinks {
 
 	public static boolean intercept(String command) {
 		Matcher matcher = IMAGEMAP.matcher(command);
-		if (!matcher.matches() || !RichPresenceModClient.isOnBrilliantServer()) {
+		if (!matcher.matches() || !RichPresenceModClient.isOnBrilliantServer() || !ModSettings.get().imageLinks) {
 			return false;
 		}
 		String uuid = matcher.group(1).toLowerCase(Locale.ROOT);

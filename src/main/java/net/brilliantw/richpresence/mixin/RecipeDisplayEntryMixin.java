@@ -30,7 +30,7 @@ public abstract class RecipeDisplayEntryMixin {
 
 	@Inject(method = "canCraft", at = @At("HEAD"), cancellable = true)
 	private void brilliant$canCraftExact(StackedItemContents contents, CallbackInfoReturnable<Boolean> cir) {
-		if (craftingRequirements.isEmpty() || !RichPresenceModClient.isOnBrilliantServer()) {
+		if (craftingRequirements.isEmpty() || !RichPresenceModClient.isOnBrilliantServer() || !net.brilliantw.richpresence.ModSettings.get().recipeFix) {
 			return;
 		}
 		List<SlotDisplay> slots;

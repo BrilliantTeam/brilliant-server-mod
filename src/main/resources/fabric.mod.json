@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"client": [
 			"net.brilliantw.richpresence.RichPresenceModClient"
+		],
+		"modmenu": [
+			"net.brilliantw.richpresence.ModMenuIntegration"
 		]
 	},
 	"mixins": [

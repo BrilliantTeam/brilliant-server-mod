@@ -114,7 +114,7 @@ public final class ChatTabs {
 	}
 
 	public static void open() {
-		boolean active = RichPresenceModClient.isOnBrilliantServer();
+		boolean active = RichPresenceModClient.isOnBrilliantServer() && ModSettings.get().channelTabs;
 		if (viewing != active) {
 			viewing = active;
 			if (!selected.isEmpty()) {

@@ -70,7 +70,7 @@ public abstract class ChatScreenMixin extends Screen {
 		if (!ChatMenu.isOpen() && getFocused() == ChatMenu.search()) {
 			setFocused(input);
 		}
-		if (!brilliant$typingCommand() && RichPresenceModClient.isOnBrilliantServer()) {
+		if (!brilliant$typingCommand() && RichPresenceModClient.featuresActive()) {
 			ChatMenu.renderBackground((ChatScreen) (Object) this, gfx);
 		}
 	}
@@ -87,7 +87,7 @@ public abstract class ChatScreenMixin extends Screen {
 		if (!brilliant$typingCommand()) {
 			ChannelBar.render(screen, graphics, mouseX, mouseY);
 			EmojiPicker.render(screen, graphics, mouseX, mouseY);
-			if (RichPresenceModClient.isOnBrilliantServer()) {
+			if (RichPresenceModClient.featuresActive()) {
 				QuickMessages.render(screen, gfx, input.getValue(), mouseX, mouseY);
 				ChatMenu.render(screen, gfx, mouseX, mouseY);
 				ChatTabs.render(screen, gfx, mouseX, mouseY);

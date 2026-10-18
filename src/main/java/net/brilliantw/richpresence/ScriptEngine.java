@@ -162,7 +162,7 @@ public final class ScriptEngine {
 	}
 
 	static boolean active() {
-		return Scripts.data().enabled && Minecraft.getInstance() != null && Minecraft.getInstance().player != null && RichPresenceModClient.isOnBrilliantServer();
+		return Scripts.data().enabled && Minecraft.getInstance() != null && Minecraft.getInstance().player != null && RichPresenceModClient.featuresActive();
 	}
 
 	public static long flashAge(Scripts.Block block, long now) {

@@ -83,7 +83,7 @@ public final class PrivateWindow {
 	}
 
 	private static boolean visible() {
-		return RichPresenceModClient.isOnBrilliantServer() && !PrivateMessages.conversations().isEmpty();
+		return RichPresenceModClient.isOnBrilliantServer() && ModSettings.get().privateWindow && !PrivateMessages.conversations().isEmpty();
 	}
 
 	public static EditBox createInput() {

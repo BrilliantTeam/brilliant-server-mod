@@ -38,7 +38,7 @@ public abstract class ChatComponentMixin {
 	/*@Inject(method = "addMessage(Lnet/minecraft/network/chat/Component;Lnet/minecraft/network/chat/MessageSignature;Lnet/minecraft/client/GuiMessageTag;)V", at = @At("HEAD"), cancellable = true)
 	private void brilliant$readChat(Component message, MessageSignature signature, GuiMessageTag tag, CallbackInfo ci) {
 	*///?}
-		if (!RichPresenceModClient.isOnBrilliantServer()) {
+		if (!RichPresenceModClient.featuresActive()) {
 			return;
 		}
 		ChatHistoryScreen.record(message);

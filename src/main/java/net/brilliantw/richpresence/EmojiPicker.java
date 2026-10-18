@@ -46,7 +46,7 @@ public final class EmojiPicker {
 	}
 
 	private static boolean active() {
-		return !EMOJIS.isEmpty() && RichPresenceModClient.isOnBrilliantServer();
+		return !EMOJIS.isEmpty() && RichPresenceModClient.isOnBrilliantServer() && ModSettings.get().emoji;
 	}
 
 	private static int buttonX(ChatScreen screen) {

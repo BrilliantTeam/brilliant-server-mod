@@ -110,7 +110,7 @@ public final class ScriptMonitor {
 
 	private static boolean visible() {
 		Scripts.Data data = Scripts.data();
-		return data.monitor && data.enabled && RichPresenceModClient.isOnBrilliantServer() && (!Scripts.activeStacks().isEmpty() || !LOG.isEmpty());
+		return data.monitor && data.enabled && RichPresenceModClient.featuresActive() && (!Scripts.activeStacks().isEmpty() || !LOG.isEmpty());
 	}
 
 	private static List<String> lines() {
@@ -324,7 +324,7 @@ public final class ScriptMonitor {
 	}
 
 	public static void render(Gfx gfx, int screenWidth, int screenHeight, int mouseX, int mouseY, boolean interactive) {
-		if (RichPresenceModClient.isOnBrilliantServer()) {
+		if (RichPresenceModClient.featuresActive()) {
 			renderAlert(gfx, screenWidth);
 		}
 		if (!visible()) {

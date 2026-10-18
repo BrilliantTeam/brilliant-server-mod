@@ -80,7 +80,7 @@ public final class ScoreboardLayout {
 	}
 
 	public static void begin(Matrix3x2fStack pose) {
-		pushed = RichPresenceModClient.isOnBrilliantServer() && !isDefault();
+		pushed = RichPresenceModClient.featuresActive() && ModSettings.get().scoreboardLayout && !isDefault();
 		if (!pushed) {
 			return;
 		}

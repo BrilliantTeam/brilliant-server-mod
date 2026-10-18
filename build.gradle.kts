@@ -14,6 +14,7 @@ val requiredJava: JavaVersion = when {
 
 repositories {
     mavenCentral()
+    maven("https://maven.terraformersmc.com/releases")
 }
 
 dependencies {
@@ -25,6 +26,8 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricApiVersion")
 
     include(implementation("io.github.CDAGaming:DiscordIPC:${property("deps.discordipc")}")!!)
+    val modMenuVersion: String = sc.properties["deps.modmenu"]
+    modCompileOnly("com.terraformersmc:modmenu:$modMenuVersion") { isTransitive = false }
 
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

@@ -23,7 +23,7 @@ public final class SlotNumbers {
 
 	private static void draw(Gfx gfx, AbstractContainerScreen<?> screen) {
 		Minecraft client = Minecraft.getInstance();
-		if (!client.hasAltDown() || !RichPresenceModClient.isOnBrilliantServer()) {
+		if (!client.hasAltDown() || !RichPresenceModClient.featuresActive() || !ModSettings.get().slotNumbers) {
 			return;
 		}
 		AbstractContainerScreenAccessor accessor = (AbstractContainerScreenAccessor) screen;
