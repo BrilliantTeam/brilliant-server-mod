@@ -23,7 +23,12 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 public final class ScriptExtras {
 	public static final int MAX_REGEX = 120;
@@ -200,13 +205,50 @@ public final class ScriptExtras {
 		return total;
 	}
 
+	public static final double ENTITY_SIGHT = 64;
+	public static final double BLOCK_SIGHT = 128;
+
+	public static boolean coordsHidden(LocalPlayer player) {
+		return player == null || player.isReducedDebugInfo();
+	}
+
+	private static boolean clear(LocalPlayer player, Vec3 target, BlockPos expect) {
+		BlockHitResult hit = player.level().clip(new ClipContext(player.getEyePosition(), target, ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, player));
+		return hit.getType() == HitResult.Type.MISS || expect != null && hit.getBlockPos().equals(expect);
+	}
+
+	public static boolean sees(LocalPlayer player, Entity entity) {
+		return player != null && entity != player && entity.isAlive() && !entity.isInvisibleTo(player) && entity.distanceTo(player) <= ENTITY_SIGHT
+				&& (clear(player, entity.getEyePosition(), null) || clear(player, entity.getBoundingBox().getCenter(), null));
+	}
+
+	public static String visibleBlock(LocalPlayer player, BlockPos pos) {
+		if (coordsHidden(player) || !player.level().isLoaded(pos)) {
+			return "";
+		}
+		Vec3 center = Vec3.atCenterOf(pos);
+		if (player.getEyePosition().distanceTo(center) > BLOCK_SIGHT || !clear(player, center, pos)) {
+			return "";
+		}
+		return player.level().getBlockState(pos).getBlock().getName().getString();
+	}
+
+	public static List<Player> visiblePlayers(LocalPlayer player, double range) {
+		if (player == null) {
+			return List.of();
+		}
+		double r = Math.clamp(range, 0, ENTITY_SIGHT);
+		return player.level().players().stream().filter(other -> other.distanceTo(player) <= r && sees(player, other))
+				.map(other -> (Player) other).sorted(Comparator.comparingDouble(other -> other.distanceTo(player))).toList();
+	}
+
 	private static List<Entity> creatures(LocalPlayer player, double range) {
 		if (player == null) {
 			return List.of();
 		}
-		double r = Math.clamp(range, 0, 128);
+		double r = Math.clamp(range, 0, ENTITY_SIGHT);
 		return player.level().getEntities(player, new AABB(player.blockPosition()).inflate(r),
-				entity -> entity instanceof LivingEntity && !(entity instanceof Player) && entity.isAlive() && entity.distanceTo(player) <= r);
+				entity -> entity instanceof LivingEntity && !(entity instanceof Player) && entity.distanceTo(player) <= r && sees(player, entity));
 	}
 
 	public static int entityCount(LocalPlayer player, double range, String name) {

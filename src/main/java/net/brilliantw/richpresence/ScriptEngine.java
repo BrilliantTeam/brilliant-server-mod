@@ -123,6 +123,7 @@ public final class ScriptEngine {
 	private static long announcementCheckedAt;
 	private static String lastAnswer = "";
 	private static String lastChoice = "";
+	private static final double HEARING = 16;
 	private static final Map<String, String> HEARD = Map.ofEntries(
 			Map.entry("釣魚浮標濺水", "entity.fishing_bobber.splash"), Map.entry("爆炸", "explode"), Map.entry("苦力怕引信", "entity.creeper.primed"),
 			Map.entry("雷聲", "lightning_bolt.thunder"), Map.entry("物品撿起", "entity.item.pickup"), Map.entry("經驗球", "experience_orb.pickup"),
@@ -508,7 +509,7 @@ public final class ScriptEngine {
 			return;
 		}
 		java.util.Set<String> names = new java.util.HashSet<>();
-		client.getConnection().getOnlinePlayers().forEach(info -> names.add(info.getProfile().name()));
+		client.getConnection().getListedOnlinePlayers().forEach(info -> names.add(info.getProfile().name()));
 		if (online != null) {
 			java.util.Set<String> joined = new java.util.HashSet<>(names);
 			joined.removeAll(online);
@@ -803,13 +804,18 @@ public final class ScriptEngine {
 							run.targetYaw = player.getYRot() + (float) Math.clamp(number(eval(run, block.args.get(0))), -360, 360);
 							run.targetPitch = (float) Math.clamp(player.getXRot() + number(eval(run, block.args.get(1))), -90, 90);
 						} else {
+							if (block.op.equals("act_face_pos") && ScriptExtras.coordsHidden(player)) {
+								fail(block, "伺服器隱藏了座標資訊，無法面向座標");
+								run.turnBlock = null;
+								frame.index++;
+								continue;
+							}
 							net.minecraft.world.phys.Vec3 target = block.op.equals("act_face_pos")
 									? new net.minecraft.world.phys.Vec3(number(eval(run, block.args.get(0))) + 0.5, number(eval(run, block.args.get(1))) + 0.5, number(eval(run, block.args.get(2))) + 0.5)
-									: player.level().players().stream().filter(other -> other != player)
-											.min(java.util.Comparator.comparingDouble(other -> other.distanceTo(player)))
+									: ScriptExtras.visiblePlayers(player, ScriptExtras.ENTITY_SIGHT).stream().findFirst()
 											.map(net.minecraft.world.entity.Entity::getEyePosition).orElse(null);
 							if (target == null) {
-								fail(block, "附近沒有其他玩家");
+								fail(block, "附近沒有看得到的其他玩家");
 								run.turnBlock = null;
 								frame.index++;
 								continue;
@@ -1729,7 +1735,7 @@ public final class ScriptEngine {
 			case "s_contains" -> bool(run.context.getOrDefault("message", "").toLowerCase(Locale.ROOT).contains(arg(run, block, 0).toLowerCase(Locale.ROOT)));
 			case "s_me" -> Minecraft.getInstance() == null ? "" : Minecraft.getInstance().getUser().getName();
 			case "s_server" -> RichPresenceModClient.serverName();
-			case "s_pos" -> player == null ? "0" : switch (block.text(0)) {
+			case "s_pos" -> ScriptExtras.coordsHidden(player) ? "" : switch (block.text(0)) {
 				case "Y" -> Integer.toString(player.blockPosition().getY());
 				case "Z" -> Integer.toString(player.blockPosition().getZ());
 				default -> Integer.toString(player.blockPosition().getX());
@@ -1778,12 +1784,12 @@ public final class ScriptEngine {
 			}
 			case "s_online" -> {
 				var connection = Minecraft.getInstance() == null ? null : Minecraft.getInstance().getConnection();
-				yield connection == null ? "0" : Integer.toString(connection.getOnlinePlayers().size());
+				yield connection == null ? "0" : Integer.toString(connection.getListedOnlinePlayers().size());
 			}
 			case "s_is_online" -> {
 				var connection = Minecraft.getInstance() == null ? null : Minecraft.getInstance().getConnection();
 				String name = arg(run, block, 0).strip();
-				yield bool(connection != null && !name.isEmpty() && connection.getPlayerInfoIgnoreCase(name) != null);
+				yield bool(connection != null && !name.isEmpty() && connection.getListedOnlinePlayers().stream().anyMatch(info -> info.getProfile().name().equalsIgnoreCase(name)));
 			}
 			case "s_date" -> LocalDate.now().toString();
 			case "s_title" -> ScreenText.title();
@@ -1829,7 +1835,7 @@ public final class ScriptEngine {
 				LocalPlayer self = player();
 				String wanted = arg(run, block, 0).strip().toLowerCase(Locale.ROOT);
 				yield bool(self != null && !wanted.isEmpty() && self.getActiveEffects().stream()
-						.anyMatch(effect -> effect.getEffect().value().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(wanted)));
+						.anyMatch(effect -> effect.showIcon() && effect.getEffect().value().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(wanted)));
 			}
 			case "s_block_below" -> {
 				LocalPlayer self = player();
@@ -1843,22 +1849,16 @@ public final class ScriptEngine {
 			}
 			case "s_target_entity" -> {
 				Minecraft client = Minecraft.getInstance();
-				yield client != null && client.hitResult instanceof net.minecraft.world.phys.EntityHitResult hit ? hit.getEntity().getName().getString() : "";
+				yield client != null && client.hitResult instanceof net.minecraft.world.phys.EntityHitResult hit && player() != null && !hit.getEntity().isInvisibleTo(player()) ? hit.getEntity().getName().getString() : "";
 			}
 			case "s_nearby_players" -> {
 				LocalPlayer self = player();
-				double range = Math.clamp(number(arg(run, block, 0)), 0, 256);
-				yield self == null ? "0" : Long.toString(self.level().players().stream().filter(other -> other != self && other.distanceTo(self) <= range).count());
+				yield Integer.toString(ScriptExtras.visiblePlayers(self, number(arg(run, block, 0))).size());
 			}
-			case "s_nearest_player" -> {
-				LocalPlayer self = player();
-				yield self == null ? "" : self.level().players().stream().filter(other -> other != self)
-						.min(java.util.Comparator.comparingDouble(other -> other.distanceTo(self)))
-						.map(other -> other.getName().getString()).orElse("");
-			}
+			case "s_nearest_player" -> ScriptExtras.visiblePlayers(player(), ScriptExtras.ENTITY_SIGHT).stream().findFirst().map(other -> other.getName().getString()).orElse("");
 			case "s_biome" -> {
 				LocalPlayer self = player();
-				if (self == null) {
+				if (ScriptExtras.coordsHidden(self)) {
 					yield "";
 				}
 				String id = self.level().getBiome(self.blockPosition()).getRegisteredName();
@@ -1925,7 +1925,7 @@ public final class ScriptEngine {
 			}
 			case "s_distance_to" -> {
 				LocalPlayer self = player();
-				yield self == null ? "0" : format(Math.round(Math.sqrt(self.distanceToSqr(number(arg(run, block, 0)) + 0.5, number(arg(run, block, 1)), number(arg(run, block, 2)) + 0.5)) * 10) / 10.0);
+				yield ScriptExtras.coordsHidden(self) ? "" : format(Math.round(Math.sqrt(self.distanceToSqr(number(arg(run, block, 0)) + 0.5, number(arg(run, block, 1)), number(arg(run, block, 2)) + 0.5)) * 10) / 10.0);
 			}
 			case "s_yaw" -> player() == null ? "0" : format(Math.round(net.minecraft.util.Mth.wrapDegrees(player().getYRot()) * 10) / 10.0);
 			case "s_pitch" -> player() == null ? "0" : format(Math.round(player().getXRot() * 10) / 10.0);
@@ -1939,12 +1939,12 @@ public final class ScriptEngine {
 			case "s_block_at" -> {
 				LocalPlayer self = player();
 				var pos = net.minecraft.core.BlockPos.containing(number(arg(run, block, 0)), number(arg(run, block, 1)), number(arg(run, block, 2)));
-				yield self == null || !self.level().isLoaded(pos) ? "" : self.level().getBlockState(pos).getBlock().getName().getString();
+				yield ScriptExtras.visibleBlock(self, pos);
 			}
 			case "s_online_list" -> {
 				Minecraft client = Minecraft.getInstance();
 				var connection = client == null ? null : client.getConnection();
-				yield connection == null ? "" : String.join(", ", connection.getOnlinePlayers().stream().map(info -> info.getProfile().name()).sorted(String.CASE_INSENSITIVE_ORDER).toList());
+				yield connection == null ? "" : String.join(", ", connection.getListedOnlinePlayers().stream().map(info -> info.getProfile().name()).sorted(String.CASE_INSENSITIVE_ORDER).toList());
 			}
 			case "s_focused" -> bool(Minecraft.getInstance() != null && Minecraft.getInstance().isWindowActive());
 			case "s_fps" -> Minecraft.getInstance() == null ? "0" : Integer.toString(Minecraft.getInstance().getFps());
@@ -2030,7 +2030,7 @@ public final class ScriptEngine {
 			case "s_slot_item" -> {
 				net.minecraft.client.gui.screens.Screen screen = gameScreen();
 				net.minecraft.world.inventory.Slot slot = screen == null ? null : slot(block, screen, number(arg(run, block, 0)), true);
-				yield slot == null || !slot.hasItem() ? "" : slot.getItem().getHoverName().getString();
+				yield slot == null || !slot.isActive() || !slot.hasItem() ? "" : slot.getItem().getHoverName().getString();
 			}
 			case "s_pressing" -> {
 				KeyMapping key = mapping(block.text(0));
@@ -2183,6 +2183,11 @@ public final class ScriptEngine {
 			release(forward);
 			return true;
 		}
+		if (ScriptExtras.coordsHidden(player)) {
+			release(forward);
+			fail(block, "伺服器隱藏了座標資訊，無法走到座標");
+			return true;
+		}
 		double tx = number(eval(run, block.args.get(0))) + 0.5;
 		double tz = number(eval(run, block.args.get(1))) + 0.5;
 		double dx = tx - player.getX();
@@ -2258,8 +2263,8 @@ public final class ScriptEngine {
 		double distance = Math.sqrt(player.distanceToSqr(x, y, z));
 		fire("ev_sound", hat -> {
 			String wanted = HEARD.getOrDefault(hat.text(1), "");
-			return distance <= Math.clamp(number(hat.text(0)), 0, 256) && (wanted.isEmpty() || id.contains(wanted));
-		}, Map.of("message", id, "sender", format(Math.round(distance * 10) / 10.0)));
+			return distance <= Math.clamp(number(hat.text(0)), 0, HEARING) && (wanted.isEmpty() || id.contains(wanted));
+		}, Map.of("message", id));
 	}
 
 	private static void watchWorld(Minecraft client, List<Scripts.Stack> active, long now) {
@@ -2308,6 +2313,10 @@ public final class ScriptEngine {
 				continue;
 			}
 			Scripts.Block hat = stack.blocks.getFirst();
+			if (ScriptExtras.coordsHidden(player)) {
+				AREAS.remove(stack);
+				continue;
+			}
 			double x1 = number(hat.text(0));
 			double z1 = number(hat.text(1));
 			double x2 = number(hat.text(2));
