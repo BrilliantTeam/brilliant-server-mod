@@ -139,6 +139,7 @@ public final class ChatMenu {
 						page(AnnouncementScreen::new)),
 				new Item("資訊", "官網", "搜尋與閱讀官網文章", INFO, page(GuideScreen::new)),
 				new Item("資訊", "聊天紀錄", "搜尋與複製聊天紀錄", INFO, page(ChatHistoryScreen::new)),
+				new Item("資訊", "贊助輝煌", "查看贊助方案與回饋，支持伺服器營運", INFO, page(SponsorScreen::new)),
 				new Item("聊天", "常用訊息", "儲存與快速送出常用訊息", CHAT, screen -> QuickMessages.toggle()),
 				new Item("聊天", "頻道設定", "切換發言、讀取與關閉各頻道", CHAT, screen -> ChannelBar.openSettings()),
 				new Item("工具", "自訂指令", "開啟自訂指令選單", TOOL, page(CommandMenuScreen::new)),
