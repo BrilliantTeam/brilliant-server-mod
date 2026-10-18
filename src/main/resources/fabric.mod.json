@@ -3,7 +3,7 @@
 	"id": "${id}",
 	"version": "${version}",
 	"name": "${name}",
-	"description": "輝煌伺服器（brilliantw.net）專屬客戶端模組：Discord 遊玩狀態、可搜尋的聊天欄選單、遊戲內公告與官網、頻道分頁、私訊視窗、表情符號，以及更多便利功能。",
+	"description": "輝煌伺服器（brilliantw.net）專屬客戶端模組：Discord 遊玩狀態、可搜尋的聊天欄選單、公告與官網、頻道分頁、私訊視窗、自動腳本、指令別名，以及更多便利功能。",
 	"authors": [
 		"ricechen_"
 	],
