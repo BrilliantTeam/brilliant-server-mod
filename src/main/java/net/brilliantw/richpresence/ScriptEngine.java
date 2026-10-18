@@ -97,6 +97,9 @@ public final class ScriptEngine {
 	private static float lastHealth = -1;
 	private static boolean wasFull;
 	private static java.util.Set<String> online;
+	private static String[] channelHeader;
+	private static final Map<Scripts.Stack, Boolean> TEXT_SEEN = new IdentityHashMap<>();
+	private static final java.util.Set<String> TEXT_EVENTS = java.util.Set.of("ev_title", "ev_actionbar", "ev_bossbar", "ev_sidebar");
 	private static int onlineTick;
 	private static final Deque<Outgoing> OUTBOX = new ArrayDeque<>();
 	private static final Map<Scripts.Stack, Long> TIMERS = new IdentityHashMap<>();
@@ -360,6 +363,7 @@ public final class ScriptEngine {
 			}
 		}
 		watchPlayer(client, active);
+		watchText(active);
 		for (Run run : List.copyOf(RUNS)) {
 			if (!run.debug) {
 				safeStep(run, now, STEPS_PER_TICK);
@@ -484,7 +488,44 @@ public final class ScriptEngine {
 		online = names;
 	}
 
+	static String findText(String keyword, List<String> texts) {
+		String needle = keyword.strip().toLowerCase(Locale.ROOT);
+		for (String text : texts) {
+			if (!text.isBlank() && (needle.isEmpty() || text.toLowerCase(Locale.ROOT).contains(needle))) {
+				return text;
+			}
+		}
+		return null;
+	}
+
+	private static List<String> textsFor(String op) {
+		return switch (op) {
+			case "ev_title" -> List.of(ScreenText.title(), ScreenText.subtitle());
+			case "ev_actionbar" -> List.of(ScreenText.actionbar());
+			case "ev_bossbar" -> ScreenText.bossbars().stream().map(ScreenText.Bar::name).toList();
+			default -> ScreenText.sidebarLines();
+		};
+	}
+
+	private static void watchText(List<Scripts.Stack> active) {
+		Map<String, List<String>> cache = new HashMap<>();
+		TEXT_SEEN.keySet().retainAll(new java.util.HashSet<>(active));
+		for (Scripts.Stack stack : active) {
+			if (stack.blocks.isEmpty() || !TEXT_EVENTS.contains(stack.blocks.getFirst().op)) {
+				continue;
+			}
+			Scripts.Block hat = stack.blocks.getFirst();
+			String found = findText(hat.text(0), cache.computeIfAbsent(hat.op, ScriptEngine::textsFor));
+			boolean seen = TEXT_SEEN.getOrDefault(stack, false);
+			if (found != null && !seen) {
+				start(stack, Map.of("message", found), true);
+			}
+			TEXT_SEEN.put(stack, found != null);
+		}
+	}
+
 	public static void onJoin() {
+		TEXT_SEEN.clear();
 		TIMERS.clear();
 		online = null;
 		lastHealth = -1;
@@ -528,11 +569,40 @@ public final class ScriptEngine {
 		return body.toString();
 	}
 
+	static String[] channelEvent(String plain) {
+		String channel = ChatTabs.channelLabel(plain);
+		if (channel != null) {
+			String sender = senderOf(plain);
+			String body = bodyOf(plain);
+			if (body.isBlank() && plain.stripTrailing().endsWith("：")) {
+				channelHeader = new String[] { channel, sender };
+				return null;
+			}
+			channelHeader = null;
+			return new String[] { channel, sender, body };
+		}
+		String[] header = channelHeader;
+		channelHeader = null;
+		if (header != null && ChatTabs.isContinuation(plain)) {
+			return new String[] { header[0], header[1], plain.split("\n", 2)[0].replaceFirst("^\\s*[｜|]\\s*", "").strip() };
+		}
+		return null;
+	}
+
 	public static void onChat(String plain) {
 		if (echoing || plain.isBlank() || !active()) {
 			return;
 		}
-		Map<String, String> context = Map.of("message", bodyOf(plain), "sender", senderOf(plain));
+		String[] channelMessage = channelEvent(plain);
+		if (channelMessage != null) {
+			String body = channelMessage[2].toLowerCase(Locale.ROOT);
+			fire("ev_channel", hat -> {
+				String needle = hat.text(1).strip().toLowerCase(Locale.ROOT);
+				return hat.text(0).equals(channelMessage[0]) && (needle.isEmpty() || body.contains(needle));
+			}, Map.of("message", channelMessage[2], "sender", channelMessage[1], "channel", channelMessage[0]));
+		}
+		String channel = ChatTabs.channelLabel(plain);
+		Map<String, String> context = Map.of("message", bodyOf(plain), "sender", senderOf(plain), "channel", channel == null ? "" : channel);
 		String lower = plain.toLowerCase(Locale.ROOT);
 		fire("ev_message", hat -> {
 			String needle = hat.text(0).strip().toLowerCase(Locale.ROOT);
@@ -1357,6 +1427,7 @@ public final class ScriptEngine {
 		return switch (block.op) {
 			case "s_message" -> run.context.getOrDefault("message", "");
 			case "s_sender" -> run.context.getOrDefault("sender", "");
+			case "s_channel" -> run.context.getOrDefault("channel", "");
 			case "s_contains" -> bool(run.context.getOrDefault("message", "").toLowerCase(Locale.ROOT).contains(arg(run, block, 0).toLowerCase(Locale.ROOT)));
 			case "s_me" -> Minecraft.getInstance() == null ? "" : Minecraft.getInstance().getUser().getName();
 			case "s_server" -> RichPresenceModClient.serverName();
@@ -1417,6 +1488,130 @@ public final class ScriptEngine {
 				yield bool(connection != null && !name.isEmpty() && connection.getPlayerInfoIgnoreCase(name) != null);
 			}
 			case "s_date" -> LocalDate.now().toString();
+			case "s_title" -> ScreenText.title();
+			case "s_subtitle" -> ScreenText.subtitle();
+			case "s_actionbar" -> ScreenText.actionbar();
+			case "s_bossbar", "s_bossbar_progress" -> {
+				List<ScreenText.Bar> bars = ScreenText.bossbars();
+				int index = (int) Math.clamp(number(arg(run, block, 0)), -1, Integer.MAX_VALUE - 1) - 1;
+				if (index < 0 || index >= bars.size()) {
+					yield block.op.equals("s_bossbar") ? "" : "0";
+				}
+				yield block.op.equals("s_bossbar") ? bars.get(index).name() : Integer.toString(Math.round(bars.get(index).progress() * 100));
+			}
+			case "s_bossbar_count" -> Integer.toString(ScreenText.bossbars().size());
+			case "s_sidebar_title" -> ScreenText.sidebarTitle();
+			case "s_sidebar_line" -> {
+				List<String> lines = ScreenText.sidebarLines();
+				int index = (int) Math.clamp(number(arg(run, block, 0)), -1, Integer.MAX_VALUE - 1) - 1;
+				yield index >= 0 && index < lines.size() ? lines.get(index) : "";
+			}
+			case "s_sidebar_find" -> {
+				String keyword = arg(run, block, 0);
+				String found = keyword.isBlank() ? null : findText(keyword, ScreenText.sidebarLines());
+				yield found == null ? "" : found;
+			}
+			case "s_tab_header" -> ScreenText.tabHeader();
+			case "s_tab_footer" -> ScreenText.tabFooter();
+			case "s_gamemode" -> {
+				Minecraft client = Minecraft.getInstance();
+				var mode = client == null || client.gameMode == null ? null : client.gameMode.getPlayerMode();
+				yield mode == null ? "" : switch (mode) {
+					case CREATIVE -> "創造";
+					case ADVENTURE -> "冒險";
+					case SPECTATOR -> "旁觀者";
+					default -> "生存";
+				};
+			}
+			case "s_on_ground" -> bool(player() != null && player().onGround());
+			case "s_in_water" -> bool(player() != null && player().isInWater());
+			case "s_on_fire" -> bool(player() != null && player().isOnFire());
+			case "s_riding" -> bool(player() != null && player().isPassenger());
+			case "s_effect" -> {
+				LocalPlayer self = player();
+				String wanted = arg(run, block, 0).strip().toLowerCase(Locale.ROOT);
+				yield bool(self != null && !wanted.isEmpty() && self.getActiveEffects().stream()
+						.anyMatch(effect -> effect.getEffect().value().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(wanted)));
+			}
+			case "s_block_below" -> {
+				LocalPlayer self = player();
+				yield self == null ? "" : self.level().getBlockState(self.blockPosition().below()).getBlock().getName().getString();
+			}
+			case "s_target_block" -> {
+				Minecraft client = Minecraft.getInstance();
+				LocalPlayer self = player();
+				yield self != null && client.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit && hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
+						? self.level().getBlockState(hit.getBlockPos()).getBlock().getName().getString() : "";
+			}
+			case "s_target_entity" -> {
+				Minecraft client = Minecraft.getInstance();
+				yield client != null && client.hitResult instanceof net.minecraft.world.phys.EntityHitResult hit ? hit.getEntity().getName().getString() : "";
+			}
+			case "s_nearby_players" -> {
+				LocalPlayer self = player();
+				double range = Math.clamp(number(arg(run, block, 0)), 0, 256);
+				yield self == null ? "0" : Long.toString(self.level().players().stream().filter(other -> other != self && other.distanceTo(self) <= range).count());
+			}
+			case "s_nearest_player" -> {
+				LocalPlayer self = player();
+				yield self == null ? "" : self.level().players().stream().filter(other -> other != self)
+						.min(java.util.Comparator.comparingDouble(other -> other.distanceTo(self)))
+						.map(other -> other.getName().getString()).orElse("");
+			}
+			case "s_biome" -> {
+				LocalPlayer self = player();
+				if (self == null) {
+					yield "";
+				}
+				String id = self.level().getBiome(self.blockPosition()).getRegisteredName();
+				yield Component.translatable("biome." + id.replace(':', '.')).getString();
+			}
+			case "s_weather" -> {
+				LocalPlayer self = player();
+				yield self == null ? "" : self.level().isThundering() ? "雷雨" : self.level().isRaining() ? "下雨" : "晴天";
+			}
+			case "s_game_hour" -> {
+				long time = dayTime();
+				yield time < 0 ? "0" : Long.toString((time + 6000) % 24000 / 1000);
+			}
+			case "s_is_day" -> {
+				long time = dayTime();
+				yield bool(time >= 0 && time % 24000 < 12300);
+			}
+			case "s_durability" -> {
+				LocalPlayer self = player();
+				var stack = self == null ? null : self.getMainHandItem();
+				yield stack == null || !stack.isDamageableItem() ? "0" : Integer.toString(stack.getMaxDamage() - stack.getDamageValue());
+			}
+			case "s_held_count" -> {
+				LocalPlayer self = player();
+				yield self == null ? "0" : Integer.toString(self.getMainHandItem().getCount());
+			}
+			case "s_free_slots" -> {
+				LocalPlayer self = player();
+				if (self == null) {
+					yield "0";
+				}
+				int free = 0;
+				for (int i = 0; i < Math.min(36, self.getInventory().getContainerSize()); i++) {
+					if (self.getInventory().getItem(i).isEmpty()) {
+						free++;
+					}
+				}
+				yield Integer.toString(free);
+			}
+			case "op_neq" -> bool(compare(arg(run, block, 0), arg(run, block, 1)) != 0);
+			case "op_gte" -> bool(compare(arg(run, block, 0), arg(run, block, 1)) >= 0);
+			case "op_lte" -> bool(compare(arg(run, block, 0), arg(run, block, 1)) <= 0);
+			case "op_between" -> {
+				double value = number(arg(run, block, 0));
+				double a = number(arg(run, block, 1));
+				double b = number(arg(run, block, 2));
+				yield bool(isNumber(arg(run, block, 0)) && value >= Math.min(a, b) && value <= Math.max(a, b));
+			}
+			case "op_starts" -> bool(arg(run, block, 0).toLowerCase(Locale.ROOT).startsWith(arg(run, block, 1).toLowerCase(Locale.ROOT)));
+			case "op_ends" -> bool(arg(run, block, 0).toLowerCase(Locale.ROOT).endsWith(arg(run, block, 1).toLowerCase(Locale.ROOT)));
+			case "op_is_number" -> bool(isNumber(arg(run, block, 0)) && Double.isFinite(Double.parseDouble(arg(run, block, 0).strip())));
 			case "op_index" -> {
 				String needle = arg(run, block, 0);
 				String text = arg(run, block, 1);
@@ -1539,6 +1734,18 @@ public final class ScriptEngine {
 			}
 			default -> "";
 		};
+	}
+
+	private static long dayTime() {
+		LocalPlayer self = player();
+		if (self == null) {
+			return -1;
+		}
+		//? if >=26.1 {
+		return self.level().getDefaultClockTime();
+		//?} else {
+		/*return self.level().getDayTime();
+		*///?}
 	}
 
 	private static String getVariable(Run run, String name) {

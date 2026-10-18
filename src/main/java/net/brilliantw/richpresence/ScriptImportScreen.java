@@ -192,6 +192,7 @@ public final class ScriptImportScreen extends Screen {
 		int y = top();
 		int w = panelWidth();
 		gfx.fill(x, y, x + w, y + panelHeight(), Theme.PANEL);
+		Theme.watermark(gfx, x, y, w, panelHeight());
 		gfx.fill(x, y, x + w, y + HEADER, Theme.HEADER);
 		gfx.fill(x, y + HEADER - 1, x + w, y + HEADER, Theme.ACCENT_DIM);
 		gfx.text(font, title.getString(), x + 10, y + 7, Theme.ACCENT);

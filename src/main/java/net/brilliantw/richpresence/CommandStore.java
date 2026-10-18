@@ -21,6 +21,7 @@ public final class CommandStore {
 	public static final class Entry {
 		public String command = "";
 		public String note = "";
+		public String alias = "";
 
 		public Entry() {}
 
@@ -241,7 +242,9 @@ public final class CommandStore {
 				Group finalExisting = existing;
 				boolean added = finalExisting.commands.stream().noneMatch(e -> e.command.equals(entry.command));
 				if (added) {
-					finalExisting.commands.add(new Entry(entry.command, entry.note));
+					Entry copy = new Entry(entry.command, entry.note);
+					copy.alias = entry.alias != null && !entry.alias.isEmpty() && !CommandAliases.all().containsKey(entry.alias) ? entry.alias : "";
+					finalExisting.commands.add(copy);
 				}
 				lines.add(new PreviewLine(path, isNew || parentNew, entry, added));
 			}
@@ -253,7 +256,11 @@ public final class CommandStore {
 		List<Group> result = new ArrayList<>();
 		for (Group group : groups) {
 			Group clone = new Group(group.name);
-			group.commands.forEach(entry -> clone.commands.add(new Entry(entry.command, entry.note)));
+			group.commands.forEach(entry -> {
+				Entry copy = new Entry(entry.command, entry.note);
+				copy.alias = entry.alias;
+				clone.commands.add(copy);
+			});
 			clone.children = copy(group.children);
 			result.add(clone);
 		}
@@ -306,7 +313,9 @@ public final class CommandStore {
 		for (Entry entry : entries.stream().filter(Objects::nonNull).toList()) {
 			String command = cleanCommand(entry.command);
 			if (!command.isEmpty()) {
-				target.commands.add(new Entry(command, cleanText(entry.note, MAX_NOTE)));
+				Entry clean = new Entry(command, cleanText(entry.note, MAX_NOTE));
+				clean.alias = CommandAliases.clean(entry.alias);
+				target.commands.add(clean);
 			}
 		}
 	}

@@ -11,7 +11,12 @@
 		"StackedItemContentsMixin",
 		"KeyMappingAccessor",
 		"KeyboardHandlerInvoker",
-		"AbstractContainerScreenAccessor"
+		"AbstractContainerScreenAccessor",
+		"ClientSuggestionProviderMixin",
+		"HudTextAccessor",
+		"BossHealthOverlayAccessor",
+		"PlayerTabOverlayAccessor",
+		"EditBoxAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

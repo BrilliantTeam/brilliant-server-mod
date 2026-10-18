@@ -11,8 +11,9 @@ public final class ScriptLint {
 	private static final Set<String> PACED = Set.of("act_tap", "key_press", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "act_face", "act_turn");
 	private static final Set<String> SENDS = Set.of("say", "command", "msg", "say_channel", "reply");
 	private static final Set<String> LOOPS = Set.of("forever", "repeat", "repeat_until");
-	private static final Set<String> MESSAGE_EVENTS = Set.of("ev_message", "ev_private", "ev_mention", "ev_player_join", "ev_player_leave", "ev_res_enter", "ev_res_leave");
-	private static final Set<String> MESSAGE_READERS = Set.of("s_message", "s_sender", "s_contains");
+	private static final Set<String> MESSAGE_EVENTS = Set.of("ev_message", "ev_channel", "ev_private", "ev_mention", "ev_player_join", "ev_player_leave", "ev_res_enter", "ev_res_leave",
+			"ev_title", "ev_actionbar", "ev_bossbar", "ev_sidebar");
+	private static final Set<String> MESSAGE_READERS = Set.of("s_message", "s_sender", "s_contains", "s_channel");
 
 	private ScriptLint() {}
 
@@ -54,7 +55,8 @@ public final class ScriptLint {
 			} else {
 				checkHat(first, stacks, issues);
 			}
-			String keyword = "ev_message".equals(hat) || "ev_broadcast".equals(hat) || "ev_var_change".equals(hat) ? first.text(0).strip().toLowerCase(Locale.ROOT) : "";
+			String keyword = hat != null && Set.of("ev_message", "ev_broadcast", "ev_var_change", "ev_title", "ev_actionbar").contains(hat) ? first.text(0).strip().toLowerCase(Locale.ROOT)
+					: "ev_channel".equals(hat) ? first.text(1).strip().toLowerCase(Locale.ROOT) : "";
 			walk(stack.blocks, new Context(hat, keyword, Double.NaN, waits(stack.blocks) > 0), issues);
 			if ("ev_var_change".equals(hat)) {
 				flagSelfChange(stack.blocks, first.text(0), issues);
@@ -257,6 +259,11 @@ public final class ScriptLint {
 		}
 		if (block.op.equals("act_press") && !context.waits()) {
 			issues.put(block, "腳本結束時會自動放開所有按鍵；要一直按著，後面請加上「等待」或改用「按住 … 持續 … 秒」");
+			return;
+		}
+		if ((block.op.equals("title") && "ev_title".equals(context.hat()) || block.op.equals("actionbar") && "ev_actionbar".equals(context.hat()))
+				&& literal(block, 0) && !context.keyword().isEmpty() && block.text(0).toLowerCase(Locale.ROOT).contains(context.keyword())) {
+			issues.put(block, "顯示的文字含有觸發關鍵字「" + context.keyword() + "」，消失後再出現會再次觸發自己");
 			return;
 		}
 		if (block.op.equals("proc_arg") && !"proc_def".equals(context.hat())) {

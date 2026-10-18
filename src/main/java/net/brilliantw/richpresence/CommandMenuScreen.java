@@ -223,6 +223,7 @@ public final class CommandMenuScreen extends Screen {
 				if (query.isEmpty()
 						|| entry.command.toLowerCase(Locale.ROOT).contains(query)
 						|| entry.note.toLowerCase(Locale.ROOT).contains(query)
+						|| entry.alias.contains(query)
 						|| node.path().toLowerCase(Locale.ROOT).contains(query)) {
 					rows.add(new Row(node, i, entry));
 				}
@@ -408,7 +409,12 @@ public final class CommandMenuScreen extends Screen {
 				textRight -= tagWidth + 8;
 			}
 			int textWidth = textRight - card.x() - 8;
-			gfx.text(font, font.plainSubstrByWidth("/" + row.entry().command, textWidth), card.x() + 8, card.y() + 4, Theme.TEXT);
+			String aliasTag = row.entry().alias.isEmpty() ? "" : "/" + row.entry().alias + " → ";
+			if (!aliasTag.isEmpty()) {
+				gfx.text(font, aliasTag, card.x() + 8, card.y() + 4, Theme.ACCENT);
+			}
+			int aliasWidth = font.width(aliasTag);
+			gfx.text(font, font.plainSubstrByWidth("/" + row.entry().command, Math.max(0, textWidth - aliasWidth)), card.x() + 8 + aliasWidth, card.y() + 4, Theme.TEXT);
 			String note = row.entry().note.isEmpty() ? "沒有備註" : row.entry().note;
 			gfx.text(font, font.plainSubstrByWidth(note, textWidth), card.x() + 8, card.y() + 15, row.entry().note.isEmpty() ? Theme.TEXT_DIM : Theme.TEXT_SECONDARY);
 
@@ -620,7 +626,8 @@ public final class CommandMenuScreen extends Screen {
 		int groupIndex = Math.max(0, nodes.stream().map(CommandStore.Node::group).toList().indexOf(preferred));
 		List<EditDialog.Field> fields = List.of(
 				new EditDialog.Field("指令", "例如 home 或 /warp shop", row != null ? row.entry().command : "", CommandStore.MAX_COMMAND),
-				new EditDialog.Field("備註", "說明這個指令的用途（選填）", row != null ? row.entry().note : "", CommandStore.MAX_NOTE));
+				new EditDialog.Field("備註", "說明這個指令的用途（選填）", row != null ? row.entry().note : "", CommandStore.MAX_NOTE),
+				new EditDialog.Field("別名（選填）", "例如 h：在聊天欄輸入 /h 就會執行這個指令", row != null ? row.entry().alias : "", CommandAliases.MAX_ALIAS));
 		setScreen(new EditDialog(this, row != null ? "編輯指令" : "新增指令", fields, paths, groupIndex, (values, index) -> {
 			String command = CommandStore.cleanCommand(values.get(0));
 			if (command.isEmpty()) {
@@ -633,7 +640,19 @@ public final class CommandMenuScreen extends Screen {
 			} else {
 				target = nodes.get(index).group();
 			}
+			String alias = CommandAliases.clean(values.get(2));
+			String previousAlias = row != null ? row.entry().alias : "";
+			if (!alias.isEmpty() && !alias.equals(previousAlias) && CommandAliases.all().containsKey(alias)) {
+				return "別名 /" + alias + " 已經被其他指令使用了";
+			}
+			if (!alias.isEmpty() && CommandAliases.serverCommand(alias) != null) {
+				return "伺服器已經有 /" + alias + " 指令，請換一個別名";
+			}
+			if (alias.equalsIgnoreCase(command.split(" ", 2)[0])) {
+				return "別名不能跟指令本身一樣";
+			}
 			CommandStore.Entry entry = new CommandStore.Entry(command, CommandStore.cleanText(values.get(1), CommandStore.MAX_NOTE));
+			entry.alias = alias;
 			if (row == null) {
 				target.commands.add(entry);
 			} else if (row.node().group() == target) {
@@ -643,9 +662,10 @@ public final class CommandMenuScreen extends Screen {
 				target.commands.add(entry);
 			}
 			store.save();
-			setStatus((row == null ? "已新增 /" : "已更新 /") + command, Theme.SUCCESS);
+			CommandAliases.install();
+			setStatus((row == null ? "已新增 /" : "已更新 /") + command + (alias.isEmpty() ? "" : "，別名 /" + alias), Theme.SUCCESS);
 			return null;
-		}));
+		}).command(0));
 	}
 
 	private void openGroupDialog(CommandStore.Group editing, CommandStore.Group parentGroup) {

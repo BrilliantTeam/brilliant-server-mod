@@ -65,6 +65,15 @@ public final class ChatTabs {
 		return null;
 	}
 
+	static String channelLabel(String plain) {
+		Tab tab = channelOf(plain);
+		return tab == null ? null : tab.label;
+	}
+
+	static boolean isContinuation(String plain) {
+		return CONTINUATION.matcher(plain).find();
+	}
+
 	static Tab classify(String plain) {
 		Tab channel = channelOf(plain);
 		if (channel != null) {

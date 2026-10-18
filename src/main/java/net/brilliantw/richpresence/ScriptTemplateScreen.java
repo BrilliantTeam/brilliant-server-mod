@@ -66,6 +66,7 @@ public final class ScriptTemplateScreen extends Screen {
 		int x = left();
 		int w = panelWidth();
 		gfx.fill(x, 8, x + w, height - 8, Theme.PANEL);
+		Theme.watermark(gfx, x, 8, w, height - 16);
 		gfx.fill(x, 8, x + w, 8 + HEADER, Theme.HEADER);
 		gfx.fill(x, 8 + HEADER - 1, x + w, 8 + HEADER, Theme.ACCENT_DIM);
 		Theme.drawBack(gfx, font, x, 8, mouseX, mouseY);

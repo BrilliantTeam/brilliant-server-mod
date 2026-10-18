@@ -108,6 +108,7 @@ public final class ScriptEditorScreen extends Screen {
 	private double lastMouseY;
 	private int helpPage = -1;
 	private ScriptTutorial tutorial;
+	private CommandSuggestionBox slotSuggestions;
 	private EditBox search;
 	private String query = "";
 	private Scripts.Note draggingNote;
@@ -133,6 +134,11 @@ public final class ScriptEditorScreen extends Screen {
 		editor.setTextShadow(false);
 		editor.setMaxLength(Scripts.MAX_TEXT);
 		editor.visible = false;
+		editor.setResponder(value -> {
+			if (slotSuggestions != null) {
+				slotSuggestions.update();
+			}
+		});
 		addRenderableWidget(editor);
 		search = new EditBox(font, CATS + 6, HEADER + 4, FLYOUT - 12, 13, Component.literal("搜尋積木"));
 		search.setMaxLength(20);
@@ -785,6 +791,9 @@ public final class ScriptEditorScreen extends Screen {
 		draw(new Gfx(graphics), mouseX, mouseY);
 		super.extractRenderState(graphics, mouseX, mouseY, partialTick);
 		drawOverlay(new Gfx(graphics), mouseX, mouseY);
+		if (slotSuggestions != null) {
+			slotSuggestions.render(graphics, mouseX, mouseY);
+		}
 	}
 	//?} else {
 	/*@Override
@@ -792,6 +801,9 @@ public final class ScriptEditorScreen extends Screen {
 		draw(new Gfx(graphics), mouseX, mouseY);
 		super.render(graphics, mouseX, mouseY, partialTick);
 		drawOverlay(new Gfx(graphics), mouseX, mouseY);
+		if (slotSuggestions != null) {
+			slotSuggestions.render(graphics, mouseX, mouseY);
+		}
 	}
 	*///?}
 
@@ -823,6 +835,7 @@ public final class ScriptEditorScreen extends Screen {
 		lastMouseY = mouseY;
 		selected.retainAll(Scripts.current().stacks);
 		gfx.fill(0, 0, width, height, WORKSPACE_BG);
+		Theme.watermark(gfx, areaX(), areaY(), width - areaX(), height - areaY());
 		gfx.scissor(areaX(), areaY(), width, height);
 		pushZoom(gfx);
 		int dot = 0xFF1E252C;
@@ -1347,6 +1360,7 @@ public final class ScriptEditorScreen extends Screen {
 		}
 		editing = null;
 		editor.visible = false;
+		slotSuggestions = null;
 		setFocused(null);
 	}
 
@@ -1359,6 +1373,10 @@ public final class ScriptEditorScreen extends Screen {
 		editor.setWidth(Math.max(60, (int) (slot.w() * zoom) - 6));
 		editor.visible = true;
 		setFocused(editor);
+		slotSuggestions = null;
+		if (slot.block().op.equals("command")) {
+			slotSuggestions = new CommandSuggestionBox(this, editor);
+		}
 	}
 
 	private void openPopup(SlotBox slot) {
@@ -1672,6 +1690,9 @@ public final class ScriptEditorScreen extends Screen {
 			}
 			return true;
 		}
+		if (slotSuggestions != null && slotSuggestions.mouseClicked(event)) {
+			return true;
+		}
 		checkpoint();
 		if (editing != null && !(mx >= editor.getX() - 2 && mx < editor.getX() + editor.getWidth() + 2 && my >= editor.getY() - 2 && my < editor.getY() + SLOT_H)) {
 			commitEdit();
@@ -1970,6 +1991,9 @@ public final class ScriptEditorScreen extends Screen {
 		if (helpPage >= 0) {
 			return true;
 		}
+		if (slotSuggestions != null && slotSuggestions.mouseScrolled(scrollY)) {
+			return true;
+		}
 		if (mouseX < PALETTE) {
 			paletteScroll = Math.clamp(paletteScroll - scrollY * 24, 0, Math.max(0, paletteHeight - (height - paletteTop())));
 		} else if (minecraft.hasShiftDown()) {
@@ -2084,12 +2108,16 @@ public final class ScriptEditorScreen extends Screen {
 			}
 		}
 		if (editing != null) {
+			if (slotSuggestions != null && slotSuggestions.keyPressed(event)) {
+				return true;
+			}
 			if (event.isConfirmation()) {
 				commitEdit();
 				return true;
 			}
 			if (event.isEscape()) {
 				editing = null;
+				slotSuggestions = null;
 				editor.visible = false;
 				setFocused(null);
 				return true;

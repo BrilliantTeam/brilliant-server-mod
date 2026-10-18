@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 /*import net.minecraft.client.gui.GuiGraphics;
 *///?}
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -31,6 +32,8 @@ public final class EditDialog extends Screen {
 	private final String[] values;
 	private int groupIndex;
 	private String choiceLabel = "分組";
+	private int commandIndex = -1;
+	private CommandSuggestionBox suggestions;
 	private String error = "";
 
 	public EditDialog(Screen parent, String title, List<Field> fields, List<String> groups, int groupIndex, Saver saver) {
@@ -41,6 +44,11 @@ public final class EditDialog extends Screen {
 		this.groupIndex = groupIndex;
 		this.saver = saver;
 		this.values = fields.stream().map(Field::value).toArray(String[]::new);
+	}
+
+	public EditDialog command(int index) {
+		commandIndex = index;
+		return this;
 	}
 
 	public EditDialog choice(String label) {
@@ -72,7 +80,16 @@ public final class EditDialog extends Screen {
 			box.setMaxLength(field.maxLength());
 			Theme.hint(box, field.hint());
 			box.setValue(values[i]);
-			box.setResponder(value -> values[index] = value);
+			if (i == commandIndex) {
+				CommandSuggestionBox helper = new CommandSuggestionBox(this, box);
+				suggestions = helper;
+				box.setResponder(value -> {
+					values[index] = value;
+					helper.update();
+				});
+			} else {
+				box.setResponder(value -> values[index] = value);
+			}
 			boxes.add(box);
 			y += FIELD;
 		}
@@ -107,6 +124,9 @@ public final class EditDialog extends Screen {
 
 	@Override
 	public boolean keyPressed(KeyEvent event) {
+		if (suggestions != null && suggestions.keyPressed(event)) {
+			return true;
+		}
 		if (event.isConfirmation()) {
 			save();
 			return true;
@@ -119,14 +139,36 @@ public final class EditDialog extends Screen {
 	public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
 		draw(new Gfx(graphics));
 		super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+		if (suggestions != null) {
+			suggestions.render(graphics, mouseX, mouseY);
+		}
 	}
 	//?} else {
 	/*@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 		draw(new Gfx(graphics));
 		super.render(graphics, mouseX, mouseY, partialTick);
+		if (suggestions != null) {
+			suggestions.render(graphics, mouseX, mouseY);
+		}
 	}
 	*///?}
+
+	@Override
+	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (suggestions != null && suggestions.mouseClicked(event)) {
+			return true;
+		}
+		return super.mouseClicked(event, doubleClick);
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+		if (suggestions != null && suggestions.mouseScrolled(scrollY)) {
+			return true;
+		}
+		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+	}
 
 	private void draw(Gfx gfx) {
 		int x = left();
