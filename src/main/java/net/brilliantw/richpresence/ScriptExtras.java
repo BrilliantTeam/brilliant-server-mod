@@ -23,7 +23,12 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.brilliantw.richpresence.mixin.BlockStatePredictionHandlerAccessor;
+import net.brilliantw.richpresence.mixin.ClientLevelAccessor;
+import net.brilliantw.richpresence.mixin.ServerVerifiedStateAccessor;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -222,6 +227,21 @@ public final class ScriptExtras {
 				&& (clear(player, entity.getEyePosition(), null) || clear(player, entity.getBoundingBox().getCenter(), null));
 	}
 
+	public static BlockState confirmedState(LocalPlayer player, BlockPos pos) {
+		if (player.level() instanceof ClientLevel level) {
+			Object pending = ((BlockStatePredictionHandlerAccessor) ((ClientLevelAccessor) level).brilliant$getPredictions())
+					.brilliant$getServerVerifiedStates().get(pos.asLong());
+			if (pending != null) {
+				return ((ServerVerifiedStateAccessor) pending).brilliant$getBlockState();
+			}
+		}
+		return player.level().getBlockState(pos);
+	}
+
+	public static String blockName(LocalPlayer player, BlockPos pos) {
+		return confirmedState(player, pos).getBlock().getName().getString();
+	}
+
 	public static String visibleBlock(LocalPlayer player, BlockPos pos) {
 		if (coordsHidden(player) || !player.level().isLoaded(pos)) {
 			return "";
@@ -230,7 +250,7 @@ public final class ScriptExtras {
 		if (player.getEyePosition().distanceTo(center) > BLOCK_SIGHT || !clear(player, center, pos)) {
 			return "";
 		}
-		return player.level().getBlockState(pos).getBlock().getName().getString();
+		return blockName(player, pos);
 	}
 
 	public static List<Player> visiblePlayers(LocalPlayer player, double range) {

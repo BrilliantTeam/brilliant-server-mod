@@ -1839,13 +1839,13 @@ public final class ScriptEngine {
 			}
 			case "s_block_below" -> {
 				LocalPlayer self = player();
-				yield self == null ? "" : self.level().getBlockState(self.blockPosition().below()).getBlock().getName().getString();
+				yield self == null ? "" : ScriptExtras.blockName(self, self.blockPosition().below());
 			}
 			case "s_target_block" -> {
 				Minecraft client = Minecraft.getInstance();
 				LocalPlayer self = player();
 				yield self != null && client.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit && hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
-						? self.level().getBlockState(hit.getBlockPos()).getBlock().getName().getString() : "";
+						? ScriptExtras.blockName(self, hit.getBlockPos()) : "";
 			}
 			case "s_target_entity" -> {
 				Minecraft client = Minecraft.getInstance();

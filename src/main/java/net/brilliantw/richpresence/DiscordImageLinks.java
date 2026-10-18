@@ -1,5 +1,6 @@
 package net.brilliantw.richpresence;
 
+import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -18,6 +19,7 @@ public final class DiscordImageLinks {
 	public record Image(String url, String name) {}
 
 	private static final Pattern IMAGEMAP = Pattern.compile("^/?(?:interactivechatdiscordsrv|icd)\\s+imagemap\\s+([0-9a-fA-F-]{36})\\s*$", Pattern.CASE_INSENSITIVE);
+	private static final Pattern IMAGE = Pattern.compile("\\.(png|jpe?g|gif|webp)$");
 	private static final Pattern VIDEO = Pattern.compile("\\.(mp4|webm|mov|mkv|m4v)(\\?|$)", Pattern.CASE_INSENSITIVE);
 	private static final Logger LOGGER = LoggerFactory.getLogger("brilliant-server-mod");
 	private static final int MAX_ENTRIES = 300;
@@ -49,6 +51,22 @@ public final class DiscordImageLinks {
 			return false;
 		}
 		Minecraft.getInstance().execute(() -> CommandMenuScreen.setScreen(new ImageViewerScreen(image.url(), image.name())));
+		return true;
+	}
+
+	static boolean isDiscordImage(URI uri) {
+		String host = uri.getHost() == null ? "" : uri.getHost().toLowerCase(Locale.ROOT);
+		String path = uri.getPath() == null ? "" : uri.getPath().toLowerCase(Locale.ROOT);
+		return "https".equalsIgnoreCase(uri.getScheme()) && uri.getPort() == -1
+				&& (host.equals("cdn.discordapp.com") || host.equals("media.discordapp.net"))
+				&& path.startsWith("/attachments/") && IMAGE.matcher(path).find();
+	}
+
+	public static boolean openUrl(URI uri) {
+		if (uri == null || !RichPresenceModClient.isOnBrilliantServer() || !ModSettings.get().imageLinks || !isDiscordImage(uri)) {
+			return false;
+		}
+		Minecraft.getInstance().execute(() -> CommandMenuScreen.setScreen(new ImageViewerScreen(uri.toString(), null)));
 		return true;
 	}
 
