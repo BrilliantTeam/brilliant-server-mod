@@ -92,7 +92,7 @@ public final class ScriptImportScreen extends Screen {
 	}
 
 	private boolean canImport() {
-		return parsed != null && Scripts.data().groups.size() < Scripts.MAX_GROUPS && Scripts.count() < Scripts.MAX_BLOCKS;
+		return parsed != null && Scripts.fitProblem(parsed) == null;
 	}
 
 	private Component importLabel() {
@@ -100,7 +100,7 @@ public final class ScriptImportScreen extends Screen {
 			return Component.literal("沒有可匯入的腳本");
 		}
 		if (!canImport()) {
-			return Component.literal("分組或積木已達上限").withStyle(ChatFormatting.RED);
+			return Component.literal("空間不足，無法匯入").withStyle(ChatFormatting.RED);
 		}
 		return Component.literal("匯入 " + parsed.groups.size() + " 個分組").withStyle(ChatFormatting.GREEN);
 	}
@@ -166,10 +166,9 @@ public final class ScriptImportScreen extends Screen {
 		if (!canImport()) {
 			return;
 		}
-		int total = incomingBlocks();
 		int added = Scripts.merge(parsed);
 		Scripts.save();
-		onImported.accept(added >= total ? "已匯入 " + added + " 塊積木，放在新的分組" : "已匯入 " + added + " / " + total + " 塊積木，其餘超過上限未匯入");
+		onImported.accept("已匯入 " + added + " 塊積木，放在新的分組");
 		CommandMenuScreen.setScreen(parent);
 	}
 
@@ -260,13 +259,8 @@ public final class ScriptImportScreen extends Screen {
 		int blocks = incomingBlocks();
 		long newVariables = parsed.variables.stream().filter(name -> !Scripts.data().variables.contains(name)).count();
 		String text = "共 " + parsed.groups.size() + " 個分組、" + blocks + " 塊積木" + (newVariables > 0 ? "、新增 " + newVariables + " 個變數" : "") + "，會加在新的分組";
-		if (Scripts.data().groups.size() >= Scripts.MAX_GROUPS) {
-			return "分組已達上限 " + Scripts.MAX_GROUPS + " 個，請先刪除一些分組";
-		}
-		if (Scripts.count() + blocks > Scripts.MAX_BLOCKS) {
-			return text + "（超過積木上限 " + Scripts.MAX_BLOCKS + "，部分腳本不會匯入）";
-		}
-		return text;
+		String problem = Scripts.fitProblem(parsed);
+		return problem != null ? problem : text;
 	}
 
 	@Override

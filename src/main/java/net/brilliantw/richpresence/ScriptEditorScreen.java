@@ -119,6 +119,9 @@ public final class ScriptEditorScreen extends Screen {
 	private double mapScale = 1;
 	private boolean debugMode;
 	private boolean resizingPalette;
+	private Map<Scripts.Block, String> lintIssues = Map.of();
+	private Scripts.Group lintGroup;
+	private long lintAt;
 
 	public ScriptEditorScreen(Screen parent) {
 		super(Component.literal("自動腳本"));
@@ -840,7 +843,13 @@ public final class ScriptEditorScreen extends Screen {
 
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		view.editing = editing;
-		view.issues = ScriptLint.check(Scripts.current().stacks, Scripts.current());
+		long lintNow = System.currentTimeMillis();
+		if (Scripts.current() != lintGroup || lintNow - lintAt > 300) {
+			lintIssues = ScriptLint.check(Scripts.current().stacks, Scripts.current());
+			lintGroup = Scripts.current();
+			lintAt = lintNow;
+		}
+		view.issues = lintIssues;
 		layoutWorkspace();
 		layoutPalette();
 		lastMouseX = mouseX;
@@ -861,7 +870,12 @@ public final class ScriptEditorScreen extends Screen {
 		for (Scripts.Note note : Scripts.current().notes) {
 			drawNote(gfx, note);
 		}
+		double visibleRight = lx(width);
+		double visibleBottom = ly(height);
 		for (Placed p : placed) {
+			if (p.x() > visibleRight || p.x() + p.w() + 40 < areaX() || p.y() > visibleBottom || p.y() + p.h() + 10 < areaY()) {
+				continue;
+			}
 			boolean picked = selected.contains(p.stack());
 			if (ScriptEngine.isRunning(p.stack()) || picked) {
 				gfx.fill(p.x() - 3, p.y() - 3, p.x() + p.w() + 3, p.y() + p.h() + 3, picked ? SELECTED : RUNNING);

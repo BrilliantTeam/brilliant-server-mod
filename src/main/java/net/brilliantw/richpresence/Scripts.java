@@ -1,7 +1,6 @@
 package net.brilliantw.richpresence;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -109,7 +108,7 @@ public final class Scripts {
 	}
 
 	public static final String EXPORT_PREFIX = "BSM-SCRIPT:";
-	public static final int MAX_BLOCKS = 600;
+	public static final int MAX_BLOCKS = 5000;
 	public static final int MAX_DEPTH = 12;
 	public static final int MAX_TEXT = 256;
 	public static final int MAX_VARIABLES = 30;
@@ -120,7 +119,6 @@ public final class Scripts {
 	public static final int MAX_NOTES = 30;
 	public static final int MAX_NOTE = 200;
 	public static final int MAX_VALUE = 2000;
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Gson COMPACT = new Gson();
 
 	private static Data data;
@@ -338,7 +336,7 @@ public final class Scripts {
 	public static void save() {
 		try {
 			Path temp = file().resolveSibling(file().getFileName() + ".tmp");
-			Files.writeString(temp, GSON.toJson(data()), StandardCharsets.UTF_8);
+			Files.writeString(temp, COMPACT.toJson(data()), StandardCharsets.UTF_8);
 			Files.move(temp, file(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 		} catch (IOException e) {
 			System.err.println("[brilliant-server-mod] Failed to save scripts: " + e.getMessage());
@@ -569,7 +567,36 @@ public final class Scripts {
 		}
 	}
 
+	public static int blocksOf(Data incoming) {
+		return incoming.groups.stream().mapToInt(group -> group.stacks.stream().mapToInt(stack -> count(stack.blocks)).sum()).sum();
+	}
+
+	public static String fitProblem(Data incoming) {
+		Data target = data();
+		int blocks = blocksOf(incoming);
+		int room = Math.max(0, MAX_BLOCKS - count());
+		if (blocks > room) {
+			return "空間不足：需要 " + blocks + " 塊，只剩 " + room + " 塊（上限 " + MAX_BLOCKS + "），請先刪除一些積木";
+		}
+		int groupRoom = Math.max(0, MAX_GROUPS - target.groups.size());
+		if (incoming.groups.size() > groupRoom) {
+			return "分組不足：需要 " + incoming.groups.size() + " 個，只能再新增 " + groupRoom + " 個（上限 " + MAX_GROUPS + "）";
+		}
+		long newVariables = incoming.variables.stream().filter(name -> !target.variables.contains(name)).count();
+		if (target.variables.size() + newVariables > MAX_VARIABLES) {
+			return "共用變數不足：需要 " + newVariables + " 個，只能再新增 " + Math.max(0, MAX_VARIABLES - target.variables.size()) + " 個";
+		}
+		long newLists = incoming.lists.stream().filter(name -> !target.lists.contains(name)).count();
+		if (target.lists.size() + newLists > MAX_LISTS) {
+			return "共用清單不足：需要 " + newLists + " 個，只能再新增 " + Math.max(0, MAX_LISTS - target.lists.size()) + " 個";
+		}
+		return null;
+	}
+
 	public static int merge(Data incoming) {
+		if (fitProblem(incoming) != null) {
+			return 0;
+		}
 		Data target = data();
 		for (String name : incoming.variables) {
 			if (!target.variables.contains(name) && target.variables.size() < MAX_VARIABLES) {
@@ -581,25 +608,14 @@ public final class Scripts {
 				target.lists.add(name);
 			}
 		}
-		int room = MAX_BLOCKS - count();
 		int added = 0;
 		for (Group group : incoming.groups) {
-			if (target.groups.size() >= MAX_GROUPS) {
-				break;
-			}
 			Group copy = new Group(uniqueName(group.name));
 			copy.variables = new ArrayList<>(group.variables);
 			copy.lists = new ArrayList<>(group.lists);
 			copy.notes = new ArrayList<>(group.notes);
-			for (Stack stack : group.stacks) {
-				int size = count(stack.blocks);
-				if (size > room) {
-					break;
-				}
-				room -= size;
-				copy.stacks.add(stack);
-				added += size;
-			}
+			copy.stacks.addAll(group.stacks);
+			added += group.stacks.stream().mapToInt(stack -> count(stack.blocks)).sum();
 			if (!copy.stacks.isEmpty()) {
 				target.groups.add(copy);
 				target.selected = target.groups.size() - 1;
