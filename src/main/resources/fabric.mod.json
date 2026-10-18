@@ -8,11 +8,10 @@
 		"ricechen_"
 	],
 	"contact": {
-		"homepage": "https://www.brilliantw.net",
-		"sources": "https://github.com/BrilliantTeam/brilliant-server-mod",
-		"issues": "https://github.com/BrilliantTeam/brilliant-server-mod/issues"
+		"homepage": "https://www.brilliantw.net/mod/",
+		"issues": "https://discord.brilliantw.net/"
 	},
-	"license": "GPL-3.0-only",
+	"license": "LicenseRef-All-Rights-Reserved",
 	"icon": "assets/brilliant-server-mod/icon.png",
 	"environment": "client",
 	"entrypoints": {

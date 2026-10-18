@@ -14,7 +14,7 @@
 ## 安裝
 
 1. 安裝 [Fabric Loader](https://fabricmc.net/use/installer/) 與 [Fabric API](https://modrinth.com/mod/fabric-api)
-2. 把對應自己遊戲版本的 jar 放進 `.minecraft/mods/`（支援 1.21.11、26.1 ~ 26.3）
+2. 到 [輝煌官網](https://www.brilliantw.net/mod/) 下載對應自己遊戲版本的 jar，放進 `.minecraft/mods/`（支援 1.21.11、26.1 ~ 26.3）
 3. 需要 Discord 遊玩狀態時，在背景開啟 Discord 桌面版
 
 ## 網路與資料
@@ -24,4 +24,8 @@
 - 設定存於 `config/brilliant-server-mod-*.json`，腳本紀錄檔存於 `config/brilliant-server-mod-logs/`
 - 聊天、私訊與圖片只暫存在記憶體
 
-圖示取自 [Pixelarticons](https://github.com/halfmage/pixelarticons)（MIT）。
+## 授權
+
+輝煌模組為閉源軟體，著作權所有（All Rights Reserved），詳見 [LICENSE](LICENSE)。
+
+內含 [DiscordIPC](https://github.com/CDAGaming/DiscordIPC)（Apache-2.0）；圖示取自 [Pixelarticons](https://github.com/halfmage/pixelarticons)（MIT）。

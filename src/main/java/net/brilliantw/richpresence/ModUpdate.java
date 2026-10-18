@@ -105,7 +105,7 @@ public final class ModUpdate {
 	public static boolean canInstall() {
 		Latest latest = available;
 		return latest != null && latest.sha256 != null && latest.sha256.matches("[0-9a-f]{64}") && FILE.matcher(latest.file).matches()
-				&& latest.url.startsWith("https://github.com/BrilliantTeam/brilliant-server-mod/") && currentJar() != null;
+				&& latest.url.startsWith(RPConfig.WEBSITE_URL + "/api/mod/download/") && currentJar() != null;
 	}
 
 	public static void check() {
