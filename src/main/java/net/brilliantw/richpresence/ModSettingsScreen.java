@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 //? if >=26.1 {
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 //?} else {
@@ -23,8 +24,22 @@ public final class ModSettingsScreen extends Screen {
 		}
 	}
 
-	private record Row(String section, String label, String detail, BooleanSupplier value, Consumer<Boolean> set) {}
+	private record Row(String section, String label, String detail, BooleanSupplier value, Consumer<Boolean> set, Supplier<String> choice, Runnable next) {
+		Row(String section, String label, String detail, BooleanSupplier value, Consumer<Boolean> set) {
+			this(section, label, detail, value, set, null, null);
+		}
 
+		static Row choice(String section, String label, String detail, Supplier<String> choice, Runnable next) {
+			return new Row(section, label, detail, null, null, choice, next);
+		}
+	}
+
+	private static int cycle(List<Integer> options, int current) {
+		int index = options.indexOf(current);
+		return options.get((index + 1) % options.size());
+	}
+
+	private long clearArmedAt;
 	private record Hit(Rect rect, Runnable action) {}
 
 	private static final int HEADER = 26;
@@ -47,6 +62,11 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("一般", "Discord 遊玩狀態", "在 Discord 個人檔案顯示所在分流與遊玩時間", () -> s.discordPresence, v -> s.discordPresence = v));
 		rows.add(new Row("一般", "新公告通知", "進入伺服器時提示有幾則未讀公告", () -> s.announcements, v -> s.announcements = v));
 		rows.add(new Row("一般", "自動檢查更新", "有新版本時通知，並可在遊戲內一鍵更新", () -> s.updateCheck, v -> s.updateCheck = v));
+		rows.add(new Row("連線", "斷線自動重連", "被伺服器斷線時自動重新連入；在其他地方登入時不會重連", () -> s.autoReconnect, v -> s.autoReconnect = v));
+		rows.add(Row.choice("連線", "失敗幾次後停止", "連續重連失敗達到次數就停止；點擊切換", () -> AutoReconnect.attemptsLabel(s.reconnectAttempts),
+				() -> s.reconnectAttempts = cycle(AutoReconnect.ATTEMPTS, s.reconnectAttempts)));
+		rows.add(Row.choice("連線", "重連頻率", "斷線後等多久再重連；點擊切換", () -> AutoReconnect.delayLabel(s.reconnectDelay),
+				() -> s.reconnectDelay = cycle(AutoReconnect.DELAYS, s.reconnectDelay)));
 		rows.add(new Row("聊天", "頻道分頁", "聊天欄上方依頻道篩選訊息的分頁", () -> s.channelTabs, v -> s.channelTabs = v));
 		rows.add(new Row("聊天", "私訊視窗", "用獨立視窗顯示與管理私訊對話", () -> s.privateWindow, v -> s.privateWindow = v));
 		rows.add(new Row("聊天", "表情符號選單", "聊天欄右下角的表情符號按鈕", () -> s.emoji, v -> s.emoji = v));
@@ -66,6 +86,31 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("遊戲", "配方書修正", "讓配方書正確辨識伺服器的自訂材料", () -> s.recipeFix, v -> s.recipeFix = v));
 		rows.add(new Row("遊戲", "格子編號", "按住 Alt 時在介面格子上顯示編號", () -> s.slotNumbers, v -> s.slotNumbers = v));
 		rows.add(new Row("遊戲", "記分板位置", "套用自訂的記分板位置與縮放", () -> s.scoreboardLayout, v -> s.scoreboardLayout = v));
+		rows.add(new Row("地圖", "懸浮小地圖", "畫面上的小地圖；按 N 切換、按 M 開大地圖、按 B 新增記錄點", () -> s.minimap, v -> s.minimap = v));
+		rows.add(new Row("地圖", "隨視角旋轉", "小地圖跟著面向旋轉；關閉時北方固定朝上", () -> s.minimapRotate, v -> s.minimapRotate = v));
+		rows.add(new Row("地圖", "圓形小地圖", "關閉時改為方形", () -> s.minimapCircle, v -> s.minimapCircle = v));
+		rows.add(new Row("地圖", "小地圖框線", "小地圖外圍的邊框", () -> s.minimapFrame, v -> s.minimapFrame = v));
+		rows.add(new Row("地圖", "小地圖方位", "在小地圖邊緣標示東西南北", () -> s.minimapCompass, v -> s.minimapCompass = v));
+		rows.add(new Row("地圖", "顯示生物", "只顯示你看得到的；紅色為敵對生物、綠色為其他生物", () -> s.minimapMobs, v -> s.minimapMobs = v));
+		rows.add(new Row("地圖", "生物圖示", "以生物的臉顯示種類；關閉時改用色點", () -> s.minimapMobIcons, v -> s.minimapMobIcons = v));
+		rows.add(new Row("地圖", "顯示玩家", "標示附近你看得到的玩家", () -> s.minimapPlayers, v -> s.minimapPlayers = v));
+		rows.add(new Row("地圖", "玩家頭像", "以頭像顯示玩家；關閉時改用白點", () -> s.minimapPlayerHeads, v -> s.minimapPlayerHeads = v));
+		rows.add(new Row("地圖", "顯示座標", "在小地圖下方顯示目前座標", () -> s.minimapCoords, v -> s.minimapCoords = v));
+		rows.add(new Row("地圖", "顯示分流與維度", "在小地圖下方顯示目前分流、維度與是否在洞穴", () -> s.minimapInfo, v -> s.minimapInfo = v));
+		rows.add(new Row("地圖", "顯示記錄點", "在小地圖上標示記錄點，超出範圍時貼在邊緣指示方向", () -> s.minimapWaypoints, v -> s.minimapWaypoints = v));
+		rows.add(new Row("地圖", "地圖記憶", "記住跑過的地方，之後回來仍看得到；會佔用硬碟空間。關閉後只保留這次遊玩的地圖", () -> s.mapMemory, v -> s.mapMemory = v));
+		rows.add(Row.choice("地圖", "清除地圖記憶", "刪除所有分流記住的地形資料，連點兩下確認", () -> clearArmedAt > 0 && System.currentTimeMillis() - clearArmedAt < 3000 ? "再點一次刪除" : "已用 " + MapStore.diskLabel(), () -> {
+			if (clearArmedAt > 0 && System.currentTimeMillis() - clearArmedAt < 3000) {
+				clearArmedAt = 0;
+				MapStore.clear(null);
+			} else {
+				clearArmedAt = System.currentTimeMillis();
+			}
+		}));
+		rows.add(new Row("地圖", "地下自動切換洞穴圖", "進入地底時改顯示你所在高度的洞穴地圖", () -> s.mapCave, v -> s.mapCave = v));
+		rows.add(new Row("地圖", "顯示領地", "標示伺服器上的領地範圍，大地圖可看名稱與擁有者", () -> s.mapResidences, v -> s.mapResidences = v));
+		rows.add(new Row("地圖", "顯示公開傳送點", "標示玩家的公開傳送點（/phome）", () -> s.mapPublicHomes, v -> s.mapPublicHomes = v));
+		rows.add(new Row("地圖", "顯示資源再生區塊", "琥珀色為等待再生、紅色為已可再生；在這些區塊建築會被重置", () -> s.mapRegen, v -> s.mapRegen = v));
 		rows.add(new Row("遊戲", "鐵砧完整花費", "超限附魔超過 40 級時顯示實際花費，取代「太貴了！」", () -> s.anvilCost, v -> s.anvilCost = v));
 	}
 
@@ -151,7 +196,21 @@ public final class ModSettingsScreen extends Screen {
 				}
 				y += SECTION;
 			}
-			if (draw) {
+			if (draw && row.choice() != null) {
+				Rect r = new Rect(c.x(), y, c.w() - 4, ROW - 2);
+				gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CARD_HOVER : Theme.CARD);
+				gfx.text(font, row.label(), r.x() + 8, r.y() + 5, Theme.TEXT);
+				String value = row.choice().get() + " ▸";
+				int vw = font.width(value) + 12;
+				gfx.text(font, font.plainSubstrByWidth(row.detail(), r.w() - vw - 24), r.x() + 8, r.y() + 16, Theme.TEXT_DIM);
+				gfx.fill(r.x() + r.w() - vw - 8, r.y() + 7, r.x() + r.w() - 8, r.y() + 21, Theme.CHIP);
+				gfx.centered(font, value, r.x() + r.w() - vw - 8, r.y() + 7, vw, 14, Theme.ACCENT);
+				hits.add(new Hit(r, () -> {
+					row.next().run();
+					ModSettings.save();
+					setStatus("「" + row.label() + "」改為 " + row.choice().get());
+				}));
+			} else if (draw) {
 				Rect r = new Rect(c.x(), y, c.w() - 4, ROW - 2);
 				boolean on = row.value().getAsBoolean();
 				gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CARD_HOVER : Theme.CARD);

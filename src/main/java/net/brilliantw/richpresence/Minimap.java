@@ -1,0 +1,437 @@
+package net.brilliantw.richpresence;
+
+import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.platform.NativeImage;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+//? if >=26.1 {
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
+//?} else {
+/*import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+*///?}
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
+
+public final class Minimap {
+	public static final int[] SIZES = { 80, 112, 144 };
+	public static final String[] SIZE_LABELS = { "小", "中", "大" };
+	public static final double[] ZOOMS = { 0.5, 1, 2, 4 };
+	public static final int MARGIN = 6;
+	private static final int HOSTILE = 0xFFFF5A5A;
+	private static final int PASSIVE = 0xFF7BE07B;
+	private static final int PLAYER_DOT = 0xFFFFFFFF;
+	static final int POI = 0xFFFFC94D;
+	static final int REGEN_PENDING = 0x38FFB020;
+	static final int REGEN_READY = 0x48FF4D4D;
+	private static final int MAX_MARKERS = 64;
+
+	enum Kind { PLAYER, HOSTILE, PASSIVE }
+
+	record Marker(Kind kind, Entity entity, String name) {}
+
+	private static KeyMapping openMap;
+	private static KeyMapping toggle;
+	private static KeyMapping addPoint;
+	private static KeyMapping zoom;
+	private static DynamicTexture texture;
+	private static Identifier textureId;
+	private static int resolution;
+	private static long builtAt;
+	private static String zoomNote = "";
+	private static long zoomNoteUntil;
+	static List<Marker> markers = List.of();
+
+	private Minimap() {}
+
+	private static KeyMapping key(String name, int code, KeyMapping.Category category) {
+		KeyMapping key = new KeyMapping("key.brilliant-server-mod." + name, code, category);
+		//? if >=26.1 {
+		return KeyMappingHelper.registerKeyMapping(key);
+		//?} else {
+		/*return KeyBindingHelper.registerKeyBinding(key);
+		*///?}
+	}
+
+	public static void register() {
+		KeyMapping.Category category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("brilliant-server-mod", "map"));
+		openMap = key("map", InputConstants.KEY_M, category);
+		toggle = key("minimap", InputConstants.KEY_N, category);
+		addPoint = key("waypoint_add", InputConstants.KEY_B, category);
+		zoom = key("minimap_zoom", InputConstants.UNKNOWN.getValue(), category);
+		ClientTickEvents.END_CLIENT_TICK.register(Minimap::tick);
+		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> MapStore.flush());
+		ClientLifecycleEvents.CLIENT_STOPPING.register(client -> MapStore.flushAndWait());
+	}
+
+	private static void tick(Minecraft client) {
+		WorldMaps.tick(client);
+		boolean active = WorldMaps.current() != null;
+		ModSettings.Data s = ModSettings.get();
+		while (openMap.consumeClick()) {
+			if (active && ScriptEngine.screen() == null) {
+				CommandMenuScreen.setScreen(new WorldMapScreen(null));
+			}
+		}
+		while (toggle.consumeClick()) {
+			if (active) {
+				s.minimap = !s.minimap;
+				ModSettings.save();
+				note(s.minimap ? "小地圖：開啟" : "小地圖：關閉");
+			}
+		}
+		while (addPoint.consumeClick()) {
+			if (active && ScriptEngine.screen() == null) {
+				WaypointScreen.openAdd(null);
+			}
+		}
+		while (zoom.consumeClick()) {
+			if (active) {
+				cycleZoom(1);
+			}
+		}
+		markers = active && s.minimap ? collect(client) : List.of();
+	}
+
+	static void cycleZoom(int step) {
+		ModSettings.Data s = ModSettings.get();
+		s.minimapZoom = Math.floorMod(s.minimapZoom + step, ZOOMS.length);
+		ModSettings.save();
+		note("縮放 1:" + formatZoom(ZOOMS[s.minimapZoom]));
+	}
+
+	static String formatZoom(double zoom) {
+		return zoom == Math.rint(zoom) ? Integer.toString((int) zoom) : Double.toString(zoom);
+	}
+
+	private static void note(String text) {
+		zoomNote = text;
+		zoomNoteUntil = System.currentTimeMillis() + 1500;
+	}
+
+	private static List<Marker> collect(Minecraft client) {
+		LocalPlayer player = client.player;
+		if (player == null || client.level == null) {
+			return List.of();
+		}
+		ModSettings.Data s = ModSettings.get();
+		if (!s.minimapMobs && !s.minimapPlayers) {
+			return List.of();
+		}
+		boolean all = player.isCreative() || player.isSpectator();
+		double range = Math.min(size() * ZOOMS[s.minimapZoom] * 0.75, all ? 256 : ScriptExtras.ENTITY_SIGHT);
+		List<Marker> found = new ArrayList<>();
+		for (Entity entity : client.level.entitiesForRendering()) {
+			if (entity == player || !entity.isAlive() || entity.isInvisible()) {
+				continue;
+			}
+			double dx = entity.getX() - player.getX();
+			double dz = entity.getZ() - player.getZ();
+			if (dx * dx + dz * dz > range * range) {
+				continue;
+			}
+			Kind kind;
+			if (entity instanceof Player) {
+				if (!s.minimapPlayers) {
+					continue;
+				}
+				kind = Kind.PLAYER;
+			} else if (entity instanceof LivingEntity && !(entity instanceof ArmorStand)) {
+				if (!s.minimapMobs) {
+					continue;
+				}
+				kind = entity instanceof Enemy ? Kind.HOSTILE : Kind.PASSIVE;
+			} else {
+				continue;
+			}
+			if (!all && !ScriptExtras.sees(player, entity)) {
+				continue;
+			}
+			found.add(new Marker(kind, entity, kind == Kind.PLAYER ? entity.getName().getString() : ""));
+		}
+		found.sort(Comparator.comparingDouble(marker -> marker.entity().distanceToSqr(player)));
+		return found.size() > MAX_MARKERS ? List.copyOf(found.subList(0, MAX_MARKERS)) : found;
+	}
+
+	static boolean isMapKey(net.minecraft.client.input.KeyEvent event) {
+		return openMap != null && openMap.matches(event);
+	}
+
+	public static int size() {
+		return SIZES[Math.clamp(ModSettings.get().minimapSize, 0, SIZES.length - 1)];
+	}
+
+	public static int infoHeight() {
+		ModSettings.Data s = ModSettings.get();
+		int lines = (s.minimapCoords ? 1 : 0) + (s.minimapInfo ? 1 : 0);
+		return lines == 0 ? 0 : lines * 10 + 2;
+	}
+
+	public static int[] position(int screenWidth, int screenHeight) {
+		ModSettings.Data s = ModSettings.get();
+		int size = size();
+		int freeX = Math.max(0, screenWidth - size - MARGIN * 2);
+		int freeY = Math.max(0, screenHeight - size - infoHeight() - MARGIN * 2);
+		return new int[] { MARGIN + Math.round(Math.clamp(s.minimapX, 0f, 1f) * freeX), MARGIN + Math.round(Math.clamp(s.minimapY, 0f, 1f) * freeY) };
+	}
+
+	public static void renderHud(Gfx gfx) {
+		Minecraft client = Minecraft.getInstance();
+		if (WorldMaps.current() == null || !ModSettings.get().minimap || client.player == null) {
+			return;
+		}
+		//? if <26.2 {
+		/*if (client.options.hideGui) {
+			return;
+		}
+		*///?}
+		net.minecraft.client.gui.screens.Screen screen = ScriptEngine.screen();
+		if (screen instanceof WorldMapScreen || screen instanceof MinimapEditScreen || client.getDebugOverlay().showDebugScreen()) {
+			return;
+		}
+		int[] at = position(client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight());
+		draw(gfx, client.font, at[0], at[1], client.getDeltaTracker().getGameTimeDeltaPartialTick(true));
+	}
+
+	private static void ensureTexture(int res) {
+		if (texture != null && resolution == res) {
+			return;
+		}
+		if (textureId != null) {
+			Minecraft.getInstance().getTextureManager().release(textureId);
+		}
+		resolution = res;
+		texture = new DynamicTexture(() -> "brilliant-server-mod minimap", res, res, false);
+		textureId = Identifier.fromNamespaceAndPath("brilliant-server-mod", "map/minimap_" + res);
+		Minecraft.getInstance().getTextureManager().register(textureId, texture);
+		builtAt = 0;
+	}
+
+	private static int[] buffer = new int[0];
+
+	private static MinimapRaster.Frame frame(LocalPlayer player, float partial, int size, int res) {
+		ModSettings.Data s = ModSettings.get();
+		Vec3 pos = player.getPosition(partial);
+		double bpp = ZOOMS[Math.clamp(s.minimapZoom, 0, ZOOMS.length - 1)] * size / res;
+		return new MinimapRaster.Frame(res, pos.x, pos.z, bpp, player.getViewYRot(partial), s.minimapRotate, s.minimapCircle, (double) res / size, s.minimapFrame);
+	}
+
+	public static void draw(Gfx gfx, Font font, int x, int y, float partial) {
+		Minecraft client = Minecraft.getInstance();
+		LocalPlayer player = client.player;
+		WorldMaps.View view = WorldMaps.current();
+		if (player == null || view == null) {
+			return;
+		}
+		int size = size();
+		int res = Math.clamp((int) Math.round(size * client.getWindow().getGuiScale()), 64, 512);
+		ensureTexture(res);
+		MinimapRaster.Frame frame = frame(player, partial, size, res);
+		long now = System.currentTimeMillis();
+		if (now - builtAt >= 33) {
+			builtAt = now;
+			build(view, frame, partial);
+		}
+		gfx.texture(textureId, x, y, size, size, res, res, 0xFFFFFFFF);
+		double toGui = (double) size / res;
+		ModSettings.Data s = ModSettings.get();
+		if (s.minimapMobIcons) {
+			int box = size >= 144 ? 9 : 8;
+			for (int i = markers.size() - 1; i >= 0; i--) {
+				Marker marker = markers.get(i);
+				if (marker.kind() == Kind.PLAYER) {
+					continue;
+				}
+				Vec3 at = marker.entity().getPosition(partial);
+				double[] t = frame.toTexel(at.x, at.z);
+				if (!frame.inside(t[0] - frame.r(), t[1] - frame.r(), frame.inner() - (box / 2.0 + 2) / toGui)) {
+					continue;
+				}
+				int cx = x + (int) Math.round(t[0] * toGui);
+				int cy = y + (int) Math.round(t[1] * toGui);
+				int ring = marker.kind() == Kind.HOSTILE ? HOSTILE : PASSIVE;
+				MobHeads.Head head = MobHeads.of(marker.entity());
+				if (head != null) {
+					int left = cx - box / 2;
+					int top = cy - box / 2;
+					gfx.fill(left - 2, top - 2, left + box + 2, top + box + 2, MapIcons.OUTLINE);
+					gfx.fill(left - 1, top - 1, left + box + 1, top + box + 1, ring);
+					gfx.region(MobHeads.ATLAS, left, top, box, box, head.u(), head.v(), 8, 8, MobHeads.width, MobHeads.height);
+					continue;
+				}
+				MobFaces.Face face = MobFaces.of(marker.entity());
+				if (face.texture() == null) {
+					ItemStack egg = MapIcons.egg(marker.entity().getType());
+					MapIcons.badge(gfx, cx, cy, box / 2 + 1, ring, egg);
+					continue;
+				}
+				double fit = (double) box / Math.max(face.width(), face.height());
+				int w = Math.max(2, (int) Math.round(face.width() * fit));
+				int h = Math.max(2, (int) Math.round(face.height() * fit));
+				int left = cx - w / 2;
+				int top = cy - h / 2;
+				gfx.fill(left - 2, top - 2, left + w + 2, top + h + 2, MapIcons.OUTLINE);
+				gfx.fill(left - 1, top - 1, left + w + 1, top + h + 1, ring);
+				gfx.image(face.texture(), left, top, w, h);
+			}
+		}
+		for (Marker marker : markers) {
+			if (marker.kind() != Kind.PLAYER || !s.minimapPlayerHeads) {
+				continue;
+			}
+			Vec3 at = marker.entity().getPosition(partial);
+			double[] t = frame.toTexel(at.x, at.z);
+			if (!frame.inside(t[0] - frame.r(), t[1] - frame.r(), frame.inner() - 6 / toGui)) {
+				continue;
+			}
+			int hx = x + (int) Math.round(t[0] * toGui) - 4;
+			int hy = y + (int) Math.round(t[1] * toGui) - 4;
+			RemoteImages.Entry head = RemoteImages.get(RemoteImages.HEAD_PREFIX + URLEncoder.encode(marker.name(), StandardCharsets.UTF_8), RemoteImages.requestWidth(8));
+			gfx.fill(hx - 1, hy - 1, hx + 9, hy + 9, 0xFFFFFFFF);
+			if (head.state == RemoteImages.State.READY) {
+				RemoteImages.draw(gfx, head, hx, hy, 8, 8);
+			} else {
+				gfx.fill(hx, hy, hx + 8, hy + 8, 0xFF5C6773);
+			}
+		}
+		if (s.minimapCompass) {
+			compass(gfx, font, x, y, size, frame);
+		}
+		info(gfx, font, x, y + size + 2, size, player, view);
+		if (now < zoomNoteUntil) {
+			label(gfx, font, zoomNote, x, y + size - 14, size, Theme.ACCENT);
+		}
+	}
+
+	private static void label(Gfx gfx, Font font, String text, int x, int y, int width, int color) {
+		int w = font.width(text) + 6;
+		int left = x + (width - w) / 2;
+		gfx.fill(left, y, left + w, y + 11, 0xA0101418);
+		gfx.text(font, text, left + 3, y + 2, color);
+	}
+
+	private static void info(Gfx gfx, Font font, int x, int y, int size, LocalPlayer player, WorldMaps.View view) {
+		ModSettings.Data s = ModSettings.get();
+		List<String> lines = new ArrayList<>();
+		if (s.minimapCoords && !ScriptExtras.coordsHidden(player)) {
+			lines.add(player.blockPosition().getX() + "  " + player.blockPosition().getY() + "  " + player.blockPosition().getZ());
+		}
+		if (s.minimapInfo) {
+			lines.add(WorldMaps.shardLabel(view.shard()) + "・" + WorldMaps.dimensionLabel(view.dimension()) + (view.cave() ? "・洞穴" : ""));
+		}
+		for (int i = 0; i < lines.size(); i++) {
+			String text = font.plainSubstrByWidth(lines.get(i), size);
+			int w = font.width(text);
+			int left = x + (size - w) / 2;
+			gfx.text(font, text, left + 1, y + i * 10 + 1, 0xC0000000);
+			gfx.text(font, text, left, y + i * 10, i == 0 && lines.size() > 1 ? Theme.TEXT : Theme.TEXT_SECONDARY);
+		}
+	}
+
+	private static void compass(Gfx gfx, Font font, int x, int y, int size, MinimapRaster.Frame frame) {
+		String[] letters = { "N", "E", "S", "W" };
+		double[][] dirs = { { 0, -1 }, { 1, 0 }, { 0, 1 }, { -1, 0 } };
+		double radius = frame.inner() * size / frame.res() - 5;
+		for (int i = 0; i < 4; i++) {
+			double[] d = frame.screenDirection(dirs[i][0], dirs[i][1]);
+			double scale = frame.circle() ? 1 : 1 / Math.max(Math.abs(d[0]), Math.abs(d[1]));
+			int cx = x + size / 2 + (int) Math.round(d[0] * radius * scale);
+			int cy = y + size / 2 + (int) Math.round(d[1] * radius * scale);
+			int w = font.width(letters[i]);
+			gfx.text(font, letters[i], cx - w / 2 + 1, cy - 3, 0xC0000000);
+			gfx.text(font, letters[i], cx - w / 2, cy - 4, i == 0 ? 0xFFFF6B6B : 0xFFE8EEF2);
+		}
+	}
+
+	static MinimapRaster.Overlay overlay(WorldMaps.View view, MapMarkers.Data data, double bpp, double minX, double minZ, double maxX, double maxZ) {
+		ModSettings.Data s = ModSettings.get();
+		List<MapMarkers.Area> areas = s.mapResidences
+				? data.areas().stream().filter(a -> a.maxX() >= minX && a.minX() <= maxX && a.maxZ() >= minZ && a.minZ() <= maxZ).toList()
+				: List.of();
+		MapMarkers.Regen regen = s.mapRegen ? WorldMaps.regen(view) : null;
+		if (areas.isEmpty() && (regen == null || regen.minutes().isEmpty())) {
+			return MinimapRaster.NONE;
+		}
+		double edge = Math.max(bpp, 0.5);
+		return (wx, wz) -> {
+			int color = 0;
+			if (regen != null) {
+				Integer left = regen.minutesLeft(Math.floorDiv((int) Math.floor(wx), 16), Math.floorDiv((int) Math.floor(wz), 16));
+				if (left != null) {
+					color = left <= 0 ? REGEN_READY : REGEN_PENDING;
+				}
+			}
+			for (MapMarkers.Area area : areas) {
+				if (area.contains(wx, wz)) {
+					boolean border = !area.contains(wx - edge, wz) || !area.contains(wx + edge, wz) || !area.contains(wx, wz - edge) || !area.contains(wx, wz + edge);
+					return border ? MapMath.alpha(area.line() | 0xFF000000, 0.85) : MapMath.alpha(area.fill() | 0xFF000000, Math.min(0.32, Math.max(0.12, (area.fill() >>> 24) / 255.0)));
+				}
+			}
+			return color;
+		};
+	}
+
+	private static void build(WorldMaps.View view, MinimapRaster.Frame frame, float partial) {
+		int res = frame.res();
+		if (buffer.length != res * res) {
+			buffer = new int[res * res];
+		}
+		ModSettings.Data s = ModSettings.get();
+		double unit = frame.unit();
+		List<MinimapRaster.Dot> dots = new ArrayList<>();
+		if (s.minimapWaypoints) {
+			for (Waypoints.Point point : Waypoints.list(view.waypoints())) {
+				if (point.visible) {
+					dots.add(new MinimapRaster.Dot(point.x + 0.5, point.z + 0.5, 3.2 * unit, Waypoints.color(point), MinimapRaster.Shape.DIAMOND, true));
+				}
+			}
+		}
+		for (Marker marker : markers) {
+			if (marker.kind() == Kind.PLAYER ? s.minimapPlayerHeads : s.minimapMobIcons) {
+				continue;
+			}
+			Vec3 at = marker.entity().getPosition(partial);
+			int color = switch (marker.kind()) {
+				case HOSTILE -> HOSTILE;
+				case PASSIVE -> PASSIVE;
+				case PLAYER -> PLAYER_DOT;
+			};
+			dots.add(new MinimapRaster.Dot(at.x, at.z, (marker.kind() == Kind.PLAYER ? 2 : 2.2) * unit, color, MinimapRaster.Shape.DISC, false));
+		}
+		double reach = frame.r() * frame.bpp() * 1.5;
+		double minX = frame.px() - reach;
+		double maxX = frame.px() + reach;
+		double minZ = frame.pz() - reach;
+		double maxZ = frame.pz() + reach;
+		MapMarkers.Data data = WorldMaps.markers(view);
+		if (s.mapPublicHomes) {
+			for (MapMarkers.Poi poi : data.pois()) {
+				if (poi.x() >= minX && poi.x() <= maxX && poi.z() >= minZ && poi.z() <= maxZ) {
+					dots.add(new MinimapRaster.Dot(poi.x(), poi.z(), 2.4 * unit, POI, MinimapRaster.Shape.SQUARE, false));
+				}
+			}
+		}
+		MinimapRaster.render(buffer, frame, (wx, wz) -> WorldMaps.sample(view, wx, wz), overlay(view, data, frame.bpp(), minX, minZ, maxX, maxZ), dots);
+		NativeImage image = texture.getPixels();
+		for (int i = 0; i < buffer.length; i++) {
+			image.setPixel(i % res, i / res, buffer[i]);
+		}
+		texture.upload();
+	}
+}

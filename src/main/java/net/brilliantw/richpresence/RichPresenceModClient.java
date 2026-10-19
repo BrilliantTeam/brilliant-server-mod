@@ -27,6 +27,10 @@ public final class RichPresenceModClient implements ClientModInitializer {
 	private final DiscordPresenceManager presence = new DiscordPresenceManager();
 	private static String host;
 	private Connection session;
+	private static final long CONFIRM_MS = 6000;
+	private static boolean shardPending;
+	private static long switchedAt;
+	private static String switchedFrom;
 	private int ticks;
 	private int updateTicks;
 	private boolean polling;
@@ -45,7 +49,11 @@ public final class RichPresenceModClient implements ClientModInitializer {
 				}
 				return;
 			}
-			ticks = POLL_TICKS - 40;
+			boolean sameSession = session == handler.getConnection() && host != null;
+			shardPending = true;
+			switchedAt = System.currentTimeMillis();
+			switchedFrom = sameSession ? host : null;
+			ticks = POLL_TICKS;
 			updateTicks = 0;
 			if (ModSettings.get().updateCheck) {
 				ModUpdate.check();
@@ -86,7 +94,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 			if (session != null && !session.isConnected()) {
 				endSession();
 			}
-			if (host != null && !polling && ++ticks >= POLL_TICKS) {
+			if (host != null && !polling && ++ticks >= (shardPending ? 40 : POLL_TICKS)) {
 				ticks = 0;
 				pollServer(client);
 			}
@@ -95,6 +103,8 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		ModUpdate.cleanup();
 		ScriptEngine.register();
 		SlotNumbers.register();
+		Minimap.register();
+		AutoReconnect.register();
 	}
 
 	public static boolean isOnBrilliantServer() {
@@ -146,7 +156,23 @@ public final class RichPresenceModClient implements ClientModInitializer {
 	private void endSession() {
 		session = null;
 		host = null;
+		shardPending = false;
 		presence.stop();
+	}
+
+	public static String mapShard() {
+		if (host != null) {
+			return !shardPending && label(host).contains("｜") ? host : null;
+		}
+		Minecraft client = Minecraft.getInstance();
+		if (!featuresActive()) {
+			return null;
+		}
+		if (client.getSingleplayerServer() != null) {
+			return "local";
+		}
+		ServerData server = client.getCurrentServer();
+		return server == null || server.ip == null ? null : "server_" + server.ip.toLowerCase(Locale.ROOT);
 	}
 
 	public static String serverName() {
@@ -185,6 +211,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 
 	private void pollServer(Minecraft client) {
 		polling = true;
+		long sentAt = System.currentTimeMillis();
 		String name = client.getUser().getName();
 		HttpRequest request = HttpRequest.newBuilder(URI.create(RPConfig.WEBSITE_URL + "/api/presence?name=" + URLEncoder.encode(name, StandardCharsets.UTF_8)))
 				.timeout(Duration.ofSeconds(10))
@@ -194,6 +221,9 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		HTTP.sendAsync(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8)).whenComplete((response, error) -> client.execute(() -> {
 			polling = false;
 			String found = error == null && response.statusCode() == 200 ? hostOf(response.body()) : null;
+			if (shardPending && found != null && (switchedFrom != null && !found.equals(switchedFrom) || sentAt - switchedAt >= CONFIRM_MS)) {
+				shardPending = false;
+			}
 			if (host != null && found != null && !found.equals(host)) {
 				host = found;
 				presence.update(label(host), state(host), imageKey(host));

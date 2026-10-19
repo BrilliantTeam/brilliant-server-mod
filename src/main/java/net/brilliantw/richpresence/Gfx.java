@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.ItemStack;
 
 public final class Gfx {
 	//? if >=26.1 {
@@ -96,6 +97,10 @@ public final class Gfx {
 		graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, width, height, textureWidth, textureHeight, textureWidth, textureHeight, color);
 	}
 
+	public void region(Identifier texture, int x, int y, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
+		graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, 0xFFFFFFFF);
+	}
+
 	public void tooltip(Font font, List<Component> lines, int x, int y) {
 		graphics.setComponentTooltipForNextFrame(font, lines, x, y);
 	}
@@ -108,10 +113,22 @@ public final class Gfx {
 		graphics.disableScissor();
 	}
 
+	public void item(ItemStack stack, int x, int y) {
+		//? if >=26.1 {
+		graphics.fakeItem(stack, x, y);
+		//?} else {
+		/*graphics.renderFakeItem(stack, x, y);
+		*///?}
+	}
+
 	public void push(float x, float y, float scale) {
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(x, y);
 		graphics.pose().scale(scale, scale);
+	}
+
+	public void rotate(float radians) {
+		graphics.pose().rotate(radians);
 	}
 
 	public void pop() {

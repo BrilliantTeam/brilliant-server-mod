@@ -7,5 +7,10 @@
 	"key.brilliant-server-mod.script_2": "腳本鍵 2",
 	"key.brilliant-server-mod.script_3": "腳本鍵 3",
 	"key.brilliant-server-mod.script_4": "腳本鍵 4",
-	"key.brilliant-server-mod.script_5": "腳本鍵 5"
+	"key.brilliant-server-mod.script_5": "腳本鍵 5",
+	"key.category.brilliant-server-mod.map": "輝煌模組：地圖",
+	"key.brilliant-server-mod.map": "開啟大地圖",
+	"key.brilliant-server-mod.minimap": "顯示／隱藏小地圖",
+	"key.brilliant-server-mod.waypoint_add": "新增記錄點",
+	"key.brilliant-server-mod.minimap_zoom": "切換小地圖縮放"
 }

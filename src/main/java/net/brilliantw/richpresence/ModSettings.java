@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class ModSettings {
@@ -22,6 +23,31 @@ public final class ModSettings {
 		public boolean slotNumbers = true;
 		public boolean scoreboardLayout = true;
 		public boolean anvilCost = true;
+		public boolean autoReconnect = true;
+		public int reconnectAttempts;
+		public int reconnectDelay = 1;
+		public boolean minimap = true;
+		public boolean minimapRotate;
+		public boolean minimapCircle = true;
+		public boolean minimapMobs = true;
+		public boolean minimapPlayers = true;
+		public boolean minimapCoords = true;
+		public boolean minimapWaypoints = true;
+		public boolean minimapFrame = true;
+		public boolean minimapCompass = true;
+		public boolean minimapMobIcons = true;
+		public boolean minimapPlayerHeads = true;
+		public boolean minimapInfo = true;
+		public boolean mapCave = true;
+		public boolean mapMemory = true;
+		public boolean mapResidences = true;
+		public boolean mapPublicHomes = true;
+		public boolean mapRegen = true;
+		public List<String> seedGroups;
+		public int minimapSize = 1;
+		public int minimapZoom = 1;
+		public float minimapX;
+		public float minimapY;
 		public boolean anyServer;
 		public long anyServerAcceptedAt;
 		public String anyServerAcceptedVersion = "";
@@ -45,6 +71,10 @@ public final class ModSettings {
 		if (parsed == null) {
 			parsed = new Data();
 		}
+		parsed.reconnectAttempts = Math.clamp(parsed.reconnectAttempts, 0, 1000);
+		parsed.reconnectDelay = Math.clamp(parsed.reconnectDelay, 1, 600);
+		parsed.minimapSize = Math.clamp(parsed.minimapSize, 0, 2);
+		parsed.minimapZoom = Math.clamp(parsed.minimapZoom, 0, 3);
 		if (parsed.anyServer && parsed.anyServerAcceptedAt <= 0) {
 			parsed.anyServer = false;
 		}

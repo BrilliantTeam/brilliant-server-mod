@@ -1,6 +1,7 @@
 package net.brilliantw.richpresence.mixin;
 
 import net.brilliantw.richpresence.Gfx;
+import net.brilliantw.richpresence.Minimap;
 import net.brilliantw.richpresence.PrivateWindow;
 import net.brilliantw.richpresence.ScoreboardLayout;
 import net.brilliantw.richpresence.ScriptMonitor;
@@ -62,6 +63,7 @@ public abstract class HudMixin {
 		}
 		//?}
 		Gfx gfx = new Gfx(graphics);
+		Minimap.renderHud(gfx);
 		PrivateWindow.renderHud(gfx);
 		ScriptMonitor.renderHud(gfx);
 	}

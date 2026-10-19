@@ -21,7 +21,8 @@
 		"HudTextAccessor",
 		"BossHealthOverlayAccessor",
 		"PlayerTabOverlayAccessor",
-		"EditBoxAccessor"
+		"EditBoxAccessor",
+		"DisconnectedScreenAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1
