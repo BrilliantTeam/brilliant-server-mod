@@ -83,6 +83,7 @@ public final class ModSettingsScreen extends Screen {
 			Scripts.data().monitor = v;
 			Scripts.save();
 		}));
+		rows.add(new Row("遊戲", "夜視", "不需要藥水也能看清楚暗處；只改變你自己畫面的亮度。可在按鍵設定綁定快速切換鍵", () -> s.nightVision, v -> s.nightVision = v));
 		rows.add(new Row("遊戲", "配方書修正", "讓配方書正確辨識伺服器的自訂材料", () -> s.recipeFix, v -> s.recipeFix = v));
 		rows.add(new Row("遊戲", "格子編號", "按住 Alt 時在介面格子上顯示編號", () -> s.slotNumbers, v -> s.slotNumbers = v));
 		rows.add(new Row("遊戲", "記分板位置", "套用自訂的記分板位置與縮放", () -> s.scoreboardLayout, v -> s.scoreboardLayout = v));

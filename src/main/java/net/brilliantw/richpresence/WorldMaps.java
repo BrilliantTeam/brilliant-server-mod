@@ -7,6 +7,9 @@ import net.minecraft.client.player.LocalPlayer;
 
 public final class WorldMaps {
 	public static final String SURFACE = "surface";
+	public static final String CAVE = "caves96_";
+	public static final int BAND = 96;
+	private static final int BAND_MARGIN = 4;
 	private static final int ENTER_TICKS = 20;
 	private static final int LEAVE_TICKS = 10;
 	private static final long FLUSH_MS = 30 * 1000;
@@ -21,7 +24,7 @@ public final class WorldMaps {
 		}
 
 		public int band() {
-			return cave() ? Integer.parseInt(layer.substring(5)) : 0;
+			return bandOf(layer);
 		}
 	}
 
@@ -32,6 +35,21 @@ public final class WorldMaps {
 	private static long flushedAt = System.currentTimeMillis();
 
 	private WorldMaps() {}
+
+	public static boolean isCave(String layer) {
+		return layer.startsWith(CAVE);
+	}
+
+	public static int bandOf(String layer) {
+		return isCave(layer) ? Integer.parseInt(layer.substring(CAVE.length())) : 0;
+	}
+
+	static int nextBand(Integer current, int feet) {
+		if (current != null && feet >= current * BAND - BAND_MARGIN && feet < (current + 1) * BAND + BAND_MARGIN) {
+			return current;
+		}
+		return Math.floorDiv(feet, BAND);
+	}
 
 	public static View current() {
 		return current;
@@ -79,7 +97,7 @@ public final class WorldMaps {
 	}
 
 	public static String layerLabel(View view) {
-		return view.cave() ? "洞穴 Y " + view.band() * 16 + "～" + (view.band() * 16 + 15) : "地表";
+		return view.cave() ? "洞穴 Y " + view.band() * BAND + "～" + (view.band() * BAND + BAND - 1) : "地表";
 	}
 
 	public static void tick(Minecraft client) {
@@ -110,7 +128,8 @@ public final class WorldMaps {
 			underground = false;
 		}
 		boolean cave = level.dimensionType().hasCeiling() || ModSettings.get().mapCave && underground;
-		View next = view(shard, dimension, cave ? "cave_" + Math.floorDiv(feet, 16) : SURFACE);
+		Integer previous = current != null && current.cave() && current.shard().equals(shard) && current.dimension().equals(dimension) ? current.band() : null;
+		View next = view(shard, dimension, cave ? CAVE + nextBand(previous, feet) : SURFACE);
 		if (!next.equals(current)) {
 			MapStore.flush();
 			current = next;

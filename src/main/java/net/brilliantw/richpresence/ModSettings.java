@@ -23,6 +23,7 @@ public final class ModSettings {
 		public boolean slotNumbers = true;
 		public boolean scoreboardLayout = true;
 		public boolean anvilCost = true;
+		public boolean nightVision;
 		public boolean autoReconnect = true;
 		public int reconnectAttempts;
 		public int reconnectDelay = 1;

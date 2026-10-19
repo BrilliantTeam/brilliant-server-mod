@@ -169,7 +169,7 @@ public final class SeedMaps {
 	}
 
 	public static int sampleY(WorldMaps.View view) {
-		return surface(view) ? 64 : view.band() * 16 + 8;
+		return surface(view) ? 64 : view.band() * WorldMaps.BAND + WorldMaps.BAND / 2;
 	}
 
 	public static SeedWorld world(WorldMaps.View view) {
@@ -282,7 +282,7 @@ public final class SeedMaps {
 				return;
 			}
 			boolean surface = t.layer().equals(WorldMaps.SURFACE) || !world.dimension().equals("minecraft:overworld");
-			int y = surface ? 64 : Integer.parseInt(t.layer().substring(5)) * 16 + 8;
+			int y = surface ? 64 : WorldMaps.bandOf(t.layer()) * WorldMaps.BAND + WorldMaps.BAND / 2;
 			int step = step(t.lod());
 			int x0 = t.tx() * span(t.lod());
 			int z0 = t.tz() * span(t.lod());

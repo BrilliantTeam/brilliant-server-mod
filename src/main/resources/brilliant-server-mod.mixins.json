@@ -22,7 +22,9 @@
 		"BossHealthOverlayAccessor",
 		"PlayerTabOverlayAccessor",
 		"EditBoxAccessor",
-		"DisconnectedScreenAccessor"
+		"DisconnectedScreenAccessor",
+		"LightmapMixin",
+		"NightVisionScaleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

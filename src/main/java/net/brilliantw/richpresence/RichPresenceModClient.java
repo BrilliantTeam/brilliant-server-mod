@@ -105,6 +105,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		SlotNumbers.register();
 		Minimap.register();
 		AutoReconnect.register();
+		NightVision.register();
 	}
 
 	public static boolean isOnBrilliantServer() {

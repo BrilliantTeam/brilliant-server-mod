@@ -1107,7 +1107,7 @@ public final class WorldMapScreen extends Screen {
 		}
 		right -= 6;
 		WorldMaps.View surface = WorldMaps.view(view.shard(), view.dimension(), WorldMaps.SURFACE);
-		List<String> caves = MapStore.layers(surface.local()).stream().filter(layer -> layer.startsWith("cave_")).sorted().toList();
+		List<String> caves = MapStore.layers(surface.local()).stream().filter(WorldMaps::isCave).sorted(java.util.Comparator.comparingInt(WorldMaps::bandOf).reversed()).toList();
 		if (!caves.isEmpty()) {
 			String label = view.cave() ? WorldMaps.layerLabel(view) : "地表";
 			right = chip(gfx, right, 5, label + " ▾", view.cave(), mouseX, mouseY, () -> {
