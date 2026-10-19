@@ -202,7 +202,7 @@ public final class Minimap {
 		}
 		*///?}
 		net.minecraft.client.gui.screens.Screen screen = ScriptEngine.screen();
-		if (screen instanceof WorldMapScreen || screen instanceof MinimapEditScreen || client.getDebugOverlay().showDebugScreen()) {
+		if (screen instanceof WorldMapScreen || screen instanceof MinimapEditScreen || client.debugEntries.isOverlayVisible()) {
 			return;
 		}
 		int[] at = position(client.getWindow().getGuiScaledWidth(), client.getWindow().getGuiScaledHeight());
