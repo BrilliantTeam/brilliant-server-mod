@@ -67,6 +67,8 @@ public final class ModSettingsScreen extends Screen {
 				() -> s.reconnectAttempts = cycle(AutoReconnect.ATTEMPTS, s.reconnectAttempts)));
 		rows.add(Row.choice("連線", "重連頻率", "斷線後等多久再重連；點擊切換", () -> AutoReconnect.delayLabel(s.reconnectDelay),
 				() -> s.reconnectDelay = cycle(AutoReconnect.DELAYS, s.reconnectDelay)));
+		rows.add(new Row("連線", "自動續驗證", "正版驗證快過期時在背景自動續期，不必重開遊戲；與輝煌啟動器的登入互相同步", () -> s.autoReauth, v -> s.autoReauth = v));
+		rows.add(Row.choice("連線", "微軟帳號", "啟動器沒登入時，點擊用瀏覽器登入一次；登入後輝煌啟動器也會一起登入", Reauth::label, () -> Reauth.startLogin(this)));
 		rows.add(new Row("聊天", "頻道分頁", "聊天欄上方依頻道篩選訊息的分頁", () -> s.channelTabs, v -> s.channelTabs = v));
 		rows.add(new Row("聊天", "私訊視窗", "用獨立視窗顯示與管理私訊對話", () -> s.privateWindow, v -> s.privateWindow = v));
 		rows.add(new Row("聊天", "表情符號選單", "聊天欄右下角的表情符號按鈕", () -> s.emoji, v -> s.emoji = v));

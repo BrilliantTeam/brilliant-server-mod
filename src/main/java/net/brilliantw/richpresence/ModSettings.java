@@ -25,6 +25,7 @@ public final class ModSettings {
 		public boolean anvilCost = true;
 		public boolean nightVision;
 		public boolean autoReconnect = true;
+		public boolean autoReauth = true;
 		public int reconnectAttempts;
 		public int reconnectDelay = 1;
 		public boolean minimap = true;

@@ -124,7 +124,7 @@ public final class AutoReconnect {
 	}
 
 	private static void tick(Minecraft client) {
-		if (reconnectAt <= 0) {
+		if (reconnectAt <= 0 || Reauth.busy()) {
 			return;
 		}
 		if (ScriptEngine.screen() != watched) {

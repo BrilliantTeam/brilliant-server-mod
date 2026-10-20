@@ -23,6 +23,7 @@
 		"PlayerTabOverlayAccessor",
 		"EditBoxAccessor",
 		"DisconnectedScreenAccessor",
+		"MinecraftAccessor",
 		"LightmapMixin",
 		"NightVisionScaleMixin"
 	],
