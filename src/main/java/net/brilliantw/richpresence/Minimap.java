@@ -30,9 +30,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public final class Minimap {
-	public static final int[] SIZES = { 80, 112, 144 };
-	public static final String[] SIZE_LABELS = { "小", "中", "大" };
-	public static final double[] ZOOMS = { 0.5, 1, 2, 4 };
+	public static final List<Integer> SIZES = List.of(64, 80, 96, 112, 128, 144, 160, 192, 224, 256);
+	public static final double[] ZOOMS = { 0.25, 0.5, 1, 2, 4, 8 };
+	public static final double[] ICON_SCALES = { 0.75, 1, 1.35 };
+	public static final double[] TEXT_SCALES = { 0.75, 1, 1.25 };
+	public static final String[] STEP_LABELS = { "小", "中", "大" };
 	public static final int MARGIN = 6;
 	private static final int HOSTILE = 0xFFFF5A5A;
 	private static final int PASSIVE = 0xFF7BE07B;
@@ -174,13 +176,28 @@ public final class Minimap {
 	}
 
 	public static int size() {
-		return SIZES[Math.clamp(ModSettings.get().minimapSize, 0, SIZES.length - 1)];
+		return ModSettings.get().minimapPixels;
+	}
+
+	public static int nextSize(int current, int step) {
+		int index = 0;
+		for (int i = 0; i < SIZES.size(); i++) {
+			if (Math.abs(SIZES.get(i) - current) < Math.abs(SIZES.get(index) - current)) {
+				index = i;
+			}
+		}
+		return SIZES.get(Math.clamp(index + step, 0, SIZES.size() - 1));
+	}
+
+	private static int lineHeight() {
+		return (int) Math.ceil(10 * TEXT_SCALES[ModSettings.get().minimapText]);
 	}
 
 	public static int infoHeight() {
 		ModSettings.Data s = ModSettings.get();
-		int lines = (s.minimapCoords ? 1 : 0) + (s.minimapInfo ? 1 : 0);
-		return lines == 0 ? 0 : lines * 10 + 2;
+		int lines = (s.minimapCoords ? 1 : 0) + (s.minimapChunk ? 1 : 0) + (s.minimapBiome ? 1 : 0) + (s.minimapTime ? 1 : 0)
+				+ (s.minimapFacing ? 1 : 0) + (s.minimapInfo ? 1 : 0);
+		return lines == 0 ? 0 : lines * lineHeight() + 4;
 	}
 
 	public static int[] position(int screenWidth, int screenHeight) {
@@ -248,11 +265,14 @@ public final class Minimap {
 			builtAt = now;
 			build(view, frame, partial);
 		}
-		gfx.texture(textureId, x, y, size, size, res, res, 0xFFFFFFFF);
-		double toGui = (double) size / res;
 		ModSettings.Data s = ModSettings.get();
+		int alpha = (int) Math.round(255 * s.minimapOpacity / 100.0);
+		int shade = s.minimapDayNight && client.level != null ? (int) Math.round(255 * MapInfo.daylight(client.level)) : 255;
+		gfx.texture(textureId, x, y, size, size, res, res, alpha << 24 | shade << 16 | shade << 8 | shade);
+		double toGui = (double) size / res;
+		double iconScale = ICON_SCALES[s.minimapIcons];
 		if (s.minimapMobIcons) {
-			int box = size >= 144 ? 9 : 8;
+			int box = (int) Math.round((size >= 144 ? 9 : 8) * iconScale);
 			for (int i = markers.size() - 1; i >= 0; i--) {
 				Marker marker = markers.get(i);
 				if (marker.kind() == Kind.PLAYER) {
@@ -300,14 +320,15 @@ public final class Minimap {
 			if (!frame.inside(t[0] - frame.r(), t[1] - frame.r(), frame.inner() - 6 / toGui)) {
 				continue;
 			}
-			int hx = x + (int) Math.round(t[0] * toGui) - 4;
-			int hy = y + (int) Math.round(t[1] * toGui) - 4;
-			RemoteImages.Entry head = RemoteImages.get(RemoteImages.HEAD_PREFIX + URLEncoder.encode(marker.name(), StandardCharsets.UTF_8), RemoteImages.requestWidth(8));
-			gfx.fill(hx - 1, hy - 1, hx + 9, hy + 9, 0xFFFFFFFF);
+			int hs = (int) Math.round(8 * iconScale);
+			int hx = x + (int) Math.round(t[0] * toGui) - hs / 2;
+			int hy = y + (int) Math.round(t[1] * toGui) - hs / 2;
+			RemoteImages.Entry head = RemoteImages.get(RemoteImages.HEAD_PREFIX + URLEncoder.encode(marker.name(), StandardCharsets.UTF_8), RemoteImages.requestWidth(hs));
+			gfx.fill(hx - 1, hy - 1, hx + hs + 1, hy + hs + 1, 0xFFFFFFFF);
 			if (head.state == RemoteImages.State.READY) {
-				RemoteImages.draw(gfx, head, hx, hy, 8, 8);
+				RemoteImages.draw(gfx, head, hx, hy, hs, hs);
 			} else {
-				gfx.fill(hx, hy, hx + 8, hy + 8, 0xFF5C6773);
+				gfx.fill(hx, hy, hx + hs, hy + hs, 0xFF5C6773);
 			}
 		}
 		if (s.minimapCompass) {
@@ -328,19 +349,51 @@ public final class Minimap {
 
 	private static void info(Gfx gfx, Font font, int x, int y, int size, LocalPlayer player, WorldMaps.View view) {
 		ModSettings.Data s = ModSettings.get();
+		boolean hidden = ScriptExtras.coordsHidden(player);
+		int px = player.blockPosition().getX();
+		int pz = player.blockPosition().getZ();
 		List<String> lines = new ArrayList<>();
-		if (s.minimapCoords && !ScriptExtras.coordsHidden(player)) {
-			lines.add(player.blockPosition().getX() + "  " + player.blockPosition().getY() + "  " + player.blockPosition().getZ());
+		List<Integer> colors = new ArrayList<>();
+		if (s.minimapCoords && !hidden) {
+			lines.add(px + "  " + player.blockPosition().getY() + "  " + pz);
+			colors.add(Theme.TEXT);
+		}
+		if (s.minimapChunk && !hidden) {
+			boolean slime = MapInfo.slime(view, px, pz);
+			lines.add(MapInfo.chunk(px, pz) + (slime ? "・史萊姆" : ""));
+			colors.add(slime ? 0xFF8BE08B : Theme.TEXT_SECONDARY);
+		}
+		if (s.minimapBiome && player.level() instanceof net.minecraft.client.multiplayer.ClientLevel level) {
+			lines.add(MapInfo.biome(level, player.blockPosition()));
+			colors.add(Theme.TEXT_SECONDARY);
+		}
+		if (s.minimapTime && player.level() instanceof net.minecraft.client.multiplayer.ClientLevel level) {
+			lines.add(MapInfo.time(level));
+			colors.add(Theme.TEXT_SECONDARY);
+		}
+		if (s.minimapFacing) {
+			lines.add(MapInfo.facing(player.getYRot()));
+			colors.add(Theme.TEXT_SECONDARY);
 		}
 		if (s.minimapInfo) {
-			lines.add(WorldMaps.shardLabel(view.shard()) + "・" + WorldMaps.dimensionLabel(view.dimension()) + (view.cave() ? "・洞穴" : ""));
+			lines.add(WorldMaps.shardLabel(view.shard()) + "・" + WorldMaps.dimensionLabel(view.dimension()) + (view.cave() ? "・" + WorldMaps.layerLabel(view) : ""));
+			colors.add(Theme.TEXT_SECONDARY);
 		}
+		float scale = (float) TEXT_SCALES[s.minimapText];
+		int lineHeight = lineHeight();
+		int maxWidth = (int) Math.floor(Math.max(size, 120) / scale);
 		for (int i = 0; i < lines.size(); i++) {
-			String text = font.plainSubstrByWidth(lines.get(i), size);
-			int w = font.width(text);
+			String text = font.plainSubstrByWidth(lines.get(i), maxWidth);
+			int w = (int) Math.ceil(font.width(text) * scale);
 			int left = x + (size - w) / 2;
-			gfx.text(font, text, left + 1, y + i * 10 + 1, 0xC0000000);
-			gfx.text(font, text, left, y + i * 10, i == 0 && lines.size() > 1 ? Theme.TEXT : Theme.TEXT_SECONDARY);
+			int top = y + i * lineHeight;
+			if (s.minimapTextBg) {
+				gfx.fill(left - 2, top - 1, left + w + 2, top + lineHeight, 0xA0101418);
+			}
+			gfx.push(left, top, scale);
+			gfx.text(font, text, 1, 1, 0xC0000000);
+			gfx.text(font, text, 0, 0, colors.get(i));
+			gfx.pop();
 		}
 	}
 
@@ -398,7 +451,7 @@ public final class Minimap {
 		if (s.minimapWaypoints) {
 			for (Waypoints.Point point : Waypoints.list(view.waypoints())) {
 				if (point.visible) {
-					dots.add(new MinimapRaster.Dot(point.x + 0.5, point.z + 0.5, 3.2 * unit, Waypoints.color(point), MinimapRaster.Shape.DIAMOND, true));
+					dots.add(new MinimapRaster.Dot(point.x + 0.5, point.z + 0.5, 3.2 * unit * ICON_SCALES[s.minimapIcons], Waypoints.color(point), MinimapRaster.Shape.DIAMOND, true));
 				}
 			}
 		}
@@ -412,7 +465,7 @@ public final class Minimap {
 				case PASSIVE -> PASSIVE;
 				case PLAYER -> PLAYER_DOT;
 			};
-			dots.add(new MinimapRaster.Dot(at.x, at.z, (marker.kind() == Kind.PLAYER ? 2 : 2.2) * unit, color, MinimapRaster.Shape.DISC, false));
+			dots.add(new MinimapRaster.Dot(at.x, at.z, (marker.kind() == Kind.PLAYER ? 2 : 2.2) * unit * ICON_SCALES[s.minimapIcons], color, MinimapRaster.Shape.DISC, false));
 		}
 		double reach = frame.r() * frame.bpp() * 1.5;
 		double minX = frame.px() - reach;

@@ -6,18 +6,48 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import java.util.List;
 
 public final class Theme {
-	public static final int PANEL = 0xF0121619;
-	public static final int HEADER = 0xFF1A2026;
-	public static final int SIDEBAR = 0xFF161B20;
-	public static final int CARD = 0xFF1E252C;
-	public static final int CARD_HOVER = 0xFF2A333C;
-	public static final int SELECTED = 0xFF253543;
-	public static final int CHIP = 0xFF35404B;
-	public static final int CHIP_HOVER = 0xFF4A5966;
-	public static final int ACCENT = 0xFF7AD3FF;
-	public static final int ACCENT_DIM = 0xFF2E5A70;
+	public record Preset(String id, String name, int color) {}
+
+	public static final List<Preset> ACCENTS = List.of(
+			new Preset("sky", "天藍", 0xFF7AD3FF),
+			new Preset("gold", "輝煌金", 0xFFF2C14E),
+			new Preset("sakura", "櫻花粉", 0xFFFF9AC8),
+			new Preset("mint", "薄荷綠", 0xFF7BE0B0),
+			new Preset("lavender", "薰衣草", 0xFFB49CFF),
+			new Preset("coral", "珊瑚橘", 0xFFFF9E6B),
+			new Preset("ruby", "赤紅", 0xFFFF6B6B),
+			new Preset("custom", "自訂", 0));
+	public static final List<Preset> TONES = List.of(
+			new Preset("graphite", "石墨", 0),
+			new Preset("ocean", "深海", 0xFF0E2A48),
+			new Preset("forest", "森林", 0xFF123222),
+			new Preset("wine", "酒紅", 0xFF3C1422),
+			new Preset("violet", "紫夜", 0xFF281A42),
+			new Preset("midnight", "純黑", 0xFF000000));
+
+	private static final int BASE_PANEL = 0xF0121619;
+	private static final int BASE_HEADER = 0xFF1A2026;
+	private static final int BASE_SIDEBAR = 0xFF161B20;
+	private static final int BASE_CARD = 0xFF1E252C;
+	private static final int BASE_CARD_HOVER = 0xFF2A333C;
+	private static final int BASE_SELECTED = 0xFF253543;
+	private static final int BASE_CHIP = 0xFF35404B;
+	private static final int BASE_CHIP_HOVER = 0xFF4A5966;
+	private static final int BASE_ACCENT_DIM = 0xFF2E5A70;
+
+	public static int PANEL = BASE_PANEL;
+	public static int HEADER = BASE_HEADER;
+	public static int SIDEBAR = BASE_SIDEBAR;
+	public static int CARD = BASE_CARD;
+	public static int CARD_HOVER = BASE_CARD_HOVER;
+	public static int SELECTED = BASE_SELECTED;
+	public static int CHIP = BASE_CHIP;
+	public static int CHIP_HOVER = BASE_CHIP_HOVER;
+	public static int ACCENT = 0xFF7AD3FF;
+	public static int ACCENT_DIM = BASE_ACCENT_DIM;
 	public static final int TEXT = 0xFFE8EEF2;
 	public static final int TEXT_SECONDARY = 0xFF8C98A4;
 	public static final int TEXT_DIM = 0xFF5C6773;
@@ -32,6 +62,57 @@ public final class Theme {
 	private static final int WATERMARK_TINT = 0x18FFFFFF;
 
 	private Theme() {}
+
+	static int mix(int a, int b, double t) {
+		int r = (int) Math.round((a >> 16 & 255) * (1 - t) + (b >> 16 & 255) * t);
+		int g = (int) Math.round((a >> 8 & 255) * (1 - t) + (b >> 8 & 255) * t);
+		int bl = (int) Math.round((a & 255) * (1 - t) + (b & 255) * t);
+		return a & 0xFF000000 | r << 16 | g << 8 | bl;
+	}
+
+	public static Preset preset(List<Preset> list, String id) {
+		for (Preset preset : list) {
+			if (preset.id().equals(id)) {
+				return preset;
+			}
+		}
+		return list.getFirst();
+	}
+
+	public static int accentColor(ModSettings.Data s) {
+		Preset preset = preset(ACCENTS, s.accent);
+		return preset.id().equals("custom") ? 0xFF000000 | s.customAccent : preset.color();
+	}
+
+	public static String hex(int color) {
+		return String.format("#%06X", color & 0xFFFFFF);
+	}
+
+	public static Integer parseHex(String text) {
+		String value = text.strip().replaceFirst("^#", "");
+		if (!value.matches("[0-9a-fA-F]{6}")) {
+			return null;
+		}
+		return 0xFF000000 | Integer.parseInt(value, 16);
+	}
+
+	public static void apply(ModSettings.Data s) {
+		int accent = accentColor(s);
+		Preset tone = preset(TONES, s.tone);
+		double k = tone.id().equals("graphite") ? 0 : tone.id().equals("midnight") ? 0.55 : 0.32;
+		int t = tone.color();
+		PANEL = k == 0 ? BASE_PANEL : mix(BASE_PANEL, t, k);
+		HEADER = k == 0 ? BASE_HEADER : mix(BASE_HEADER, t, k);
+		SIDEBAR = k == 0 ? BASE_SIDEBAR : mix(BASE_SIDEBAR, t, k);
+		CARD = k == 0 ? BASE_CARD : mix(BASE_CARD, t, k);
+		CARD_HOVER = k == 0 ? BASE_CARD_HOVER : mix(BASE_CARD_HOVER, t, k);
+		CHIP = k == 0 ? BASE_CHIP : mix(BASE_CHIP, t, k * 0.8);
+		CHIP_HOVER = k == 0 ? BASE_CHIP_HOVER : mix(BASE_CHIP_HOVER, t, k * 0.8);
+		ACCENT = accent;
+		boolean defaultAccent = accent == 0xFF7AD3FF;
+		ACCENT_DIM = defaultAccent ? BASE_ACCENT_DIM : mix(accent, 0xFF0E1114, 0.62);
+		SELECTED = defaultAccent && k == 0 ? BASE_SELECTED : mix(CARD, accent, 0.18);
+	}
 
 	public static void watermark(Gfx gfx, int panelX, int panelY, int panelW, int panelH) {
 		int size = Math.min(WATERMARK_MAX, Math.min(panelW, panelH - 60) / 2);

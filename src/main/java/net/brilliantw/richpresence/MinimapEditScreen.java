@@ -30,7 +30,7 @@ public final class MinimapEditScreen extends Screen {
 			ModSettings.Data s = ModSettings.get();
 			s.minimapX = 0;
 			s.minimapY = 0;
-			s.minimapSize = 1;
+			s.minimapPixels = 112;
 		}).bounds(left, y, w, 20).build());
 		addRenderableWidget(Button.builder(shapeLabel(), b -> {
 			ModSettings.get().minimapCircle = !ModSettings.get().minimapCircle;
@@ -92,7 +92,7 @@ public final class MinimapEditScreen extends Screen {
 		gfx.fill(b[0] + b[2], b[1], b[0] + b[2] + 1, b[1] + b[3], Theme.ACCENT);
 		List<String> lines = List.of(
 				"拖曳移動小地圖 · 滾輪調整大小",
-				"目前大小：" + Minimap.SIZE_LABELS[ModSettings.get().minimapSize] + " · Esc 完成");
+				"目前大小：" + Minimap.size() + " 像素 · Esc 完成");
 		int boxWidth = lines.stream().mapToInt(font::width).max().orElse(0) + 16;
 		int x = (width - boxWidth) / 2;
 		int top = height / 2 - 14;
@@ -133,7 +133,7 @@ public final class MinimapEditScreen extends Screen {
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
 		ModSettings.Data s = ModSettings.get();
-		s.minimapSize = Math.clamp(s.minimapSize + (int) Math.signum(scrollY), 0, Minimap.SIZES.length - 1);
+		s.minimapPixels = Minimap.nextSize(s.minimapPixels, (int) Math.signum(scrollY));
 		return true;
 	}
 

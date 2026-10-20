@@ -77,6 +77,9 @@ public final class WorldMapScreen extends Screen {
 	private long targetAt;
 	private EditBox search;
 	private long clearArmedAt;
+	private boolean layersOpen;
+	private Rect layersAnchor;
+	private Rect layersBox;
 	private MapMarkers.Area selectedArea;
 
 	public WorldMapScreen(Screen parent) {
@@ -206,6 +209,8 @@ public final class WorldMapScreen extends Screen {
 			drawTerrain(gfx, area);
 		}
 		drawRegen(gfx, area);
+		drawSlime(gfx, area);
+		drawGrid(gfx, area);
 		drawAreas(gfx, mouseX, mouseY, area);
 		outlineSelected(gfx);
 		drawPois(gfx, mouseX, mouseY, area);
@@ -220,6 +225,7 @@ public final class WorldMapScreen extends Screen {
 		SeedMaps.evict();
 		header(gfx, mouseX, mouseY);
 		footer(gfx, mouseX, mouseY, area);
+		layers(gfx, mouseX, mouseY);
 		if (panelOpen()) {
 			panel(gfx, mouseX, mouseY);
 		}
@@ -913,6 +919,106 @@ public final class WorldMapScreen extends Screen {
 		hits.add(new Hit(r, action));
 	}
 
+	private void drawGrid(Gfx gfx, Rect area) {
+		if (!ModSettings.get().mapGrid) {
+			return;
+		}
+		double[] w = visibleWorld(area);
+		if (scale >= 1) {
+			for (int bx = Math.floorDiv((int) Math.floor(w[0]), 16) * 16; bx <= w[2]; bx += 16) {
+				int sx = (int) Math.round(toScreenX(bx));
+				gfx.fill(sx, area.y(), sx + 1, area.y() + area.h(), 0x22FFFFFF);
+			}
+			for (int bz = Math.floorDiv((int) Math.floor(w[1]), 16) * 16; bz <= w[3]; bz += 16) {
+				int sy = (int) Math.round(toScreenY(bz));
+				gfx.fill(area.x(), sy, area.x() + area.w(), sy + 1, 0x22FFFFFF);
+			}
+		}
+		if (scale >= 1.0 / 16) {
+			for (int bx = Math.floorDiv((int) Math.floor(w[0]), 512) * 512; bx <= w[2]; bx += 512) {
+				int sx = (int) Math.round(toScreenX(bx));
+				gfx.fill(sx, area.y(), sx + 1, area.y() + area.h(), 0x55FFD27A);
+			}
+			for (int bz = Math.floorDiv((int) Math.floor(w[1]), 512) * 512; bz <= w[3]; bz += 512) {
+				int sy = (int) Math.round(toScreenY(bz));
+				gfx.fill(area.x(), sy, area.x() + area.w(), sy + 1, 0x55FFD27A);
+			}
+		}
+	}
+
+	private boolean slimeAvailable() {
+		return view != null && view.dimension().equals("minecraft:overworld") && SeedMaps.seed(view) != null;
+	}
+
+	private void drawSlime(Gfx gfx, Rect area) {
+		if (!ModSettings.get().mapSlime || !slimeAvailable() || scale < 0.5) {
+			return;
+		}
+		long seed = SeedMaps.seed(view);
+		double[] w = visibleWorld(area);
+		for (int cz = Math.floorDiv((int) Math.floor(w[1]), 16); cz <= Math.floorDiv((int) Math.floor(w[3]), 16); cz++) {
+			for (int cx = Math.floorDiv((int) Math.floor(w[0]), 16); cx <= Math.floorDiv((int) Math.floor(w[2]), 16); cx++) {
+				if (!MapInfo.slime(seed, cx, cz)) {
+					continue;
+				}
+				int x0 = (int) Math.round(toScreenX(cx * 16.0));
+				int y0 = (int) Math.round(toScreenY(cz * 16.0));
+				int x1 = (int) Math.round(toScreenX(cx * 16.0 + 16));
+				int y1 = (int) Math.round(toScreenY(cz * 16.0 + 16));
+				gfx.fill(x0, y0, x1, y1, 0x4C3FD46A);
+				if (scale >= 2) {
+					gfx.fill(x0, y0, x1, y0 + 1, 0x9C3FD46A);
+					gfx.fill(x0, y1 - 1, x1, y1, 0x9C3FD46A);
+					gfx.fill(x0, y0, x0 + 1, y1, 0x9C3FD46A);
+					gfx.fill(x1 - 1, y0, x1, y1, 0x9C3FD46A);
+				}
+			}
+		}
+	}
+
+	private record Layer(String label, String detail, boolean enabled, java.util.function.BooleanSupplier value, Runnable toggle) {}
+
+	private void layers(Gfx gfx, int mouseX, int mouseY) {
+		layersBox = null;
+		if (!layersOpen || layersAnchor == null || view == null) {
+			return;
+		}
+		ModSettings.Data s = ModSettings.get();
+		List<Layer> list = List.of(
+				new Layer("區塊格線", "放大後顯示 16 格區塊線，黃線為 512 格區域", true, () -> s.mapGrid, () -> s.mapGrid = !s.mapGrid),
+				new Layer("史萊姆區塊", slimeAvailable() ? "依種子標示主世界的史萊姆區塊" : "只在有公開種子的主世界可用", slimeAvailable(), () -> s.mapSlime, () -> s.mapSlime = !s.mapSlime),
+				new Layer("領地", "伺服器網頁地圖的領地範圍", view.markers() != null, () -> s.mapResidences, () -> s.mapResidences = !s.mapResidences),
+				new Layer("公開傳送點", "點擊圖示可直接傳送", view.markers() != null, () -> s.mapPublicHomes, () -> s.mapPublicHomes = !s.mapPublicHomes),
+				new Layer("資源再生", "琥珀色等待再生、紅色已可再生", true, () -> s.mapRegen, () -> s.mapRegen = !s.mapRegen));
+		int w = 196;
+		int x = Math.max(4, Math.min(layersAnchor.x() - w + 70, width - w - 4));
+		int y = HEADER + 2;
+		int h = list.size() * 26 + 8;
+		layersBox = new Rect(x, y, w, h);
+		gfx.fill(x - 1, y - 1, x + w + 1, y + h + 1, 0xFF0B0E11);
+		gfx.fill(x, y, x + w, y + h, Theme.PANEL);
+		for (int i = 0; i < list.size(); i++) {
+			Layer layer = list.get(i);
+			Rect row = new Rect(x + 4, y + 4 + i * 26, w - 8, 24);
+			boolean hot = layer.enabled() && row.contains(mouseX, mouseY);
+			if (hot) {
+				gfx.fill(row.x(), row.y(), row.x() + row.w(), row.y() + row.h(), Theme.CARD_HOVER);
+			}
+			boolean on = layer.value().getAsBoolean();
+			int box = layer.enabled() ? on ? Theme.ACCENT : Theme.CHIP : 0xFF2A3038;
+			gfx.fill(row.x() + 4, row.y() + 7, row.x() + 14, row.y() + 17, 0xFF0B0E11);
+			gfx.fill(row.x() + 5, row.y() + 8, row.x() + 13, row.y() + 16, box);
+			gfx.text(font, layer.label(), row.x() + 20, row.y() + 3, layer.enabled() ? Theme.TEXT : Theme.TEXT_DIM);
+			gfx.text(font, font.plainSubstrByWidth(layer.detail(), row.w() - 24), row.x() + 20, row.y() + 13, Theme.TEXT_DIM);
+			if (layer.enabled()) {
+				hits.add(new Hit(row, () -> {
+					layer.toggle().run();
+					ModSettings.save();
+				}));
+			}
+		}
+	}
+
 	private void drawTerrain(Gfx gfx, Rect area) {
 		double left = toWorldX(area.x());
 		double right = toWorldX(area.x() + area.w());
@@ -1081,6 +1187,8 @@ public final class WorldMapScreen extends Screen {
 		int right = width - 6;
 		right = chip(gfx, right, 5, "記錄點", false, mouseX, mouseY, () -> CommandMenuScreen.setScreen(new WaypointScreen(this, view)));
 		right = chip(gfx, right, 5, "回到我的位置", false, mouseX, mouseY, this::recenter);
+		right = chip(gfx, right, 5, "圖層 ▾", layersOpen, mouseX, mouseY, () -> layersOpen = !layersOpen);
+		layersAnchor = new Rect(right + 4, 5, 0, 14);
 		if (view.markers() != null) {
 			boolean querying = panelOpen() && (currentTab() == Tab.RESIDENCES || currentTab() == Tab.HOMES);
 			right = chip(gfx, right, 5, "查詢", querying, mouseX, mouseY, () -> {
@@ -1172,6 +1280,15 @@ public final class WorldMapScreen extends Screen {
 			int h = WorldMaps.height(view, wx, wz);
 			left = "X " + wx + (h == Integer.MIN_VALUE ? "" : "  Y " + h) + "  Z " + wz;
 		}
+		if (area.contains(mouseX, mouseY) && !coordsHidden()) {
+			int wx = (int) Math.floor(toWorldX(mouseX));
+			int wz = (int) Math.floor(toWorldZ(mouseY));
+			left += "　區塊 " + Math.floorDiv(wx, 16) + ", " + Math.floorDiv(wz, 16) + (MapInfo.slime(view, wx, wz) ? "・史萊姆區塊" : "");
+			if (!seedActive() && viewingCurrent() && minecraft.level != null && minecraft.level.hasChunk(Math.floorDiv(wx, 16), Math.floorDiv(wz, 16))) {
+				int h = WorldMaps.height(view, wx, wz);
+				left += "　" + MapInfo.biome(minecraft.level, new net.minecraft.core.BlockPos(wx, h == Integer.MIN_VALUE ? 64 : h, wz));
+			}
+		}
 		if (area.contains(mouseX, mouseY) && seedActive()) {
 			SeedWorld world = SeedMaps.world(view);
 			int id = SeedMaps.biomeAt(view, (int) Math.floor(toWorldX(mouseX)), (int) Math.floor(toWorldZ(mouseY)));
@@ -1225,6 +1342,10 @@ public final class WorldMapScreen extends Screen {
 		setFocused(null);
 		if (search != null) {
 			search.setFocused(false);
+		}
+		if (layersOpen && layersBox != null && !layersBox.contains(event.x(), event.y()) && !(event.y() < HEADER)) {
+			layersOpen = false;
+			return true;
 		}
 		for (Hit hit : List.copyOf(hits)) {
 			if (hit.rect().contains(event.x(), event.y())) {

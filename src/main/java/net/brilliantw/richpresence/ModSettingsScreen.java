@@ -34,6 +34,25 @@ public final class ModSettingsScreen extends Screen {
 		}
 	}
 
+	private static String nextPreset(List<Theme.Preset> presets, String current) {
+		int index = presets.indexOf(Theme.preset(presets, current));
+		return presets.get((index + 1) % presets.size()).id();
+	}
+
+	private void editAccent() {
+		ModSettings.Data s = ModSettings.get();
+		CommandMenuScreen.setScreen(new EditDialog(this, "自訂強調色", List.of(new EditDialog.Field("色碼", "例如 #FF9AC8", Theme.hex(s.customAccent), 7)), null, 0, (values, group) -> {
+			Integer color = Theme.parseHex(values.getFirst());
+			if (color == null) {
+				return "請輸入 6 位數的色碼，例如 #FF9AC8";
+			}
+			s.customAccent = color & 0xFFFFFF;
+			s.accent = "custom";
+			ModSettings.save();
+			return null;
+		}));
+	}
+
 	private static int cycle(List<Integer> options, int current) {
 		int index = options.indexOf(current);
 		return options.get((index + 1) % options.size());
@@ -46,6 +65,10 @@ public final class ModSettingsScreen extends Screen {
 	private static final int FOOTER = 14;
 	private static final int ROW = 30;
 	private static final int SECTION = 18;
+	private static final int TABS_W = 92;
+	private static final int TAB = 22;
+	private static final List<String> TABS = List.of("一般", "聊天", "遊戲", "介面", "小地圖", "地圖");
+	private static String tab = "一般";
 	private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm").withZone(ZoneId.systemDefault());
 
 	private final Screen parent;
@@ -89,18 +112,35 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("遊戲", "配方書修正", "讓配方書正確辨識伺服器的自訂材料", () -> s.recipeFix, v -> s.recipeFix = v));
 		rows.add(new Row("遊戲", "格子編號", "按住 Alt 時在介面格子上顯示編號", () -> s.slotNumbers, v -> s.slotNumbers = v));
 		rows.add(new Row("遊戲", "記分板位置", "套用自訂的記分板位置與縮放", () -> s.scoreboardLayout, v -> s.scoreboardLayout = v));
-		rows.add(new Row("地圖", "懸浮小地圖", "畫面上的小地圖；按 N 切換、按 M 開大地圖、按 B 新增記錄點", () -> s.minimap, v -> s.minimap = v));
-		rows.add(new Row("地圖", "隨視角旋轉", "小地圖跟著面向旋轉；關閉時北方固定朝上", () -> s.minimapRotate, v -> s.minimapRotate = v));
-		rows.add(new Row("地圖", "圓形小地圖", "關閉時改為方形", () -> s.minimapCircle, v -> s.minimapCircle = v));
-		rows.add(new Row("地圖", "小地圖框線", "小地圖外圍的邊框", () -> s.minimapFrame, v -> s.minimapFrame = v));
-		rows.add(new Row("地圖", "小地圖方位", "在小地圖邊緣標示東西南北", () -> s.minimapCompass, v -> s.minimapCompass = v));
-		rows.add(new Row("地圖", "顯示生物", "只顯示你看得到的；紅色為敵對生物、綠色為其他生物", () -> s.minimapMobs, v -> s.minimapMobs = v));
-		rows.add(new Row("地圖", "生物圖示", "以生物的臉顯示種類；關閉時改用色點", () -> s.minimapMobIcons, v -> s.minimapMobIcons = v));
-		rows.add(new Row("地圖", "顯示玩家", "標示附近你看得到的玩家", () -> s.minimapPlayers, v -> s.minimapPlayers = v));
-		rows.add(new Row("地圖", "玩家頭像", "以頭像顯示玩家；關閉時改用白點", () -> s.minimapPlayerHeads, v -> s.minimapPlayerHeads = v));
-		rows.add(new Row("地圖", "顯示座標", "在小地圖下方顯示目前座標", () -> s.minimapCoords, v -> s.minimapCoords = v));
-		rows.add(new Row("地圖", "顯示分流與維度", "在小地圖下方顯示目前分流、維度與是否在洞穴", () -> s.minimapInfo, v -> s.minimapInfo = v));
-		rows.add(new Row("地圖", "顯示記錄點", "在小地圖上標示記錄點，超出範圍時貼在邊緣指示方向", () -> s.minimapWaypoints, v -> s.minimapWaypoints = v));
+		rows.add(new Row("遊戲", "鐵砧完整花費", "超限附魔超過 40 級時顯示實際花費，取代「太貴了！」", () -> s.anvilCost, v -> s.anvilCost = v));
+		rows.add(Row.choice("介面", "強調色", "模組介面的按鈕、選取與標題顏色；點擊切換", () -> Theme.preset(Theme.ACCENTS, s.accent).name() + (s.accent.equals("custom") ? " " + Theme.hex(s.customAccent) : ""),
+				() -> s.accent = nextPreset(Theme.ACCENTS, s.accent)));
+		rows.add(Row.choice("介面", "自訂強調色", "輸入色碼，例如 #FF9AC8；點擊編輯後會自動切換成自訂", () -> Theme.hex(s.customAccent), this::editAccent));
+		rows.add(Row.choice("介面", "背景色調", "模組介面面板與卡片的底色；點擊切換", () -> Theme.preset(Theme.TONES, s.tone).name(),
+				() -> s.tone = nextPreset(Theme.TONES, s.tone)));
+		rows.add(new Row("小地圖", "懸浮小地圖", "畫面上的小地圖；按 N 切換、按 M 開大地圖、按 B 新增記錄點", () -> s.minimap, v -> s.minimap = v));
+		rows.add(Row.choice("小地圖", "大小", "小地圖的邊長；也可以在「小地圖位置」用滾輪調整", () -> s.minimapPixels + " 像素", () -> s.minimapPixels = cycle(Minimap.SIZES, Minimap.nextSize(s.minimapPixels, 0))));
+		rows.add(Row.choice("小地圖", "縮放", "每個像素代表幾格；數字越大看得越遠", () -> "1:" + Minimap.formatZoom(Minimap.ZOOMS[s.minimapZoom]), () -> s.minimapZoom = (s.minimapZoom + 1) % Minimap.ZOOMS.length));
+		rows.add(Row.choice("小地圖", "透明度", "小地圖本身的不透明度", () -> s.minimapOpacity + "%", () -> s.minimapOpacity = cycle(List.of(100, 90, 80, 70, 60, 50, 40), s.minimapOpacity)));
+		rows.add(new Row("小地圖", "隨視角旋轉", "小地圖跟著面向旋轉；關閉時北方固定朝上", () -> s.minimapRotate, v -> s.minimapRotate = v));
+		rows.add(new Row("小地圖", "圓形小地圖", "關閉時改為方形", () -> s.minimapCircle, v -> s.minimapCircle = v));
+		rows.add(new Row("小地圖", "框線", "小地圖外圍的邊框", () -> s.minimapFrame, v -> s.minimapFrame = v));
+		rows.add(new Row("小地圖", "方位", "在小地圖邊緣標示東西南北", () -> s.minimapCompass, v -> s.minimapCompass = v));
+		rows.add(new Row("小地圖", "依晝夜調暗", "夜晚時小地圖跟著變暗，和天色一致", () -> s.minimapDayNight, v -> s.minimapDayNight = v));
+		rows.add(Row.choice("小地圖", "圖示大小", "生物、玩家與記錄點圖示的大小", () -> Minimap.STEP_LABELS[s.minimapIcons], () -> s.minimapIcons = (s.minimapIcons + 1) % 3));
+		rows.add(new Row("小地圖", "顯示生物", "只顯示你看得到的；紅框為敵對生物、綠框為其他生物", () -> s.minimapMobs, v -> s.minimapMobs = v));
+		rows.add(new Row("小地圖", "生物圖示", "以生物的頭像顯示種類；關閉時改用色點", () -> s.minimapMobIcons, v -> s.minimapMobIcons = v));
+		rows.add(new Row("小地圖", "顯示玩家", "標示附近你看得到的玩家", () -> s.minimapPlayers, v -> s.minimapPlayers = v));
+		rows.add(new Row("小地圖", "玩家頭像", "以頭像顯示玩家；關閉時改用白點", () -> s.minimapPlayerHeads, v -> s.minimapPlayerHeads = v));
+		rows.add(new Row("小地圖", "顯示記錄點", "在小地圖上標示記錄點，超出範圍時貼在邊緣指示方向", () -> s.minimapWaypoints, v -> s.minimapWaypoints = v));
+		rows.add(Row.choice("小地圖文字", "文字大小", "小地圖下方資訊的字體大小", () -> Minimap.STEP_LABELS[s.minimapText], () -> s.minimapText = (s.minimapText + 1) % 3));
+		rows.add(new Row("小地圖文字", "文字背景", "在資訊文字後方加上半透明底色，亮處也看得清楚", () -> s.minimapTextBg, v -> s.minimapTextBg = v));
+		rows.add(new Row("小地圖文字", "座標", "目前的 X Y Z 座標", () -> s.minimapCoords, v -> s.minimapCoords = v));
+		rows.add(new Row("小地圖文字", "區塊座標", "所在區塊與區塊內位置；有公開種子的主世界會標示史萊姆區塊", () -> s.minimapChunk, v -> s.minimapChunk = v));
+		rows.add(new Row("小地圖文字", "生態域", "目前所在的生態域名稱", () -> s.minimapBiome, v -> s.minimapBiome = v));
+		rows.add(new Row("小地圖文字", "遊戲時間", "第幾天、遊戲內時刻與白天／夜晚", () -> s.minimapTime, v -> s.minimapTime = v));
+		rows.add(new Row("小地圖文字", "面向", "目前面向的方位與角度", () -> s.minimapFacing, v -> s.minimapFacing = v));
+		rows.add(new Row("小地圖文字", "分流與維度", "目前分流、維度與洞穴層", () -> s.minimapInfo, v -> s.minimapInfo = v));
 		rows.add(new Row("地圖", "地圖記憶", "記住跑過的地方，之後回來仍看得到；會佔用硬碟空間。關閉後只保留這次遊玩的地圖", () -> s.mapMemory, v -> s.mapMemory = v));
 		rows.add(Row.choice("地圖", "清除地圖記憶", "刪除所有分流記住的地形資料，連點兩下確認", () -> clearArmedAt > 0 && System.currentTimeMillis() - clearArmedAt < 3000 ? "再點一次刪除" : "已用 " + MapStore.diskLabel(), () -> {
 			if (clearArmedAt > 0 && System.currentTimeMillis() - clearArmedAt < 3000) {
@@ -114,17 +154,52 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("地圖", "顯示領地", "標示伺服器上的領地範圍，大地圖可看名稱與擁有者", () -> s.mapResidences, v -> s.mapResidences = v));
 		rows.add(new Row("地圖", "顯示公開傳送點", "標示玩家的公開傳送點（/phome）", () -> s.mapPublicHomes, v -> s.mapPublicHomes = v));
 		rows.add(new Row("地圖", "顯示資源再生區塊", "琥珀色為等待再生、紅色為已可再生；在這些區塊建築會被重置", () -> s.mapRegen, v -> s.mapRegen = v));
-		rows.add(new Row("遊戲", "鐵砧完整花費", "超限附魔超過 40 級時顯示實際花費，取代「太貴了！」", () -> s.anvilCost, v -> s.anvilCost = v));
+		rows.add(new Row("地圖", "大地圖區塊格線", "放大後顯示 16 格區塊線，黃線為 512 格區域", () -> s.mapGrid, v -> s.mapGrid = v));
+		rows.add(new Row("地圖", "大地圖史萊姆區塊", "依官網公開種子標示主世界的史萊姆區塊", () -> s.mapSlime, v -> s.mapSlime = v));
 	}
 
 	private Rect panel() {
-		int w = Math.min(width - 16, 460);
+		int w = Math.min(width - 16, 560);
 		return new Rect((width - w) / 2, 8, w, height - 16);
 	}
 
 	private Rect content() {
 		Rect p = panel();
-		return new Rect(p.x() + 10, p.y() + HEADER + 6, p.w() - 20, p.h() - HEADER - FOOTER - 10);
+		return new Rect(p.x() + TABS_W + 10, p.y() + HEADER + 6, p.w() - TABS_W - 20, p.h() - HEADER - FOOTER - 10);
+	}
+
+	private static String tabOf(String section) {
+		return switch (section) {
+			case "連線" -> "一般";
+			case "小地圖文字" -> "小地圖";
+			default -> section;
+		};
+	}
+
+	private void tabs(Gfx gfx, Rect p, int mouseX, int mouseY) {
+		int top = p.y() + HEADER;
+		int bottom = p.y() + p.h() - FOOTER;
+		gfx.fill(p.x(), top, p.x() + TABS_W, bottom, Theme.SIDEBAR);
+		gfx.fill(p.x() + TABS_W - 1, top, p.x() + TABS_W, bottom, Theme.HEADER);
+		for (int i = 0; i < TABS.size(); i++) {
+			String name = TABS.get(i);
+			Rect r = new Rect(p.x() + 4, top + 6 + i * (TAB + 2), TABS_W - 9, TAB);
+			boolean selected = name.equals(tab);
+			boolean hot = r.contains(mouseX, mouseY);
+			if (selected || hot) {
+				gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? Theme.SELECTED : Theme.CARD_HOVER);
+			}
+			if (selected) {
+				gfx.fill(r.x(), r.y(), r.x() + 2, r.y() + r.h(), Theme.ACCENT);
+			}
+			gfx.text(font, name, r.x() + 9, r.y() + 7, selected ? Theme.ACCENT : Theme.TEXT);
+			String count = Long.toString(rows.stream().filter(row -> tabOf(row.section()).equals(name)).count());
+			gfx.text(font, count, r.x() + r.w() - font.width(count) - 6, r.y() + 7, Theme.TEXT_DIM);
+			hits.add(new Hit(r, () -> {
+				tab = name;
+				scroll = 0;
+			}));
+		}
 	}
 
 	private void setStatus(String text) {
@@ -177,6 +252,7 @@ public final class ModSettingsScreen extends Screen {
 			int barY = c.y() + (int) ((c.h() - bar) * (scroll / (height - c.h())));
 			gfx.fill(c.x() + c.w() + 3, barY, c.x() + c.w() + 5, barY + bar, Theme.CHIP_HOVER);
 		}
+		tabs(gfx, p, mouseX, mouseY);
 		gfx.fill(p.x(), p.y() + p.h() - FOOTER, p.x() + p.w(), p.y() + p.h() - FOOTER + 1, Theme.HEADER);
 		String footer = System.currentTimeMillis() < statusUntil ? status : "設定會自動儲存 · Esc 返回";
 		gfx.text(font, footer, p.x() + 8, p.y() + p.h() - FOOTER + 4, Theme.TEXT_DIM);
@@ -192,6 +268,9 @@ public final class ModSettingsScreen extends Screen {
 		}
 		String section = "";
 		for (Row row : rows) {
+			if (!tabOf(row.section()).equals(tab)) {
+				continue;
+			}
 			if (!row.section().equals(section)) {
 				section = row.section();
 				if (draw) {
@@ -227,6 +306,9 @@ public final class ModSettingsScreen extends Screen {
 				}));
 			}
 			y += ROW;
+		}
+		if (!tab.equals("一般")) {
+			return y - top + 6;
 		}
 		if (draw) {
 			gfx.text(font, "危險設定", c.x(), y + 6, Theme.DANGER);

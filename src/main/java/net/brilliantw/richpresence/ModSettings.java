@@ -48,6 +48,22 @@ public final class ModSettings {
 		public List<String> seedGroups;
 		public int minimapSize = 1;
 		public int minimapZoom = 1;
+		public int minimapPixels = 112;
+		public int minimapOpacity = 100;
+		public int minimapIcons = 1;
+		public int minimapText = 1;
+		public boolean minimapTextBg;
+		public boolean minimapDayNight;
+		public boolean minimapChunk;
+		public boolean minimapBiome;
+		public boolean minimapTime;
+		public boolean minimapFacing;
+		public boolean mapGrid;
+		public boolean mapSlime;
+		public String accent = "sky";
+		public int customAccent = 0x7AD3FF;
+		public String tone = "graphite";
+		public int settingsVersion;
 		public float minimapX;
 		public float minimapY;
 		public boolean anyServer;
@@ -75,8 +91,23 @@ public final class ModSettings {
 		}
 		parsed.reconnectAttempts = Math.clamp(parsed.reconnectAttempts, 0, 1000);
 		parsed.reconnectDelay = Math.clamp(parsed.reconnectDelay, 1, 600);
-		parsed.minimapSize = Math.clamp(parsed.minimapSize, 0, 2);
-		parsed.minimapZoom = Math.clamp(parsed.minimapZoom, 0, 3);
+		if (parsed.settingsVersion < 2) {
+			parsed.minimapPixels = new int[] { 80, 112, 144 }[Math.clamp(parsed.minimapSize, 0, 2)];
+			parsed.minimapZoom = Math.clamp(parsed.minimapZoom, 0, 3) + 1;
+			parsed.settingsVersion = 2;
+		}
+		parsed.minimapPixels = Math.clamp(parsed.minimapPixels, 48, 320);
+		parsed.minimapZoom = Math.clamp(parsed.minimapZoom, 0, 5);
+		parsed.minimapOpacity = Math.clamp(parsed.minimapOpacity, 20, 100);
+		parsed.minimapIcons = Math.clamp(parsed.minimapIcons, 0, 2);
+		parsed.minimapText = Math.clamp(parsed.minimapText, 0, 2);
+		parsed.customAccent &= 0xFFFFFF;
+		if (parsed.accent == null) {
+			parsed.accent = "sky";
+		}
+		if (parsed.tone == null) {
+			parsed.tone = "graphite";
+		}
 		if (parsed.anyServer && parsed.anyServerAcceptedAt <= 0) {
 			parsed.anyServer = false;
 		}
@@ -92,11 +123,13 @@ public final class ModSettings {
 			} catch (Exception ignored) {
 			}
 			data = parse(json);
+			Theme.apply(data);
 		}
 		return data;
 	}
 
 	public static void save() {
+		Theme.apply(get());
 		try {
 			Path file = file();
 			Path temp = file.resolveSibling(file.getFileName() + ".tmp");
