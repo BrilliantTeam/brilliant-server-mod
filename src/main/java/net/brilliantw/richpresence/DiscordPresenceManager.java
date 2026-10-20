@@ -149,13 +149,19 @@ public final class DiscordPresenceManager {
 		button.addProperty("url", RPConfig.WEBSITE_URL);
 		JsonArray buttons = new JsonArray();
 		buttons.add(button);
+		if (RPConfig.LAUNCHER_VERSION != null) {
+			JsonObject launcher = new JsonObject();
+			launcher.addProperty("label", "下載輝煌啟動器");
+			launcher.addProperty("url", RPConfig.LAUNCHER_URL);
+			buttons.add(launcher);
+		}
 
 		return new RichPresence.Builder()
 				.setActivityType(ActivityType.Playing)
 				.setDetails(details)
 				.setState(state)
 				.setStartTimestamp(startTimestamp)
-				.setLargeImage(RPConfig.LARGE_IMAGE_KEY, RPConfig.LARGE_IMAGE_TEXT)
+				.setLargeImage(RPConfig.LARGE_IMAGE_KEY, RPConfig.LAUNCHER_VERSION != null ? "使用輝煌啟動器 v" + RPConfig.LAUNCHER_VERSION : RPConfig.LARGE_IMAGE_TEXT)
 				.setSmallImage(smallImageKey, RPConfig.SMALL_IMAGE_TEXT)
 				.setButtons(buttons)
 				.build();

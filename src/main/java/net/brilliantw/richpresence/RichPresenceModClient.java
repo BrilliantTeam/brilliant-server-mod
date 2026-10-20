@@ -191,7 +191,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 	}
 
 	private static String state(String host) {
-		return host + "｜" + RPConfig.MINECRAFT_VERSION;
+		return host + "｜" + RPConfig.MINECRAFT_VERSION + (RPConfig.LAUNCHER_VERSION != null ? "｜輝煌啟動器" : "");
 	}
 
 	private static String imageKey(String host) {
