@@ -109,6 +109,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		NightVision.register();
 		PerfSampler.register();
 		ScreenshotMeta.register();
+		SettingsEntry.register();
 	}
 
 	public static boolean isOnBrilliantServer() {

@@ -14,5 +14,7 @@
 	"key.brilliant-server-mod.waypoint_add": "新增記錄點",
 	"key.brilliant-server-mod.minimap_zoom": "切換小地圖縮放",
 	"key.category.brilliant-server-mod.tools": "輝煌模組：工具",
-	"key.brilliant-server-mod.night_vision": "切換夜視"
+	"key.brilliant-server-mod.night_vision": "切換夜視",
+	"key.category.brilliant-server-mod.general": "輝煌模組：一般",
+	"key.brilliant-server-mod.settings": "開啟輝煌模組設定"
 }
