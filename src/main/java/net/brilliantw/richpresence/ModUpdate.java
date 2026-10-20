@@ -35,6 +35,7 @@ public final class ModUpdate {
 		public String file = "";
 		public long size;
 		public String sha256;
+		public String signature;
 	}
 
 	public enum Status { IDLE, DOWNLOADING, READY, FAILED }
@@ -104,7 +105,7 @@ public final class ModUpdate {
 
 	public static boolean canInstall() {
 		Latest latest = available;
-		return latest != null && latest.sha256 != null && latest.sha256.matches("[0-9a-f]{64}") && FILE.matcher(latest.file).matches()
+		return latest != null && latest.sha256 != null && latest.sha256.matches("[0-9a-f]{64}") && latest.signature != null && !latest.signature.isBlank() && FILE.matcher(latest.file).matches()
 				&& latest.url.startsWith(RPConfig.WEBSITE_URL + "/api/mod/download/") && currentJar() != null;
 	}
 
@@ -214,9 +215,14 @@ public final class ModUpdate {
 				}
 			}
 		}
-		if (!HexFormat.of().formatHex(digest.digest()).equals(latest.sha256)) {
+		String sha = HexFormat.of().formatHex(digest.digest());
+		if (!sha.equals(latest.sha256)) {
 			Files.deleteIfExists(part);
 			throw new IOException("檔案驗證失敗，已取消更新");
+		}
+		if (!UpdateTrust.verify(latest.file, sha, latest.signature)) {
+			Files.deleteIfExists(part);
+			throw new IOException("更新檔沒有通過輝煌官方數位簽章驗證，為了安全已取消更新");
 		}
 		Files.move(part, destination, StandardCopyOption.REPLACE_EXISTING);
 	}

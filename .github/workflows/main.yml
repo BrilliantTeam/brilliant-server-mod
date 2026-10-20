@@ -51,6 +51,16 @@ jobs:
           done
           ls -la release/
 
+      - name: 設置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 數位簽章
+        env:
+          UPDATE_SIGNING_KEY: ${{ secrets.UPDATE_SIGNING_KEY }}
+        run: node .github/sign-release.mjs release SIGNATURES.json
+
       - name: 發佈並上傳 Release
         uses: softprops/action-gh-release@v2
         with:
@@ -65,7 +75,7 @@ jobs:
           draft: false
           prerelease: false
           fail_on_unmatched_files: true
-          files: release/*.jar
+          files: release/*
 
       - name: 上傳到 Modrinth
         if: env.MODRINTH_TOKEN != ''

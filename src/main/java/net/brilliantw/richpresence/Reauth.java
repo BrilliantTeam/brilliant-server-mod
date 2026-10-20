@@ -66,6 +66,10 @@ public final class Reauth {
 	private static long nextCheck;
 	private static String verifier = "";
 	private static String state = "";
+	private static String redirect = REDIRECT_URI;
+	private static java.net.ServerSocket loopback;
+	private static final String DONE_PAGE = "<!doctype html><meta charset=utf-8><title>輝煌模組</title><body style=\"margin:0;height:100vh;display:grid;place-items:center;background:#15171c;color:#f2f2f2;font:18px sans-serif;text-align:center\"><div><h1 style=\"color:#f6e0a4\">登入完成</h1><p>可以關閉這個分頁，回到 Minecraft。</p></div>";
+	private static final String FAIL_PAGE = "<!doctype html><meta charset=utf-8><title>輝煌模組</title><body style=\"margin:0;height:100vh;display:grid;place-items:center;background:#15171c;color:#f2f2f2;font:18px sans-serif;text-align:center\"><div><h1 style=\"color:#ff8a80\">登入沒有完成</h1><p>請回到 Minecraft 再試一次。</p></div>";
 
 	private Reauth() {}
 
@@ -171,6 +175,105 @@ public final class Reauth {
 	}
 
 	public static void startLogin(Screen parent) {
+		stopLoopback();
+		java.net.ServerSocket server;
+		try {
+			server = new java.net.ServerSocket(0, 4, java.net.InetAddress.getLoopbackAddress());
+			server.setSoTimeout(10 * 60 * 1000);
+		} catch (java.io.IOException e) {
+			startPasteLogin(parent);
+			return;
+		}
+		loopback = server;
+		URI uri = authorize("http://localhost:" + server.getLocalPort());
+		String expected = state;
+		Minecraft client = Minecraft.getInstance();
+		CommandMenuScreen.setScreen(new net.minecraft.client.gui.screens.ConfirmScreen(paste -> {
+			stopLoopback();
+			if (paste) {
+				startPasteLogin(parent);
+			} else {
+				CommandMenuScreen.setScreen(parent);
+			}
+		}, Component.literal("在瀏覽器登入微軟帳號"),
+				Component.literal("已經用預設瀏覽器打開微軟登入頁。瀏覽器若已登入過微軟帳號，點一下帳號就好；也能用密碼、手機驗證、指紋、Windows Hello 或通行金鑰登入。完成後會自動回到遊戲。"),
+				Component.literal("改用貼上網址"), Component.literal("取消")));
+		openBrowser(uri);
+		Thread thread = new Thread(() -> {
+			try (server) {
+				while (true) {
+					try (java.net.Socket socket = server.accept()) {
+						socket.setSoTimeout(10000);
+						String line = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8)).readLine();
+						String target = line == null ? "/" : line.split(" ").length > 1 ? line.split(" ")[1] : "/";
+						Map<String, String> query = parseQuery(target);
+						boolean ours = expected.equals(query.get("state"));
+						String page = !ours ? "" : query.containsKey("code") ? DONE_PAGE : FAIL_PAGE;
+						byte[] body = page.getBytes(StandardCharsets.UTF_8);
+						String head = (ours ? "HTTP/1.1 200 OK" : "HTTP/1.1 404 Not Found") + "\r\nContent-Type: text/html; charset=utf-8\r\nContent-Length: " + body.length + "\r\nConnection: close\r\n\r\n";
+						socket.getOutputStream().write(head.getBytes(StandardCharsets.US_ASCII));
+						socket.getOutputStream().write(body);
+						socket.getOutputStream().flush();
+						if (ours) {
+							client.execute(() -> {
+								if (loopback != server) {
+									return;
+								}
+								loopback = null;
+								CommandMenuScreen.setScreen(parent);
+								String error = exchange(query);
+								if (error != null) {
+									toast(client, "微軟登入失敗", error);
+								}
+							});
+							return;
+						}
+					}
+				}
+			} catch (java.io.IOException ignored) {
+			}
+		}, "brilliant-login");
+		thread.setDaemon(true);
+		thread.start();
+	}
+
+	private static void openBrowser(URI uri) {
+		String os = System.getProperty("os.name", "").toLowerCase(Locale.ROOT);
+		String[] command = os.contains("win") ? new String[] {"rundll32", "url.dll,FileProtocolHandler", uri.toString()}
+				: os.contains("mac") ? new String[] {"open", uri.toString()} : new String[] {"xdg-open", uri.toString()};
+		try {
+			new ProcessBuilder(command).start();
+		} catch (java.io.IOException e) {
+			LOGGER.warn("無法開啟瀏覽器", e);
+		}
+	}
+
+	private static void stopLoopback() {
+		java.net.ServerSocket server = loopback;
+		loopback = null;
+		if (server != null) {
+			try {
+				server.close();
+			} catch (java.io.IOException ignored) {
+			}
+		}
+	}
+
+	private static Map<String, String> parseQuery(String url) {
+		Map<String, String> query = new HashMap<>();
+		if (!url.contains("?")) {
+			return query;
+		}
+		for (String pair : url.substring(url.indexOf('?') + 1).split("[&#]")) {
+			int eq = pair.indexOf('=');
+			if (eq > 0) {
+				query.put(pair.substring(0, eq), URLDecoder.decode(pair.substring(eq + 1), StandardCharsets.UTF_8));
+			}
+		}
+		return query;
+	}
+
+	private static URI authorize(String redirectUri) {
 		byte[] bytes = new byte[32];
 		RANDOM.nextBytes(bytes);
 		verifier = HexFormat.of().formatHex(bytes);
@@ -182,8 +285,13 @@ public final class Reauth {
 		} catch (java.security.NoSuchAlgorithmException e) {
 			throw new IllegalStateException(e);
 		}
-		URI uri = URI.create(AUTHORIZE_URL + "?" + form(Map.of("client_id", CLIENT_ID, "response_type", "code", "redirect_uri", REDIRECT_URI,
+		redirect = redirectUri;
+		return URI.create(AUTHORIZE_URL + "?" + form(Map.of("client_id", CLIENT_ID, "response_type", "code", "redirect_uri", redirectUri,
 				"response_mode", "query", "scope", SCOPE, "code_challenge", challenge, "code_challenge_method", "S256", "state", state, "prompt", "select_account")));
+	}
+
+	private static void startPasteLogin(Screen parent) {
+		URI uri = authorize(REDIRECT_URI);
 		EditDialog dialog = new EditDialog(parent, "微軟帳號登入",
 				List.of(new EditDialog.Field("登入完成後，把瀏覽器網址列整段貼上", "https://login.microsoftonline.com/common/oauth2/nativeclient?code=…", "", 4096)),
 				null, 0, (values, group) -> completeLogin(values.getFirst()));
@@ -196,14 +304,11 @@ public final class Reauth {
 		if (!url.startsWith(REDIRECT_URI) || !url.contains("?")) {
 			return "貼上的不是登入完成後的網址";
 		}
-		Map<String, String> query = new HashMap<>();
-		for (String pair : url.substring(url.indexOf('?') + 1).split("[&#]")) {
-			int eq = pair.indexOf('=');
-			if (eq > 0) {
-				query.put(pair.substring(0, eq), URLDecoder.decode(pair.substring(eq + 1), StandardCharsets.UTF_8));
-			}
-		}
-		if (!state.equals(query.get("state"))) {
+		return exchange(parseQuery(url));
+	}
+
+	private static String exchange(Map<String, String> query) {
+		if (state.isEmpty() || !state.equals(query.get("state"))) {
 			return "網址已過期，請重新按一次登入";
 		}
 		if (!query.containsKey("code")) {
@@ -215,7 +320,7 @@ public final class Reauth {
 		state = "";
 		busy = true;
 		CompletableFuture.supplyAsync(() -> finish(post(TOKEN_URL, form(Map.of("grant_type", "authorization_code", "client_id", CLIENT_ID,
-				"code", code, "redirect_uri", REDIRECT_URI, "code_verifier", codeVerifier, "scope", SCOPE)))))
+				"code", code, "redirect_uri", redirect, "code_verifier", codeVerifier, "scope", SCOPE)))))
 				.whenComplete((session, error) -> client.execute(() -> {
 					busy = false;
 					if (error != null) {
