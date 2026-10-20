@@ -32,7 +32,7 @@ public final class MapInfo {
 				.orElse("");
 	}
 
-	static long dayTime(ClientLevel level) {
+	public static long dayTime(ClientLevel level) {
 		long time = -1;
 		//? if >=26.3 {
 		/*time = level.dimensionType().defaultClock().map(clock -> level.clockManager().getInstance(clock).totalTicks()).orElse(-1L);
