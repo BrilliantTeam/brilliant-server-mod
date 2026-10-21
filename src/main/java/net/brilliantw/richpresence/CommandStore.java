@@ -246,6 +246,11 @@ public final class CommandStore {
 				if (added) {
 					Entry copy = new Entry(entry.command, entry.note);
 					copy.alias = entry.alias != null && !entry.alias.isEmpty() && !CommandAliases.all().containsKey(entry.alias) ? entry.alias : "";
+					if (CommandKeys.key(entry) != null && flatten(target, false).stream().flatMap(n -> n.group().commands.stream())
+							.noneMatch(e -> e.key.equals(entry.key) && e.mods == entry.mods)) {
+						copy.key = entry.key;
+						copy.mods = entry.mods;
+					}
 					finalExisting.commands.add(copy);
 				}
 				lines.add(new PreviewLine(path, isNew || parentNew, entry, added));
