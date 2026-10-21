@@ -14,6 +14,9 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 /*import net.minecraft.client.gui.GuiGraphics;
 *///?}
 import net.minecraft.client.gui.screens.Screen;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
@@ -59,6 +62,7 @@ public final class ModSettingsScreen extends Screen {
 	}
 
 	private long clearArmedAt;
+	private KeyMapping listening;
 	private record Hit(Rect rect, Runnable action) {}
 
 	private static final int HEADER = 26;
@@ -156,9 +160,9 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("地圖", "顯示資源再生區塊", "琥珀色為等待再生、紅色為已可再生；在這些區塊建築會被重置", () -> s.mapRegen, v -> s.mapRegen = v));
 		rows.add(new Row("地圖", "大地圖區塊格線", "放大後顯示 16 格區塊線，黃線為 512 格區域", () -> s.mapGrid, v -> s.mapGrid = v));
 		rows.add(new Row("地圖", "大地圖史萊姆區塊", "依官網公開種子標示主世界的史萊姆區塊", () -> s.mapSlime, v -> s.mapSlime = v));
-		for (net.minecraft.client.KeyMapping key : KeyCombos.mine()) {
-			rows.add(Row.choice("快捷鍵", Component.translatable(key.getName()).getString(), "按鍵在「選項 → 控制 → 按鍵綁定」設定；點擊切換需要同時按住的組合鍵",
-					() -> KeyCombos.describe(key), () -> KeyCombos.cycle(key)));
+		for (KeyMapping key : KeyCombos.mine()) {
+			rows.add(Row.choice("快捷鍵", Component.translatable(key.getName()).getString(), "點擊後按下想要的按鍵，可同時按住 Ctrl／Alt／Shift；Esc 取消、Backspace 清除",
+					() -> listening == key ? "請按下按鍵⋯" : KeyCombos.describe(key), () -> listening = key));
 		}
 	}
 
@@ -350,7 +354,35 @@ public final class ModSettingsScreen extends Screen {
 	}
 
 	@Override
+	public boolean keyPressed(KeyEvent event) {
+		if (listening == null) {
+			return super.keyPressed(event);
+		}
+		if (event.isEscape()) {
+			listening = null;
+		} else if (!KeyCombos.isModifier(event.key())) {
+			boolean clear = event.key() == InputConstants.KEY_BACKSPACE || event.key() == InputConstants.KEY_DELETE;
+			bindListening(clear ? InputConstants.UNKNOWN : InputConstants.getKey(event));
+		}
+		return true;
+	}
+
+	private void bindListening(InputConstants.Key input) {
+		KeyMapping key = listening;
+		listening = null;
+		KeyCombos.bind(key, input, KeyCombos.held());
+		setStatus("「" + Component.translatable(key.getName()).getString() + "」改為 " + KeyCombos.describe(key));
+	}
+
+	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (listening != null) {
+			if (event.button() >= 2) {
+				bindListening(InputConstants.Type.MOUSE.getOrCreate(event.button()));
+				return true;
+			}
+			listening = null;
+		}
 		if (super.mouseClicked(event, doubleClick)) {
 			return true;
 		}

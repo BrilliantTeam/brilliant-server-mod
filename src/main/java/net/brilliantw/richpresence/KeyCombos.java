@@ -1,7 +1,9 @@
 package net.brilliantw.richpresence;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 
@@ -24,13 +26,23 @@ public final class KeyCombos {
 		return ModSettings.get().keyCombos.getOrDefault(key.getName(), 0);
 	}
 
-	static void cycle(KeyMapping key) {
-		int next = CHOICES.get((CHOICES.indexOf(combo(key)) + 1) % CHOICES.size());
-		if (next == 0) {
+	private static final Set<Integer> MODIFIER_KEYS = Set.of(InputConstants.KEY_LSHIFT, InputConstants.KEY_RSHIFT, InputConstants.KEY_LCONTROL,
+			InputConstants.KEY_RCONTROL, InputConstants.KEY_LALT, InputConstants.KEY_RALT);
+
+	static boolean isModifier(int keyCode) {
+		return MODIFIER_KEYS.contains(keyCode);
+	}
+
+	static void bind(KeyMapping key, InputConstants.Key input, int combo) {
+		key.setKey(input);
+		KeyMapping.resetMapping();
+		Minecraft.getInstance().options.save();
+		if (combo == 0 || input == InputConstants.UNKNOWN) {
 			ModSettings.get().keyCombos.remove(key.getName());
 		} else {
-			ModSettings.get().keyCombos.put(key.getName(), next);
+			ModSettings.get().keyCombos.put(key.getName(), combo);
 		}
+		ModSettings.save();
 	}
 
 	static int held() {
