@@ -22,28 +22,44 @@ import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public final class SettingsEntry {
-	private static KeyMapping open;
+	private static final Map<KeyMapping, Function<Screen, Screen>> PAGES = new LinkedHashMap<>();
 
 	private SettingsEntry() {}
 
+	private static void page(KeyMapping.Category category, String name, Function<Screen, Screen> factory) {
+		KeyMapping key = new KeyMapping("key.brilliant-server-mod." + name, InputConstants.UNKNOWN.getValue(), category);
+		//? if >=26.1 {
+		PAGES.put(KeyMappingHelper.registerKeyMapping(key), factory);
+		//?} else {
+		/*PAGES.put(KeyBindingHelper.registerKeyBinding(key), factory);
+		*///?}
+	}
+
 	public static void register() {
 		KeyMapping.Category category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath("brilliant-server-mod", "general"));
-		KeyMapping key = new KeyMapping("key.brilliant-server-mod.settings", InputConstants.UNKNOWN.getValue(), category);
-		//? if >=26.1 {
-		open = KeyMappingHelper.registerKeyMapping(key);
-		//?} else {
-		/*open = KeyBindingHelper.registerKeyBinding(key);
-		*///?}
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {
-			while (open.consumeClick()) {
+		page(category, "settings", ModSettingsScreen::new);
+		page(category, "commands", CommandMenuScreen::new);
+		page(category, "announcements", AnnouncementScreen::new);
+		page(category, "guide", GuideScreen::new);
+		page(category, "chat_history", ChatHistoryScreen::new);
+		page(category, "sponsor", SponsorScreen::new);
+		page(category, "scripts", ScriptEditorScreen::new);
+		page(category, "waypoints", WaypointScreen::new);
+		page(category, "minimap_edit", MinimapEditScreen::new);
+		page(category, "scoreboard_edit", ScoreboardEditScreen::new);
+		ClientTickEvents.END_CLIENT_TICK.register(client -> PAGES.forEach((key, factory) -> {
+			while (key.consumeClick()) {
 				if (ScriptEngine.screen() == null) {
-					CommandMenuScreen.setScreen(new ModSettingsScreen(null));
+					CommandMenuScreen.setScreen(factory.apply(null));
 				}
 			}
-		});
+		}));
 		ScreenEvents.AFTER_INIT.register((client, screen, width, height) -> {
 			if (screen instanceof PauseScreen pause && pause.showsPauseMenu() || screen instanceof TitleScreen) {
 				attach(screen);

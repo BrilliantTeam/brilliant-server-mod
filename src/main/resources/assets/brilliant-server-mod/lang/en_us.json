@@ -16,5 +16,14 @@
 	"key.category.brilliant-server-mod.tools": "Brilliant: Tools",
 	"key.brilliant-server-mod.night_vision": "Toggle Night Vision",
 	"key.category.brilliant-server-mod.general": "Brilliant: General",
-	"key.brilliant-server-mod.settings": "Open Brilliant Mod Settings"
+	"key.brilliant-server-mod.settings": "Open Brilliant Mod Settings",
+	"key.brilliant-server-mod.commands": "Open Custom Commands",
+	"key.brilliant-server-mod.announcements": "Open Announcements",
+	"key.brilliant-server-mod.guide": "Open Website Articles",
+	"key.brilliant-server-mod.chat_history": "Open Chat History",
+	"key.brilliant-server-mod.sponsor": "Open Sponsor Page",
+	"key.brilliant-server-mod.scripts": "Open Auto Scripts",
+	"key.brilliant-server-mod.waypoints": "Open Waypoints",
+	"key.brilliant-server-mod.minimap_edit": "Adjust Minimap Position",
+	"key.brilliant-server-mod.scoreboard_edit": "Adjust Scoreboard Position"
 }
