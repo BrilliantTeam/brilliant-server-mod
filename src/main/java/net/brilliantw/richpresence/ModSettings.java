@@ -69,6 +69,7 @@ public final class ModSettings {
 		public boolean anyServer;
 		public long anyServerAcceptedAt;
 		public String anyServerAcceptedVersion = "";
+		public java.util.Map<String, Integer> keyCombos = new java.util.HashMap<>();
 	}
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -89,6 +90,10 @@ public final class ModSettings {
 		if (parsed == null) {
 			parsed = new Data();
 		}
+		if (parsed.keyCombos == null) {
+			parsed.keyCombos = new java.util.HashMap<>();
+		}
+		parsed.keyCombos.entrySet().removeIf(e -> e.getKey() == null || e.getValue() == null || !KeyCombos.CHOICES.contains(e.getValue()) || e.getValue() == 0);
 		parsed.reconnectAttempts = Math.clamp(parsed.reconnectAttempts, 0, 1000);
 		parsed.reconnectDelay = Math.clamp(parsed.reconnectDelay, 1, 600);
 		if (parsed.settingsVersion < 2) {

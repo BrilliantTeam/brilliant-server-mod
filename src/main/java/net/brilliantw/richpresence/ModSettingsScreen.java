@@ -67,7 +67,7 @@ public final class ModSettingsScreen extends Screen {
 	private static final int SECTION = 18;
 	private static final int TABS_W = 92;
 	private static final int TAB = 22;
-	private static final List<String> TABS = List.of("一般", "聊天", "遊戲", "介面", "小地圖", "地圖");
+	private static final List<String> TABS = List.of("一般", "聊天", "遊戲", "介面", "小地圖", "地圖", "快捷鍵");
 	private static String tab = "一般";
 	private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm").withZone(ZoneId.systemDefault());
 
@@ -156,6 +156,10 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("地圖", "顯示資源再生區塊", "琥珀色為等待再生、紅色為已可再生；在這些區塊建築會被重置", () -> s.mapRegen, v -> s.mapRegen = v));
 		rows.add(new Row("地圖", "大地圖區塊格線", "放大後顯示 16 格區塊線，黃線為 512 格區域", () -> s.mapGrid, v -> s.mapGrid = v));
 		rows.add(new Row("地圖", "大地圖史萊姆區塊", "依官網公開種子標示主世界的史萊姆區塊", () -> s.mapSlime, v -> s.mapSlime = v));
+		for (net.minecraft.client.KeyMapping key : KeyCombos.mine()) {
+			rows.add(Row.choice("快捷鍵", Component.translatable(key.getName()).getString(), "按鍵在「選項 → 控制 → 按鍵綁定」設定；點擊切換需要同時按住的組合鍵",
+					() -> KeyCombos.describe(key), () -> KeyCombos.cycle(key)));
+		}
 	}
 
 	private Rect panel() {

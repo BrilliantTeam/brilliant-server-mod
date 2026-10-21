@@ -377,7 +377,9 @@ public final class ScriptEngine {
 		for (int i = 0; i < KEYS.length; i++) {
 			String index = ScriptBlocks.KEYS.get(i);
 			while (KEYS[i] != null && KEYS[i].consumeClick()) {
-				fire("ev_key", hat -> hat.text(0).equals(index), Map.of());
+				if (KeyCombos.matches(KEYS[i])) {
+					fire("ev_key", hat -> hat.text(0).equals(index), Map.of());
+				}
 			}
 		}
 		long now = System.currentTimeMillis();

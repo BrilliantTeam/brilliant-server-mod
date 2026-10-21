@@ -87,24 +87,24 @@ public final class Minimap {
 		boolean active = WorldMaps.current() != null;
 		ModSettings.Data s = ModSettings.get();
 		while (openMap.consumeClick()) {
-			if (active && ScriptEngine.screen() == null) {
+			if (active && ScriptEngine.screen() == null && KeyCombos.matches(openMap)) {
 				CommandMenuScreen.setScreen(new WorldMapScreen(null));
 			}
 		}
 		while (toggle.consumeClick()) {
-			if (active) {
+			if (active && KeyCombos.matches(toggle)) {
 				s.minimap = !s.minimap;
 				ModSettings.save();
 				note(s.minimap ? "小地圖：開啟" : "小地圖：關閉");
 			}
 		}
 		while (addPoint.consumeClick()) {
-			if (active && ScriptEngine.screen() == null) {
+			if (active && ScriptEngine.screen() == null && KeyCombos.matches(addPoint)) {
 				WaypointScreen.openAdd(null);
 			}
 		}
 		while (zoom.consumeClick()) {
-			if (active) {
+			if (active && KeyCombos.matches(zoom)) {
 				cycleZoom(1);
 			}
 		}

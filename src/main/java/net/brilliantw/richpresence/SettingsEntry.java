@@ -55,7 +55,7 @@ public final class SettingsEntry {
 		page(category, "scoreboard_edit", ScoreboardEditScreen::new);
 		ClientTickEvents.END_CLIENT_TICK.register(client -> PAGES.forEach((key, factory) -> {
 			while (key.consumeClick()) {
-				if (ScriptEngine.screen() == null) {
+				if (ScriptEngine.screen() == null && KeyCombos.matches(key)) {
 					CommandMenuScreen.setScreen(factory.apply(null));
 				}
 			}

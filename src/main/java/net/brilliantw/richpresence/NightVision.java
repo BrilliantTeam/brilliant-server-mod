@@ -31,7 +31,7 @@ public final class NightVision {
 		*///?}
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (toggle.consumeClick()) {
-				if (client.player == null || !RichPresenceModClient.featuresActive()) {
+				if (client.player == null || !RichPresenceModClient.featuresActive() || !KeyCombos.matches(toggle)) {
 					continue;
 				}
 				ModSettings.Data s = ModSettings.get();
