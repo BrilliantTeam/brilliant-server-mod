@@ -2,6 +2,7 @@ package net.brilliantw.richpresence;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import net.minecraft.ChatFormatting;
@@ -33,6 +34,7 @@ public final class CommandMenuScreen extends Screen {
 	}
 
 	private enum Action {
+		KEY("按鍵", "綁定按鍵：在遊戲中按下就直接執行這條指令，可加 Ctrl／Alt／Shift"),
 		FILL("填入", "放進聊天欄，可補上參數再送出"),
 		EDIT("編輯", "修改指令、備註或分組"),
 		DELETE("刪除", "刪除後可在下方按「復原」");
@@ -75,6 +77,7 @@ public final class CommandMenuScreen extends Screen {
 
 	private final Screen parent;
 	private final CommandStore store = CommandStore.get();
+	private CommandStore.Entry listening;
 	private CommandStore.Group selected;
 	private String search = "";
 	private double listScroll;
@@ -401,8 +404,9 @@ public final class CommandMenuScreen extends Screen {
 				gfx.fill(card.x(), card.y(), card.x() + 2, card.y() + card.h(), Theme.ACCENT);
 			}
 
-			int textRight = hovered ? actionChip(card, Action.FILL).x() - 6 : card.x() + card.w() - 8;
-			String tag = groupTag(row);
+			int textRight = hovered ? actionChip(card, Action.KEY).x() - 6 : card.x() + card.w() - 8;
+			String keyLabel = CommandKeys.label(row.entry());
+			String tag = (row.entry() == listening ? "[請按下按鍵⋯] " : keyLabel.isEmpty() ? "" : "[" + keyLabel + "] ") + groupTag(row);
 			if (!hovered && !tag.isEmpty()) {
 				int tagWidth = Math.min(font.width(tag), card.w() / 3);
 				gfx.text(font, font.plainSubstrByWidth(tag, tagWidth), textRight - tagWidth, card.y() + 4, Theme.TEXT_DIM);
@@ -483,6 +487,7 @@ public final class CommandMenuScreen extends Screen {
 
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		listening = null;
 		if (super.mouseClicked(event, doubleClick)) {
 			return true;
 		}
@@ -523,7 +528,10 @@ public final class CommandMenuScreen extends Screen {
 					continue;
 				}
 				Row row = rows.get(i);
-				if (actionChip(card, Action.FILL).contains(mouseX, mouseY)) {
+				if (actionChip(card, Action.KEY).contains(mouseX, mouseY)) {
+					listening = row.entry();
+					setStatus("按下要綁定的按鍵，可同時按住 Ctrl／Alt／Shift；Esc 取消、Backspace 清除", Theme.ACCENT);
+				} else if (actionChip(card, Action.FILL).contains(mouseX, mouseY)) {
 					fill(row.entry().command);
 				} else if (actionChip(card, Action.EDIT).contains(mouseX, mouseY)) {
 					openCommandDialog(row);
@@ -591,6 +599,10 @@ public final class CommandMenuScreen extends Screen {
 
 	@Override
 	public boolean keyPressed(KeyEvent event) {
+		if (listening != null) {
+			bindListening(event);
+			return true;
+		}
 		if (event.isConfirmation() && searchBox.isFocused() && !search.isBlank()) {
 			List<Row> rows = rows();
 			if (!rows.isEmpty()) {
@@ -599,6 +611,32 @@ public final class CommandMenuScreen extends Screen {
 			return true;
 		}
 		return super.keyPressed(event);
+	}
+
+	private void bindListening(KeyEvent event) {
+		if (event.isEscape()) {
+			listening = null;
+			setStatus("已取消綁定", Theme.TEXT_DIM);
+			return;
+		}
+		if (KeyCombos.isModifier(event.key())) {
+			return;
+		}
+		CommandStore.Entry entry = listening;
+		listening = null;
+		if (event.key() == InputConstants.KEY_BACKSPACE || event.key() == InputConstants.KEY_DELETE) {
+			entry.key = "";
+			entry.mods = 0;
+			store.save();
+			setStatus("已清除「/" + entry.command + "」的按鍵", Theme.SUCCESS);
+			return;
+		}
+		entry.key = InputConstants.getKey(event).getName();
+		entry.mods = KeyCombos.held();
+		store.save();
+		String clash = Arrays.stream(minecraft.options.keyMappings).filter(mapping -> mapping.matches(event)).findFirst()
+				.map(mapping -> "（這個按鍵也用於「" + Component.translatable(mapping.getName()).getString() + "」，兩個會一起觸發）").orElse("");
+		setStatus("「/" + entry.command + "」綁定為 " + CommandKeys.label(entry) + clash, clash.isEmpty() ? Theme.SUCCESS : Theme.WARNING);
 	}
 
 	private void setStatus(String message, int color) {

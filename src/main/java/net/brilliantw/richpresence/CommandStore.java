@@ -22,6 +22,8 @@ public final class CommandStore {
 		public String command = "";
 		public String note = "";
 		public String alias = "";
+		public String key = "";
+		public int mods;
 
 		public Entry() {}
 
@@ -315,6 +317,12 @@ public final class CommandStore {
 			if (!command.isEmpty()) {
 				Entry clean = new Entry(command, cleanText(entry.note, MAX_NOTE));
 				clean.alias = CommandAliases.clean(entry.alias);
+				clean.key = entry.key == null ? "" : cleanText(entry.key, 64);
+				clean.mods = KeyCombos.CHOICES.contains(entry.mods) ? entry.mods : 0;
+				if (CommandKeys.key(clean) == null) {
+					clean.key = "";
+					clean.mods = 0;
+				}
 				target.commands.add(clean);
 			}
 		}

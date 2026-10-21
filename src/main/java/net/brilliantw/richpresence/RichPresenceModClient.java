@@ -110,6 +110,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		PerfSampler.register();
 		ScreenshotMeta.register();
 		SettingsEntry.register();
+		CommandKeys.register();
 	}
 
 	public static boolean isOnBrilliantServer() {
