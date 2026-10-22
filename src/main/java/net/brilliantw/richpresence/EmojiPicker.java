@@ -50,6 +50,7 @@ public final class EmojiPicker {
 	private static final String STICKER_TAB = "貼圖";
 	private static final int STICKER_CELL = 36;
 	private static final int STICKER_GLYPH = 36;
+	private static final int STICKER_ASCENT = 34;
 	private static final int TAB = 12;
 	private static final int CELL = 18;
 	private static final int ICON = 16;
@@ -451,7 +452,8 @@ public final class EmojiPicker {
 
 		private void drawItem(Gfx gfx, Font font, Emoji emoji, int x, int y, int size) {
 			if (stickerTab) {
-				drawGlyph(gfx, font, emoji.symbol(), x, y, size, (size - 4) / (float) STICKER_GLYPH, STICKER_GLYPH);
+				float scale = (size - 4) / (float) STICKER_GLYPH;
+				drawGlyph(gfx, font, emoji.symbol(), x, y + Math.round((STICKER_ASCENT - GLYPH) * scale), size, scale, STICKER_GLYPH);
 			} else {
 				drawEmoji(gfx, font, emoji.symbol(), x, y, size, 2f);
 			}
