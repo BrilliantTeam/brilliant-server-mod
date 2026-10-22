@@ -5,9 +5,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -23,7 +25,10 @@ public final class EmojiPicker {
 
 	private static final Map<String, String> ICONS = Map.of(
 			"笑臉與情緒", "😀", "人物與身體", "👋", "動物與自然", "🐻", "食物與飲料", "🍔",
-			"旅遊與地點", "🚗", "活動", "⚽", "物品", "💡", "符號", "🔣");
+			"旅遊與地點", "🚗", "活動", "⚽", "物品", "💡", "符號", "🔣", "旗幟", "🏁");
+	private static final Map<String, String> SEQUENCES = new HashMap<>();
+	private static final Map<Character, Integer> SEQUENCE_LENGTHS = new HashMap<>();
+	private static final ThreadLocal<Boolean> PLAIN = ThreadLocal.withInitial(() -> false);
 	private static final List<Section> SECTIONS = load();
 	private static final int CELL = 18;
 	private static final int HEADER = 12;
@@ -56,10 +61,80 @@ public final class EmojiPicker {
 			sections.add(new Section("輝煌", brilliant.getFirst().symbol(), brilliant));
 		}
 		Map<String, List<Emoji>> groups = new LinkedHashMap<>();
-		lines("/default_emojis.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length == 4).forEach(parts ->
-				groups.computeIfAbsent(parts[0], key -> new ArrayList<>()).add(new Emoji(parts[1], parts[1], parts[2], parts[3].isEmpty() ? "" : ":" + parts[3] + ":")));
+		lines("/default_emojis.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length == 5).forEach(parts ->
+				groups.computeIfAbsent(parts[0], key -> new ArrayList<>()).add(new Emoji(fromHex(parts[1]), fromHex(parts[2]), parts[3], parts[4].isEmpty() ? "" : ":" + parts[4] + ":")));
+		lines("/emoji_sequences.txt").map(line -> line.split("\t")).filter(parts -> parts.length == 2).forEach(parts -> {
+			String sequence = fromHex(parts[0]);
+			SEQUENCES.put(sequence, fromHex(parts[1]));
+			SEQUENCE_LENGTHS.merge(sequence.charAt(0), sequence.length(), Math::max);
+		});
 		groups.forEach((name, emojis) -> sections.add(new Section(name, ICONS.getOrDefault(name, emojis.getFirst().symbol()), List.copyOf(emojis))));
 		return List.copyOf(sections);
+	}
+
+	private static String fromHex(String hex) {
+		StringBuilder out = new StringBuilder();
+		for (String part : hex.trim().split(" ")) {
+			out.appendCodePoint(Integer.parseInt(part, 16));
+		}
+		return out.toString();
+	}
+
+	private static boolean maySequence(String text) {
+		for (int i = 0; i < text.length(); i++) {
+			char c = text.charAt(i);
+			if (c == '️' || c == '‍' || c == '⃣' || c == '\uDB40') {
+				return true;
+			}
+			if (c == '\uD83C' && i + 1 < text.length()) {
+				char next = text.charAt(i + 1);
+				if (next >= '\uDDE6' && next <= '\uDDFF' || next >= '\uDFFB' && next <= '\uDFFF') {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static String display(String text) {
+		if (text == null || SEQUENCES.isEmpty() || PLAIN.get() || !maySequence(text)) {
+			return text;
+		}
+		StringBuilder out = null;
+		int i = 0;
+		while (i < text.length()) {
+			String glyph = null;
+			int length = Math.min(SEQUENCE_LENGTHS.getOrDefault(text.charAt(i), 0), text.length() - i);
+			for (; length >= 2; length--) {
+				glyph = SEQUENCES.get(text.substring(i, i + length));
+				if (glyph != null) {
+					break;
+				}
+			}
+			if (glyph == null) {
+				if (out != null) {
+					out.append(text.charAt(i));
+				}
+				i++;
+				continue;
+			}
+			if (out == null) {
+				out = new StringBuilder(text.length()).append(text, 0, i);
+			}
+			out.append(glyph).append("️".repeat(length - glyph.length()));
+			i += length;
+		}
+		return out == null ? text : out.toString();
+	}
+
+	public static <T> T plain(Supplier<T> action) {
+		boolean previous = PLAIN.get();
+		PLAIN.set(true);
+		try {
+			return action.get();
+		} finally {
+			PLAIN.set(previous);
+		}
 	}
 
 	private static Stream<String> lines(String resource) {

@@ -196,7 +196,7 @@ public final class PrivateWindow {
 
 	private static Rect emojiPanel(Rect frame) {
 		int w = EmojiPicker.Panel.width(9);
-		int h = EmojiPicker.Panel.height(8);
+		int h = EmojiPicker.Panel.height(9);
 		Rect anchor = footerChip(frame, 1);
 		int y = frame.y() + HEADER + bodyHeight() + FOOTER + 2;
 		int screenHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();

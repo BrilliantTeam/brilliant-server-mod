@@ -25,7 +25,8 @@
 		"DisconnectedScreenAccessor",
 		"MinecraftAccessor",
 		"LightmapMixin",
-		"NightVisionScaleMixin"
+		"NightVisionScaleMixin",
+		"StringDecomposerMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
