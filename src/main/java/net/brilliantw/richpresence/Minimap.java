@@ -42,6 +42,7 @@ public final class Minimap {
 	static final int POI = 0xFFFFC94D;
 	static final int REGEN_PENDING = 0x38FFB020;
 	static final int REGEN_READY = 0x48FF4D4D;
+	private static final int OVERLAY_CELLS = 1 << 16;
 	private static final int MAX_MARKERS = 64;
 
 	enum Kind { PLAYER, HOSTILE, PASSIVE }
@@ -56,6 +57,9 @@ public final class Minimap {
 	private static Identifier textureId;
 	private static int resolution;
 	private static long builtAt;
+	private static MinimapRaster.Frame builtFrame;
+	private static final int COLLECT_EVERY = 4;
+	private static int collectTicks;
 	private static String zoomNote = "";
 	private static long zoomNoteUntil;
 	static List<Marker> markers = List.of();
@@ -108,7 +112,12 @@ public final class Minimap {
 				cycleZoom(1);
 			}
 		}
-		markers = active && s.minimap ? collect(client) : List.of();
+		if (!active || !s.minimap) {
+			markers = List.of();
+		} else if (++collectTicks >= COLLECT_EVERY) {
+			collectTicks = 0;
+			markers = collect(client);
+		}
 	}
 
 	static void cycleZoom(int step) {
@@ -261,8 +270,9 @@ public final class Minimap {
 		ensureTexture(res);
 		MinimapRaster.Frame frame = frame(player, partial, size, res);
 		long now = System.currentTimeMillis();
-		if (now - builtAt >= 33) {
+		if (now - builtAt >= 33 && (!frame.equals(builtFrame) || now - builtAt >= 250)) {
 			builtAt = now;
+			builtFrame = frame;
 			build(view, frame, partial);
 		}
 		ModSettings.Data s = ModSettings.get();
@@ -275,7 +285,7 @@ public final class Minimap {
 			int box = (int) Math.round((size >= 144 ? 9 : 8) * iconScale);
 			for (int i = markers.size() - 1; i >= 0; i--) {
 				Marker marker = markers.get(i);
-				if (marker.kind() == Kind.PLAYER) {
+				if (marker.kind() == Kind.PLAYER || marker.entity().isRemoved()) {
 					continue;
 				}
 				Vec3 at = marker.entity().getPosition(partial);
@@ -312,7 +322,7 @@ public final class Minimap {
 			}
 		}
 		for (Marker marker : markers) {
-			if (marker.kind() != Kind.PLAYER || !s.minimapPlayerHeads) {
+			if (marker.kind() != Kind.PLAYER || !s.minimapPlayerHeads || marker.entity().isRemoved()) {
 				continue;
 			}
 			Vec3 at = marker.entity().getPosition(partial);
@@ -422,21 +432,59 @@ public final class Minimap {
 			return MinimapRaster.NONE;
 		}
 		double edge = Math.max(bpp, 0.5);
+		int cx0 = Math.floorDiv((int) Math.floor(minX), 16);
+		int cz0 = Math.floorDiv((int) Math.floor(minZ), 16);
+		int w = Math.floorDiv((int) Math.floor(maxX), 16) - cx0 + 1;
+		int h = Math.floorDiv((int) Math.floor(maxZ), 16) - cz0 + 1;
+		if (w <= 0 || h <= 0 || (long) w * h > OVERLAY_CELLS) {
+			return MinimapRaster.NONE;
+		}
+		int[] regenCells = new int[w * h];
+		if (regen != null && !regen.minutes().isEmpty()) {
+			int elapsed = (int) ((System.currentTimeMillis() - regen.fetchedAt()) / 60000);
+			for (int cz = 0; cz < h; cz++) {
+				for (int cx = 0; cx < w; cx++) {
+					Integer stored = regen.minutes().get(MapMarkers.key(cx0 + cx, cz0 + cz));
+					if (stored != null) {
+						regenCells[cz * w + cx] = stored - elapsed <= 0 ? REGEN_READY : REGEN_PENDING;
+					}
+				}
+			}
+		}
+		@SuppressWarnings("unchecked")
+		List<MapMarkers.Area>[] areaCells = new List[w * h];
+		for (MapMarkers.Area area : areas) {
+			int ax0 = Math.max(0, Math.floorDiv((int) Math.floor(area.minX()), 16) - cx0);
+			int az0 = Math.max(0, Math.floorDiv((int) Math.floor(area.minZ()), 16) - cz0);
+			int ax1 = Math.min(w - 1, Math.floorDiv((int) Math.floor(area.maxX()), 16) - cx0);
+			int az1 = Math.min(h - 1, Math.floorDiv((int) Math.floor(area.maxZ()), 16) - cz0);
+			for (int cz = az0; cz <= az1; cz++) {
+				for (int cx = ax0; cx <= ax1; cx++) {
+					int cell = cz * w + cx;
+					if (areaCells[cell] == null) {
+						areaCells[cell] = new ArrayList<>(2);
+					}
+					areaCells[cell].add(area);
+				}
+			}
+		}
 		return (wx, wz) -> {
-			int color = 0;
-			if (regen != null) {
-				Integer left = regen.minutesLeft(Math.floorDiv((int) Math.floor(wx), 16), Math.floorDiv((int) Math.floor(wz), 16));
-				if (left != null) {
-					color = left <= 0 ? REGEN_READY : REGEN_PENDING;
+			int cx = Math.floorDiv((int) Math.floor(wx), 16) - cx0;
+			int cz = Math.floorDiv((int) Math.floor(wz), 16) - cz0;
+			if (cx < 0 || cz < 0 || cx >= w || cz >= h) {
+				return 0;
+			}
+			int cell = cz * w + cx;
+			List<MapMarkers.Area> here = areaCells[cell];
+			if (here != null) {
+				for (MapMarkers.Area area : here) {
+					if (area.contains(wx, wz)) {
+						boolean border = !area.contains(wx - edge, wz) || !area.contains(wx + edge, wz) || !area.contains(wx, wz - edge) || !area.contains(wx, wz + edge);
+						return border ? MapMath.alpha(area.line() | 0xFF000000, 0.85) : MapMath.alpha(area.fill() | 0xFF000000, Math.min(0.32, Math.max(0.12, (area.fill() >>> 24) / 255.0)));
+					}
 				}
 			}
-			for (MapMarkers.Area area : areas) {
-				if (area.contains(wx, wz)) {
-					boolean border = !area.contains(wx - edge, wz) || !area.contains(wx + edge, wz) || !area.contains(wx, wz - edge) || !area.contains(wx, wz + edge);
-					return border ? MapMath.alpha(area.line() | 0xFF000000, 0.85) : MapMath.alpha(area.fill() | 0xFF000000, Math.min(0.32, Math.max(0.12, (area.fill() >>> 24) / 255.0)));
-				}
-			}
-			return color;
+			return regenCells[cell];
 		};
 	}
 
@@ -456,7 +504,7 @@ public final class Minimap {
 			}
 		}
 		for (Marker marker : markers) {
-			if (marker.kind() == Kind.PLAYER ? s.minimapPlayerHeads : s.minimapMobIcons) {
+			if ((marker.kind() == Kind.PLAYER ? s.minimapPlayerHeads : s.minimapMobIcons) || marker.entity().isRemoved()) {
 				continue;
 			}
 			Vec3 at = marker.entity().getPosition(partial);
