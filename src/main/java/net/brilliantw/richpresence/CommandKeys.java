@@ -12,7 +12,15 @@ import net.minecraft.client.Minecraft;
 public final class CommandKeys {
 	private static final Set<CommandStore.Entry> DOWN = Collections.newSetFromMap(new IdentityHashMap<>());
 
+	private static final boolean[] MOUSE = new boolean[16];
+
 	private CommandKeys() {}
+
+	public static void mouse(int button, boolean down) {
+		if (button >= 0 && button < MOUSE.length) {
+			MOUSE[button] = down;
+		}
+	}
 
 	public static void register() {
 		ClientTickEvents.END_CLIENT_TICK.register(CommandKeys::tick);
@@ -24,7 +32,8 @@ public final class CommandKeys {
 		}
 		try {
 			InputConstants.Key key = InputConstants.getKey(entry.key);
-			return key == InputConstants.UNKNOWN || key.getType() == InputConstants.Type.MOUSE ? null : key;
+			boolean primaryMouse = key.getType() == InputConstants.Type.MOUSE && key.getValue() < InputConstants.MOUSE_BUTTON_MIDDLE;
+			return key == InputConstants.UNKNOWN || primaryMouse ? null : key;
 		} catch (RuntimeException e) {
 			return null;
 		}
@@ -35,11 +44,14 @@ public final class CommandKeys {
 		return key == null ? "" : KeyCombos.label(entry.mods).replace("不需組合鍵", "") + key.getDisplayName().getString();
 	}
 
-	private static boolean isDown(Minecraft client, int code) {
+	private static boolean isDown(Minecraft client, InputConstants.Key key) {
+		if (key.getType() == InputConstants.Type.MOUSE) {
+			return key.getValue() >= 0 && key.getValue() < MOUSE.length && MOUSE[key.getValue()];
+		}
 		//? if >=26.3 {
-		/*return InputConstants.isKeyDown(code);
+		/*return InputConstants.isKeyDown(key.getValue());
 		*///?} else {
-		return InputConstants.isKeyDown(client.getWindow(), code);
+		return InputConstants.isKeyDown(client.getWindow(), key.getValue());
 		//?}
 	}
 
@@ -60,7 +72,7 @@ public final class CommandKeys {
 		int held = KeyCombos.held();
 		for (CommandStore.Entry entry : bound) {
 			InputConstants.Key key = key(entry);
-			if (!isDown(client, key.getValue())) {
+			if (!isDown(client, key)) {
 				DOWN.remove(entry);
 				continue;
 			}

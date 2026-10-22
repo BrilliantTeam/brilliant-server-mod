@@ -487,6 +487,15 @@ public final class CommandMenuScreen extends Screen {
 
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
+		if (listening != null && event.button() >= InputConstants.MOUSE_BUTTON_MIDDLE) {
+			CommandStore.Entry entry = listening;
+			listening = null;
+			InputConstants.Key key = InputConstants.Type.MOUSE.getOrCreate(event.button());
+			String clash = Arrays.stream(minecraft.options.keyMappings).filter(mapping -> mapping.saveString().equals(key.getName())).findFirst()
+					.map(mapping -> "（這個按鍵也用於「" + Component.translatable(mapping.getName()).getString() + "」，兩個會一起觸發）").orElse("");
+			finishBinding(entry, key, clash);
+			return true;
+		}
 		listening = null;
 		if (super.mouseClicked(event, doubleClick)) {
 			return true;
@@ -530,7 +539,9 @@ public final class CommandMenuScreen extends Screen {
 				Row row = rows.get(i);
 				if (actionChip(card, Action.KEY).contains(mouseX, mouseY)) {
 					listening = row.entry();
-					setStatus("按下要綁定的按鍵，可同時按住 Ctrl／Alt／Shift；Esc 取消、Backspace 清除", Theme.ACCENT);
+					searchBox.setFocused(false);
+					setFocused(null);
+					setStatus("按下要綁定的按鍵或滑鼠中鍵、側鍵，可同時按住 Ctrl／Alt／Shift；Esc 取消、Backspace 清除", Theme.ACCENT);
 				} else if (actionChip(card, Action.FILL).contains(mouseX, mouseY)) {
 					fill(row.entry().command);
 				} else if (actionChip(card, Action.EDIT).contains(mouseX, mouseY)) {
@@ -631,11 +642,15 @@ public final class CommandMenuScreen extends Screen {
 			setStatus("已清除「/" + entry.command + "」的按鍵", Theme.SUCCESS);
 			return;
 		}
-		entry.key = InputConstants.getKey(event).getName();
-		entry.mods = KeyCombos.held();
-		store.save();
 		String clash = Arrays.stream(minecraft.options.keyMappings).filter(mapping -> mapping.matches(event)).findFirst()
 				.map(mapping -> "（這個按鍵也用於「" + Component.translatable(mapping.getName()).getString() + "」，兩個會一起觸發）").orElse("");
+		finishBinding(entry, InputConstants.getKey(event), clash);
+	}
+
+	private void finishBinding(CommandStore.Entry entry, InputConstants.Key key, String clash) {
+		entry.key = key.getName();
+		entry.mods = KeyCombos.held();
+		store.save();
 		setStatus("「/" + entry.command + "」綁定為 " + CommandKeys.label(entry) + clash, clash.isEmpty() ? Theme.SUCCESS : Theme.WARNING);
 	}
 
