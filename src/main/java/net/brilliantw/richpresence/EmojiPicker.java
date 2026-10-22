@@ -44,6 +44,13 @@ public final class EmojiPicker {
 	private static final Map<String, Emoji> BY_INSERT = new HashMap<>();
 	private static final ThreadLocal<Boolean> PLAIN = ThreadLocal.withInitial(() -> false);
 	private static final List<Section> SECTIONS = load();
+	private static final List<Emoji> STICKERS = lines("/stickers.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length == 3)
+			.map(parts -> new Emoji(fromHex(parts[0]), ":" + parts[1] + ":", parts[2], ":" + parts[1] + ":", List.of()))
+			.toList();
+	private static final String STICKER_TAB = "貼圖";
+	private static final int STICKER_CELL = 36;
+	private static final int STICKER_GLYPH = 36;
+	private static final int TAB = 12;
 	private static final int CELL = 18;
 	private static final int ICON = 16;
 	private static final int HEADER = 12;
@@ -208,8 +215,12 @@ public final class EmojiPicker {
 	}
 
 	private static void drawEmoji(Gfx gfx, Font font, String symbol, int x, int y, int size, float scale) {
+		drawGlyph(gfx, font, symbol, x, y, size, scale, GLYPH);
+	}
+
+	private static void drawGlyph(Gfx gfx, Font font, String symbol, int x, int y, int size, float scale, int glyph) {
 		float width = Math.max(0, font.width(symbol) - 1) * scale;
-		gfx.push(x + (size - width) / 2f, y + (size - GLYPH * scale) / 2f, scale);
+		gfx.push(x + (size - width) / 2f, y + (size - glyph * scale) / 2f, scale);
 		gfx.text(font, symbol, 0, 0, 0xFFFFFFFF);
 		gfx.pop();
 	}
@@ -234,6 +245,8 @@ public final class EmojiPicker {
 		private EditBox search;
 		private double scroll;
 		private boolean tonePicker;
+		private boolean stickerTab;
+		private int cell = CELL;
 		private int drawnFrame = -10;
 		private int recentSeen;
 		private String layoutKey = "";
@@ -252,7 +265,7 @@ public final class EmojiPicker {
 		}
 
 		public static int height(int rows) {
-			return PAD + SEARCH + 3 + rows * CELL + FOOTER;
+			return PAD + TAB + 2 + SEARCH + 3 + rows * CELL + FOOTER;
 		}
 
 		public EditBox createSearch() {
@@ -295,19 +308,26 @@ public final class EmojiPicker {
 			return all;
 		}
 
+		private static List<Emoji> matching(Stream<Emoji> emojis, String query) {
+			return emojis.filter(emoji -> emoji.name().toLowerCase(Locale.ROOT).contains(query) || emoji.code().toLowerCase(Locale.ROOT).contains(query)).toList();
+		}
+
 		private void layout(int w) {
-			int cols = Math.max(1, (w - SIDEBAR - PAD * 2) / CELL);
+			int size = stickerTab ? STICKER_CELL : CELL;
+			int cols = Math.max(1, (w - SIDEBAR - PAD * 2) / size);
 			String query = query();
-			String key = cols + "|" + recentSeen + "|" + query;
+			String key = cols + "|" + recentSeen + "|" + query + "|" + stickerTab;
 			if (key.equals(layoutKey)) {
 				return;
 			}
 			layoutKey = key;
-			sidebar = browse();
-			shown = query.isEmpty() ? sidebar : List.of(new Section(RESULTS, "🔍", SECTIONS.stream()
-					.flatMap(section -> section.emojis().stream())
-					.filter(emoji -> emoji.name().toLowerCase(Locale.ROOT).contains(query) || emoji.code().toLowerCase(Locale.ROOT).contains(query))
-					.toList()));
+			cell = size;
+			sidebar = stickerTab ? List.of() : browse();
+			if (stickerTab) {
+				shown = List.of(new Section(STICKER_TAB, "", matching(STICKERS.stream(), query)));
+			} else {
+				shown = query.isEmpty() ? sidebar : List.of(new Section(RESULTS, "🔍", matching(SECTIONS.stream().flatMap(section -> section.emojis().stream()), query)));
+			}
 			List<Item> list = new ArrayList<>();
 			sectionTops = new int[shown.size()];
 			int y = 0;
@@ -316,16 +336,20 @@ public final class EmojiPicker {
 				y += HEADER;
 				List<Emoji> emojis = shown.get(s).emojis();
 				for (int i = 0; i < emojis.size(); i++) {
-					list.add(new Item(emojis.get(i), (i % cols) * CELL, y + (i / cols) * CELL));
+					list.add(new Item(emojis.get(i), (i % cols) * size, y + (i / cols) * size));
 				}
-				y += (emojis.size() + cols - 1) / cols * CELL + 4;
+				y += (emojis.size() + cols - 1) / cols * size + 4;
 			}
 			items = list;
 			contentHeight = y;
 		}
 
+		private static int searchTop(int y) {
+			return y + PAD + TAB + 2;
+		}
+
 		private static int gridTop(int y) {
-			return y + PAD + SEARCH + 3;
+			return searchTop(y) + SEARCH + 3;
 		}
 
 		private static int gridHeight(int y, int h) {
@@ -377,7 +401,28 @@ public final class EmojiPicker {
 		}
 
 		private static int toneMenuY(int y) {
-			return y + PAD + SEARCH + 2;
+			return searchTop(y) + SEARCH + 2;
+		}
+
+		private static int[] tabRect(Font font, int x, int y, int index) {
+			int left = x + SIDEBAR + PAD;
+			int emojiWidth = font.width("表情符號") + 10;
+			return index == 0 ? new int[] { left, y + PAD, emojiWidth, TAB } : new int[] { left + emojiWidth + 2, y + PAD, font.width(STICKER_TAB) + 10, TAB };
+		}
+
+		private int tabAt(int x, int y, double mouseX, double mouseY) {
+			Font font = Minecraft.getInstance().font;
+			for (int i = 0; i < (STICKERS.isEmpty() ? 1 : 2); i++) {
+				int[] r = tabRect(font, x, y, i);
+				if (inside(mouseX, mouseY, r[0], r[1], r[2], r[3])) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		private int searchRight(int x, int w) {
+			return stickerTab ? x + w - PAD : toneX(x, w) - 2;
 		}
 
 		private int toneAt(int x, int y, int w, double mouseX, double mouseY) {
@@ -397,11 +442,19 @@ public final class EmojiPicker {
 			double cx = mouseX - gx;
 			double cy = mouseY - gy + scroll;
 			for (Item item : items) {
-				if (cx >= item.x() && cx < item.x() + CELL && cy >= item.y() && cy < item.y() + CELL) {
+				if (cx >= item.x() && cx < item.x() + cell && cy >= item.y() && cy < item.y() + cell) {
 					return item;
 				}
 			}
 			return null;
+		}
+
+		private void drawItem(Gfx gfx, Font font, Emoji emoji, int x, int y, int size) {
+			if (stickerTab) {
+				drawGlyph(gfx, font, emoji.symbol(), x, y, size, (size - 4) / (float) STICKER_GLYPH, STICKER_GLYPH);
+			} else {
+				drawEmoji(gfx, font, emoji.symbol(), x, y, size, 2f);
+			}
 		}
 
 		private static Emoji toneSample() {
@@ -440,21 +493,34 @@ public final class EmojiPicker {
 				}
 			}
 
-			int sy = y + PAD;
+			int hoveredTab = tabAt(x, y, mouseX, mouseY);
+			for (int i = 0; i < (STICKERS.isEmpty() ? 1 : 2); i++) {
+				int[] r = tabRect(font, x, y, i);
+				boolean active = (i == 1) == stickerTab;
+				if (active || i == hoveredTab) {
+					gfx.fill(r[0], r[1], r[0] + r[2], r[1] + r[3], active ? Theme.SELECTED : Theme.CARD_HOVER);
+				}
+				gfx.centered(font, i == 0 ? "表情符號" : STICKER_TAB, r[0], r[1], r[2], r[3], active ? Theme.TEXT : Theme.TEXT_SECONDARY);
+			}
+
+			int sy = searchTop(y);
 			int tx = toneX(x, w);
-			gfx.fill(gx, sy, tx - 2, sy + SEARCH, Theme.CARD);
+			int searchRight = searchRight(x, w);
+			gfx.fill(gx, sy, searchRight, sy + SEARCH, Theme.CARD);
 			Icons.SEARCH.draw(gfx, gx + 3, sy + (SEARCH - Icons.SEARCH.height()) / 2, Theme.TEXT_DIM);
 			if (search != null) {
 				search.visible = true;
 				search.setX(gx + 14);
 				search.setY(sy + 3);
-				search.setWidth(tx - 2 - gx - 16);
-				Theme.hint(search, "搜尋表情符號");
+				search.setWidth(searchRight - gx - 16);
+				Theme.hint(search, stickerTab ? "搜尋貼圖" : "搜尋表情符號");
 				gfx.widget(search, mouseX, mouseY);
 			}
-			boolean toneHovered = inside(mouseX, mouseY, tx, sy, SEARCH, SEARCH);
-			gfx.fill(tx, sy, tx + SEARCH, sy + SEARCH, tonePicker || toneHovered ? Theme.CHIP_HOVER : Theme.CARD);
-			drawEmoji(gfx, font, toneSample().toned(tone).symbol(), tx, sy, SEARCH, 1.4f);
+			boolean toneHovered = !stickerTab && inside(mouseX, mouseY, tx, sy, SEARCH, SEARCH);
+			if (!stickerTab) {
+				gfx.fill(tx, sy, tx + SEARCH, sy + SEARCH, tonePicker || toneHovered ? Theme.CHIP_HOVER : Theme.CARD);
+				drawEmoji(gfx, font, toneSample().toned(tone).symbol(), tx, sy, SEARCH, 1.4f);
+			}
 
 			Item hovered = itemAt(x, y, w, h, mouseX, mouseY);
 			int top = gy - (int) scroll;
@@ -467,14 +533,14 @@ public final class EmojiPicker {
 			}
 			for (Item item : items) {
 				int iy = top + item.y();
-				if (iy + CELL < gy || iy > gy + gh) {
+				if (iy + cell < gy || iy > gy + gh) {
 					continue;
 				}
 				int ix = gx + item.x();
 				if (item == hovered) {
-					gfx.fill(ix, iy, ix + CELL, iy + CELL, Theme.CHIP_HOVER);
+					gfx.fill(ix, iy, ix + cell, iy + cell, Theme.CHIP_HOVER);
 				}
-				drawEmoji(gfx, font, item.emoji().toned(tone).symbol(), ix, iy, CELL, 2f);
+				drawItem(gfx, font, item.emoji().toned(tone), ix, iy, cell);
 			}
 			if (!browsing && items.isEmpty()) {
 				gfx.centered(font, "找不到表情符號", gx, gy + HEADER, right - gx, CELL, Theme.TEXT_DIM);
@@ -493,7 +559,7 @@ public final class EmojiPicker {
 			int textWidth = right - textX;
 			if (hovered != null) {
 				Emoji emoji = hovered.emoji().toned(tone);
-				drawEmoji(gfx, font, emoji.symbol(), x + SIDEBAR + 4, footerY + 2, CELL, 2f);
+				drawItem(gfx, font, emoji, x + SIDEBAR + 4, footerY + 2, CELL);
 				gfx.text(font, font.plainSubstrByWidth(emoji.name(), textWidth), textX, footerY + (emoji.code().isEmpty() ? 7 : 3), Theme.TEXT);
 				if (!emoji.code().isEmpty()) {
 					gfx.text(font, font.plainSubstrByWidth(emoji.code(), textWidth), textX, footerY + 12, Theme.TEXT_DIM);
@@ -534,12 +600,23 @@ public final class EmojiPicker {
 				}
 				return null;
 			}
-			int sy = y + PAD;
-			if (inside(mouseX, mouseY, toneX(x, w), sy, SEARCH, SEARCH)) {
+			int tab = tabAt(x, y, mouseX, mouseY);
+			if (tab >= 0) {
+				if ((tab == 1) != stickerTab) {
+					stickerTab = tab == 1;
+					scroll = 0;
+					if (search != null) {
+						search.setValue("");
+					}
+				}
+				return null;
+			}
+			int sy = searchTop(y);
+			if (!stickerTab && inside(mouseX, mouseY, toneX(x, w), sy, SEARCH, SEARCH)) {
 				tonePicker = true;
 				return null;
 			}
-			if (inside(mouseX, mouseY, x + SIDEBAR + PAD, sy, toneX(x, w) - 2 - x - SIDEBAR - PAD, SEARCH)) {
+			if (inside(mouseX, mouseY, x + SIDEBAR + PAD, sy, searchRight(x, w) - x - SIDEBAR - PAD, SEARCH)) {
 				if (search != null) {
 					screen.setFocused(search);
 				}
@@ -559,6 +636,9 @@ public final class EmojiPicker {
 		}
 
 		private Emoji pick(Emoji emoji) {
+			if (stickerTab) {
+				return emoji;
+			}
 			used(emoji);
 			return emoji.toned(tone());
 		}
