@@ -39,9 +39,6 @@ public final class PrivateWindow {
 	private static final int PAD = 4;
 	private static final int LINE = 10;
 	private static final int BACKGROUND = 0xC0101418;
-	private static final int EMOJI_CELL = 14;
-	private static final int EMOJI_COLUMNS = 12;
-	private static final int EMOJI_ROWS = 6;
 	private static final List<String[]> SHOWCASE = List.of(new String[] { "手上物品", "[i]" }, new String[] { "背包", "[inv]" }, new String[] { "終界箱", "[ender]" });
 
 	private static EditBox input;
@@ -51,7 +48,7 @@ public final class PrivateWindow {
 	private static double dragX;
 	private static double dragY;
 	private static double scroll;
-	private static double emojiScroll;
+	private static final EmojiPicker.Panel EMOJI_PANEL = new EmojiPicker.Panel();
 	private static boolean resizing;
 	private static double resizeX;
 	private static double resizeY;
@@ -198,8 +195,8 @@ public final class PrivateWindow {
 	}
 
 	private static Rect emojiPanel(Rect frame) {
-		int w = EMOJI_COLUMNS * EMOJI_CELL + 8;
-		int h = EMOJI_ROWS * EMOJI_CELL + 8;
+		int w = EmojiPicker.Panel.width(9);
+		int h = EmojiPicker.Panel.height(8);
 		Rect anchor = footerChip(frame, 1);
 		int y = frame.y() + HEADER + bodyHeight() + FOOTER + 2;
 		int screenHeight = Minecraft.getInstance().getWindow().getGuiScaledHeight();
@@ -317,7 +314,8 @@ public final class PrivateWindow {
 		Rect frame = frame(screenWidth, screenHeight, true);
 		List<Component> tooltip = new ArrayList<>();
 		if (popup == Popup.EMOJI) {
-			drawEmojiPanel(gfx, frame, mouseX, mouseY, tooltip);
+			Rect panel = emojiPanel(frame);
+			EMOJI_PANEL.render(gfx, panel.x(), panel.y(), panel.w(), panel.h(), mouseX, mouseY);
 		} else if (popup == Popup.SHOWCASE) {
 			List<Rect> items = showcaseItems(frame);
 			for (int i = 0; i < items.size(); i++) {
@@ -351,43 +349,6 @@ public final class PrivateWindow {
 		if (!tooltip.isEmpty()) {
 			gfx.tooltip(font(), tooltip, mouseX, mouseY);
 		}
-	}
-
-	private static void drawEmojiPanel(Gfx gfx, Rect frame, int mouseX, int mouseY, List<Component> tooltip) {
-		Rect panel = emojiPanel(frame);
-		List<EmojiPicker.Emoji> emojis = EmojiPicker.emojis();
-		int maxScroll = Math.max(0, (emojis.size() + EMOJI_COLUMNS - 1) / EMOJI_COLUMNS - EMOJI_ROWS);
-		emojiScroll = Math.clamp(emojiScroll, 0, maxScroll);
-		gfx.fill(panel.x() - 1, panel.y() - 1, panel.x() + panel.w() + 1, panel.y() + panel.h() + 1, Theme.ACCENT_DIM);
-		gfx.fill(panel.x(), panel.y(), panel.x() + panel.w(), panel.y() + panel.h(), Theme.HEADER);
-		int hovered = emojiAt(frame, mouseX, mouseY);
-		for (int row = 0; row < EMOJI_ROWS; row++) {
-			for (int column = 0; column < EMOJI_COLUMNS; column++) {
-				int index = (row + (int) emojiScroll) * EMOJI_COLUMNS + column;
-				if (index >= emojis.size()) {
-					break;
-				}
-				int x = panel.x() + 4 + column * EMOJI_CELL;
-				int y = panel.y() + 4 + row * EMOJI_CELL;
-				if (index == hovered) {
-					gfx.fill(x, y, x + EMOJI_CELL, y + EMOJI_CELL, Theme.CHIP_HOVER);
-				}
-				String symbol = emojis.get(index).symbol();
-				gfx.centered(font(), symbol, x, y, EMOJI_CELL, EMOJI_CELL, 0xFFFFFFFF);
-			}
-		}
-		if (hovered >= 0) {
-			tooltip.add(Component.literal(emojis.get(hovered).code()));
-		}
-	}
-
-	private static int emojiAt(Rect frame, double mouseX, double mouseY) {
-		Rect panel = emojiPanel(frame);
-		if (!new Rect(panel.x() + 4, panel.y() + 4, EMOJI_COLUMNS * EMOJI_CELL, EMOJI_ROWS * EMOJI_CELL).contains(mouseX, mouseY)) {
-			return -1;
-		}
-		int index = ((int) (mouseY - panel.y() - 4) / EMOJI_CELL + (int) emojiScroll) * EMOJI_COLUMNS + (int) (mouseX - panel.x() - 4) / EMOJI_CELL;
-		return index < EmojiPicker.emojis().size() ? index : -1;
 	}
 
 	private static void drawMessages(Gfx gfx, Rect frame, PrivateMessages.Conversation selected, boolean interactive) {
@@ -436,9 +397,10 @@ public final class PrivateWindow {
 		double mouseY = event.y();
 		Rect frame = frame(screen.width, screen.height, true);
 		if (popup == Popup.EMOJI && emojiPanel(frame).contains(mouseX, mouseY)) {
-			int index = emojiAt(frame, mouseX, mouseY);
-			if (index >= 0 && input != null) {
-				input.insertText(EmojiPicker.emojis().get(index).code());
+			Rect panel = emojiPanel(frame);
+			EmojiPicker.Emoji emoji = EMOJI_PANEL.click(panel.x(), panel.y(), panel.w(), panel.h(), mouseX, mouseY);
+			if (emoji != null && input != null) {
+				input.insertText(emoji.insert());
 				screen.setFocused(input);
 			}
 			return true;
@@ -564,7 +526,7 @@ public final class PrivateWindow {
 		}
 		Rect frame = frame(screen.width, screen.height, true);
 		if (popup == Popup.EMOJI && emojiPanel(frame).contains(mouseX, mouseY)) {
-			emojiScroll -= Math.signum(amount);
+			EMOJI_PANEL.scroll(amount);
 			return true;
 		}
 		if (!frame.contains(mouseX, mouseY)) {

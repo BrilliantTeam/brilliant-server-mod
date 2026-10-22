@@ -86,7 +86,7 @@ public abstract class ChatScreenMixin extends Screen {
 		Gfx gfx = new Gfx(graphics);
 		if (!brilliant$typingCommand()) {
 			ChannelBar.render(screen, graphics, mouseX, mouseY);
-			EmojiPicker.render(screen, graphics, mouseX, mouseY);
+			EmojiPicker.render(screen, gfx, mouseX, mouseY);
 			if (RichPresenceModClient.featuresActive()) {
 				QuickMessages.render(screen, gfx, input.getValue(), mouseX, mouseY);
 				ChatMenu.render(screen, gfx, mouseX, mouseY);

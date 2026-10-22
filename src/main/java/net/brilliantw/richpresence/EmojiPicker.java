@@ -4,65 +4,279 @@ import com.mojang.blaze3d.platform.InputConstants;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Stream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-//? if >=26.1 {
-import net.minecraft.client.gui.GuiGraphicsExtractor;
-//?} else {
-/*import net.minecraft.client.gui.GuiGraphics;
-*///?}
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.network.chat.Component;
 
 public final class EmojiPicker {
-	public record Emoji(String symbol, String code) {}
+	public record Emoji(String symbol, String insert, String name, String code) {}
 
-	private static final List<Emoji> EMOJIS = load();
-	private static final int CELL = 14;
-	private static final int COLUMNS = 12;
-	private static final int ROWS = 8;
-	private static final int PADDING = 3;
+	public record Section(String name, String icon, List<Emoji> emojis) {}
+
+	private record Item(int section, Emoji emoji, int x, int y) {}
+
+	private static final Map<String, String> ICONS = Map.of(
+			"笑臉與情緒", "😀", "人物與身體", "👋", "動物與自然", "🐻", "食物與飲料", "🍔",
+			"旅遊與地點", "🚗", "活動", "⚽", "物品", "💡", "符號", "🔣");
+	private static final List<Section> SECTIONS = load();
+	private static final int CELL = 18;
+	private static final int HEADER = 12;
+	private static final int SIDEBAR = 20;
+	private static final int FOOTER = 22;
+	private static final int PAD = 4;
+	private static final int GLYPH = 7;
+	private static final int BUTTON = 14;
+	private static final Panel CHAT = new Panel();
 
 	private static boolean open;
-	private static int scrollRow;
 
 	private EmojiPicker() {}
 
-	public static List<Emoji> emojis() {
-		return EMOJIS;
+	public static List<Section> sections() {
+		return SECTIONS;
 	}
 
-	private static List<Emoji> load() {
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(EmojiPicker.class.getResourceAsStream("/emojis.txt"), StandardCharsets.UTF_8))) {
-			return reader.lines()
-					.map(line -> line.split(":", 2))
-					.filter(parts -> parts.length == 2)
-					.map(parts -> new Emoji(parts[0], ":" + parts[1].trim() + ":"))
-					.toList();
+	private static List<Section> load() {
+		List<Section> sections = new ArrayList<>();
+		List<Emoji> brilliant = lines("/emojis.txt")
+				.map(line -> line.split(":", 2))
+				.filter(parts -> parts.length == 2)
+				.map(parts -> {
+					String code = ":" + parts[1].trim() + ":";
+					return new Emoji(parts[0], code, code, "");
+				})
+				.toList();
+		if (!brilliant.isEmpty()) {
+			sections.add(new Section("輝煌", brilliant.getFirst().symbol(), brilliant));
+		}
+		Map<String, List<Emoji>> groups = new LinkedHashMap<>();
+		lines("/default_emojis.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length == 4).forEach(parts ->
+				groups.computeIfAbsent(parts[0], key -> new ArrayList<>()).add(new Emoji(parts[1], parts[1], parts[2], parts[3].isEmpty() ? "" : ":" + parts[3] + ":")));
+		groups.forEach((name, emojis) -> sections.add(new Section(name, ICONS.getOrDefault(name, emojis.getFirst().symbol()), List.copyOf(emojis))));
+		return List.copyOf(sections);
+	}
+
+	private static Stream<String> lines(String resource) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(EmojiPicker.class.getResourceAsStream(resource), StandardCharsets.UTF_8))) {
+			return reader.lines().toList().stream();
 		} catch (Exception e) {
-			return List.of();
+			return Stream.empty();
+		}
+	}
+
+	private static void drawEmoji(Gfx gfx, Font font, String symbol, int x, int y, int size, float scale) {
+		float width = Math.max(0, font.width(symbol) - 1) * scale;
+		gfx.push(x + (size - width) / 2f, y + (size - GLYPH * scale) / 2f, scale);
+		gfx.text(font, symbol, 0, 0, 0xFFFFFFFF);
+		gfx.pop();
+	}
+
+	public static final class Panel {
+		private double scroll;
+		private int columns = -1;
+		private List<Item> items = List.of();
+		private int[] sectionTops = new int[0];
+		private int contentHeight;
+
+		public static int width(int columns) {
+			return SIDEBAR + PAD * 2 + columns * CELL;
+		}
+
+		public static int height(int rows) {
+			return PAD + rows * CELL + FOOTER;
+		}
+
+		private void layout(int w) {
+			int cols = Math.max(1, (w - SIDEBAR - PAD * 2) / CELL);
+			if (cols == columns) {
+				return;
+			}
+			columns = cols;
+			List<Item> list = new ArrayList<>();
+			sectionTops = new int[SECTIONS.size()];
+			int y = 0;
+			for (int s = 0; s < SECTIONS.size(); s++) {
+				sectionTops[s] = y;
+				y += HEADER;
+				List<Emoji> emojis = SECTIONS.get(s).emojis();
+				for (int i = 0; i < emojis.size(); i++) {
+					list.add(new Item(s, emojis.get(i), (i % cols) * CELL, y + (i / cols) * CELL));
+				}
+				y += (emojis.size() + cols - 1) / cols * CELL + 4;
+			}
+			items = list;
+			contentHeight = y;
+		}
+
+		private static int gridHeight(int h) {
+			return h - PAD - FOOTER;
+		}
+
+		private int maxScroll(int h) {
+			return Math.max(0, contentHeight - gridHeight(h));
+		}
+
+		private int currentSection() {
+			int current = 0;
+			for (int s = 0; s < sectionTops.length; s++) {
+				if (sectionTops[s] <= scroll + 1) {
+					current = s;
+				}
+			}
+			return current;
+		}
+
+		private static int iconY(int y, int section) {
+			return y + PAD + section * CELL + (section > 0 ? 3 : 0);
+		}
+
+		private static int sectionAt(int x, int y, int h, double mouseX, double mouseY) {
+			if (mouseX < x || mouseX >= x + SIDEBAR) {
+				return -1;
+			}
+			for (int s = 0; s < SECTIONS.size(); s++) {
+				int top = iconY(y, s);
+				if (top + CELL > y + h) {
+					break;
+				}
+				if (mouseY >= top && mouseY < top + CELL) {
+					return s;
+				}
+			}
+			return -1;
+		}
+
+		private Item itemAt(int x, int y, int w, int h, double mouseX, double mouseY) {
+			layout(w);
+			int gx = x + SIDEBAR + PAD;
+			int gy = y + PAD;
+			if (mouseX < gx || mouseX >= x + w - PAD || mouseY < gy || mouseY >= gy + gridHeight(h)) {
+				return null;
+			}
+			double cx = mouseX - gx;
+			double cy = mouseY - gy + scroll;
+			for (Item item : items) {
+				if (cx >= item.x() && cx < item.x() + CELL && cy >= item.y() && cy < item.y() + CELL) {
+					return item;
+				}
+			}
+			return null;
+		}
+
+		public void render(Gfx gfx, int x, int y, int w, int h, int mouseX, int mouseY) {
+			Font font = Minecraft.getInstance().font;
+			layout(w);
+			scroll = Math.clamp(scroll, 0, maxScroll(h));
+			int gx = x + SIDEBAR + PAD;
+			int gy = y + PAD;
+			int gh = gridHeight(h);
+			gfx.fill(x - 1, y - 1, x + w + 1, y + h + 1, Theme.ACCENT_DIM);
+			gfx.fill(x, y, x + w, y + h, Theme.PANEL);
+			gfx.fill(x, y, x + SIDEBAR, y + h, Theme.SIDEBAR);
+
+			int current = currentSection();
+			int hoveredSection = sectionAt(x, y, h, mouseX, mouseY);
+			for (int s = 0; s < SECTIONS.size(); s++) {
+				int top = iconY(y, s);
+				if (top + CELL > y + h) {
+					break;
+				}
+				if (s == current || s == hoveredSection) {
+					gfx.fill(x + 1, top, x + SIDEBAR - 1, top + CELL, s == current ? Theme.SELECTED : Theme.CARD_HOVER);
+				}
+				drawEmoji(gfx, font, SECTIONS.get(s).icon(), x + 1, top, SIDEBAR - 2, 1.5f);
+				if (s == 0 && SECTIONS.size() > 1) {
+					gfx.fill(x + 5, top + CELL + 1, x + SIDEBAR - 5, top + CELL + 2, Theme.CHIP);
+				}
+			}
+
+			Item hovered = itemAt(x, y, w, h, mouseX, mouseY);
+			int top = gy - (int) scroll;
+			gfx.scissor(gx, gy, x + w - PAD, gy + gh);
+			for (int s = 0; s < SECTIONS.size(); s++) {
+				int headerY = top + sectionTops[s];
+				if (headerY + HEADER >= gy && headerY <= gy + gh) {
+					gfx.text(font, SECTIONS.get(s).name(), gx + 1, headerY + 2, Theme.TEXT_SECONDARY);
+				}
+			}
+			for (Item item : items) {
+				int iy = top + item.y();
+				if (iy + CELL < gy || iy > gy + gh) {
+					continue;
+				}
+				int ix = gx + item.x();
+				if (item == hovered) {
+					gfx.fill(ix, iy, ix + CELL, iy + CELL, Theme.CHIP_HOVER);
+				}
+				drawEmoji(gfx, font, item.emoji().symbol(), ix, iy, CELL, 2f);
+			}
+			gfx.endScissor();
+
+			if (contentHeight > gh) {
+				int bar = Math.max(12, gh * gh / contentHeight);
+				int barY = gy + (int) ((gh - bar) * scroll / maxScroll(h));
+				gfx.fill(x + w - 3, barY, x + w - 1, barY + bar, Theme.CHIP);
+			}
+
+			int footerY = y + h - FOOTER;
+			gfx.fill(x + SIDEBAR, footerY, x + w, y + h, Theme.HEADER);
+			int textX = x + SIDEBAR + CELL + 8;
+			int textWidth = x + w - PAD - textX;
+			if (hovered != null) {
+				Emoji emoji = hovered.emoji();
+				drawEmoji(gfx, font, emoji.symbol(), x + SIDEBAR + 4, footerY + 2, CELL, 2f);
+				gfx.text(font, font.plainSubstrByWidth(emoji.name(), textWidth), textX, footerY + (emoji.code().isEmpty() ? 7 : 3), Theme.TEXT);
+				if (!emoji.code().isEmpty()) {
+					gfx.text(font, font.plainSubstrByWidth(emoji.code(), textWidth), textX, footerY + 12, Theme.TEXT_DIM);
+				}
+			} else {
+				gfx.text(font, SECTIONS.get(current).name(), x + SIDEBAR + PAD, footerY + 7, Theme.TEXT_DIM);
+			}
+			if (hoveredSection >= 0) {
+				gfx.tooltip(font, List.of(Component.literal(SECTIONS.get(hoveredSection).name())), mouseX, mouseY);
+			}
+		}
+
+		public Emoji click(int x, int y, int w, int h, double mouseX, double mouseY) {
+			layout(w);
+			int section = sectionAt(x, y, h, mouseX, mouseY);
+			if (section >= 0) {
+				scroll = Math.min(sectionTops[section], maxScroll(h));
+				return null;
+			}
+			Item item = itemAt(x, y, w, h, mouseX, mouseY);
+			return item == null ? null : item.emoji();
+		}
+
+		public void scroll(double amount) {
+			scroll -= Math.signum(amount) * CELL * 2;
 		}
 	}
 
 	private static boolean active() {
-		return !EMOJIS.isEmpty() && RichPresenceModClient.isOnBrilliantServer() && ModSettings.get().emoji;
+		return !SECTIONS.isEmpty() && RichPresenceModClient.isOnBrilliantServer() && ModSettings.get().emoji;
 	}
 
 	private static int buttonX(ChatScreen screen) {
-		return screen.width - 2 - CELL;
+		return screen.width - 2 - BUTTON;
 	}
 
 	private static int buttonY(ChatScreen screen) {
-		return screen.height - 16 - CELL;
+		return screen.height - 16 - BUTTON;
 	}
 
 	private static int panelWidth() {
-		return COLUMNS * CELL + PADDING * 2;
+		return Panel.width(9);
 	}
 
-	private static int panelHeight() {
-		return ROWS * CELL + PADDING * 2;
+	private static int panelHeight(ChatScreen screen) {
+		return Math.clamp(buttonY(screen) - 6, Panel.height(3), Panel.height(9));
 	}
 
 	private static int panelX(ChatScreen screen) {
@@ -70,86 +284,27 @@ public final class EmojiPicker {
 	}
 
 	private static int panelY(ChatScreen screen) {
-		return buttonY(screen) - 2 - panelHeight();
-	}
-
-	private static int maxScrollRow() {
-		return Math.max(0, (EMOJIS.size() + COLUMNS - 1) / COLUMNS - ROWS);
+		return buttonY(screen) - 3 - panelHeight(screen);
 	}
 
 	private static boolean inside(double mouseX, double mouseY, int x, int y, int width, int height) {
 		return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height;
 	}
 
-	private static int hoveredIndex(ChatScreen screen, double mouseX, double mouseY) {
-		int x = panelX(screen) + PADDING;
-		int y = panelY(screen) + PADDING;
-		if (!open || !inside(mouseX, mouseY, x, y, COLUMNS * CELL, ROWS * CELL)) {
-			return -1;
-		}
-		int index = ((int) (mouseY - y) / CELL + scrollRow) * COLUMNS + (int) (mouseX - x) / CELL;
-		return index < EMOJIS.size() ? index : -1;
-	}
-
-	//? if >=26.1 {
-	public static void render(ChatScreen screen, GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-	//?} else {
-	/*public static void render(ChatScreen screen, GuiGraphics graphics, int mouseX, int mouseY) {
-	*///?}
+	public static void render(ChatScreen screen, Gfx gfx, int mouseX, int mouseY) {
 		if (!active()) {
 			return;
 		}
 		Font font = Minecraft.getInstance().font;
 		int bx = buttonX(screen);
 		int by = buttonY(screen);
-		boolean buttonHovered = inside(mouseX, mouseY, bx, by, CELL, CELL);
-		graphics.fill(bx, by, bx + CELL, by + CELL, open || buttonHovered ? 0xC0505050 : 0x80000000);
-		drawSymbol(graphics, font, EMOJIS.getFirst().symbol(), bx, by);
-		if (!open) {
-			return;
-		}
-
-		int px = panelX(screen);
-		int py = panelY(screen);
-		graphics.fill(px, py, px + panelWidth(), py + panelHeight(), 0xD0000000);
-		int hovered = hoveredIndex(screen, mouseX, mouseY);
-		for (int row = 0; row < ROWS; row++) {
-			for (int column = 0; column < COLUMNS; column++) {
-				int index = (row + scrollRow) * COLUMNS + column;
-				if (index >= EMOJIS.size()) {
-					break;
-				}
-				int cx = px + PADDING + column * CELL;
-				int cy = py + PADDING + row * CELL;
-				if (index == hovered) {
-					graphics.fill(cx, cy, cx + CELL, cy + CELL, 0x60FFFFFF);
-				}
-				drawSymbol(graphics, font, EMOJIS.get(index).symbol(), cx, cy);
-			}
-		}
-		if (hovered >= 0) {
-			Emoji emoji = EMOJIS.get(hovered);
-			graphics.setTooltipForNextFrame(font, Component.literal(emoji.symbol() + " " + emoji.code()), mouseX, mouseY);
+		boolean buttonHovered = inside(mouseX, mouseY, bx, by, BUTTON, BUTTON);
+		gfx.fill(bx, by, bx + BUTTON, by + BUTTON, open || buttonHovered ? 0xC0505050 : 0x80000000);
+		drawEmoji(gfx, font, SECTIONS.getFirst().icon(), bx, by, BUTTON, 1f);
+		if (open) {
+			CHAT.render(gfx, panelX(screen), panelY(screen), panelWidth(), panelHeight(screen), mouseX, mouseY);
 		}
 	}
-
-	//? if >=26.1 {
-	private static void drawSymbol(GuiGraphicsExtractor graphics, Font font, String symbol, int x, int y) {
-	//?} else {
-	/*private static void drawSymbol(GuiGraphics graphics, Font font, String symbol, int x, int y) {
-	*///?}
-		text(graphics, font, symbol, x + (CELL - font.width(symbol)) / 2, y + (CELL - font.lineHeight) / 2 + 1, 0xFFFFFFFF);
-	}
-
-	//? if >=26.1 {
-	static void text(GuiGraphicsExtractor graphics, Font font, String text, int x, int y, int color) {
-		graphics.text(font, text, x, y, color, false);
-	}
-	//?} else {
-	/*static void text(GuiGraphics graphics, Font font, String text, int x, int y, int color) {
-		graphics.drawString(font, text, x, y, color, false);
-	}
-	*///?}
 
 	public static void close() {
 		open = false;
@@ -159,26 +314,26 @@ public final class EmojiPicker {
 		if (!active() || button != InputConstants.MOUSE_BUTTON_LEFT) {
 			return false;
 		}
-		if (inside(mouseX, mouseY, buttonX(screen), buttonY(screen), CELL, CELL)) {
+		if (inside(mouseX, mouseY, buttonX(screen), buttonY(screen), BUTTON, BUTTON)) {
 			open = !open;
 			ChannelBar.close();
 			return true;
 		}
-		if (!open || !inside(mouseX, mouseY, panelX(screen), panelY(screen), panelWidth(), panelHeight())) {
+		if (!open || !inside(mouseX, mouseY, panelX(screen), panelY(screen), panelWidth(), panelHeight(screen))) {
 			return false;
 		}
-		int index = hoveredIndex(screen, mouseX, mouseY);
-		if (index >= 0) {
-			PrivateWindow.insert(screen, EMOJIS.get(index).code());
+		Emoji emoji = CHAT.click(panelX(screen), panelY(screen), panelWidth(), panelHeight(screen), mouseX, mouseY);
+		if (emoji != null) {
+			PrivateWindow.insert(screen, emoji.insert());
 		}
 		return true;
 	}
 
 	public static boolean mouseScrolled(ChatScreen screen, double mouseX, double mouseY, double amount) {
-		if (!active() || !open || !inside(mouseX, mouseY, panelX(screen), panelY(screen), panelWidth(), panelHeight())) {
+		if (!active() || !open || !inside(mouseX, mouseY, panelX(screen), panelY(screen), panelWidth(), panelHeight(screen))) {
 			return false;
 		}
-		scrollRow = Math.clamp(scrollRow - (int) Math.signum(amount), 0, maxScrollRow());
+		CHAT.scroll(amount);
 		return true;
 	}
 }

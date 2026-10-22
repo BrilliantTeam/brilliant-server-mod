@@ -1,0 +1,6 @@
+Twemoji graphics (assets/brilliant-server-mod/textures/font/twemoji.png)
+Copyright 2019 Twitter, Inc and other contributors, https://github.com/jdecked/twemoji
+Licensed under CC-BY 4.0: https://creativecommons.org/licenses/by/4.0/
+Modified: resized to 48x48 and combined into a font atlas.
+
+Emoji names and categories (default_emojis.txt) from Emojibase, https://emojibase.dev/ (MIT).

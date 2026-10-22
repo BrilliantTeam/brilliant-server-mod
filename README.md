@@ -10,7 +10,8 @@
 - **自動腳本**：Scratch 式積木編輯器，事件、偵測、操作、清單與自訂積木，內建範本庫與動畫教學
 - **指令別名與 TAB 補全**：為自訂指令設定別名，模組內的指令輸入框都能 TAB 補全
 - **自動續驗證**：正版驗證快過期時在背景自動續期，不必重開遊戲；與輝煌啟動器的登入雙向同步
-- **表情符號選單**、**彩色文字預覽**、**高清看圖**、**配方書修正**、**遊戲內更新通知**
+- **表情符號選單**：仿 Discord 排版，分為輝煌與預設表情（笑臉、人物、動物、食物、旅遊、活動、物品、符號），側欄快速跳轉，聊天中的表情以 Discord 風格的彩色圖示顯示
+- **彩色文字預覽**、**高清看圖**、**配方書修正**、**遊戲內更新通知**
 
 ## 安裝
 
@@ -30,4 +31,4 @@
 
 輝煌模組為閉源軟體，著作權所有（All Rights Reserved），詳見 [LICENSE](LICENSE)。
 
-內含 [DiscordIPC](https://github.com/CDAGaming/DiscordIPC)（Apache-2.0）；圖示取自 [Pixelarticons](https://github.com/halfmage/pixelarticons)（MIT）。
+內含 [DiscordIPC](https://github.com/CDAGaming/DiscordIPC)（Apache-2.0）；圖示取自 [Pixelarticons](https://github.com/halfmage/pixelarticons)（MIT）；預設表情符號圖案取自 [Twemoji](https://github.com/jdecked/twemoji)（© Twitter, Inc. 及其他貢獻者，[CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)），已縮小尺寸並合併為字型圖集；表情名稱與分類取自 [Emojibase](https://emojibase.dev/)（MIT）。
