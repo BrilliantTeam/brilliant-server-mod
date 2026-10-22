@@ -48,7 +48,8 @@ public final class EmojiPicker {
 			.map(parts -> new Emoji(fromHex(parts[0]), ":" + parts[1] + ":", parts[2], ":" + parts[1] + ":", List.of()))
 			.toList();
 	private static final String STICKER_TAB = "貼圖";
-	private static final int STICKER_CELL = 36;
+	private static final int STICKER_CELL = 40;
+	private static final int STICKER_GAP = 4;
 	private static final int STICKER_GLYPH = 36;
 	private static final int STICKER_ASCENT = 34;
 	private static final int TAB = 12;
@@ -452,8 +453,14 @@ public final class EmojiPicker {
 
 		private void drawItem(Gfx gfx, Font font, Emoji emoji, int x, int y, int size) {
 			if (stickerTab) {
-				float scale = (size - 4) / (float) STICKER_GLYPH;
-				drawGlyph(gfx, font, emoji.symbol(), x, y + Math.round((STICKER_ASCENT - GLYPH) * scale), size, scale, STICKER_GLYPH);
+				int box = size - STICKER_GAP * 2;
+				float scale = box / (float) STICKER_GLYPH;
+				float width = Math.min(box, Math.max(0, font.width(emoji.symbol()) - 1) * scale);
+				gfx.scissor(x + STICKER_GAP, y + STICKER_GAP, x + size - STICKER_GAP, y + size - STICKER_GAP);
+				gfx.push(x + (size - width) / 2f, y + STICKER_GAP + (STICKER_ASCENT - GLYPH) * scale, scale);
+				gfx.text(font, emoji.symbol(), 0, 0, 0xFFFFFFFF);
+				gfx.pop();
+				gfx.endScissor();
 			} else {
 				drawEmoji(gfx, font, emoji.symbol(), x, y, size, 2f);
 			}
