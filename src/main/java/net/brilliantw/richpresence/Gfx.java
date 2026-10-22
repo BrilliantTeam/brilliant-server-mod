@@ -2,6 +2,7 @@ package net.brilliantw.richpresence;
 
 import java.util.List;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.components.AbstractWidget;
 //? if >=26.1 {
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 //?} else {
@@ -99,6 +100,14 @@ public final class Gfx {
 
 	public void region(Identifier texture, int x, int y, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
 		graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, 0xFFFFFFFF);
+	}
+
+	public void widget(AbstractWidget widget, int mouseX, int mouseY) {
+		//? if >=26.1 {
+		widget.extractRenderState(graphics, mouseX, mouseY, 0f);
+		//?} else {
+		/*widget.render(graphics, mouseX, mouseY, 0f);
+		*///?}
 	}
 
 	public void tooltip(Font font, List<Component> lines, int x, int y) {

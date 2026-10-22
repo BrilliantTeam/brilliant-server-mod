@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Map;
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class ModSettings {
@@ -17,6 +18,8 @@ public final class ModSettings {
 		public boolean channelTabs = true;
 		public boolean privateWindow = true;
 		public boolean emoji = true;
+		public int emojiTone;
+		public Map<String, Integer> emojiRecent;
 		public boolean imageLinks = true;
 		public boolean aliases = true;
 		public boolean recipeFix = true;

@@ -1,1913 +1,1913 @@
-笑臉與情緒	1F600	1F600	笑臉	grinning
-笑臉與情緒	1F603	1F603	大笑	smiley
-笑臉與情緒	1F604	1F604	呵呵	smile
-笑臉與情緒	1F601	1F601	嘻嘻	grin
-笑臉與情緒	1F606	1F606	狂笑	laughing
-笑臉與情緒	1F605	1F605	汗	sweat_smile
-笑臉與情緒	1F923	1F923	笑翻了	rofl
-笑臉與情緒	1F602	1F602	感動	joy
-笑臉與情緒	1F642	1F642	呆呆笑	slightly_smiling_face
-笑臉與情緒	1F643	1F643	顛倒臉	upside_down_face
-笑臉與情緒	1FAE0	1FAE0	融化的臉	melting_face
-笑臉與情緒	1F609	1F609	眨眼	wink
-笑臉與情緒	1F60A	1F60A	微笑	blush
-笑臉與情緒	1F607	1F607	天使笑臉	innocent
-笑臉與情緒	1F970	1F970	三個愛心的笑臉	smiling_face_with_three_hearts
-笑臉與情緒	1F60D	1F60D	花痴	heart_eyes
-笑臉與情緒	1F929	1F929	眼冒星星	star_struck
-笑臉與情緒	1F618	1F618	親親飛吻	kissing_heart
-笑臉與情緒	1F617	1F617	親親	kissing
-笑臉與情緒	F0000	263A FE0F	輕鬆笑臉	relaxed
-笑臉與情緒	1F61A	1F61A	瞇眼親親	kissing_closed_eyes
-笑臉與情緒	1F619	1F619	笑臉親親	kissing_smiling_eyes
-笑臉與情緒	1F972	1F972	微笑帶淚	smiling_face_with_tear
-笑臉與情緒	1F60B	1F60B	口水	yum
-笑臉與情緒	1F61B	1F61B	嘿嘿	stuck_out_tongue
-笑臉與情緒	1F61C	1F61C	吐舌頭	stuck_out_tongue_winking_eye
-笑臉與情緒	1F92A	1F92A	發瘋	zany_face
-笑臉與情緒	1F61D	1F61D	眨眼吐舌頭	stuck_out_tongue_closed_eyes
-笑臉與情緒	1F911	1F911	發財	money_mouth_face
-笑臉與情緒	1F917	1F917	抱抱	hugs
-笑臉與情緒	1F92D	1F92D	手蓋住嘴巴	hand_over_mouth
-笑臉與情緒	1FAE2	1FAE2	張眼摀嘴的臉	face_with_open_eyes_and_hand_over_mouth
-笑臉與情緒	1FAE3	1FAE3	一眼偷看的臉	face_with_peeking_eye
-笑臉與情緒	1F92B	1F92B	噓	shushing_face
-笑臉與情緒	1F914	1F914	思考	thinking
-笑臉與情緒	1FAE1	1FAE1	敬禮的臉	saluting_face
-笑臉與情緒	1F910	1F910	閉嘴	zipper_mouth_face
-笑臉與情緒	1F928	1F928	挑眉驚訝	raised_eyebrow
-笑臉與情緒	1F610	1F610	無語	neutral_face
-笑臉與情緒	1F611	1F611	面無表情	expressionless
-笑臉與情緒	1F636	1F636	沉默	no_mouth
-笑臉與情緒	1FAE5	1FAE5	虛線的臉	dotted_line_face
-笑臉與情緒	F0001	1F636 200D 1F32B FE0F	茫茫然	face_in_clouds
-笑臉與情緒	1F60F	1F60F	冷笑	smirk
-笑臉與情緒	1F612	1F612	不高興	unamused
-笑臉與情緒	1F644	1F644	翻白眼	roll_eyes
-笑臉與情緒	1F62C	1F62C	咬牙	grimacing
-笑臉與情緒	F0002	1F62E 200D 1F4A8	鬆一口氣	face_exhaling
-笑臉與情緒	1F925	1F925	鼻子變長了	lying_face
-笑臉與情緒	1FAE8	1FAE8	動搖的表情	shaking_face
-笑臉與情緒	F0003	1F642 200D 2194 FE0F	左右搖頭	
-笑臉與情緒	F0004	1F642 200D 2195 FE0F	上下點頭	
-笑臉與情緒	1F60C	1F60C	鬆了口氣	relieved
-笑臉與情緒	1F614	1F614	沉思	pensive
-笑臉與情緒	1F62A	1F62A	睏	sleepy
-笑臉與情緒	1F924	1F924	流口水	drooling_face
-笑臉與情緒	1F634	1F634	睡著了	sleeping
-笑臉與情緒	1FAE9	1FAE9	臉上有眼袋	
-笑臉與情緒	1F637	1F637	口罩	mask
-笑臉與情緒	1F912	1F912	含溫度計	face_with_thermometer
-笑臉與情緒	1F915	1F915	包繃帶	face_with_head_bandage
-笑臉與情緒	1F922	1F922	想吐	nauseated_face
-笑臉與情緒	1F92E	1F92E	狂吐中	vomiting_face
-笑臉與情緒	1F927	1F927	打噴嚏	sneezing_face
-笑臉與情緒	1F975	1F975	熱臉	hot_face
-笑臉與情緒	1F976	1F976	冷臉	cold_face
-笑臉與情緒	1F974	1F974	頭昏眼花	woozy_face
-笑臉與情緒	1F635	1F635	頭暈目眩	dizzy_face
-笑臉與情緒	F0005	1F635 200D 1F4AB	目眩頭暈	face_with_spiral_eyes
-笑臉與情緒	1F92F	1F92F	一個頭兩個大	exploding_head
-笑臉與情緒	1F920	1F920	牛仔	cowboy_hat_face
-笑臉與情緒	1F973	1F973	慶祝的表情	partying_face
-笑臉與情緒	1F978	1F978	假扮的臉	disguised_face
-笑臉與情緒	1F60E	1F60E	墨鏡	sunglasses
-笑臉與情緒	1F913	1F913	搞怪	nerd_face
-笑臉與情緒	1F9D0	1F9D0	單片眼鏡	monocle_face
-笑臉與情緒	1F615	1F615	困擾	confused
-笑臉與情緒	1FAE4	1FAE4	歪嘴的臉	face_with_diagonal_mouth
-笑臉與情緒	1F61F	1F61F	擔心	worried
-笑臉與情緒	1F641	1F641	不開心	slightly_frowning_face
-笑臉與情緒	F0006	2639 FE0F	不滿意	frowning_face
-笑臉與情緒	1F62E	1F62E	驚訝	open_mouth
-笑臉與情緒	1F62F	1F62F	哦	hushed
-笑臉與情緒	1F632	1F632	震驚	astonished
-笑臉與情緒	1F633	1F633	愛慕	flushed
-笑臉與情緒	1FAEA	1FAEA	變形的臉	
-笑臉與情緒	1F97A	1F97A	請求的臉	pleading_face
-笑臉與情緒	1F979	1F979	強忍淚水的臉	face_holding_back_tears
-笑臉與情緒	1F626	1F626	啊	frowning
-笑臉與情緒	1F627	1F627	痛	anguished
-笑臉與情緒	1F628	1F628	可怕	fearful
-笑臉與情緒	1F630	1F630	冒汗	cold_sweat
-笑臉與情緒	1F625	1F625	流汗	disappointed_relieved
-笑臉與情緒	1F622	1F622	淚	cry
-笑臉與情緒	1F62D	1F62D	哭	sob
-笑臉與情緒	1F631	1F631	嚇死了	scream
-笑臉與情緒	1F616	1F616	困惑	confounded
-笑臉與情緒	1F623	1F623	痛苦	persevere
-笑臉與情緒	1F61E	1F61E	失望	disappointed
-笑臉與情緒	1F613	1F613	冷汗	sweat
-笑臉與情緒	1F629	1F629	唉!	weary
-笑臉與情緒	1F62B	1F62B	累	tired_face
-笑臉與情緒	1F971	1F971	呵欠	yawning_face
-笑臉與情緒	1F624	1F624	傲慢	triumph
-笑臉與情緒	1F621	1F621	生氣	pout
-笑臉與情緒	1F620	1F620	不爽	angry
-笑臉與情緒	1F92C	1F92C	嘴上有符號的表情	cursing_face
-笑臉與情緒	1F608	1F608	惡魔的笑	smiling_imp
-笑臉與情緒	1F47F	1F47F	惡魔	imp
-笑臉與情緒	1F480	1F480	骷髏頭	skull
-笑臉與情緒	F0007	2620 FE0F	交叉骷髏頭	skull_and_crossbones
-笑臉與情緒	1F4A9	1F4A9	大便	hankey
-笑臉與情緒	1F921	1F921	小丑	clown_face
-笑臉與情緒	1F479	1F479	魔鬼	japanese_ogre
-笑臉與情緒	1F47A	1F47A	天狗	japanese_goblin
-笑臉與情緒	1F47B	1F47B	鬼	ghost
-笑臉與情緒	1F47D	1F47D	外星人	alien
-笑臉與情緒	1F47E	1F47E	怪物	space_invader
-笑臉與情緒	1F916	1F916	機器人	robot
-笑臉與情緒	1F63A	1F63A	哈哈	smiley_cat
-笑臉與情緒	1F638	1F638	微笑的貓臉	smile_cat
-笑臉與情緒	1F639	1F639	感動的貓臉	joy_cat
-笑臉與情緒	1F63B	1F63B	花痴的貓臉	heart_eyes_cat
-笑臉與情緒	1F63C	1F63C	微笑貓臉	smirk_cat
-笑臉與情緒	1F63D	1F63D	親親的貓臉	kissing_cat
-笑臉與情緒	1F640	1F640	累的貓臉	scream_cat
-笑臉與情緒	1F63F	1F63F	哭的貓臉	crying_cat_face
-笑臉與情緒	1F63E	1F63E	生氣的貓臉	pouting_cat
-笑臉與情緒	1F648	1F648	非禮勿視	see_no_evil
-笑臉與情緒	1F649	1F649	非禮勿聽	hear_no_evil
-笑臉與情緒	1F64A	1F64A	非禮勿言	speak_no_evil
-笑臉與情緒	1F48C	1F48C	情書	love_letter
-笑臉與情緒	1F498	1F498	丘比特	cupid
-笑臉與情緒	1F49D	1F49D	愛的禮物	gift_heart
-笑臉與情緒	1F496	1F496	開心	sparkling_heart
-笑臉與情緒	1F497	1F497	心動	heartpulse
-笑臉與情緒	1F493	1F493	心跳	heartbeat
-笑臉與情緒	1F49E	1F49E	心之舞	revolving_hearts
-笑臉與情緒	1F495	1F495	心心相印	two_hearts
-笑臉與情緒	1F49F	1F49F	心在框框裡	heart_decoration
-笑臉與情緒	F0008	2763 FE0F	心嘆號	heavy_heart_exclamation
-笑臉與情緒	1F494	1F494	心碎	broken_heart
-笑臉與情緒	F0009	2764 FE0F 200D 1F525	火熱的心	heart_on_fire
-笑臉與情緒	F000A	2764 FE0F 200D 1FA79	療心	mending_heart
-笑臉與情緒	F000B	2764 FE0F	愛心	heart
-笑臉與情緒	1FA77	1FA77	粉紅心	pink_heart
-笑臉與情緒	1F9E1	1F9E1	橘心	orange_heart
-笑臉與情緒	1F49B	1F49B	黃心	yellow_heart
-笑臉與情緒	1F49A	1F49A	綠心	green_heart
-笑臉與情緒	1F499	1F499	藍心	blue_heart
-笑臉與情緒	1FA75	1FA75	淺藍心	light_blue_heart
-笑臉與情緒	1F49C	1F49C	紫心	purple_heart
-笑臉與情緒	1F90E	1F90E	褐心	brown_heart
-笑臉與情緒	1F5A4	1F5A4	黑心	black_heart
-笑臉與情緒	1FA76	1FA76	灰色愛心	grey_heart
-笑臉與情緒	1F90D	1F90D	白心	white_heart
-笑臉與情緒	1F48B	1F48B	唇印	kiss
-笑臉與情緒	1F4AF	1F4AF	滿分	100
-笑臉與情緒	1F4A2	1F4A2	怒	anger
-笑臉與情緒	1FAEF	1FAEF	打鬥的雲	
-笑臉與情緒	1F4A5	1F4A5	碰撞	boom
-笑臉與情緒	1F4AB	1F4AB	暈頭轉向	dizzy
-笑臉與情緒	1F4A6	1F4A6	出汗	sweat_drops
-笑臉與情緒	1F4A8	1F4A8	揚塵而去	dash
-笑臉與情緒	1F573	1F573 FE0F	洞	hole
-笑臉與情緒	1F4AC	1F4AC	對話框	speech_balloon
-笑臉與情緒	1F5E8	1F5E8 FE0F	黑色對話框	left_speech_bubble
-笑臉與情緒	1F5EF	1F5EF FE0F	爆炸對話框	right_anger_bubble
-笑臉與情緒	1F4AD	1F4AD	心聲對話框	thought_balloon
-笑臉與情緒	1F4A4	1F4A4	睡著	zzz
-人物與身體	1F44B	1F44B	揮手	wave
-人物與身體	1F91A	1F91A	豎起手掌	raised_back_of_hand
-人物與身體	1F590	1F590 FE0F	停止	raised_hand_with_fingers_splayed
-人物與身體	270B	270B	舉手	hand
-人物與身體	1F596	1F596	你好	vulcan_salute
-人物與身體	1FAF1	1FAF1	向右的手	rightwards_hand
-人物與身體	1FAF2	1FAF2	向左的手	leftwards_hand
-人物與身體	1FAF3	1FAF3	手掌向下	palm_down_hand
-人物與身體	1FAF4	1FAF4	手掌向上	palm_up_hand
-人物與身體	1FAF7	1FAF7	手向左推	leftwards_pushing_hand
-人物與身體	1FAF8	1FAF8	手向右推	rightwards_pushing_hand
-人物與身體	1F44C	1F44C	OK 手勢	ok_hand
-人物與身體	1F90C	1F90C	捏手指	pinched_fingers
-人物與身體	1F90F	1F90F	捏	pinching_hand
-人物與身體	F000C	270C FE0F	勝利	v
-人物與身體	1F91E	1F91E	祝好運	crossed_fingers
-人物與身體	1FAF0	1FAF0	食指和拇指交叉的手	hand_with_index_finger_and_thumb_crossed
-人物與身體	1F91F	1F91F	愛你手勢	love_you_gesture
-人物與身體	1F918	1F918	ROCK	metal
-人物與身體	1F919	1F919	打給我	call_me_hand
-人物與身體	1F448	1F448	左	point_left
-人物與身體	1F449	1F449	右	point_right
-人物與身體	1F446	1F446	上	point_up_2
-人物與身體	1F595	1F595	中指	fu
-人物與身體	1F447	1F447	下	point_down
-人物與身體	F000D	261D FE0F	注意	point_up
-人物與身體	1FAF5	1FAF5	食指朝向觀眾	index_pointing_at_the_viewer
-人物與身體	1F44D	1F44D	讚	+1
-人物與身體	1F44E	1F44E	遜	-1
-人物與身體	270A	270A	拳頭	fist
-人物與身體	1F44A	1F44A	出拳	facepunch
-人物與身體	1F91B	1F91B	握右拳	fist_left
-人物與身體	1F91C	1F91C	握左拳	fist_right
-人物與身體	1F44F	1F44F	鼓掌	clap
-人物與身體	1F64C	1F64C	歡呼	raised_hands
-人物與身體	1FAF6	1FAF6	雙手心形	heart_hands
-人物與身體	1F450	1F450	攤開手	open_hands
-人物與身體	1F932	1F932	雙手掌朝上	palms_up_together
-人物與身體	1F91D	1F91D	握手	handshake
-人物與身體	1F64F	1F64F	感恩	pray
-人物與身體	F000E	270D FE0F	寫	writing_hand
-人物與身體	1F485	1F485	指甲油	nail_care
-人物與身體	1F933	1F933	自拍	selfie
-人物與身體	1F4AA	1F4AA	肌肉	muscle
-人物與身體	1F9BE	1F9BE	機械手臂	mechanical_arm
-人物與身體	1F9BF	1F9BF	機械腳	mechanical_leg
-人物與身體	1F9B5	1F9B5	腿	leg
-人物與身體	1F9B6	1F9B6	腳	foot
-人物與身體	1F442	1F442	耳朵	ear
-人物與身體	1F9BB	1F9BB	戴助聽器的耳朵	ear_with_hearing_aid
-人物與身體	1F443	1F443	鼻子	nose
-人物與身體	1F9E0	1F9E0	腦	brain
-人物與身體	1FAC0	1FAC0	心臟	anatomical_heart
-人物與身體	1FAC1	1FAC1	肺	lungs
-人物與身體	1F9B7	1F9B7	牙齒	tooth
-人物與身體	1F9B4	1F9B4	骨頭	bone
-人物與身體	1F440	1F440	雙眼	eyes
-人物與身體	1F441	1F441 FE0F	眼睛	eye
-人物與身體	1F445	1F445	舌頭	tongue
-人物與身體	1F444	1F444	嘴巴	lips
-人物與身體	1FAE6	1FAE6	咬唇	biting_lip
-人物與身體	1F476	1F476	小寶寶	baby
-人物與身體	1F9D2	1F9D2	小孩	child
-人物與身體	1F466	1F466	男孩	boy
-人物與身體	1F467	1F467	女孩	girl
-人物與身體	1F9D1	1F9D1	大人	adult
-人物與身體	1F471	1F471	金髮人	blond_haired_person
-人物與身體	1F468	1F468	男人	man
-人物與身體	1F9D4	1F9D4	蓄鬍的人	bearded_person
-人物與身體	F000F	1F9D4 200D 2642 FE0F	男人: 蓄鬍的人	man_beard
-人物與身體	F0010	1F9D4 200D 2640 FE0F	女人: 蓄鬍的人	woman_beard
-人物與身體	F0011	1F468 200D 1F9B0	男人：紅髮	red_haired_man
-人物與身體	F0012	1F468 200D 1F9B1	男人：卷髮	curly_haired_man
-人物與身體	F0013	1F468 200D 1F9B3	男人：白髮	white_haired_man
-人物與身體	F0014	1F468 200D 1F9B2	男人：禿頭	bald_man
-人物與身體	1F469	1F469	女人	woman
-人物與身體	F0015	1F469 200D 1F9B0	女人：紅髮	red_haired_woman
-人物與身體	F0016	1F9D1 200D 1F9B0	大人：紅髮	person_red_hair
-人物與身體	F0017	1F469 200D 1F9B1	女人：卷髮	curly_haired_woman
-人物與身體	F0018	1F9D1 200D 1F9B1	大人：卷髮	person_curly_hair
-人物與身體	F0019	1F469 200D 1F9B3	女人：白髮	white_haired_woman
-人物與身體	F001A	1F9D1 200D 1F9B3	大人：白髮	person_white_hair
-人物與身體	F001B	1F469 200D 1F9B2	女人：禿頭	bald_woman
-人物與身體	F001C	1F9D1 200D 1F9B2	大人：禿頭	person_bald
-人物與身體	F001D	1F471 200D 2640 FE0F	金髮女	blond_haired_woman
-人物與身體	F001E	1F471 200D 2642 FE0F	金髮男	blond_haired_man
-人物與身體	1F9D3	1F9D3	長者	older_adult
-人物與身體	1F474	1F474	老爺爺	older_man
-人物與身體	1F475	1F475	老奶奶	older_woman
-人物與身體	1F64D	1F64D	皺眉	frowning_person
-人物與身體	F001F	1F64D 200D 2642 FE0F	男生皺眉	frowning_man
-人物與身體	F0020	1F64D 200D 2640 FE0F	女生皺眉	frowning_woman
-人物與身體	1F64E	1F64E	生氣的人	pouting_face
-人物與身體	F0021	1F64E 200D 2642 FE0F	男生噘嘴	pouting_man
-人物與身體	F0022	1F64E 200D 2640 FE0F	女生噘嘴	pouting_woman
-人物與身體	1F645	1F645	不行	no_good
-人物與身體	F0023	1F645 200D 2642 FE0F	男生手比叉	ng_man
-人物與身體	F0024	1F645 200D 2640 FE0F	女生手比叉	ng_woman
-人物與身體	1F646	1F646	可以	ok_person
-人物與身體	F0025	1F646 200D 2642 FE0F	男生手比圈	ok_man
-人物與身體	F0026	1F646 200D 2640 FE0F	女生手比圈	ok_woman
-人物與身體	1F481	1F481	服務台人員	information_desk_person
-人物與身體	F0027	1F481 200D 2642 FE0F	男生抬手	sassy_man
-人物與身體	F0028	1F481 200D 2640 FE0F	女生抬手	sassy_woman
-人物與身體	1F64B	1F64B	嗨	raising_hand
-人物與身體	F0029	1F64B 200D 2642 FE0F	男生舉手	raising_hand_man
-人物與身體	F002A	1F64B 200D 2640 FE0F	女生舉手	raising_hand_woman
-人物與身體	1F9CF	1F9CF	聽障人士	deaf_person
-人物與身體	F002B	1F9CF 200D 2642 FE0F	聽障男子	deaf_man
-人物與身體	F002C	1F9CF 200D 2640 FE0F	聽障女子	deaf_woman
-人物與身體	1F647	1F647	鞠躬	bow
-人物與身體	F002D	1F647 200D 2642 FE0F	男生鞠躬	bowing_man
-人物與身體	F002E	1F647 200D 2640 FE0F	女生鞠躬	bowing_woman
-人物與身體	1F926	1F926	哦不	facepalm
-人物與身體	F002F	1F926 200D 2642 FE0F	男生遮臉	man_facepalming
-人物與身體	F0030	1F926 200D 2640 FE0F	女生遮臉	woman_facepalming
-人物與身體	1F937	1F937	聳肩	shrug
-人物與身體	F0031	1F937 200D 2642 FE0F	男生聳肩	man_shrugging
-人物與身體	F0032	1F937 200D 2640 FE0F	女生聳肩	woman_shrugging
-人物與身體	F0033	1F9D1 200D 2695 FE0F	醫護人員	health_worker
-人物與身體	F0034	1F468 200D 2695 FE0F	男醫生	man_health_worker
-人物與身體	F0035	1F469 200D 2695 FE0F	女醫生	woman_health_worker
-人物與身體	F0036	1F9D1 200D 1F393	學生	student
-人物與身體	F0037	1F468 200D 1F393	男畢業生	man_student
-人物與身體	F0038	1F469 200D 1F393	女畢業生	woman_student
-人物與身體	F0039	1F9D1 200D 1F3EB	老師	teacher
-人物與身體	F003A	1F468 200D 1F3EB	男老師	man_teacher
-人物與身體	F003B	1F469 200D 1F3EB	女老師	woman_teacher
-人物與身體	F003C	1F9D1 200D 2696 FE0F	法官	judge
-人物與身體	F003D	1F468 200D 2696 FE0F	男法官	man_judge
-人物與身體	F003E	1F469 200D 2696 FE0F	女法官	woman_judge
-人物與身體	F003F	1F9D1 200D 1F33E	農民	farmer
-人物與身體	F0040	1F468 200D 1F33E	農夫	man_farmer
-人物與身體	F0041	1F469 200D 1F33E	農婦	woman_farmer
-人物與身體	F0042	1F9D1 200D 1F373	廚師	cook
-人物與身體	F0043	1F468 200D 1F373	男廚師	man_cook
-人物與身體	F0044	1F469 200D 1F373	女廚師	woman_cook
-人物與身體	F0045	1F9D1 200D 1F527	技工	mechanic
-人物與身體	F0046	1F468 200D 1F527	男技工	man_mechanic
-人物與身體	F0047	1F469 200D 1F527	女技工	woman_mechanic
-人物與身體	F0048	1F9D1 200D 1F3ED	工廠作業員	factory_worker
-人物與身體	F0049	1F468 200D 1F3ED	工廠男作業員	man_factory_worker
-人物與身體	F004A	1F469 200D 1F3ED	工廠女作業員	woman_factory_worker
-人物與身體	F004B	1F9D1 200D 1F4BC	上班族	office_worker
-人物與身體	F004C	1F468 200D 1F4BC	男性上班族	man_office_worker
-人物與身體	F004D	1F469 200D 1F4BC	女性上班族	woman_office_worker
-人物與身體	F004E	1F9D1 200D 1F52C	科學家	scientist
-人物與身體	F004F	1F468 200D 1F52C	男科學家	man_scientist
-人物與身體	F0050	1F469 200D 1F52C	女科學家	woman_scientist
-人物與身體	F0051	1F9D1 200D 1F4BB	工程師	technologist
-人物與身體	F0052	1F468 200D 1F4BB	男工程師	man_technologist
-人物與身體	F0053	1F469 200D 1F4BB	女工程師	woman_technologist
-人物與身體	F0054	1F9D1 200D 1F3A4	歌手	singer
-人物與身體	F0055	1F468 200D 1F3A4	男歌手	man_singer
-人物與身體	F0056	1F469 200D 1F3A4	女歌手	woman_singer
-人物與身體	F0057	1F9D1 200D 1F3A8	藝術家	artist
-人物與身體	F0058	1F468 200D 1F3A8	男藝術家	man_artist
-人物與身體	F0059	1F469 200D 1F3A8	女藝術家	woman_artist
-人物與身體	F005A	1F9D1 200D 2708 FE0F	機長	pilot
-人物與身體	F005B	1F468 200D 2708 FE0F	男機長	man_pilot
-人物與身體	F005C	1F469 200D 2708 FE0F	女機長	woman_pilot
-人物與身體	F005D	1F9D1 200D 1F680	太空人	astronaut
-人物與身體	F005E	1F468 200D 1F680	男太空人	man_astronaut
-人物與身體	F005F	1F469 200D 1F680	女太空人	woman_astronaut
-人物與身體	F0060	1F9D1 200D 1F692	消防員	firefighter
-人物與身體	F0061	1F468 200D 1F692	男消防員	man_firefighter
-人物與身體	F0062	1F469 200D 1F692	女消防員	woman_firefighter
-人物與身體	1F46E	1F46E	警察	cop
-人物與身體	F0063	1F46E 200D 2642 FE0F	男警	policeman
-人物與身體	F0064	1F46E 200D 2640 FE0F	女警	policewoman
-人物與身體	1F575	1F575 FE0F	偵探	detective
-人物與身體	F0065	1F575 FE0F 200D 2642 FE0F	男偵探	male_detective
-人物與身體	F0066	1F575 FE0F 200D 2640 FE0F	女偵探	female_detective
-人物與身體	1F482	1F482	衛兵	guard
-人物與身體	F0067	1F482 200D 2642 FE0F	男衛兵	guardsman
-人物與身體	F0068	1F482 200D 2640 FE0F	女衛兵	guardswoman
-人物與身體	1F977	1F977	忍者	ninja
-人物與身體	1F477	1F477	建築工人	construction_worker
-人物與身體	F0069	1F477 200D 2642 FE0F	男建築工人	construction_worker_man
-人物與身體	F006A	1F477 200D 2640 FE0F	女建築工人	construction_worker_woman
-人物與身體	1FAC5	1FAC5	戴皇冠的人	person_with_crown
-人物與身體	1F934	1F934	王子	prince
-人物與身體	1F478	1F478	公主	princess
-人物與身體	1F473	1F473	戴頭巾的人	person_with_turban
-人物與身體	F006B	1F473 200D 2642 FE0F	纏頭男人	man_with_turban
-人物與身體	F006C	1F473 200D 2640 FE0F	纏頭女人	woman_with_turban
-人物與身體	1F472	1F472	戴瓜皮帽的人	man_with_gua_pi_mao
-人物與身體	1F9D5	1F9D5	包頭巾的女子	woman_with_headscarf
-人物與身體	1F935	1F935	穿燕尾服的人	person_in_tuxedo
-人物與身體	F006D	1F935 200D 2642 FE0F	穿燕尾服的男人	man_in_tuxedo
-人物與身體	F006E	1F935 200D 2640 FE0F	穿燕尾服的女子	woman_in_tuxedo
-人物與身體	1F470	1F470	披著頭紗的人	person_with_veil
-人物與身體	F006F	1F470 200D 2642 FE0F	披著頭紗的男人	man_with_veil
-人物與身體	F0070	1F470 200D 2640 FE0F	披著頭紗的女子	bride_with_veil
-人物與身體	1F930	1F930	孕婦	pregnant_woman
-人物與身體	1FAC3	1FAC3	懷孕的男人	pregnant_man
-人物與身體	1FAC4	1FAC4	懷孕的人	pregnant_person
-人物與身體	1F931	1F931	哺乳	breast_feeding
-人物與身體	F0071	1F469 200D 1F37C	正在哺乳的媽媽	woman_feeding_baby
-人物與身體	F0072	1F468 200D 1F37C	正在餵奶的爸爸	man_feeding_baby
-人物與身體	F0073	1F9D1 200D 1F37C	正在哺乳的人	person_feeding_baby
-人物與身體	1F47C	1F47C	天使	angel
-人物與身體	1F385	1F385	聖誕老人	santa
-人物與身體	1F936	1F936	聖誕老奶奶	mrs_claus
-人物與身體	F0074	1F9D1 200D 1F384	跨性別聖誕老人	mx_claus
-人物與身體	1F9B8	1F9B8	超級英雄	superhero
-人物與身體	F0075	1F9B8 200D 2642 FE0F	超人	superhero_man
-人物與身體	F0076	1F9B8 200D 2640 FE0F	女超人	superhero_woman
-人物與身體	1F9B9	1F9B9	超級反派	supervillain
-人物與身體	F0077	1F9B9 200D 2642 FE0F	男超級反派	supervillain_man
-人物與身體	F0078	1F9B9 200D 2640 FE0F	女超級反派	supervillain_woman
-人物與身體	1F9D9	1F9D9	魔術師	mage
-人物與身體	F0079	1F9D9 200D 2642 FE0F	男巫	mage_man
-人物與身體	F007A	1F9D9 200D 2640 FE0F	女巫師	mage_woman
-人物與身體	1F9DA	1F9DA	仙女	fairy
-人物與身體	F007B	1F9DA 200D 2642 FE0F	男妖精	fairy_man
-人物與身體	F007C	1F9DA 200D 2640 FE0F	女妖精	fairy_woman
-人物與身體	1F9DB	1F9DB	吸血鬼	vampire
-人物與身體	F007D	1F9DB 200D 2642 FE0F	男吸血鬼	vampire_man
-人物與身體	F007E	1F9DB 200D 2640 FE0F	女吸血鬼	vampire_woman
-人物與身體	1F9DC	1F9DC	人魚	merperson
-人物與身體	F007F	1F9DC 200D 2642 FE0F	男人魚	merman
-人物與身體	F0080	1F9DC 200D 2640 FE0F	美人魚	mermaid
-人物與身體	1F9DD	1F9DD	小精靈	elf
-人物與身體	F0081	1F9DD 200D 2642 FE0F	男精靈	elf_man
-人物與身體	F0082	1F9DD 200D 2640 FE0F	女精靈	elf_woman
-人物與身體	1F9DE	1F9DE	精靈	genie
-人物與身體	F0083	1F9DE 200D 2642 FE0F	藍精靈	genie_man
-人物與身體	F0084	1F9DE 200D 2640 FE0F	女藍精靈	genie_woman
-人物與身體	1F9DF	1F9DF	殭屍	zombie
-人物與身體	F0085	1F9DF 200D 2642 FE0F	男殭屍	zombie_man
-人物與身體	F0086	1F9DF 200D 2640 FE0F	女殭屍	zombie_woman
-人物與身體	1F9CC	1F9CC	巨人	troll
-人物與身體	1FAC8	1FAC8	毛怪	
-人物與身體	1F486	1F486	按摩	massage
-人物與身體	F0087	1F486 200D 2642 FE0F	男生按摩	massage_man
-人物與身體	F0088	1F486 200D 2640 FE0F	女生按摩	massage_woman
-人物與身體	1F487	1F487	理髮	haircut
-人物與身體	F0089	1F487 200D 2642 FE0F	男生理髮	haircut_man
-人物與身體	F008A	1F487 200D 2640 FE0F	女生理髮	haircut_woman
-人物與身體	1F6B6	1F6B6	行人	walking
-人物與身體	F008B	1F6B6 200D 2642 FE0F	男行人	walking_man
-人物與身體	F008C	1F6B6 200D 2640 FE0F	女行人	walking_woman
-人物與身體	F008D	1F6B6 200D 27A1 FE0F	行人：面右	
-人物與身體	F008E	1F6B6 200D 2640 FE0F 200D 27A1 FE0F	女行人：面右	
-人物與身體	F008F	1F6B6 200D 2642 FE0F 200D 27A1 FE0F	男行人：面右	
-人物與身體	1F9CD	1F9CD	站著的人	standing_person
-人物與身體	F0090	1F9CD 200D 2642 FE0F	站著的男子	standing_man
-人物與身體	F0091	1F9CD 200D 2640 FE0F	站著的女子	standing_woman
-人物與身體	1F9CE	1F9CE	跪著的人	kneeling_person
-人物與身體	F0092	1F9CE 200D 2642 FE0F	跪著的男子	kneeling_man
-人物與身體	F0093	1F9CE 200D 2640 FE0F	跪著的女子	kneeling_woman
-人物與身體	F0094	1F9CE 200D 27A1 FE0F	跪著的人：面右	
-人物與身體	F0095	1F9CE 200D 2640 FE0F 200D 27A1 FE0F	跪著的女子：面右	
-人物與身體	F0096	1F9CE 200D 2642 FE0F 200D 27A1 FE0F	跪著的男子：面右	
-人物與身體	F0097	1F9D1 200D 1F9AF	拿導盲手杖的人	person_with_probing_cane
-人物與身體	F0098	1F9D1 200D 1F9AF 200D 27A1 FE0F	拿導盲手杖的人：面右	
-人物與身體	F0099	1F468 200D 1F9AF	拿導盲手杖的男子	man_with_probing_cane
-人物與身體	F009A	1F468 200D 1F9AF 200D 27A1 FE0F	拿導盲手杖的男子：面右	
-人物與身體	F009B	1F469 200D 1F9AF	拿導盲手杖的女子	woman_with_probing_cane
-人物與身體	F009C	1F469 200D 1F9AF 200D 27A1 FE0F	拿導盲手杖的女子：面右	
-人物與身體	F009D	1F9D1 200D 1F9BC	坐電動輪椅的人	person_in_motorized_wheelchair
-人物與身體	F009E	1F9D1 200D 1F9BC 200D 27A1 FE0F	坐電動輪椅的人：面右	
-人物與身體	F009F	1F468 200D 1F9BC	坐電動輪椅的男子	man_in_motorized_wheelchair
-人物與身體	F00A0	1F468 200D 1F9BC 200D 27A1 FE0F	坐電動輪椅的男子：面右	
-人物與身體	F00A1	1F469 200D 1F9BC	坐電動輪椅的女子	woman_in_motorized_wheelchair
-人物與身體	F00A2	1F469 200D 1F9BC 200D 27A1 FE0F	坐電動輪椅的女子：面右	
-人物與身體	F00A3	1F9D1 200D 1F9BD	坐輪椅的人	person_in_manual_wheelchair
-人物與身體	F00A4	1F9D1 200D 1F9BD 200D 27A1 FE0F	坐輪椅的人：面右	
-人物與身體	F00A5	1F468 200D 1F9BD	坐輪椅的男子	man_in_manual_wheelchair
-人物與身體	F00A6	1F468 200D 1F9BD 200D 27A1 FE0F	坐輪椅的男子：面右	
-人物與身體	F00A7	1F469 200D 1F9BD	坐輪椅的女子	woman_in_manual_wheelchair
-人物與身體	F00A8	1F469 200D 1F9BD 200D 27A1 FE0F	坐輪椅的女子：面右	
-人物與身體	1F3C3	1F3C3	跑者	runner
-人物與身體	F00A9	1F3C3 200D 2642 FE0F	男跑者	running_man
-人物與身體	F00AA	1F3C3 200D 2640 FE0F	女跑者	running_woman
-人物與身體	F00AB	1F3C3 200D 27A1 FE0F	跑者：面右	
-人物與身體	F00AC	1F3C3 200D 2640 FE0F 200D 27A1 FE0F	女跑者：面右	
-人物與身體	F00AD	1F3C3 200D 2642 FE0F 200D 27A1 FE0F	男跑者：面右	
-人物與身體	F00AE	1F9D1 200D 1FA70	芭蕾舞者	
-人物與身體	1F483	1F483	舞者	dancer
-人物與身體	1F57A	1F57A	男人跳著舞	man_dancing
-人物與身體	1F574	1F574 FE0F	穿西裝的人	business_suit_levitating
-人物與身體	1F46F	1F46F	兔女郎	dancers
-人物與身體	F00AF	1F46F 200D 2642 FE0F	雙人兔男郎	dancing_men
-人物與身體	F00B0	1F46F 200D 2640 FE0F	雙人兔女郎	dancing_women
-人物與身體	1F9D6	1F9D6	做蒸氣浴的人	sauna_person
-人物與身體	F00B1	1F9D6 200D 2642 FE0F	做蒸氣浴的男子	sauna_man
-人物與身體	F00B2	1F9D6 200D 2640 FE0F	做蒸氣浴的女子	sauna_woman
-人物與身體	1F9D7	1F9D7	攀岩的人	climbing
-人物與身體	F00B3	1F9D7 200D 2642 FE0F	攀岩男子	climbing_man
-人物與身體	F00B4	1F9D7 200D 2640 FE0F	攀岩女子	climbing_woman
-人物與身體	1F93A	1F93A	西洋劍	person_fencing
-人物與身體	1F3C7	1F3C7	賽馬	horse_racing
-人物與身體	F00B5	26F7 FE0F	滑雪者	skier
-人物與身體	1F3C2	1F3C2	滑雪板	snowboarder
-人物與身體	1F3CC	1F3CC FE0F	打高爾夫	golfing
-人物與身體	F00B6	1F3CC FE0F 200D 2642 FE0F	男生打高爾夫	golfing_man
-人物與身體	F00B7	1F3CC FE0F 200D 2640 FE0F	女生打高爾夫	golfing_woman
-人物與身體	1F3C4	1F3C4	衝浪	surfer
-人物與身體	F00B8	1F3C4 200D 2642 FE0F	男生衝浪	surfing_man
-人物與身體	F00B9	1F3C4 200D 2640 FE0F	女生衝浪	surfing_woman
-人物與身體	1F6A3	1F6A3	划艇	rowboat
-人物與身體	F00BA	1F6A3 200D 2642 FE0F	男生划船	rowing_man
-人物與身體	F00BB	1F6A3 200D 2640 FE0F	女生划船	rowing_woman
-人物與身體	1F3CA	1F3CA	游泳	swimmer
-人物與身體	F00BC	1F3CA 200D 2642 FE0F	男生游泳	swimming_man
-人物與身體	F00BD	1F3CA 200D 2640 FE0F	女生游泳	swimming_woman
-人物與身體	F00BE	26F9 FE0F	打球	bouncing_ball_person
-人物與身體	F00BF	26F9 FE0F 200D 2642 FE0F	男生打球	basketball_man
-人物與身體	F00C0	26F9 FE0F 200D 2640 FE0F	女生打球	basketball_woman
-人物與身體	1F3CB	1F3CB FE0F	舉重	weight_lifting
-人物與身體	F00C1	1F3CB FE0F 200D 2642 FE0F	男生舉重	weight_lifting_man
-人物與身體	F00C2	1F3CB FE0F 200D 2640 FE0F	女生舉重	weight_lifting_woman
-人物與身體	1F6B4	1F6B4	騎自行車	bicyclist
-人物與身體	F00C3	1F6B4 200D 2642 FE0F	男自行車手	biking_man
-人物與身體	F00C4	1F6B4 200D 2640 FE0F	女自行車手	biking_woman
-人物與身體	1F6B5	1F6B5	騎登山車	mountain_bicyclist
-人物與身體	F00C5	1F6B5 200D 2642 FE0F	男登山車手	mountain_biking_man
-人物與身體	F00C6	1F6B5 200D 2640 FE0F	女登山車手	mountain_biking_woman
-人物與身體	1F938	1F938	側翻	cartwheeling
-人物與身體	F00C7	1F938 200D 2642 FE0F	男生側翻	man_cartwheeling
-人物與身體	F00C8	1F938 200D 2640 FE0F	女生側翻	woman_cartwheeling
-人物與身體	1F93C	1F93C	摔角手	wrestling
-人物與身體	F00C9	1F93C 200D 2642 FE0F	男子摔角	men_wrestling
-人物與身體	F00CA	1F93C 200D 2640 FE0F	女子摔角	women_wrestling
-人物與身體	1F93D	1F93D	水球運動	water_polo
-人物與身體	F00CB	1F93D 200D 2642 FE0F	男生打水球	man_playing_water_polo
-人物與身體	F00CC	1F93D 200D 2640 FE0F	女生打水球	woman_playing_water_polo
-人物與身體	1F93E	1F93E	手球	handball_person
-人物與身體	F00CD	1F93E 200D 2642 FE0F	男生打手球	man_playing_handball
-人物與身體	F00CE	1F93E 200D 2640 FE0F	女生打手球	woman_playing_handball
-人物與身體	1F939	1F939	雜耍	juggling_person
-人物與身體	F00CF	1F939 200D 2642 FE0F	男生玩雜耍	man_juggling
-人物與身體	F00D0	1F939 200D 2640 FE0F	女生玩雜耍	woman_juggling
-人物與身體	1F9D8	1F9D8	盤坐	lotus_position
-人物與身體	F00D1	1F9D8 200D 2642 FE0F	盤坐男子	lotus_position_man
-人物與身體	F00D2	1F9D8 200D 2640 FE0F	盤坐女子	lotus_position_woman
-人物與身體	1F6C0	1F6C0	盆浴	bath
-人物與身體	1F6CC	1F6CC	睡覺	sleeping_bed
-人物與身體	F00D3	1F9D1 200D 1F91D 200D 1F9D1	握手的人	people_holding_hands
-人物與身體	1F46D	1F46D	兩個女人	two_women_holding_hands
-人物與身體	1F46B	1F46B	一男一女	couple
-人物與身體	1F46C	1F46C	兩個男人	two_men_holding_hands
-人物與身體	1F48F	1F48F	親	couplekiss
-人物與身體	F00D4	1F469 200D 2764 FE0F 200D 1F48B 200D 1F468	親：女人 男人	couplekiss_man_woman
-人物與身體	F00D5	1F468 200D 2764 FE0F 200D 1F48B 200D 1F468	親：男人 男人	couplekiss_man_man
-人物與身體	F00D6	1F469 200D 2764 FE0F 200D 1F48B 200D 1F469	親：女人 女人	couplekiss_woman_woman
-人物與身體	1F491	1F491	相愛	couple_with_heart
-人物與身體	F00D7	1F469 200D 2764 FE0F 200D 1F468	相愛：女人 男人	couple_with_heart_woman_man
-人物與身體	F00D8	1F468 200D 2764 FE0F 200D 1F468	相愛：男人 男人	couple_with_heart_man_man
-人物與身體	F00D9	1F469 200D 2764 FE0F 200D 1F469	相愛：女人 女人	couple_with_heart_woman_woman
-人物與身體	F00DA	1F468 200D 1F469 200D 1F466	家庭：男人 女人 男孩	family_man_woman_boy
-人物與身體	F00DB	1F468 200D 1F469 200D 1F467	家庭：男人 女人 女孩	family_man_woman_girl
-人物與身體	F00DC	1F468 200D 1F469 200D 1F467 200D 1F466	家庭：男人 女人 女孩 男孩	family_man_woman_girl_boy
-人物與身體	F00DD	1F468 200D 1F469 200D 1F466 200D 1F466	家庭：男人 女人 男孩 男孩	family_man_woman_boy_boy
-人物與身體	F00DE	1F468 200D 1F469 200D 1F467 200D 1F467	家庭：男人 女人 女孩 女孩	family_man_woman_girl_girl
-人物與身體	F00DF	1F468 200D 1F468 200D 1F466	家庭：男人 男人 男孩	family_man_man_boy
-人物與身體	F00E0	1F468 200D 1F468 200D 1F467	家庭：男人 男人 女孩	family_man_man_girl
-人物與身體	F00E1	1F468 200D 1F468 200D 1F467 200D 1F466	家庭：男人 男人 女孩 男孩	family_man_man_girl_boy
-人物與身體	F00E2	1F468 200D 1F468 200D 1F466 200D 1F466	家庭：男人 男人 男孩 男孩	family_man_man_boy_boy
-人物與身體	F00E3	1F468 200D 1F468 200D 1F467 200D 1F467	家庭：男人 男人 女孩 女孩	family_man_man_girl_girl
-人物與身體	F00E4	1F469 200D 1F469 200D 1F466	家庭：女人 女人 男孩	family_woman_woman_boy
-人物與身體	F00E5	1F469 200D 1F469 200D 1F467	家庭：女人 女人 女孩	family_woman_woman_girl
-人物與身體	F00E6	1F469 200D 1F469 200D 1F467 200D 1F466	家庭：女人 女人 女孩 男孩	family_woman_woman_girl_boy
-人物與身體	F00E7	1F469 200D 1F469 200D 1F466 200D 1F466	家庭：女人 女人 男孩 男孩	family_woman_woman_boy_boy
-人物與身體	F00E8	1F469 200D 1F469 200D 1F467 200D 1F467	家庭：女人 女人 女孩 女孩	family_woman_woman_girl_girl
-人物與身體	F00E9	1F468 200D 1F466	家庭：男人 男孩	family_man_boy
-人物與身體	F00EA	1F468 200D 1F466 200D 1F466	家庭：男人 男孩 男孩	family_man_boy_boy
-人物與身體	F00EB	1F468 200D 1F467	家庭：男人 女孩	family_man_girl
-人物與身體	F00EC	1F468 200D 1F467 200D 1F466	家庭：男人 女孩 男孩	family_man_girl_boy
-人物與身體	F00ED	1F468 200D 1F467 200D 1F467	家庭：男人 女孩 女孩	family_man_girl_girl
-人物與身體	F00EE	1F469 200D 1F466	家庭：女人 男孩	family_woman_boy
-人物與身體	F00EF	1F469 200D 1F466 200D 1F466	家庭：女人 男孩 男孩	family_woman_boy_boy
-人物與身體	F00F0	1F469 200D 1F467	家庭：女人 女孩	family_woman_girl
-人物與身體	F00F1	1F469 200D 1F467 200D 1F466	家庭：女人 女孩 男孩	family_woman_girl_boy
-人物與身體	F00F2	1F469 200D 1F467 200D 1F467	家庭：女人 女孩 女孩	family_woman_girl_girl
-人物與身體	1F5E3	1F5E3 FE0F	說話的人影	speaking_head
-人物與身體	1F464	1F464	肖像剪影	bust_in_silhouette
-人物與身體	1F465	1F465	雙人肖像剪影	busts_in_silhouette
-人物與身體	1FAC2	1FAC2	擁抱的人	people_hugging
-人物與身體	1F46A	1F46A	家庭	family
-人物與身體	F00F3	1F9D1 200D 1F9D1 200D 1F9D2	家庭：兩大一小	
-人物與身體	F00F4	1F9D1 200D 1F9D1 200D 1F9D2 200D 1F9D2	家庭：兩大兩小	
-人物與身體	F00F5	1F9D1 200D 1F9D2	家庭：一大一小	
-人物與身體	F00F6	1F9D1 200D 1F9D2 200D 1F9D2	家庭：一大兩小	
-人物與身體	1F463	1F463	腳印	footprints
-人物與身體	1FAC6	1FAC6	指紋	
-動物與自然	1F435	1F435	猴子頭	monkey_face
-動物與自然	1F412	1F412	猴子	monkey
-動物與自然	1F98D	1F98D	大猩猩	gorilla
-動物與自然	1F9A7	1F9A7	猩猩	orangutan
-動物與自然	1F436	1F436	狗頭	dog
-動物與自然	1F415	1F415	狗	dog2
-動物與自然	1F9AE	1F9AE	導盲犬	guide_dog
-動物與自然	F00F7	1F415 200D 1F9BA	服務犬	service_dog
-動物與自然	1F429	1F429	貴賓犬	poodle
-動物與自然	1F43A	1F43A	狼	wolf
-動物與自然	1F98A	1F98A	狐狸	fox_face
-動物與自然	1F99D	1F99D	浣熊	raccoon
-動物與自然	1F431	1F431	貓頭	cat
-動物與自然	1F408	1F408	貓	cat2
-動物與自然	F00F8	1F408 200D 2B1B	黑貓	black_cat
-動物與自然	1F981	1F981	獅子	lion
-動物與自然	1F42F	1F42F	老虎頭	tiger
-動物與自然	1F405	1F405	老虎	tiger2
-動物與自然	1F406	1F406	花豹	leopard
-動物與自然	1F434	1F434	馬頭	horse
-動物與自然	1FACE	1FACE	麋鹿	moose
-動物與自然	1FACF	1FACF	驢	donkey
-動物與自然	1F40E	1F40E	馬	racehorse
-動物與自然	1F984	1F984	獨角獸	unicorn
-動物與自然	1F993	1F993	斑馬	zebra
-動物與自然	1F98C	1F98C	鹿	deer
-動物與自然	1F9AC	1F9AC	野牛	bison
-動物與自然	1F42E	1F42E	牛頭	cow
-動物與自然	1F402	1F402	公牛	ox
-動物與自然	1F403	1F403	水牛	water_buffalo
-動物與自然	1F404	1F404	乳牛	cow2
-動物與自然	1F437	1F437	豬頭	pig
-動物與自然	1F416	1F416	豬	pig2
-動物與自然	1F417	1F417	野豬	boar
-動物與自然	1F43D	1F43D	豬鼻子	pig_nose
-動物與自然	1F40F	1F40F	公羊	ram
-動物與自然	1F411	1F411	綿羊	sheep
-動物與自然	1F410	1F410	山羊	goat
-動物與自然	1F42A	1F42A	單峰駱駝	dromedary_camel
-動物與自然	1F42B	1F42B	雙峰駱駝	camel
-動物與自然	1F999	1F999	羊駝	llama
-動物與自然	1F992	1F992	長頸鹿	giraffe
-動物與自然	1F418	1F418	大象	elephant
-動物與自然	1F9A3	1F9A3	毛象	mammoth
-動物與自然	1F98F	1F98F	犀牛	rhinoceros
-動物與自然	1F99B	1F99B	河馬	hippopotamus
-動物與自然	1F42D	1F42D	老鼠頭	mouse
-動物與自然	1F401	1F401	小老鼠	mouse2
-動物與自然	1F400	1F400	老鼠	rat
-動物與自然	1F439	1F439	倉鼠	hamster
-動物與自然	1F430	1F430	兔子頭	rabbit
-動物與自然	1F407	1F407	兔子	rabbit2
-動物與自然	1F43F	1F43F FE0F	松鼠	chipmunk
-動物與自然	1F9AB	1F9AB	海狸	beaver
-動物與自然	1F994	1F994	刺蝟	hedgehog
-動物與自然	1F987	1F987	蝙蝠	bat
-動物與自然	1F43B	1F43B	熊	bear
-動物與自然	F00F9	1F43B 200D 2744 FE0F	北極熊	polar_bear
-動物與自然	1F428	1F428	無尾熊	koala
-動物與自然	1F43C	1F43C	熊貓	panda_face
-動物與自然	1F9A5	1F9A5	樹懶	sloth
-動物與自然	1F9A6	1F9A6	水獺	otter
-動物與自然	1F9A8	1F9A8	臭鼬	skunk
-動物與自然	1F998	1F998	袋鼠	kangaroo
-動物與自然	1F9A1	1F9A1	獾	badger
-動物與自然	1F43E	1F43E	動物腳印	feet
-動物與自然	1F983	1F983	火雞	turkey
-動物與自然	1F414	1F414	雞	chicken
-動物與自然	1F413	1F413	公雞	rooster
-動物與自然	1F423	1F423	小雞破蛋	hatching_chick
-動物與自然	1F424	1F424	小雞的臉	baby_chick
-動物與自然	1F425	1F425	小雞	hatched_chick
-動物與自然	1F426	1F426	鳥	bird
-動物與自然	1F427	1F427	企鵝	penguin
-動物與自然	1F54A	1F54A FE0F	飛鳥	dove
-動物與自然	1F985	1F985	老鷹	eagle
-動物與自然	1F986	1F986	鴨子	duck
-動物與自然	1F9A2	1F9A2	天鵝	swan
-動物與自然	1F989	1F989	貓頭鷹	owl
-動物與自然	1F9A4	1F9A4	渡渡鳥	dodo
-動物與自然	1FAB6	1FAB6	羽毛	feather
-動物與自然	1F9A9	1F9A9	紅鶴	flamingo
-動物與自然	1F99A	1F99A	孔雀	peacock
-動物與自然	1F99C	1F99C	鸚鵡	parrot
-動物與自然	1FABD	1FABD	翅膀	wing
-動物與自然	F00FA	1F426 200D 2B1B	黑鳥	black_bird
-動物與自然	1FABF	1FABF	鵝	goose
-動物與自然	F00FB	1F426 200D 1F525	鳳凰	
-動物與自然	1F438	1F438	青蛙	frog
-動物與自然	1F40A	1F40A	鱷魚	crocodile
-動物與自然	1F422	1F422	烏龜	turtle
-動物與自然	1F98E	1F98E	蜥蜴	lizard
-動物與自然	1F40D	1F40D	蛇	snake
-動物與自然	1F432	1F432	龍頭	dragon_face
-動物與自然	1F409	1F409	龍	dragon
-動物與自然	1F995	1F995	蜥腳類恐龍	sauropod
-動物與自然	1F996	1F996	暴龍	t-rex
-動物與自然	1F433	1F433	鯨魚	whale
-動物與自然	1F40B	1F40B	藍鯨	whale2
-動物與自然	1F42C	1F42C	海豚	dolphin
-動物與自然	1FACD	1FACD	虎鯨	
-動物與自然	1F9AD	1F9AD	海豹	seal
-動物與自然	1F41F	1F41F	魚	fish
-動物與自然	1F420	1F420	熱帶魚	tropical_fish
-動物與自然	1F421	1F421	河豚	blowfish
-動物與自然	1F988	1F988	鯊魚	shark
-動物與自然	1F419	1F419	章魚	octopus
-動物與自然	1F41A	1F41A	海螺	shell
-動物與自然	1FAB8	1FAB8	珊瑚	coral
-動物與自然	1FABC	1FABC	水母	jellyfish
-動物與自然	1F980	1F980	螃蟹	crab
-動物與自然	1F99E	1F99E	龍蝦	lobster
-動物與自然	1F990	1F990	蝦子	shrimp
-動物與自然	1F991	1F991	魷魚	squid
-動物與自然	1F9AA	1F9AA	牡蠣	oyster
-動物與自然	1F40C	1F40C	蝸牛	snail
-動物與自然	1F98B	1F98B	蝴蝶	butterfly
-動物與自然	1F41B	1F41B	毛毛蟲	bug
-動物與自然	1F41C	1F41C	螞蟻	ant
-動物與自然	1F41D	1F41D	蜜蜂	bee
-動物與自然	1FAB2	1FAB2	甲蟲	beetle
-動物與自然	1F41E	1F41E	瓢蟲	lady_beetle
-動物與自然	1F997	1F997	蟋蟀	cricket
-動物與自然	1FAB3	1FAB3	蟑螂	cockroach
-動物與自然	1F577	1F577 FE0F	蜘蛛	spider
-動物與自然	1F578	1F578 FE0F	蜘蛛網	spider_web
-動物與自然	1F982	1F982	蠍子	scorpion
-動物與自然	1F99F	1F99F	蚊子	mosquito
-動物與自然	1FAB0	1FAB0	蒼蠅	fly
-動物與自然	1FAB1	1FAB1	蠕蟲	worm
-動物與自然	1F9A0	1F9A0	微生物	microbe
-動物與自然	1F490	1F490	花束	bouquet
-動物與自然	1F338	1F338	櫻花	cherry_blossom
-動物與自然	1F4AE	1F4AE	白花	white_flower
-動物與自然	1FAB7	1FAB7	蓮花	lotus
-動物與自然	1F3F5	1F3F5 FE0F	花朵	rosette
-動物與自然	1F339	1F339	玫瑰	rose
-動物與自然	1F940	1F940	枯萎花朵	wilted_flower
-動物與自然	1F33A	1F33A	芙蓉	hibiscus
-動物與自然	1F33B	1F33B	向日葵	sunflower
-動物與自然	1F33C	1F33C	開花	blossom
-動物與自然	1F337	1F337	鬱金香	tulip
-動物與自然	1FABB	1FABB	風信子	hyacinth
-動物與自然	1F331	1F331	苗	seedling
-動物與自然	1FAB4	1FAB4	盆景	potted_plant
-動物與自然	1F332	1F332	常青樹	evergreen_tree
-動物與自然	1F333	1F333	落葉樹	deciduous_tree
-動物與自然	1F334	1F334	棕櫚樹	palm_tree
-動物與自然	1F335	1F335	仙人掌	cactus
-動物與自然	1F33E	1F33E	水稻	ear_of_rice
-動物與自然	1F33F	1F33F	草藥	herb
-動物與自然	F00FC	2618 FE0F	三葉草	shamrock
-動物與自然	1F340	1F340	幸運草	four_leaf_clover
-動物與自然	1F341	1F341	楓葉	maple_leaf
-動物與自然	1F342	1F342	落葉	fallen_leaf
-動物與自然	1F343	1F343	隨風飄落的葉子	leaves
-動物與自然	1FAB9	1FAB9	空巢	empty_nest
-動物與自然	1FABA	1FABA	有蛋的巢	nest_with_eggs
-動物與自然	1F344	1F344	蘑菇	mushroom
-動物與自然	1FABE	1FABE	沒有葉子的樹	
-食物與飲料	1F347	1F347	葡萄	grapes
-食物與飲料	1F348	1F348	瓜	melon
-食物與飲料	1F349	1F349	西瓜	watermelon
-食物與飲料	1F34A	1F34A	橘子	mandarin
-食物與飲料	1F34B	1F34B	檸檬	lemon
-食物與飲料	F00FD	1F34B 200D 1F7E9	萊姆	
-食物與飲料	1F34C	1F34C	香蕉	banana
-食物與飲料	1F34D	1F34D	鳳梨	pineapple
-食物與飲料	1F96D	1F96D	芒果	mango
-食物與飲料	1F34E	1F34E	紅蘋果	apple
-食物與飲料	1F34F	1F34F	青蘋果	green_apple
-食物與飲料	1F350	1F350	梨子	pear
-食物與飲料	1F351	1F351	桃子	peach
-食物與飲料	1F352	1F352	櫻桃	cherries
-食物與飲料	1F353	1F353	草莓	strawberry
-食物與飲料	1FAD0	1FAD0	藍莓	blueberries
-食物與飲料	1F95D	1F95D	奇異果	kiwi_fruit
-食物與飲料	1F345	1F345	番茄	tomato
-食物與飲料	1FAD2	1FAD2	橄欖	olive
-食物與飲料	1F965	1F965	椰子	coconut
-食物與飲料	1F951	1F951	酪梨	avocado
-食物與飲料	1F346	1F346	茄子	eggplant
-食物與飲料	1F954	1F954	馬鈴薯	potato
-食物與飲料	1F955	1F955	胡蘿蔔	carrot
-食物與飲料	1F33D	1F33D	玉米	corn
-食物與飲料	1F336	1F336 FE0F	辣椒	hot_pepper
-食物與飲料	1FAD1	1FAD1	甜椒	bell_pepper
-食物與飲料	1F952	1F952	小黃瓜	cucumber
-食物與飲料	1F96C	1F96C	綠葉蔬菜	leafy_green
-食物與飲料	1F966	1F966	花椰菜	broccoli
-食物與飲料	1F9C4	1F9C4	大蒜	garlic
-食物與飲料	1F9C5	1F9C5	洋蔥	onion
-食物與飲料	1F95C	1F95C	花生	peanuts
-食物與飲料	1FAD8	1FAD8	豆子	beans
-食物與飲料	1F330	1F330	栗子	chestnut
-食物與飲料	1FADA	1FADA	薑	ginger_root
-食物與飲料	1FADB	1FADB	豌豆莢	pea_pod
-食物與飲料	F00FE	1F344 200D 1F7EB	棕色蕈菇	
-食物與飲料	1FADC	1FADC	根莖類蔬菜	
-食物與飲料	1F35E	1F35E	吐司	bread
-食物與飲料	1F950	1F950	可頌	croissant
-食物與飲料	1F956	1F956	法國麵包	baguette_bread
-食物與飲料	1FAD3	1FAD3	麵餅	flatbread
-食物與飲料	1F968	1F968	蝴蝶餅	pretzel
-食物與飲料	1F96F	1F96F	貝果	bagel
-食物與飲料	1F95E	1F95E	鬆餅	pancakes
-食物與飲料	1F9C7	1F9C7	格子鬆餅	waffle
-食物與飲料	1F9C0	1F9C0	起士	cheese
-食物與飲料	1F356	1F356	排骨	meat_on_bone
-食物與飲料	1F357	1F357	雞腿	poultry_leg
-食物與飲料	1F969	1F969	肉片	cut_of_meat
-食物與飲料	1F953	1F953	培根	bacon
-食物與飲料	1F354	1F354	漢堡	hamburger
-食物與飲料	1F35F	1F35F	薯條	fries
-食物與飲料	1F355	1F355	披薩	pizza
-食物與飲料	1F32D	1F32D	熱狗	hotdog
-食物與飲料	1F96A	1F96A	三明治	sandwich
-食物與飲料	1F32E	1F32E	夾餅	taco
-食物與飲料	1F32F	1F32F	捲餅	burrito
-食物與飲料	1FAD4	1FAD4	玉米粉蒸肉	tamale
-食物與飲料	1F959	1F959	薄捲餅	stuffed_flatbread
-食物與飲料	1F9C6	1F9C6	油炸鷹嘴豆餅	falafel
-食物與飲料	1F95A	1F95A	蛋	egg
-食物與飲料	1F373	1F373	煎蛋	fried_egg
-食物與飲料	1F958	1F958	淺鍋料理	shallow_pan_of_food
-食物與飲料	1F372	1F372	火鍋	stew
-食物與飲料	1FAD5	1FAD5	涮製菜餚	fondue
-食物與飲料	1F963	1F963	碗和湯匙	bowl_with_spoon
-食物與飲料	1F957	1F957	生菜沙拉	green_salad
-食物與飲料	1F37F	1F37F	爆米花	popcorn
-食物與飲料	1F9C8	1F9C8	奶油	butter
-食物與飲料	1F9C2	1F9C2	鹽	salt
-食物與飲料	1F96B	1F96B	罐頭食品	canned_food
-食物與飲料	1F371	1F371	便當	bento
-食物與飲料	1F358	1F358	米果	rice_cracker
-食物與飲料	1F359	1F359	飯糰	rice_ball
-食物與飲料	1F35A	1F35A	米飯	rice
-食物與飲料	1F35B	1F35B	咖哩飯	curry
-食物與飲料	1F35C	1F35C	湯麵	ramen
-食物與飲料	1F35D	1F35D	義大利麵	spaghetti
-食物與飲料	1F360	1F360	烤地瓜	sweet_potato
-食物與飲料	1F362	1F362	關東煮	oden
-食物與飲料	1F363	1F363	壽司	sushi
-食物與飲料	1F364	1F364	天婦羅	fried_shrimp
-食物與飲料	1F365	1F365	魚板	fish_cake
-食物與飲料	1F96E	1F96E	月餅	moon_cake
-食物與飲料	1F361	1F361	糥米丸子	dango
-食物與飲料	1F95F	1F95F	水餃	dumpling
-食物與飲料	1F960	1F960	幸運餅乾	fortune_cookie
-食物與飲料	1F961	1F961	外帶餐盒	takeout_box
-食物與飲料	1F366	1F366	霜淇淋	icecream
-食物與飲料	1F367	1F367	刨冰	shaved_ice
-食物與飲料	1F368	1F368	冰淇淋	ice_cream
-食物與飲料	1F369	1F369	甜甜圈	doughnut
-食物與飲料	1F36A	1F36A	餅乾	cookie
-食物與飲料	1F382	1F382	生日蛋糕	birthday
-食物與飲料	1F370	1F370	蛋糕	cake
-食物與飲料	1F9C1	1F9C1	杯子蛋糕	cupcake
-食物與飲料	1F967	1F967	派	pie
-食物與飲料	1F36B	1F36B	巧克力	chocolate_bar
-食物與飲料	1F36C	1F36C	糖	candy
-食物與飲料	1F36D	1F36D	棒棒糖	lollipop
-食物與飲料	1F36E	1F36E	卡士達	custard
-食物與飲料	1F36F	1F36F	蜂蜜	honey_pot
-食物與飲料	1F37C	1F37C	奶瓶	baby_bottle
-食物與飲料	1F95B	1F95B	一杯牛奶	milk_glass
-食物與飲料	2615	2615	熱飲	coffee
-食物與飲料	1FAD6	1FAD6	茶壺	teapot
-食物與飲料	1F375	1F375	熱茶	tea
-食物與飲料	1F376	1F376	清酒	sake
-食物與飲料	1F37E	1F37E	洋酒	champagne
-食物與飲料	1F377	1F377	葡萄酒	wine_glass
-食物與飲料	1F378	1F378	雞尾酒	cocktail
-食物與飲料	1F379	1F379	熱帶水果飲料	tropical_drink
-食物與飲料	1F37A	1F37A	啤酒	beer
-食物與飲料	1F37B	1F37B	乾杯吧	beers
-食物與飲料	1F942	1F942	乾杯	clinking_glasses
-食物與飲料	1F943	1F943	威士忌杯	tumbler_glass
-食物與飲料	1FAD7	1FAD7	倒出液體	pouring_liquid
-食物與飲料	1F964	1F964	杯子和吸管	cup_with_straw
-食物與飲料	1F9CB	1F9CB	珍珠奶茶	bubble_tea
-食物與飲料	1F9C3	1F9C3	鋁箔包	beverage_box
-食物與飲料	1F9C9	1F9C9	瑪黛茶	mate
-食物與飲料	1F9CA	1F9CA	冰塊	ice_cube
-食物與飲料	1F962	1F962	筷子	chopsticks
-食物與飲料	1F37D	1F37D FE0F	餐具	plate_with_cutlery
-食物與飲料	1F374	1F374	刀叉	fork_and_knife
-食物與飲料	1F944	1F944	湯匙	spoon
-食物與飲料	1F52A	1F52A	菜刀	hocho
-食物與飲料	1FAD9	1FAD9	廣口瓶	jar
-食物與飲料	1F3FA	1F3FA	陶罐	amphora
-旅遊與地點	1F30D	1F30D	歐洲及非洲	earth_africa
-旅遊與地點	1F30E	1F30E	美洲	earth_americas
-旅遊與地點	1F30F	1F30F	亞洲及澳洲	earth_asia
-旅遊與地點	1F310	1F310	子午線	globe_with_meridians
-旅遊與地點	1F5FA	1F5FA FE0F	世界地圖	world_map
-旅遊與地點	1F5FE	1F5FE	日本	japan
-旅遊與地點	1F9ED	1F9ED	指南針	compass
-旅遊與地點	1F3D4	1F3D4 FE0F	雪山	mountain_snow
-旅遊與地點	F00FF	26F0 FE0F	山	mountain
-旅遊與地點	1F6D8	1F6D8	山崩	
-旅遊與地點	1F30B	1F30B	火山	volcano
-旅遊與地點	1F5FB	1F5FB	富士山	mount_fuji
-旅遊與地點	1F3D5	1F3D5 FE0F	露營	camping
-旅遊與地點	1F3D6	1F3D6 FE0F	海灘陽傘	beach_umbrella
-旅遊與地點	1F3DC	1F3DC FE0F	沙漠	desert
-旅遊與地點	1F3DD	1F3DD FE0F	熱帶小島	desert_island
-旅遊與地點	1F3DE	1F3DE FE0F	國家公園	national_park
-旅遊與地點	1F3DF	1F3DF FE0F	競技場	stadium
-旅遊與地點	1F3DB	1F3DB FE0F	古典建築	classical_building
-旅遊與地點	1F3D7	1F3D7 FE0F	施工中	building_construction
-旅遊與地點	1F9F1	1F9F1	磚塊	bricks
-旅遊與地點	1FAA8	1FAA8	石頭	rock
-旅遊與地點	1FAB5	1FAB5	木頭	wood
-旅遊與地點	1F6D6	1F6D6	小屋	hut
-旅遊與地點	1F3D8	1F3D8 FE0F	房屋建築	houses
-旅遊與地點	1F3DA	1F3DA FE0F	廢墟	derelict_house
-旅遊與地點	1F3E0	1F3E0	房子	house
-旅遊與地點	1F3E1	1F3E1	別墅	house_with_garden
-旅遊與地點	1F3E2	1F3E2	辦公大樓	office
-旅遊與地點	1F3E3	1F3E3	日本郵局	post_office
-旅遊與地點	1F3E4	1F3E4	歐洲郵局	european_post_office
-旅遊與地點	1F3E5	1F3E5	醫院	hospital
-旅遊與地點	1F3E6	1F3E6	銀行	bank
-旅遊與地點	1F3E8	1F3E8	旅館	hotel
-旅遊與地點	1F3E9	1F3E9	賓館	love_hotel
-旅遊與地點	1F3EA	1F3EA	便利商店	convenience_store
-旅遊與地點	1F3EB	1F3EB	學校	school
-旅遊與地點	1F3EC	1F3EC	百貨公司	department_store
-旅遊與地點	1F3ED	1F3ED	工廠	factory
-旅遊與地點	1F3EF	1F3EF	日式城堡	japanese_castle
-旅遊與地點	1F3F0	1F3F0	歐式城堡	european_castle
-旅遊與地點	1F492	1F492	婚禮	wedding
-旅遊與地點	1F5FC	1F5FC	東京鐵塔	tokyo_tower
-旅遊與地點	1F5FD	1F5FD	自由女神	statue_of_liberty
-旅遊與地點	26EA	26EA	教堂	church
-旅遊與地點	1F54C	1F54C	清真寺	mosque
-旅遊與地點	1F6D5	1F6D5	印度廟	hindu_temple
-旅遊與地點	1F54D	1F54D	猶太教堂	synagogue
-旅遊與地點	F0100	26E9 FE0F	神社	shinto_shrine
-旅遊與地點	1F54B	1F54B	天房	kaaba
-旅遊與地點	26F2	26F2	噴泉	fountain
-旅遊與地點	26FA	26FA	帳篷	tent
-旅遊與地點	1F301	1F301	霧	foggy
-旅遊與地點	1F303	1F303	星空	night_with_stars
-旅遊與地點	1F3D9	1F3D9 FE0F	都市風景	cityscape
-旅遊與地點	1F304	1F304	日出	sunrise_over_mountains
-旅遊與地點	1F305	1F305	旭日	sunrise
-旅遊與地點	1F306	1F306	黃昏	city_sunset
-旅遊與地點	1F307	1F307	夕陽	city_sunrise
-旅遊與地點	1F309	1F309	夜橋	bridge_at_night
-旅遊與地點	F0101	2668 FE0F	溫泉	hotsprings
-旅遊與地點	1F3A0	1F3A0	旋轉木馬	carousel_horse
-旅遊與地點	1F6DD	1F6DD	溜滑梯	playground_slide
-旅遊與地點	1F3A1	1F3A1	摩天輪	ferris_wheel
-旅遊與地點	1F3A2	1F3A2	雲霄飛車	roller_coaster
-旅遊與地點	1F488	1F488	理髮店	barber
-旅遊與地點	1F3AA	1F3AA	馬戲團	circus_tent
-旅遊與地點	1F682	1F682	蒸汽火車	steam_locomotive
-旅遊與地點	1F683	1F683	有軌電車	railway_car
-旅遊與地點	1F684	1F684	高鐵	bullettrain_side
-旅遊與地點	1F685	1F685	高鐡車頭	bullettrain_front
-旅遊與地點	1F686	1F686	火車	train2
-旅遊與地點	1F687	1F687	地鐵	metro
-旅遊與地點	1F688	1F688	輕軌	light_rail
-旅遊與地點	1F689	1F689	車站	station
-旅遊與地點	1F68A	1F68A	路面電車	tram
-旅遊與地點	1F69D	1F69D	單軌	monorail
-旅遊與地點	1F69E	1F69E	山區鐵路	mountain_railway
-旅遊與地點	1F68B	1F68B	電纜車	train
-旅遊與地點	1F68C	1F68C	公車	bus
-旅遊與地點	1F68D	1F68D	公共汽車	oncoming_bus
-旅遊與地點	1F68E	1F68E	無軌電車	trolleybus
-旅遊與地點	1F690	1F690	小型巴士	minibus
-旅遊與地點	1F691	1F691	救護車	ambulance
-旅遊與地點	1F692	1F692	消防車	fire_engine
-旅遊與地點	1F693	1F693	警車	police_car
-旅遊與地點	1F694	1F694	警察車	oncoming_police_car
-旅遊與地點	1F695	1F695	計程車	taxi
-旅遊與地點	1F696	1F696	小黃	oncoming_taxi
-旅遊與地點	1F697	1F697	汽車	car
-旅遊與地點	1F698	1F698	轎車	oncoming_automobile
-旅遊與地點	1F699	1F699	休旅車	blue_car
-旅遊與地點	1F6FB	1F6FB	皮卡車	pickup_truck
-旅遊與地點	1F69A	1F69A	貨車	truck
-旅遊與地點	1F69B	1F69B	卡車	articulated_lorry
-旅遊與地點	1F69C	1F69C	拖弋機	tractor
-旅遊與地點	1F3CE	1F3CE FE0F	賽車	racing_car
-旅遊與地點	1F3CD	1F3CD FE0F	機車	motorcycle
-旅遊與地點	1F6F5	1F6F5	摩托車	motor_scooter
-旅遊與地點	1F9BD	1F9BD	輪椅	manual_wheelchair
-旅遊與地點	1F9BC	1F9BC	電動輪椅	motorized_wheelchair
-旅遊與地點	1F6FA	1F6FA	嘟嘟車	auto_rickshaw
-旅遊與地點	1F6B2	1F6B2	自行車	bike
-旅遊與地點	1F6F4	1F6F4	滑板車	kick_scooter
-旅遊與地點	1F6F9	1F6F9	滑板	skateboard
-旅遊與地點	1F6FC	1F6FC	輪式溜冰鞋	roller_skate
-旅遊與地點	1F68F	1F68F	公車站	busstop
-旅遊與地點	1F6E3	1F6E3 FE0F	高速公路	motorway
-旅遊與地點	1F6E4	1F6E4 FE0F	鐵軌	railway_track
-旅遊與地點	1F6E2	1F6E2 FE0F	油桶	oil_drum
-旅遊與地點	26FD	26FD	加油站	fuelpump
-旅遊與地點	1F6DE	1F6DE	輪子	wheel
-旅遊與地點	1F6A8	1F6A8	警車燈	rotating_light
-旅遊與地點	1F6A5	1F6A5	紅綠燈	traffic_light
-旅遊與地點	1F6A6	1F6A6	直式紅綠燈	vertical_traffic_light
-旅遊與地點	1F6D1	1F6D1	停止標誌	stop_sign
-旅遊與地點	1F6A7	1F6A7	施工	construction
-旅遊與地點	2693	2693	錨	anchor
-旅遊與地點	1F6DF	1F6DF	救生圈	ring_buoy
-旅遊與地點	26F5	26F5	帆船	boat
-旅遊與地點	1F6F6	1F6F6	獨木舟	canoe
-旅遊與地點	1F6A4	1F6A4	快艇	speedboat
-旅遊與地點	1F6F3	1F6F3 FE0F	客船	passenger_ship
-旅遊與地點	F0102	26F4 FE0F	渡輪	ferry
-旅遊與地點	1F6E5	1F6E5 FE0F	汽艇	motor_boat
-旅遊與地點	1F6A2	1F6A2	船	ship
-旅遊與地點	F0103	2708 FE0F	飛機	airplane
-旅遊與地點	1F6E9	1F6E9 FE0F	小飛機	small_airplane
-旅遊與地點	1F6EB	1F6EB	飛機起飛	flight_departure
-旅遊與地點	1F6EC	1F6EC	飛機著陸	flight_arrival
-旅遊與地點	1FA82	1FA82	降落傘	parachute
-旅遊與地點	1F4BA	1F4BA	座位	seat
-旅遊與地點	1F681	1F681	直升機	helicopter
-旅遊與地點	1F69F	1F69F	懸索鐵路	suspension_railway
-旅遊與地點	1F6A0	1F6A0	纜車	mountain_cableway
-旅遊與地點	1F6A1	1F6A1	空中纜車	aerial_tramway
-旅遊與地點	1F6F0	1F6F0 FE0F	衛星	artificial_satellite
-旅遊與地點	1F680	1F680	火箭	rocket
-旅遊與地點	1F6F8	1F6F8	飛碟	flying_saucer
-旅遊與地點	1F6CE	1F6CE FE0F	服務鈴	bellhop_bell
-旅遊與地點	1F9F3	1F9F3	行李	luggage
-旅遊與地點	231B	231B	沙漏	hourglass
-旅遊與地點	23F3	23F3	流動的沙漏	hourglass_flowing_sand
-旅遊與地點	231A	231A	手錶	watch
-旅遊與地點	23F0	23F0	鬧鐘	alarm_clock
-旅遊與地點	F0104	23F1 FE0F	碼錶	stopwatch
-旅遊與地點	F0105	23F2 FE0F	計時器	timer_clock
-旅遊與地點	1F570	1F570 FE0F	座鐘	mantelpiece_clock
-旅遊與地點	1F55B	1F55B	十二點	clock12
-旅遊與地點	1F567	1F567	十二點半	clock1230
-旅遊與地點	1F550	1F550	一點	clock1
-旅遊與地點	1F55C	1F55C	一點半	clock130
-旅遊與地點	1F551	1F551	兩點	clock2
-旅遊與地點	1F55D	1F55D	兩點半	clock230
-旅遊與地點	1F552	1F552	三點	clock3
-旅遊與地點	1F55E	1F55E	三點半	clock330
-旅遊與地點	1F553	1F553	四點	clock4
-旅遊與地點	1F55F	1F55F	四點半	clock430
-旅遊與地點	1F554	1F554	五點	clock5
-旅遊與地點	1F560	1F560	五點半	clock530
-旅遊與地點	1F555	1F555	六點	clock6
-旅遊與地點	1F561	1F561	六點半	clock630
-旅遊與地點	1F556	1F556	七點	clock7
-旅遊與地點	1F562	1F562	七點半	clock730
-旅遊與地點	1F557	1F557	八點	clock8
-旅遊與地點	1F563	1F563	八點半	clock830
-旅遊與地點	1F558	1F558	九點	clock9
-旅遊與地點	1F564	1F564	九點半	clock930
-旅遊與地點	1F559	1F559	十點	clock10
-旅遊與地點	1F565	1F565	十點半	clock1030
-旅遊與地點	1F55A	1F55A	十一點	clock11
-旅遊與地點	1F566	1F566	十一點半	clock1130
-旅遊與地點	1F311	1F311	新月	new_moon
-旅遊與地點	1F312	1F312	眉形新月	waxing_crescent_moon
-旅遊與地點	1F313	1F313	上弦月	first_quarter_moon
-旅遊與地點	1F314	1F314	盈凸月	moon
-旅遊與地點	1F315	1F315	滿月	full_moon
-旅遊與地點	1F316	1F316	虧凸月	waning_gibbous_moon
-旅遊與地點	1F317	1F317	下弦月	last_quarter_moon
-旅遊與地點	1F318	1F318	眉形殘月	waning_crescent_moon
-旅遊與地點	1F319	1F319	彎月	crescent_moon
-旅遊與地點	1F31A	1F31A	月亮公公	new_moon_with_face
-旅遊與地點	1F31B	1F31B	彎月臉朝左	first_quarter_moon_with_face
-旅遊與地點	1F31C	1F31C	彎月臉朝右	last_quarter_moon_with_face
-旅遊與地點	1F321	1F321 FE0F	溫度計	thermometer
-旅遊與地點	F0106	2600 FE0F	太陽	sunny
-旅遊與地點	1F31D	1F31D	微笑的滿月	full_moon_with_face
-旅遊與地點	1F31E	1F31E	微笑的太陽	sun_with_face
-旅遊與地點	1FA90	1FA90	帶行星環的行星	ringed_planet
-旅遊與地點	2B50	2B50	星星	star
-旅遊與地點	1F31F	1F31F	閃爍的星星	star2
-旅遊與地點	1F320	1F320	流星	stars
-旅遊與地點	1F30C	1F30C	銀河	milky_way
-旅遊與地點	F0107	2601 FE0F	雲	cloud
-旅遊與地點	26C5	26C5	陰天	partly_sunny
-旅遊與地點	F0108	26C8 FE0F	雷雨	cloud_with_lightning_and_rain
-旅遊與地點	1F324	1F324 FE0F	晴偶有雲	sun_behind_small_cloud
-旅遊與地點	1F325	1F325 FE0F	晴時多雲	sun_behind_large_cloud
-旅遊與地點	1F326	1F326 FE0F	晴時有雨	sun_behind_rain_cloud
-旅遊與地點	1F327	1F327 FE0F	雨天	cloud_with_rain
-旅遊與地點	1F328	1F328 FE0F	下雪	cloud_with_snow
-旅遊與地點	1F329	1F329 FE0F	閃電	cloud_with_lightning
-旅遊與地點	1F32A	1F32A FE0F	龍捲風	tornado
-旅遊與地點	1F32B	1F32B FE0F	有霧	fog
-旅遊與地點	1F32C	1F32C FE0F	刮風	wind_face
-旅遊與地點	1F300	1F300	颱風	cyclone
-旅遊與地點	1F308	1F308	彩虹	rainbow
-旅遊與地點	1F302	1F302	收合的傘	closed_umbrella
-旅遊與地點	F0109	2602 FE0F	雨傘	open_umbrella
-旅遊與地點	2614	2614	雨中的傘	umbrella
-旅遊與地點	F010A	26F1 FE0F	遮陽傘	parasol_on_ground
-旅遊與地點	26A1	26A1	高壓電	zap
-旅遊與地點	F010B	2744 FE0F	雪花	snowflake
-旅遊與地點	F010C	2603 FE0F	雪中的雪人	snowman_with_snow
-旅遊與地點	26C4	26C4	雪人	snowman
-旅遊與地點	F010D	2604 FE0F	慧星	comet
-旅遊與地點	1F525	1F525	火	fire
-旅遊與地點	1F4A7	1F4A7	水滴	droplet
-旅遊與地點	1F30A	1F30A	波浪	ocean
-活動	1F383	1F383	南瓜燈	jack_o_lantern
-活動	1F384	1F384	聖誕樹	christmas_tree
-活動	1F386	1F386	爆竹	fireworks
-活動	1F387	1F387	煙花	sparkler
-活動	1F9E8	1F9E8	鞭炮	firecracker
-活動	2728	2728	閃爍	sparkles
-活動	1F388	1F388	氣球	balloon
-活動	1F389	1F389	拉炮	tada
-活動	1F38A	1F38A	五彩紙屑	confetti_ball
-活動	1F38B	1F38B	七夕	tanabata_tree
-活動	1F38D	1F38D	盆栽	bamboo
-活動	1F38E	1F38E	女兒節	dolls
-活動	1F38F	1F38F	鯉魚旗	flags
-活動	1F390	1F390	風鈴	wind_chime
-活動	1F391	1F391	賞月	rice_scene
-活動	1F9E7	1F9E7	紅包	red_envelope
-活動	1F380	1F380	蝴蝶結	ribbon
-活動	1F381	1F381	禮物	gift
-活動	1F397	1F397 FE0F	黃絲帶	reminder_ribbon
-活動	1F39F	1F39F FE0F	入場券	tickets
-活動	1F3AB	1F3AB	門票	ticket
-活動	1F396	1F396 FE0F	軍事獎章	medal_military
-活動	1F3C6	1F3C6	獎盃	trophy
-活動	1F3C5	1F3C5	獎牌	medal_sports
-活動	1F947	1F947	金牌	1st_place_medal
-活動	1F948	1F948	銀牌	2nd_place_medal
-活動	1F949	1F949	銅牌	3rd_place_medal
-活動	26BD	26BD	足球	soccer
-活動	26BE	26BE	棒球	baseball
-活動	1F94E	1F94E	壘球	softball
-活動	1F3C0	1F3C0	籃球	basketball
-活動	1F3D0	1F3D0	排球	volleyball
-活動	1F3C8	1F3C8	美式足球	football
-活動	1F3C9	1F3C9	橄欖球	rugby_football
-活動	1F3BE	1F3BE	網球	tennis
-活動	1F94F	1F94F	飛盤	flying_disc
-活動	1F3B3	1F3B3	保齡球	bowling
-活動	1F3CF	1F3CF	板球	cricket_game
-活動	1F3D1	1F3D1	曲棍球	field_hockey
-活動	1F3D2	1F3D2	冰上曲棍球	ice_hockey
-活動	1F94D	1F94D	袋棍球	lacrosse
-活動	1F3D3	1F3D3	桌球	ping_pong
-活動	1F3F8	1F3F8	羽毛球	badminton
-活動	1F94A	1F94A	拳擊手套	boxing_glove
-活動	1F94B	1F94B	道服	martial_arts_uniform
-活動	1F945	1F945	球門	goal_net
-活動	26F3	26F3	高爾夫	golf
-活動	F010E	26F8 FE0F	溜冰鞋	ice_skate
-活動	1F3A3	1F3A3	釣魚	fishing_pole_and_fish
-活動	1F93F	1F93F	潛水面罩	diving_mask
-活動	1F3BD	1F3BD	運動服	running_shirt_with_sash
-活動	1F3BF	1F3BF	滑雪	ski
-活動	1F6F7	1F6F7	雪橇	sled
-活動	1F94C	1F94C	冰石壺	curling_stone
-活動	1F3AF	1F3AF	命中	dart
-活動	1FA80	1FA80	溜溜球	yo_yo
-活動	1FA81	1FA81	風箏	kite
-活動	1F52B	1F52B	水槍	gun
-活動	1F3B1	1F3B1	撞球	8ball
-活動	1F52E	1F52E	水晶球	crystal_ball
-活動	1FA84	1FA84	魔杖	magic_wand
-活動	1F3AE	1F3AE	電玩	video_game
-活動	1F579	1F579 FE0F	搖桿	joystick
-活動	1F3B0	1F3B0	吃角子老虎	slot_machine
-活動	1F3B2	1F3B2	骰子	game_die
-活動	1F9E9	1F9E9	拼圖	jigsaw
-活動	1F9F8	1F9F8	泰迪熊	teddy_bear
-活動	1FA85	1FA85	皮納塔	pinata
-活動	1FAA9	1FAA9	鏡面球	mirror_ball
-活動	1FA86	1FA86	俄羅斯娃娃	nesting_dolls
-活動	F010F	2660 FE0F	黑桃	spades
-活動	F0110	2665 FE0F	紅心	hearts
-活動	F0111	2666 FE0F	方塊	diamonds
-活動	F0112	2663 FE0F	梅花	clubs
-活動	F0113	265F FE0F	卒	chess_pawn
-活動	1F0CF	1F0CF	鬼牌	black_joker
-活動	1F004	1F004	紅中	mahjong
-活動	1F3B4	1F3B4	花牌	flower_playing_cards
-活動	1F3AD	1F3AD	戲劇	performing_arts
-活動	1F5BC	1F5BC FE0F	裱框畫	framed_picture
-活動	1F3A8	1F3A8	調色板	art
-活動	1F9F5	1F9F5	線	thread
-活動	1FAA1	1FAA1	裁縫針	sewing_needle
-活動	1F9F6	1F9F6	毛線球	yarn
-活動	1FAA2	1FAA2	繩結	knot
-物品	1F453	1F453	眼鏡	eyeglasses
-物品	1F576	1F576 FE0F	太陽眼鏡	dark_sunglasses
-物品	1F97D	1F97D	蛙鏡	goggles
-物品	1F97C	1F97C	實驗袍	lab_coat
-物品	1F9BA	1F9BA	救生衣	safety_vest
-物品	1F454	1F454	領帶	necktie
-物品	1F455	1F455	T恤	shirt
-物品	1F456	1F456	牛仔褲	jeans
-物品	1F9E3	1F9E3	圍巾	scarf
-物品	1F9E4	1F9E4	手套	gloves
-物品	1F9E5	1F9E5	外套	coat
-物品	1F9E6	1F9E6	襪子	socks
-物品	1F457	1F457	洋裝	dress
-物品	1F458	1F458	和服	kimono
-物品	1F97B	1F97B	莎麗服	sari
-物品	1FA71	1FA71	一件式泳裝	one_piece_swimsuit
-物品	1FA72	1FA72	泳褲	swim_brief
-物品	1FA73	1FA73	短泳褲	shorts
-物品	1F459	1F459	比基尼	bikini
-物品	1F45A	1F45A	女裝	womans_clothes
-物品	1FAAD	1FAAD	摺扇	folding_hand_fan
-物品	1F45B	1F45B	錢包	purse
-物品	1F45C	1F45C	手提包	handbag
-物品	1F45D	1F45D	手拿包	pouch
-物品	1F6CD	1F6CD FE0F	紙袋	shopping
-物品	1F392	1F392	書包	school_satchel
-物品	1FA74	1FA74	人字拖	thong_sandal
-物品	1F45E	1F45E	皮鞋	mans_shoe
-物品	1F45F	1F45F	運動鞋	athletic_shoe
-物品	1F97E	1F97E	登山靴	hiking_boot
-物品	1F97F	1F97F	平底鞋	flat_shoe
-物品	1F460	1F460	高跟鞋	high_heel
-物品	1F461	1F461	涼鞋	sandal
-物品	1FA70	1FA70	芭蕾舞鞋	ballet_shoes
-物品	1F462	1F462	靴子	boot
-物品	1FAAE	1FAAE	梳子	hair_pick
-物品	1F451	1F451	皇冠	crown
-物品	1F452	1F452	帽子	womans_hat
-物品	1F3A9	1F3A9	禮帽	tophat
-物品	1F393	1F393	畢業帽	mortar_board
-物品	1F9E2	1F9E2	鴨舌帽	billed_cap
-物品	1FA96	1FA96	頭盔	military_helmet
-物品	F0114	26D1 FE0F	工程安全帽	rescue_worker_helmet
-物品	1F4FF	1F4FF	項鍊	prayer_beads
-物品	1F484	1F484	口紅	lipstick
-物品	1F48D	1F48D	戒指	ring
-物品	1F48E	1F48E	鑽石	gem
-物品	1F507	1F507	關掉喇叭	mute
-物品	1F508	1F508	喇叭	speaker
-物品	1F509	1F509	低音量	sound
-物品	1F50A	1F50A	高音量	loud_sound
-物品	1F4E2	1F4E2	大聲公	loudspeaker
-物品	1F4E3	1F4E3	擴音器	mega
-物品	1F4EF	1F4EF	郵件通知	postal_horn
-物品	1F514	1F514	鈴鐺	bell
-物品	1F515	1F515	靜音	no_bell
-物品	1F3BC	1F3BC	樂譜	musical_score
-物品	1F3B5	1F3B5	音符	musical_note
-物品	1F3B6	1F3B6	樂符	notes
-物品	1F399	1F399 FE0F	錄音室麥克風	studio_microphone
-物品	1F39A	1F39A FE0F	調整桿	level_slider
-物品	1F39B	1F39B FE0F	控制旋鈕	control_knobs
-物品	1F3A4	1F3A4	麥克風	microphone
-物品	1F3A7	1F3A7	耳機	headphones
-物品	1F4FB	1F4FB	收音機	radio
-物品	1F3B7	1F3B7	薩克斯風	saxophone
-物品	1F3BA	1F3BA	小號	trumpet
-物品	1FA8A	1FA8A	長號	
-物品	1FA97	1FA97	手風琴	accordion
-物品	1F3B8	1F3B8	吉他	guitar
-物品	1F3B9	1F3B9	鋼琴	musical_keyboard
-物品	1F3BB	1F3BB	小提琴	violin
-物品	1FA95	1FA95	斑鳩琴	banjo
-物品	1F941	1F941	鼓	drum
-物品	1FA98	1FA98	長鼓	long_drum
-物品	1FA87	1FA87	沙鈴	maracas
-物品	1FA88	1FA88	長笛	flute
-物品	1FA89	1FA89	豎琴	
-物品	1F4F1	1F4F1	手機	iphone
-物品	1F4F2	1F4F2	接電話	calling
-物品	F0115	260E FE0F	電話	phone
-物品	1F4DE	1F4DE	聽筒	telephone_receiver
-物品	1F4DF	1F4DF	呼叫器	pager
-物品	1F4E0	1F4E0	傳真機	fax
-物品	1F50B	1F50B	電池	battery
-物品	1FAAB	1FAAB	電量不足	low_battery
-物品	1F50C	1F50C	插頭	electric_plug
-物品	1F4BB	1F4BB	筆電	computer
-物品	1F5A5	1F5A5 FE0F	電腦	desktop_computer
-物品	1F5A8	1F5A8 FE0F	印表機	printer
-物品	F0116	2328 FE0F	鍵盤	keyboard
-物品	1F5B1	1F5B1 FE0F	滑鼠	computer_mouse
-物品	1F5B2	1F5B2 FE0F	軌跡球	trackball
-物品	1F4BD	1F4BD	迷你光碟	minidisc
-物品	1F4BE	1F4BE	磁碟片	floppy_disk
-物品	1F4BF	1F4BF	光碟	cd
-物品	1F4C0	1F4C0	DVD	dvd
-物品	1F9EE	1F9EE	算盤	abacus
-物品	1F3A5	1F3A5	電影攝影機	movie_camera
-物品	1F39E	1F39E FE0F	電影膠卷	film_strip
-物品	1F4FD	1F4FD FE0F	電影放映機	film_projector
-物品	1F3AC	1F3AC	場記板	clapper
-物品	1F4FA	1F4FA	電視	tv
-物品	1F4F7	1F4F7	相機	camera
-物品	1F4F8	1F4F8	開閃光燈	camera_flash
-物品	1F4F9	1F4F9	攝影機	video_camera
-物品	1F4FC	1F4FC	錄影帶	vhs
-物品	1F50D	1F50D	向左的放大鏡	mag
-物品	1F50E	1F50E	放大鏡	mag_right
-物品	1F56F	1F56F FE0F	蠟燭	candle
-物品	1F4A1	1F4A1	燈泡	bulb
-物品	1F526	1F526	手電筒	flashlight
-物品	1F3EE	1F3EE	燈籠	izakaya_lantern
-物品	1FA94	1FA94	陶碗油燈	diya_lamp
-物品	1F4D4	1F4D4	彩色封面的筆記本	notebook_with_decorative_cover
-物品	1F4D5	1F4D5	合起來的書本	closed_book
-物品	1F4D6	1F4D6	打開來的書本	book
-物品	1F4D7	1F4D7	綠色的書本	green_book
-物品	1F4D8	1F4D8	藍色的書本	blue_book
-物品	1F4D9	1F4D9	橘色的書本	orange_book
-物品	1F4DA	1F4DA	書本	books
-物品	1F4D3	1F4D3	筆記本	notebook
-物品	1F4D2	1F4D2	帳本	ledger
-物品	1F4C3	1F4C3	文件檔	page_with_curl
-物品	1F4DC	1F4DC	捲軸	scroll
-物品	1F4C4	1F4C4	文件	page_facing_up
-物品	1F4F0	1F4F0	報紙	newspaper
-物品	1F5DE	1F5DE FE0F	捲好的報紙	newspaper_roll
-物品	1F4D1	1F4D1	頁籤	bookmark_tabs
-物品	1F516	1F516	書籤	bookmark
-物品	1F3F7	1F3F7 FE0F	吊牌	label
-物品	1FA99	1FA99	硬幣	coin
-物品	1F4B0	1F4B0	錢袋	moneybag
-物品	1FA8E	1FA8E	藏寶箱	
-物品	1F4B4	1F4B4	日幣	yen
-物品	1F4B5	1F4B5	美金	dollar
-物品	1F4B6	1F4B6	歐元	euro
-物品	1F4B7	1F4B7	英鎊	pound
-物品	1F4B8	1F4B8	錢飛了	money_with_wings
-物品	1F4B3	1F4B3	信用卡	credit_card
-物品	1F9FE	1F9FE	收據	receipt
-物品	1F4B9	1F4B9	貨幣升值	chart
-物品	F0117	2709 FE0F	郵件	envelope
-物品	1F4E7	1F4E7	電子郵件	e-mail
-物品	1F4E8	1F4E8	收到郵件	incoming_envelope
-物品	1F4E9	1F4E9	寄出郵件	envelope_with_arrow
-物品	1F4E4	1F4E4	寄件匣	outbox_tray
-物品	1F4E5	1F4E5	收件匣	inbox_tray
-物品	1F4E6	1F4E6	包裹	package
-物品	1F4EB	1F4EB	有待收郵件	mailbox
-物品	1F4EA	1F4EA	無待收郵件	mailbox_closed
-物品	1F4EC	1F4EC	有新郵件	mailbox_with_mail
-物品	1F4ED	1F4ED	沒有新郵件	mailbox_with_no_mail
-物品	1F4EE	1F4EE	信箱	postbox
-物品	1F5F3	1F5F3 FE0F	投票箱	ballot_box
-物品	F0118	270F FE0F	鉛筆	pencil2
-物品	F0119	2712 FE0F	鋼筆頭	black_nib
-物品	1F58B	1F58B FE0F	鋼筆	fountain_pen
-物品	1F58A	1F58A FE0F	筆	pen
-物品	1F58C	1F58C FE0F	畫筆	paintbrush
-物品	1F58D	1F58D FE0F	蠟筆	crayon
-物品	1F4DD	1F4DD	備忘錄	memo
-物品	1F4BC	1F4BC	公事包	briefcase
-物品	1F4C1	1F4C1	資料夾	file_folder
-物品	1F4C2	1F4C2	打開資料夾	open_file_folder
-物品	1F5C2	1F5C2 FE0F	索引隔板	card_index_dividers
-物品	1F4C5	1F4C5	行事曆	date
-物品	1F4C6	1F4C6	日曆	calendar
-物品	1F5D2	1F5D2 FE0F	線圈筆記本	spiral_notepad
-物品	1F5D3	1F5D3 FE0F	線圈日曆	spiral_calendar
-物品	1F4C7	1F4C7	索引卡	card_index
-物品	1F4C8	1F4C8	漲	chart_with_upwards_trend
-物品	1F4C9	1F4C9	跌	chart_with_downwards_trend
-物品	1F4CA	1F4CA	圖表	bar_chart
-物品	1F4CB	1F4CB	寫字夾板	clipboard
-物品	1F4CC	1F4CC	圖釘	pushpin
-物品	1F4CD	1F4CD	圓圖釘	round_pushpin
-物品	1F4CE	1F4CE	迴紋針	paperclip
-物品	1F587	1F587 FE0F	相連的回紋針	paperclips
-物品	1F4CF	1F4CF	直尺	straight_ruler
-物品	1F4D0	1F4D0	三角尺	triangular_ruler
-物品	F011A	2702 FE0F	剪刀	scissors
-物品	1F5C3	1F5C3 FE0F	卡片目錄盒	card_file_box
-物品	1F5C4	1F5C4 FE0F	檔案櫃	file_cabinet
-物品	1F5D1	1F5D1 FE0F	廢紙簍	wastebasket
-物品	1F512	1F512	上鎖	lock
-物品	1F513	1F513	開鎖	unlock
-物品	1F50F	1F50F	鋼筆和鎖	lock_with_ink_pen
-物品	1F510	1F510	鑰匙和鎖	closed_lock_with_key
-物品	1F511	1F511	鑰匙	key
-物品	1F5DD	1F5DD FE0F	老鑰匙	old_key
-物品	1F528	1F528	鎚子	hammer
-物品	1FA93	1FA93	斧頭	axe
-物品	F011B	26CF FE0F	十字鎬	pick
-物品	F011C	2692 FE0F	鎚子和十字鎬	hammer_and_pick
-物品	1F6E0	1F6E0 FE0F	鎚子和扳手	hammer_and_wrench
-物品	1F5E1	1F5E1 FE0F	匕首	dagger
-物品	F011D	2694 FE0F	劍	crossed_swords
-物品	1F4A3	1F4A3	炸彈	bomb
-物品	1FA83	1FA83	迴力鏢	boomerang
-物品	1F3F9	1F3F9	弓箭	bow_and_arrow
-物品	1F6E1	1F6E1 FE0F	盾牌	shield
-物品	1FA9A	1FA9A	木工鋸	carpentry_saw
-物品	1F527	1F527	扳手	wrench
-物品	1FA9B	1FA9B	螺絲起子	screwdriver
-物品	1F529	1F529	螺絲	nut_and_bolt
-物品	F011E	2699 FE0F	齒輪	gear
-物品	1F5DC	1F5DC FE0F	壓縮機	clamp
-物品	F011F	2696 FE0F	天平	balance_scale
-物品	1F9AF	1F9AF	導盲手杖	probing_cane
-物品	1F517	1F517	連結	link
-物品	F0120	26D3 FE0F 200D 1F4A5	斷掉的鏈條	
-物品	F0121	26D3 FE0F	鍊條	chains
-物品	1FA9D	1FA9D	鉤子	hook
-物品	1F9F0	1F9F0	工具箱	toolbox
-物品	1F9F2	1F9F2	磁鐵	magnet
-物品	1FA9C	1FA9C	梯子	ladder
-物品	1FA8F	1FA8F	鏟子	
-物品	F0122	2697 FE0F	蒸餾器	alembic
-物品	1F9EA	1F9EA	試管	test_tube
-物品	1F9EB	1F9EB	培養皿	petri_dish
-物品	1F9EC	1F9EC	DNA	dna
-物品	1F52C	1F52C	顯微鏡	microscope
-物品	1F52D	1F52D	望遠鏡	telescope
-物品	1F4E1	1F4E1	衛星天線	satellite
-物品	1F489	1F489	針筒	syringe
-物品	1FA78	1FA78	血滴	drop_of_blood
-物品	1F48A	1F48A	藥丸	pill
-物品	1FA79	1FA79	OK 繃	adhesive_bandage
-物品	1FA7C	1FA7C	拐杖	crutch
-物品	1FA7A	1FA7A	聽診器	stethoscope
-物品	1FA7B	1FA7B	X 光	x_ray
-物品	1F6AA	1F6AA	門	door
-物品	1F6D7	1F6D7	電梯	elevator
-物品	1FA9E	1FA9E	鏡子	mirror
-物品	1FA9F	1FA9F	窗戶	window
-物品	1F6CF	1F6CF FE0F	床	bed
-物品	1F6CB	1F6CB FE0F	沙發和立燈	couch_and_lamp
-物品	1FA91	1FA91	椅子	chair
-物品	1F6BD	1F6BD	馬桶	toilet
-物品	1FAA0	1FAA0	吸把	plunger
-物品	1F6BF	1F6BF	淋浴	shower
-物品	1F6C1	1F6C1	澡盆	bathtub
-物品	1FAA4	1FAA4	捕鼠器	mouse_trap
-物品	1FA92	1FA92	剃刀	razor
-物品	1F9F4	1F9F4	乳液瓶	lotion_bottle
-物品	1F9F7	1F9F7	安全別針	safety_pin
-物品	1F9F9	1F9F9	掃帚	broom
-物品	1F9FA	1F9FA	籃子	basket
-物品	1F9FB	1F9FB	捲筒衛生紙	roll_of_paper
-物品	1FAA3	1FAA3	水桶	bucket
-物品	1F9FC	1F9FC	肥皂	soap
-物品	1FAE7	1FAE7	泡泡	bubbles
-物品	1FAA5	1FAA5	牙刷	toothbrush
-物品	1F9FD	1F9FD	海綿	sponge
-物品	1F9EF	1F9EF	滅火器	fire_extinguisher
-物品	1F6D2	1F6D2	購物車	shopping_cart
-物品	1F6AC	1F6AC	吸煙	smoking
-物品	F0123	26B0 FE0F	棺木	coffin
-物品	1FAA6	1FAA6	墓石	headstone
-物品	F0124	26B1 FE0F	骨灰罈	funeral_urn
-物品	1F9FF	1F9FF	邪眼	nazar_amulet
-物品	1FAAC	1FAAC	法蒂瑪之手	hamsa
-物品	1F5FF	1F5FF	復活節島	moyai
-物品	1FAA7	1FAA7	告示牌	placard
-物品	1FAAA	1FAAA	識別證	identification_card
-符號	1F3E7	1F3E7	提款機	atm
-符號	1F6AE	1F6AE	垃圾桶	put_litter_in_its_place
-符號	1F6B0	1F6B0	飲用水	potable_water
-符號	267F	267F	無障礙空間	wheelchair
-符號	1F6B9	1F6B9	男廁	mens
-符號	1F6BA	1F6BA	女廁	womens
-符號	1F6BB	1F6BB	洗手間	restroom
-符號	1F6BC	1F6BC	寶寶	baby_symbol
-符號	1F6BE	1F6BE	廁所	wc
-符號	1F6C2	1F6C2	護照查驗	passport_control
-符號	1F6C3	1F6C3	海關	customs
-符號	1F6C4	1F6C4	提取行李	baggage_claim
-符號	1F6C5	1F6C5	寄存行李	left_luggage
-符號	F0125	26A0 FE0F	警告	warning
-符號	1F6B8	1F6B8	小心兒童	children_crossing
-符號	26D4	26D4	禁止進入	no_entry
-符號	1F6AB	1F6AB	禁止通行	no_entry_sign
-符號	1F6B3	1F6B3	禁行自行車	no_bicycles
-符號	1F6AD	1F6AD	禁止吸煙	no_smoking
-符號	1F6AF	1F6AF	禁止亂丟垃圾	do_not_litter
-符號	1F6B1	1F6B1	非飲用水	non-potable_water
-符號	1F6B7	1F6B7	禁止行人通行	no_pedestrians
-符號	1F4F5	1F4F5	禁用手機	no_mobile_phones
-符號	1F51E	1F51E	未成年人不宜	underage
-符號	F0126	2622 FE0F	放射性	radioactive
-符號	F0127	2623 FE0F	危害生物	biohazard
-符號	F0128	2B06 FE0F	向上箭頭	arrow_up
-符號	F0129	2197 FE0F	右上箭頭	arrow_upper_right
-符號	F012A	27A1 FE0F	向右箭頭	arrow_right
-符號	F012B	2198 FE0F	右下箭頭	arrow_lower_right
-符號	F012C	2B07 FE0F	向下箭頭	arrow_down
-符號	F012D	2199 FE0F	左下箭頭	arrow_lower_left
-符號	F012E	2B05 FE0F	向左箭頭	arrow_left
-符號	F012F	2196 FE0F	左上箭頭	arrow_upper_left
-符號	F0130	2195 FE0F	上下箭頭	arrow_up_down
-符號	F0131	2194 FE0F	左右箭頭	left_right_arrow
-符號	F0132	21A9 FE0F	向左彎的右箭頭	leftwards_arrow_with_hook
-符號	F0133	21AA FE0F	向右彎的左箭頭	arrow_right_hook
-符號	F0134	2934 FE0F	右上旋轉箭頭	arrow_heading_up
-符號	F0135	2935 FE0F	右下旋轉箭頭	arrow_heading_down
-符號	1F503	1F503	順時針方向	arrows_clockwise
-符號	1F504	1F504	逆時針	arrows_counterclockwise
-符號	1F519	1F519	返回	back
-符號	1F51A	1F51A	結束	end
-符號	1F51B	1F51B	ON	on
-符號	1F51C	1F51C	馬上	soon
-符號	1F51D	1F51D	置頂	top
-符號	1F6D0	1F6D0	祈禱	place_of_worship
-符號	F0136	269B FE0F	原子	atom_symbol
-符號	1F549	1F549 FE0F	唵	om
-符號	F0137	2721 FE0F	六芒星	star_of_david
-符號	F0138	2638 FE0F	法輪	wheel_of_dharma
-符號	F0139	262F FE0F	陰陽	yin_yang
-符號	F013A	271D FE0F	拉丁十字架	latin_cross
-符號	F013B	2626 FE0F	東正教十字架	orthodox_cross
-符號	F013C	262A FE0F	伊斯蘭教星月	star_and_crescent
-符號	F013D	262E FE0F	和平	peace_symbol
-符號	1F54E	1F54E	猶太燭台	menorah
-符號	1F52F	1F52F	六芒星加圓點	six_pointed_star
-符號	1FAAF	1FAAF	堪達	khanda
-符號	2648	2648	牡羊座	aries
-符號	2649	2649	金牛座	taurus
-符號	264A	264A	雙子座	gemini
-符號	264B	264B	巨蟹座	cancer
-符號	264C	264C	獅子座	leo
-符號	264D	264D	處女座	virgo
-符號	264E	264E	天秤座	libra
-符號	264F	264F	天蠍座	scorpius
-符號	2650	2650	射手座	sagittarius
-符號	2651	2651	摩羯座	capricorn
-符號	2652	2652	水瓶座	aquarius
-符號	2653	2653	雙魚座	pisces
-符號	26CE	26CE	蛇夫座	ophiuchus
-符號	1F500	1F500	隨機播放	twisted_rightwards_arrows
-符號	1F501	1F501	重複播放	repeat
-符號	1F502	1F502	重複目前單曲	repeat_one
-符號	F013E	25B6 FE0F	播放	arrow_forward
-符號	23E9	23E9	向前快轉	fast_forward
-符號	F013F	23ED FE0F	下一首	next_track_button
-符號	F0140	23EF FE0F	播放或暫停	play_or_pause_button
-符號	F0141	25C0 FE0F	倒轉	arrow_backward
-符號	23EA	23EA	向後快轉	rewind
-符號	F0142	23EE FE0F	上一首	previous_track_button
-符號	1F53C	1F53C	向上	arrow_up_small
-符號	23EB	23EB	快速向上	arrow_double_up
-符號	1F53D	1F53D	向下	arrow_down_small
-符號	23EC	23EC	快速向下	arrow_double_down
-符號	F0143	23F8 FE0F	暫停	pause_button
-符號	F0144	23F9 FE0F	停止播放	stop_button
-符號	F0145	23FA FE0F	錄製	record_button
-符號	F0146	23CF FE0F	退出	eject_button
-符號	1F3A6	1F3A6	電影院	cinema
-符號	1F505	1F505	低亮度	low_brightness
-符號	1F506	1F506	高亮度	high_brightness
-符號	1F4F6	1F4F6	訊號強弱	signal_strength
-符號	1F6DC	1F6DC	無線	wireless
-符號	1F4F3	1F4F3	震動模式	vibration_mode
-符號	1F4F4	1F4F4	手機關機	mobile_phone_off
-符號	F0147	2640 FE0F	女	female_sign
-符號	F0148	2642 FE0F	男	male_sign
-符號	F0149	26A7 FE0F	變性符號	transgender_symbol
-符號	F014A	2716 FE0F	乘	heavy_multiplication_x
-符號	2795	2795	加	heavy_plus_sign
-符號	2796	2796	減	heavy_minus_sign
-符號	2797	2797	除	heavy_division_sign
-符號	1F7F0	1F7F0	粗體等號	heavy_equals_sign
-符號	F014B	267E FE0F	無限大	infinity
-符號	F014C	203C FE0F	雙驚嘆號	bangbang
-符號	F014D	2049 FE0F	驚嘆號加問號	interrobang
-符號	2753	2753	紅色問號	question
-符號	2754	2754	白色問號	grey_question
-符號	2755	2755	白色驚嘆號	grey_exclamation
-符號	2757	2757	紅色驚嘆號	exclamation
-符號	F014E	3030 FE0F	波浪線	wavy_dash
-符號	1F4B1	1F4B1	貨幣兌換	currency_exchange
-符號	1F4B2	1F4B2	貨幣符號	heavy_dollar_sign
-符號	F014F	2695 FE0F	醫療符號	medical_symbol
-符號	F0150	267B FE0F	回收	recycle
-符號	F0151	269C FE0F	鳶尾花	fleur_de_lis
-符號	1F531	1F531	三叉戟	trident
-符號	1F4DB	1F4DB	名牌	name_badge
-符號	1F530	1F530	日本初學者符號	beginner
-符號	2B55	2B55	圓圈	o
-符號	2705	2705	白色勾勾	white_check_mark
-符號	F0152	2611 FE0F	勾選	ballot_box_with_check
-符號	F0153	2714 FE0F	打勾	heavy_check_mark
-符號	274C	274C	叉	x
-符號	274E	274E	叉叉	negative_squared_cross_mark
-符號	27B0	27B0	日本單環標誌	curly_loop
-符號	27BF	27BF	日本免費電話標誌	loop
-符號	F0154	303D FE0F	歌唱	part_alternation_mark
-符號	F0155	2733 FE0F	八芒星	eight_spoked_asterisk
-符號	F0156	2734 FE0F	八角星	eight_pointed_black_star
-符號	F0157	2747 FE0F	火花	sparkle
-符號	F0158	A9 FE0F	版權	copyright
-符號	F0159	AE FE0F	註冊	registered
-符號	F015A	2122 FE0F	商標	tm
-符號	1FADF	1FADF	潑濺	
-符號	F015B	23 FE0F 20E3	按鍵：#	hash
-符號	F015C	2A FE0F 20E3	按鍵：*	asterisk
-符號	F015D	30 FE0F 20E3	按鍵：0	zero
-符號	F015E	31 FE0F 20E3	按鍵：1	one
-符號	F015F	32 FE0F 20E3	按鍵：2	two
-符號	F0160	33 FE0F 20E3	按鍵：3	three
-符號	F0161	34 FE0F 20E3	按鍵：4	four
-符號	F0162	35 FE0F 20E3	按鍵：5	five
-符號	F0163	36 FE0F 20E3	按鍵：6	six
-符號	F0164	37 FE0F 20E3	按鍵：7	seven
-符號	F0165	38 FE0F 20E3	按鍵：8	eight
-符號	F0166	39 FE0F 20E3	按鍵：9	nine
-符號	1F51F	1F51F	按鍵：10	keycap_ten
-符號	1F520	1F520	大寫字母鍵	capital_abcd
-符號	1F521	1F521	小寫字母鍵	abcd
-符號	1F522	1F522	數字鍵	1234
-符號	1F523	1F523	符號鍵	symbols
-符號	1F524	1F524	拉丁字母鍵	abc
-符號	1F170	1F170 FE0F	A型	a
-符號	1F18E	1F18E	AB型	ab
-符號	1F171	1F171 FE0F	B型	b
-符號	1F191	1F191	CL	cl
-符號	1F192	1F192	酷	cool
-符號	1F193	1F193	免費	free
-符號	F0167	2139 FE0F	資訊	information_source
-符號	1F194	1F194	身分	id
-符號	F0168	24C2 FE0F	M	m
-符號	1F195	1F195	新	new
-符號	1F196	1F196	NG	ng
-符號	1F17E	1F17E FE0F	O型	o2
-符號	1F197	1F197	好的	ok
-符號	1F17F	1F17F FE0F	P	parking
-符號	1F198	1F198	救命	sos
-符號	1F199	1F199	UP	up
-符號	1F19A	1F19A	對戰	vs
-符號	1F201	1F201	日文KOKO	koko
-符號	1F202	1F202 FE0F	日文服務區	sa
-符號	1F237	1F237 FE0F	月	u6708
-符號	1F236	1F236	有	u6709
-符號	1F22F	1F22F	指	u6307
-符號	1F250	1F250	得	ideograph_advantage
-符號	1F239	1F239	割	u5272
-符號	1F21A	1F21A	無	u7121
-符號	1F232	1F232	禁	u7981
-符號	1F251	1F251	可	accept
-符號	1F238	1F238	申	u7533
-符號	1F234	1F234	合	u5408
-符號	1F233	1F233	空的	u7a7a
-符號	F0169	3297 FE0F	祝	congratulations
-符號	F016A	3299 FE0F	秘	secret
-符號	1F23A	1F23A	營	u55b6
-符號	1F235	1F235	滿	u6e80
-符號	1F534	1F534	大紅色圓形	red_circle
-符號	1F7E0	1F7E0	橘色圓形	orange_circle
-符號	1F7E1	1F7E1	黃色圓形	yellow_circle
-符號	1F7E2	1F7E2	綠色圓形	green_circle
-符號	1F535	1F535	大藍色圓形	large_blue_circle
-符號	1F7E3	1F7E3	紫色圓形	purple_circle
-符號	1F7E4	1F7E4	褐色圓形	brown_circle
-符號	26AB	26AB	黑色圓形	black_circle
-符號	26AA	26AA	白色圓形	white_circle
-符號	1F7E5	1F7E5	紅色方形	red_square
-符號	1F7E7	1F7E7	橘色方形	orange_square
-符號	1F7E8	1F7E8	黃色方形	yellow_square
-符號	1F7E9	1F7E9	綠色方形	green_square
-符號	1F7E6	1F7E6	藍色方形	blue_square
-符號	1F7EA	1F7EA	紫色方形	purple_square
-符號	1F7EB	1F7EB	褐色方形	brown_square
-符號	2B1B	2B1B	黑色大方塊	black_large_square
-符號	2B1C	2B1C	白色大方塊	white_large_square
-符號	F016B	25FC FE0F	黑色中方塊	black_medium_square
-符號	F016C	25FB FE0F	白色中方塊	white_medium_square
-符號	25FE	25FE	黑色中小型方塊	black_medium_small_square
-符號	25FD	25FD	白色中小型方塊	white_medium_small_square
-符號	F016D	25AA FE0F	黑色小方塊	black_small_square
-符號	F016E	25AB FE0F	白色小方塊	white_small_square
-符號	1F536	1F536	大橙色菱形	large_orange_diamond
-符號	1F537	1F537	大藍色菱形	large_blue_diamond
-符號	1F538	1F538	小橙色菱形	small_orange_diamond
-符號	1F539	1F539	小藍色菱形	small_blue_diamond
-符號	1F53A	1F53A	向上紅色三角	small_red_triangle
-符號	1F53B	1F53B	向下紅色三角	small_red_triangle_down
-符號	1F4A0	1F4A0	菱形加圓點	diamond_shape_with_a_dot_inside
-符號	1F518	1F518	按鈕	radio_button
-符號	1F533	1F533	白色方按鈕	white_square_button
-符號	1F532	1F532	黑色方按鈕	black_square_button
-旗幟	1F3C1	1F3C1	終點旗	checkered_flag
-旗幟	1F6A9	1F6A9	三角旗	triangular_flag_on_post
-旗幟	1F38C	1F38C	紀念日	crossed_flags
-旗幟	1F3F4	1F3F4	黑旗	black_flag
-旗幟	1F3F3	1F3F3 FE0F	白旗	white_flag
-旗幟	F016F	1F3F3 FE0F 200D 1F308	彩虹旗	rainbow_flag
-旗幟	F0170	1F3F3 FE0F 200D 26A7 FE0F	跨性別旗	transgender_flag
-旗幟	F0171	1F3F4 200D 2620 FE0F	海盜旗	pirate_flag
-旗幟	F0172	1F1E6 1F1E8	旗子：阿森松島	ascension_island
-旗幟	F0173	1F1E6 1F1E9	旗子：安道爾	andorra
-旗幟	F0174	1F1E6 1F1EA	旗子：阿拉伯聯合大公國	united_arab_emirates
-旗幟	F0175	1F1E6 1F1EB	旗子：阿富汗	afghanistan
-旗幟	F0176	1F1E6 1F1EC	旗子：安地卡及巴布達	antigua_barbuda
-旗幟	F0177	1F1E6 1F1EE	旗子：安奎拉	anguilla
-旗幟	F0178	1F1E6 1F1F1	旗子：阿爾巴尼亞	albania
-旗幟	F0179	1F1E6 1F1F2	旗子：亞美尼亞	armenia
-旗幟	F017A	1F1E6 1F1F4	旗子：安哥拉	angola
-旗幟	F017B	1F1E6 1F1F6	旗子：南極洲	antarctica
-旗幟	F017C	1F1E6 1F1F7	旗子：阿根廷	argentina
-旗幟	F017D	1F1E6 1F1F8	旗子：美屬薩摩亞	american_samoa
-旗幟	F017E	1F1E6 1F1F9	旗子：奧地利	austria
-旗幟	F017F	1F1E6 1F1FA	旗子：澳洲	australia
-旗幟	F0180	1F1E6 1F1FC	旗子：荷屬阿魯巴	aruba
-旗幟	F0181	1F1E6 1F1FD	旗子：奧蘭群島	aland_islands
-旗幟	F0182	1F1E6 1F1FF	旗子：亞塞拜然	azerbaijan
-旗幟	F0183	1F1E7 1F1E6	旗子：波士尼亞與赫塞哥維納	bosnia_herzegovina
-旗幟	F0184	1F1E7 1F1E7	旗子：巴貝多	barbados
-旗幟	F0185	1F1E7 1F1E9	旗子：孟加拉	bangladesh
-旗幟	F0186	1F1E7 1F1EA	旗子：比利時	belgium
-旗幟	F0187	1F1E7 1F1EB	旗子：布吉納法索	burkina_faso
-旗幟	F0188	1F1E7 1F1EC	旗子：保加利亞	bulgaria
-旗幟	F0189	1F1E7 1F1ED	旗子：巴林	bahrain
-旗幟	F018A	1F1E7 1F1EE	旗子：蒲隆地	burundi
-旗幟	F018B	1F1E7 1F1EF	旗子：貝南	benin
-旗幟	F018C	1F1E7 1F1F1	旗子：聖巴瑟米	st_barthelemy
-旗幟	F018D	1F1E7 1F1F2	旗子：百慕達	bermuda
-旗幟	F018E	1F1E7 1F1F3	旗子：汶萊	brunei
-旗幟	F018F	1F1E7 1F1F4	旗子：玻利維亞	bolivia
-旗幟	F0190	1F1E7 1F1F6	旗子：荷蘭加勒比區	caribbean_netherlands
-旗幟	F0191	1F1E7 1F1F7	旗子：巴西	brazil
-旗幟	F0192	1F1E7 1F1F8	旗子：巴哈馬	bahamas
-旗幟	F0193	1F1E7 1F1F9	旗子：不丹	bhutan
-旗幟	F0194	1F1E7 1F1FB	旗子：布威島	bouvet_island
-旗幟	F0195	1F1E7 1F1FC	旗子：波札那	botswana
-旗幟	F0196	1F1E7 1F1FE	旗子：白俄羅斯	belarus
-旗幟	F0197	1F1E7 1F1FF	旗子：貝里斯	belize
-旗幟	F0198	1F1E8 1F1E6	旗子：加拿大	canada
-旗幟	F0199	1F1E8 1F1E8	旗子：科克斯（基靈）群島	cocos_islands
-旗幟	F019A	1F1E8 1F1E9	旗子：剛果（金夏沙）	congo_kinshasa
-旗幟	F019B	1F1E8 1F1EB	旗子：中非共和國	central_african_republic
-旗幟	F019C	1F1E8 1F1EC	旗子：剛果（布拉薩）	congo_brazzaville
-旗幟	F019D	1F1E8 1F1ED	旗子：瑞士	switzerland
-旗幟	F019E	1F1E8 1F1EE	旗子：象牙海岸	cote_divoire
-旗幟	F019F	1F1E8 1F1F0	旗子：庫克群島	cook_islands
-旗幟	F01A0	1F1E8 1F1F1	旗子：智利	chile
-旗幟	F01A1	1F1E8 1F1F2	旗子：喀麥隆	cameroon
-旗幟	F01A2	1F1E8 1F1F3	旗子：中國	cn
-旗幟	F01A3	1F1E8 1F1F4	旗子：哥倫比亞	colombia
-旗幟	F01A4	1F1E8 1F1F5	旗子：克里派頓島	clipperton_island
-旗幟	F01A5	1F1E8 1F1F6	旗子：薩克島	
-旗幟	F01A6	1F1E8 1F1F7	旗子：哥斯大黎加	costa_rica
-旗幟	F01A7	1F1E8 1F1FA	旗子：古巴	cuba
-旗幟	F01A8	1F1E8 1F1FB	旗子：維德角	cape_verde
-旗幟	F01A9	1F1E8 1F1FC	旗子：庫拉索	curacao
-旗幟	F01AA	1F1E8 1F1FD	旗子：聖誕島	christmas_island
-旗幟	F01AB	1F1E8 1F1FE	旗子：賽普勒斯	cyprus
-旗幟	F01AC	1F1E8 1F1FF	旗子：捷克	czech_republic
-旗幟	F01AD	1F1E9 1F1EA	旗子：德國	de
-旗幟	F01AE	1F1E9 1F1EC	旗子：迪亞哥加西亞島	diego_garcia
-旗幟	F01AF	1F1E9 1F1EF	旗子：吉布地	djibouti
-旗幟	F01B0	1F1E9 1F1F0	旗子：丹麥	denmark
-旗幟	F01B1	1F1E9 1F1F2	旗子：多米尼克	dominica
-旗幟	F01B2	1F1E9 1F1F4	旗子：多明尼加共和國	dominican_republic
-旗幟	F01B3	1F1E9 1F1FF	旗子：阿爾及利亞	algeria
-旗幟	F01B4	1F1EA 1F1E6	旗子：休達與梅利利亞	ceuta_melilla
-旗幟	F01B5	1F1EA 1F1E8	旗子：厄瓜多	ecuador
-旗幟	F01B6	1F1EA 1F1EA	旗子：愛沙尼亞	estonia
-旗幟	F01B7	1F1EA 1F1EC	旗子：埃及	egypt
-旗幟	F01B8	1F1EA 1F1ED	旗子：西撒哈拉	western_sahara
-旗幟	F01B9	1F1EA 1F1F7	旗子：厄利垂亞	eritrea
-旗幟	F01BA	1F1EA 1F1F8	旗子：西班牙	es
-旗幟	F01BB	1F1EA 1F1F9	旗子：衣索比亞	ethiopia
-旗幟	F01BC	1F1EA 1F1FA	旗子：歐盟	eu
-旗幟	F01BD	1F1EB 1F1EE	旗子：芬蘭	finland
-旗幟	F01BE	1F1EB 1F1EF	旗子：斐濟	fiji
-旗幟	F01BF	1F1EB 1F1F0	旗子：福克蘭群島	falkland_islands
-旗幟	F01C0	1F1EB 1F1F2	旗子：密克羅尼西亞	micronesia
-旗幟	F01C1	1F1EB 1F1F4	旗子：法羅群島	faroe_islands
-旗幟	F01C2	1F1EB 1F1F7	旗子：法國	fr
-旗幟	F01C3	1F1EC 1F1E6	旗子：加彭	gabon
-旗幟	F01C4	1F1EC 1F1E7	旗子：英國	gb
-旗幟	F01C5	1F1EC 1F1E9	旗子：格瑞那達	grenada
-旗幟	F01C6	1F1EC 1F1EA	旗子：喬治亞	georgia
-旗幟	F01C7	1F1EC 1F1EB	旗子：法屬圭亞那	french_guiana
-旗幟	F01C8	1F1EC 1F1EC	旗子：根息	guernsey
-旗幟	F01C9	1F1EC 1F1ED	旗子：迦納	ghana
-旗幟	F01CA	1F1EC 1F1EE	旗子：直布羅陀	gibraltar
-旗幟	F01CB	1F1EC 1F1F1	旗子：格陵蘭	greenland
-旗幟	F01CC	1F1EC 1F1F2	旗子：甘比亞	gambia
-旗幟	F01CD	1F1EC 1F1F3	旗子：幾內亞	guinea
-旗幟	F01CE	1F1EC 1F1F5	旗子：瓜地洛普	guadeloupe
-旗幟	F01CF	1F1EC 1F1F6	旗子：赤道幾內亞	equatorial_guinea
-旗幟	F01D0	1F1EC 1F1F7	旗子：希臘	greece
-旗幟	F01D1	1F1EC 1F1F8	旗子：南喬治亞與南三明治群島	south_georgia_south_sandwich_islands
-旗幟	F01D2	1F1EC 1F1F9	旗子：瓜地馬拉	guatemala
-旗幟	F01D3	1F1EC 1F1FA	旗子：關島	guam
-旗幟	F01D4	1F1EC 1F1FC	旗子：幾內亞比索	guinea_bissau
-旗幟	F01D5	1F1EC 1F1FE	旗子：蓋亞那	guyana
-旗幟	F01D6	1F1ED 1F1F0	旗子：中國香港特別行政區	hong_kong
-旗幟	F01D7	1F1ED 1F1F2	旗子：赫德島及麥唐納群島	heard_mcdonald_islands
-旗幟	F01D8	1F1ED 1F1F3	旗子：宏都拉斯	honduras
-旗幟	F01D9	1F1ED 1F1F7	旗子：克羅埃西亞	croatia
-旗幟	F01DA	1F1ED 1F1F9	旗子：海地	haiti
-旗幟	F01DB	1F1ED 1F1FA	旗子：匈牙利	hungary
-旗幟	F01DC	1F1EE 1F1E8	旗子：加那利群島	canary_islands
-旗幟	F01DD	1F1EE 1F1E9	旗子：印尼	indonesia
-旗幟	F01DE	1F1EE 1F1EA	旗子：愛爾蘭	ireland
-旗幟	F01DF	1F1EE 1F1F1	旗子：以色列	israel
-旗幟	F01E0	1F1EE 1F1F2	旗子：曼島	isle_of_man
-旗幟	F01E1	1F1EE 1F1F3	旗子：印度	india
-旗幟	F01E2	1F1EE 1F1F4	旗子：英屬印度洋領地	british_indian_ocean_territory
-旗幟	F01E3	1F1EE 1F1F6	旗子：伊拉克	iraq
-旗幟	F01E4	1F1EE 1F1F7	旗子：伊朗	iran
-旗幟	F01E5	1F1EE 1F1F8	旗子：冰島	iceland
-旗幟	F01E6	1F1EE 1F1F9	旗子：義大利	it
-旗幟	F01E7	1F1EF 1F1EA	旗子：澤西島	jersey
-旗幟	F01E8	1F1EF 1F1F2	旗子：牙買加	jamaica
-旗幟	F01E9	1F1EF 1F1F4	旗子：約旦	jordan
-旗幟	F01EA	1F1EF 1F1F5	旗子：日本	jp
-旗幟	F01EB	1F1F0 1F1EA	旗子：肯亞	kenya
-旗幟	F01EC	1F1F0 1F1EC	旗子：吉爾吉斯	kyrgyzstan
-旗幟	F01ED	1F1F0 1F1ED	旗子：柬埔寨	cambodia
-旗幟	F01EE	1F1F0 1F1EE	旗子：吉里巴斯	kiribati
-旗幟	F01EF	1F1F0 1F1F2	旗子：葛摩	comoros
-旗幟	F01F0	1F1F0 1F1F3	旗子：聖克里斯多福及尼維斯	st_kitts_nevis
-旗幟	F01F1	1F1F0 1F1F5	旗子：北韓	north_korea
-旗幟	F01F2	1F1F0 1F1F7	旗子：南韓	kr
-旗幟	F01F3	1F1F0 1F1FC	旗子：科威特	kuwait
-旗幟	F01F4	1F1F0 1F1FE	旗子：開曼群島	cayman_islands
-旗幟	F01F5	1F1F0 1F1FF	旗子：哈薩克	kazakhstan
-旗幟	F01F6	1F1F1 1F1E6	旗子：寮國	laos
-旗幟	F01F7	1F1F1 1F1E7	旗子：黎巴嫩	lebanon
-旗幟	F01F8	1F1F1 1F1E8	旗子：聖露西亞	st_lucia
-旗幟	F01F9	1F1F1 1F1EE	旗子：列支敦斯登	liechtenstein
-旗幟	F01FA	1F1F1 1F1F0	旗子：斯里蘭卡	sri_lanka
-旗幟	F01FB	1F1F1 1F1F7	旗子：賴比瑞亞	liberia
-旗幟	F01FC	1F1F1 1F1F8	旗子：賴索托	lesotho
-旗幟	F01FD	1F1F1 1F1F9	旗子：立陶宛	lithuania
-旗幟	F01FE	1F1F1 1F1FA	旗子：盧森堡	luxembourg
-旗幟	F01FF	1F1F1 1F1FB	旗子：拉脫維亞	latvia
-旗幟	F0200	1F1F1 1F1FE	旗子：利比亞	libya
-旗幟	F0201	1F1F2 1F1E6	旗子：摩洛哥	morocco
-旗幟	F0202	1F1F2 1F1E8	旗子：摩納哥	monaco
-旗幟	F0203	1F1F2 1F1E9	旗子：摩爾多瓦	moldova
-旗幟	F0204	1F1F2 1F1EA	旗子：蒙特內哥羅	montenegro
-旗幟	F0205	1F1F2 1F1EB	旗子：法屬聖馬丁	st_martin
-旗幟	F0206	1F1F2 1F1EC	旗子：馬達加斯加	madagascar
-旗幟	F0207	1F1F2 1F1ED	旗子：馬紹爾群島	marshall_islands
-旗幟	F0208	1F1F2 1F1F0	旗子：北馬其頓	macedonia
-旗幟	F0209	1F1F2 1F1F1	旗子：馬利	mali
-旗幟	F020A	1F1F2 1F1F2	旗子：緬甸	myanmar
-旗幟	F020B	1F1F2 1F1F3	旗子：蒙古	mongolia
-旗幟	F020C	1F1F2 1F1F4	旗子：中國澳門特別行政區	macau
-旗幟	F020D	1F1F2 1F1F5	旗子：北馬利安納群島	northern_mariana_islands
-旗幟	F020E	1F1F2 1F1F6	旗子：馬丁尼克	martinique
-旗幟	F020F	1F1F2 1F1F7	旗子：茅利塔尼亞	mauritania
-旗幟	F0210	1F1F2 1F1F8	旗子：蒙哲臘	montserrat
-旗幟	F0211	1F1F2 1F1F9	旗子：馬爾他	malta
-旗幟	F0212	1F1F2 1F1FA	旗子：模里西斯	mauritius
-旗幟	F0213	1F1F2 1F1FB	旗子：馬爾地夫	maldives
-旗幟	F0214	1F1F2 1F1FC	旗子：馬拉威	malawi
-旗幟	F0215	1F1F2 1F1FD	旗子：墨西哥	mexico
-旗幟	F0216	1F1F2 1F1FE	旗子：馬來西亞	malaysia
-旗幟	F0217	1F1F2 1F1FF	旗子：莫三比克	mozambique
-旗幟	F0218	1F1F3 1F1E6	旗子：納米比亞	namibia
-旗幟	F0219	1F1F3 1F1E8	旗子：新喀里多尼亞	new_caledonia
-旗幟	F021A	1F1F3 1F1EA	旗子：尼日	niger
-旗幟	F021B	1F1F3 1F1EB	旗子：諾福克島	norfolk_island
-旗幟	F021C	1F1F3 1F1EC	旗子：奈及利亞	nigeria
-旗幟	F021D	1F1F3 1F1EE	旗子：尼加拉瓜	nicaragua
-旗幟	F021E	1F1F3 1F1F1	旗子：荷蘭	netherlands
-旗幟	F021F	1F1F3 1F1F4	旗子：挪威	norway
-旗幟	F0220	1F1F3 1F1F5	旗子：尼泊爾	nepal
-旗幟	F0221	1F1F3 1F1F7	旗子：諾魯	nauru
-旗幟	F0222	1F1F3 1F1FA	旗子：紐埃島	niue
-旗幟	F0223	1F1F3 1F1FF	旗子：紐西蘭	new_zealand
-旗幟	F0224	1F1F4 1F1F2	旗子：阿曼	oman
-旗幟	F0225	1F1F5 1F1E6	旗子：巴拿馬	panama
-旗幟	F0226	1F1F5 1F1EA	旗子：秘魯	peru
-旗幟	F0227	1F1F5 1F1EB	旗子：法屬玻里尼西亞	french_polynesia
-旗幟	F0228	1F1F5 1F1EC	旗子：巴布亞紐幾內亞	papua_new_guinea
-旗幟	F0229	1F1F5 1F1ED	旗子：菲律賓	philippines
-旗幟	F022A	1F1F5 1F1F0	旗子：巴基斯坦	pakistan
-旗幟	F022B	1F1F5 1F1F1	旗子：波蘭	poland
-旗幟	F022C	1F1F5 1F1F2	旗子：聖皮埃與密克隆群島	st_pierre_miquelon
-旗幟	F022D	1F1F5 1F1F3	旗子：皮特肯群島	pitcairn_islands
-旗幟	F022E	1F1F5 1F1F7	旗子：波多黎各	puerto_rico
-旗幟	F022F	1F1F5 1F1F8	旗子：巴勒斯坦自治區	palestinian_territories
-旗幟	F0230	1F1F5 1F1F9	旗子：葡萄牙	portugal
-旗幟	F0231	1F1F5 1F1FC	旗子：帛琉	palau
-旗幟	F0232	1F1F5 1F1FE	旗子：巴拉圭	paraguay
-旗幟	F0233	1F1F6 1F1E6	旗子：卡達	qatar
-旗幟	F0234	1F1F7 1F1EA	旗子：留尼旺	reunion
-旗幟	F0235	1F1F7 1F1F4	旗子：羅馬尼亞	romania
-旗幟	F0236	1F1F7 1F1F8	旗子：塞爾維亞	serbia
-旗幟	F0237	1F1F7 1F1FA	旗子：俄羅斯	ru
-旗幟	F0238	1F1F7 1F1FC	旗子：盧安達	rwanda
-旗幟	F0239	1F1F8 1F1E6	旗子：沙烏地阿拉伯	saudi_arabia
-旗幟	F023A	1F1F8 1F1E7	旗子：索羅門群島	solomon_islands
-旗幟	F023B	1F1F8 1F1E8	旗子：塞席爾	seychelles
-旗幟	F023C	1F1F8 1F1E9	旗子：蘇丹	sudan
-旗幟	F023D	1F1F8 1F1EA	旗子：瑞典	sweden
-旗幟	F023E	1F1F8 1F1EC	旗子：新加坡	singapore
-旗幟	F023F	1F1F8 1F1ED	旗子：聖赫勒拿島	st_helena
-旗幟	F0240	1F1F8 1F1EE	旗子：斯洛維尼亞	slovenia
-旗幟	F0241	1F1F8 1F1EF	旗子：挪威屬斯瓦巴及尖棉	svalbard_jan_mayen
-旗幟	F0242	1F1F8 1F1F0	旗子：斯洛伐克	slovakia
-旗幟	F0243	1F1F8 1F1F1	旗子：獅子山	sierra_leone
-旗幟	F0244	1F1F8 1F1F2	旗子：聖馬利諾	san_marino
-旗幟	F0245	1F1F8 1F1F3	旗子：塞內加爾	senegal
-旗幟	F0246	1F1F8 1F1F4	旗子：索馬利亞	somalia
-旗幟	F0247	1F1F8 1F1F7	旗子：蘇利南	suriname
-旗幟	F0248	1F1F8 1F1F8	旗子：南蘇丹	south_sudan
-旗幟	F0249	1F1F8 1F1F9	旗子：聖多美普林西比	sao_tome_principe
-旗幟	F024A	1F1F8 1F1FB	旗子：薩爾瓦多	el_salvador
-旗幟	F024B	1F1F8 1F1FD	旗子：荷屬聖馬丁	sint_maarten
-旗幟	F024C	1F1F8 1F1FE	旗子：敘利亞	syria
-旗幟	F024D	1F1F8 1F1FF	旗子：史瓦帝尼	swaziland
-旗幟	F024E	1F1F9 1F1E6	旗子：特里斯坦達庫尼亞群島	tristan_da_cunha
-旗幟	F024F	1F1F9 1F1E8	旗子：土克斯及開科斯群島	turks_caicos_islands
-旗幟	F0250	1F1F9 1F1E9	旗子：查德	chad
-旗幟	F0251	1F1F9 1F1EB	旗子：法屬南部屬地	french_southern_territories
-旗幟	F0252	1F1F9 1F1EC	旗子：多哥	togo
-旗幟	F0253	1F1F9 1F1ED	旗子：泰國	thailand
-旗幟	F0254	1F1F9 1F1EF	旗子：塔吉克	tajikistan
-旗幟	F0255	1F1F9 1F1F0	旗子：托克勞群島	tokelau
-旗幟	F0256	1F1F9 1F1F1	旗子：東帝汶	timor_leste
-旗幟	F0257	1F1F9 1F1F2	旗子：土庫曼	turkmenistan
-旗幟	F0258	1F1F9 1F1F3	旗子：突尼西亞	tunisia
-旗幟	F0259	1F1F9 1F1F4	旗子：東加	tonga
-旗幟	F025A	1F1F9 1F1F7	旗子：土耳其	tr
-旗幟	F025B	1F1F9 1F1F9	旗子：千里達及托巴哥	trinidad_tobago
-旗幟	F025C	1F1F9 1F1FB	旗子：吐瓦魯	tuvalu
-旗幟	F025D	1F1F9 1F1FC	旗子：台灣	taiwan
-旗幟	F025E	1F1F9 1F1FF	旗子：坦尚尼亞	tanzania
-旗幟	F025F	1F1FA 1F1E6	旗子：烏克蘭	ukraine
-旗幟	F0260	1F1FA 1F1EC	旗子：烏干達	uganda
-旗幟	F0261	1F1FA 1F1F2	旗子：美國本土外小島嶼	us_outlying_islands
-旗幟	F0262	1F1FA 1F1F3	旗子：聯合國	united_nations
-旗幟	F0263	1F1FA 1F1F8	旗子：美國	us
-旗幟	F0264	1F1FA 1F1FE	旗子：烏拉圭	uruguay
-旗幟	F0265	1F1FA 1F1FF	旗子：烏茲別克	uzbekistan
-旗幟	F0266	1F1FB 1F1E6	旗子：梵蒂岡	vatican_city
-旗幟	F0267	1F1FB 1F1E8	旗子：聖文森及格瑞那丁	st_vincent_grenadines
-旗幟	F0268	1F1FB 1F1EA	旗子：委內瑞拉	venezuela
-旗幟	F0269	1F1FB 1F1EC	旗子：英屬維京群島	british_virgin_islands
-旗幟	F026A	1F1FB 1F1EE	旗子：美屬維京群島	us_virgin_islands
-旗幟	F026B	1F1FB 1F1F3	旗子：越南	vietnam
-旗幟	F026C	1F1FB 1F1FA	旗子：萬那杜	vanuatu
-旗幟	F026D	1F1FC 1F1EB	旗子：瓦利斯群島和富圖那群島	wallis_futuna
-旗幟	F026E	1F1FC 1F1F8	旗子：薩摩亞	samoa
-旗幟	F026F	1F1FD 1F1F0	旗子：科索沃	kosovo
-旗幟	F0270	1F1FE 1F1EA	旗子：葉門	yemen
-旗幟	F0271	1F1FE 1F1F9	旗子：馬約特島	mayotte
-旗幟	F0272	1F1FF 1F1E6	旗子：南非	south_africa
-旗幟	F0273	1F1FF 1F1F2	旗子：尚比亞	zambia
-旗幟	F0274	1F1FF 1F1FC	旗子：辛巴威	zimbabwe
-旗幟	F0275	1F3F4 E0067 E0062 E0065 E006E E0067 E007F	旗子：英格蘭	england
-旗幟	F0276	1F3F4 E0067 E0062 E0073 E0063 E0074 E007F	旗子：蘇格蘭	scotland
-旗幟	F0277	1F3F4 E0067 E0062 E0077 E006C E0073 E007F	旗子：威爾斯	wales
+笑臉與情緒	1F600	1F600	笑臉	grinning	
+笑臉與情緒	1F603	1F603	大笑	smiley	
+笑臉與情緒	1F604	1F604	呵呵	smile	
+笑臉與情緒	1F601	1F601	嘻嘻	grin	
+笑臉與情緒	1F606	1F606	狂笑	laughing	
+笑臉與情緒	1F605	1F605	汗	sweat_smile	
+笑臉與情緒	1F923	1F923	笑翻了	rofl	
+笑臉與情緒	1F602	1F602	感動	joy	
+笑臉與情緒	1F642	1F642	呆呆笑	slightly_smiling_face	
+笑臉與情緒	1F643	1F643	顛倒臉	upside_down_face	
+笑臉與情緒	1FAE0	1FAE0	融化的臉	melting_face	
+笑臉與情緒	1F609	1F609	眨眼	wink	
+笑臉與情緒	1F60A	1F60A	微笑	blush	
+笑臉與情緒	1F607	1F607	天使笑臉	innocent	
+笑臉與情緒	1F970	1F970	三個愛心的笑臉	smiling_face_with_three_hearts	
+笑臉與情緒	1F60D	1F60D	花痴	heart_eyes	
+笑臉與情緒	1F929	1F929	眼冒星星	star_struck	
+笑臉與情緒	1F618	1F618	親親飛吻	kissing_heart	
+笑臉與情緒	1F617	1F617	親親	kissing	
+笑臉與情緒	F0000	263A FE0F	輕鬆笑臉	relaxed	
+笑臉與情緒	1F61A	1F61A	瞇眼親親	kissing_closed_eyes	
+笑臉與情緒	1F619	1F619	笑臉親親	kissing_smiling_eyes	
+笑臉與情緒	1F972	1F972	微笑帶淚	smiling_face_with_tear	
+笑臉與情緒	1F60B	1F60B	口水	yum	
+笑臉與情緒	1F61B	1F61B	嘿嘿	stuck_out_tongue	
+笑臉與情緒	1F61C	1F61C	吐舌頭	stuck_out_tongue_winking_eye	
+笑臉與情緒	1F92A	1F92A	發瘋	zany_face	
+笑臉與情緒	1F61D	1F61D	眨眼吐舌頭	stuck_out_tongue_closed_eyes	
+笑臉與情緒	1F911	1F911	發財	money_mouth_face	
+笑臉與情緒	1F917	1F917	抱抱	hugs	
+笑臉與情緒	1F92D	1F92D	手蓋住嘴巴	hand_over_mouth	
+笑臉與情緒	1FAE2	1FAE2	張眼摀嘴的臉	face_with_open_eyes_and_hand_over_mouth	
+笑臉與情緒	1FAE3	1FAE3	一眼偷看的臉	face_with_peeking_eye	
+笑臉與情緒	1F92B	1F92B	噓	shushing_face	
+笑臉與情緒	1F914	1F914	思考	thinking	
+笑臉與情緒	1FAE1	1FAE1	敬禮的臉	saluting_face	
+笑臉與情緒	1F910	1F910	閉嘴	zipper_mouth_face	
+笑臉與情緒	1F928	1F928	挑眉驚訝	raised_eyebrow	
+笑臉與情緒	1F610	1F610	無語	neutral_face	
+笑臉與情緒	1F611	1F611	面無表情	expressionless	
+笑臉與情緒	1F636	1F636	沉默	no_mouth	
+笑臉與情緒	1FAE5	1FAE5	虛線的臉	dotted_line_face	
+笑臉與情緒	F0001	1F636 200D 1F32B FE0F	茫茫然	face_in_clouds	
+笑臉與情緒	1F60F	1F60F	冷笑	smirk	
+笑臉與情緒	1F612	1F612	不高興	unamused	
+笑臉與情緒	1F644	1F644	翻白眼	roll_eyes	
+笑臉與情緒	1F62C	1F62C	咬牙	grimacing	
+笑臉與情緒	F0002	1F62E 200D 1F4A8	鬆一口氣	face_exhaling	
+笑臉與情緒	1F925	1F925	鼻子變長了	lying_face	
+笑臉與情緒	1FAE8	1FAE8	動搖的表情	shaking_face	
+笑臉與情緒	F0003	1F642 200D 2194 FE0F	左右搖頭		
+笑臉與情緒	F0004	1F642 200D 2195 FE0F	上下點頭		
+笑臉與情緒	1F60C	1F60C	鬆了口氣	relieved	
+笑臉與情緒	1F614	1F614	沉思	pensive	
+笑臉與情緒	1F62A	1F62A	睏	sleepy	
+笑臉與情緒	1F924	1F924	流口水	drooling_face	
+笑臉與情緒	1F634	1F634	睡著了	sleeping	
+笑臉與情緒	1FAE9	1FAE9	臉上有眼袋		
+笑臉與情緒	1F637	1F637	口罩	mask	
+笑臉與情緒	1F912	1F912	含溫度計	face_with_thermometer	
+笑臉與情緒	1F915	1F915	包繃帶	face_with_head_bandage	
+笑臉與情緒	1F922	1F922	想吐	nauseated_face	
+笑臉與情緒	1F92E	1F92E	狂吐中	vomiting_face	
+笑臉與情緒	1F927	1F927	打噴嚏	sneezing_face	
+笑臉與情緒	1F975	1F975	熱臉	hot_face	
+笑臉與情緒	1F976	1F976	冷臉	cold_face	
+笑臉與情緒	1F974	1F974	頭昏眼花	woozy_face	
+笑臉與情緒	1F635	1F635	頭暈目眩	dizzy_face	
+笑臉與情緒	F0005	1F635 200D 1F4AB	目眩頭暈	face_with_spiral_eyes	
+笑臉與情緒	1F92F	1F92F	一個頭兩個大	exploding_head	
+笑臉與情緒	1F920	1F920	牛仔	cowboy_hat_face	
+笑臉與情緒	1F973	1F973	慶祝的表情	partying_face	
+笑臉與情緒	1F978	1F978	假扮的臉	disguised_face	
+笑臉與情緒	1F60E	1F60E	墨鏡	sunglasses	
+笑臉與情緒	1F913	1F913	搞怪	nerd_face	
+笑臉與情緒	1F9D0	1F9D0	單片眼鏡	monocle_face	
+笑臉與情緒	1F615	1F615	困擾	confused	
+笑臉與情緒	1FAE4	1FAE4	歪嘴的臉	face_with_diagonal_mouth	
+笑臉與情緒	1F61F	1F61F	擔心	worried	
+笑臉與情緒	1F641	1F641	不開心	slightly_frowning_face	
+笑臉與情緒	F0006	2639 FE0F	不滿意	frowning_face	
+笑臉與情緒	1F62E	1F62E	驚訝	open_mouth	
+笑臉與情緒	1F62F	1F62F	哦	hushed	
+笑臉與情緒	1F632	1F632	震驚	astonished	
+笑臉與情緒	1F633	1F633	愛慕	flushed	
+笑臉與情緒	1FAEA	1FAEA	變形的臉		
+笑臉與情緒	1F97A	1F97A	請求的臉	pleading_face	
+笑臉與情緒	1F979	1F979	強忍淚水的臉	face_holding_back_tears	
+笑臉與情緒	1F626	1F626	啊	frowning	
+笑臉與情緒	1F627	1F627	痛	anguished	
+笑臉與情緒	1F628	1F628	可怕	fearful	
+笑臉與情緒	1F630	1F630	冒汗	cold_sweat	
+笑臉與情緒	1F625	1F625	流汗	disappointed_relieved	
+笑臉與情緒	1F622	1F622	淚	cry	
+笑臉與情緒	1F62D	1F62D	哭	sob	
+笑臉與情緒	1F631	1F631	嚇死了	scream	
+笑臉與情緒	1F616	1F616	困惑	confounded	
+笑臉與情緒	1F623	1F623	痛苦	persevere	
+笑臉與情緒	1F61E	1F61E	失望	disappointed	
+笑臉與情緒	1F613	1F613	冷汗	sweat	
+笑臉與情緒	1F629	1F629	唉!	weary	
+笑臉與情緒	1F62B	1F62B	累	tired_face	
+笑臉與情緒	1F971	1F971	呵欠	yawning_face	
+笑臉與情緒	1F624	1F624	傲慢	triumph	
+笑臉與情緒	1F621	1F621	生氣	pout	
+笑臉與情緒	1F620	1F620	不爽	angry	
+笑臉與情緒	1F92C	1F92C	嘴上有符號的表情	cursing_face	
+笑臉與情緒	1F608	1F608	惡魔的笑	smiling_imp	
+笑臉與情緒	1F47F	1F47F	惡魔	imp	
+笑臉與情緒	1F480	1F480	骷髏頭	skull	
+笑臉與情緒	F0007	2620 FE0F	交叉骷髏頭	skull_and_crossbones	
+笑臉與情緒	1F4A9	1F4A9	大便	hankey	
+笑臉與情緒	1F921	1F921	小丑	clown_face	
+笑臉與情緒	1F479	1F479	魔鬼	japanese_ogre	
+笑臉與情緒	1F47A	1F47A	天狗	japanese_goblin	
+笑臉與情緒	1F47B	1F47B	鬼	ghost	
+笑臉與情緒	1F47D	1F47D	外星人	alien	
+笑臉與情緒	1F47E	1F47E	怪物	space_invader	
+笑臉與情緒	1F916	1F916	機器人	robot	
+笑臉與情緒	1F63A	1F63A	哈哈	smiley_cat	
+笑臉與情緒	1F638	1F638	微笑的貓臉	smile_cat	
+笑臉與情緒	1F639	1F639	感動的貓臉	joy_cat	
+笑臉與情緒	1F63B	1F63B	花痴的貓臉	heart_eyes_cat	
+笑臉與情緒	1F63C	1F63C	微笑貓臉	smirk_cat	
+笑臉與情緒	1F63D	1F63D	親親的貓臉	kissing_cat	
+笑臉與情緒	1F640	1F640	累的貓臉	scream_cat	
+笑臉與情緒	1F63F	1F63F	哭的貓臉	crying_cat_face	
+笑臉與情緒	1F63E	1F63E	生氣的貓臉	pouting_cat	
+笑臉與情緒	1F648	1F648	非禮勿視	see_no_evil	
+笑臉與情緒	1F649	1F649	非禮勿聽	hear_no_evil	
+笑臉與情緒	1F64A	1F64A	非禮勿言	speak_no_evil	
+笑臉與情緒	1F48C	1F48C	情書	love_letter	
+笑臉與情緒	1F498	1F498	丘比特	cupid	
+笑臉與情緒	1F49D	1F49D	愛的禮物	gift_heart	
+笑臉與情緒	1F496	1F496	開心	sparkling_heart	
+笑臉與情緒	1F497	1F497	心動	heartpulse	
+笑臉與情緒	1F493	1F493	心跳	heartbeat	
+笑臉與情緒	1F49E	1F49E	心之舞	revolving_hearts	
+笑臉與情緒	1F495	1F495	心心相印	two_hearts	
+笑臉與情緒	1F49F	1F49F	心在框框裡	heart_decoration	
+笑臉與情緒	F0008	2763 FE0F	心嘆號	heavy_heart_exclamation	
+笑臉與情緒	1F494	1F494	心碎	broken_heart	
+笑臉與情緒	F0009	2764 FE0F 200D 1F525	火熱的心	heart_on_fire	
+笑臉與情緒	F000A	2764 FE0F 200D 1FA79	療心	mending_heart	
+笑臉與情緒	F000B	2764 FE0F	愛心	heart	
+笑臉與情緒	1FA77	1FA77	粉紅心	pink_heart	
+笑臉與情緒	1F9E1	1F9E1	橘心	orange_heart	
+笑臉與情緒	1F49B	1F49B	黃心	yellow_heart	
+笑臉與情緒	1F49A	1F49A	綠心	green_heart	
+笑臉與情緒	1F499	1F499	藍心	blue_heart	
+笑臉與情緒	1FA75	1FA75	淺藍心	light_blue_heart	
+笑臉與情緒	1F49C	1F49C	紫心	purple_heart	
+笑臉與情緒	1F90E	1F90E	褐心	brown_heart	
+笑臉與情緒	1F5A4	1F5A4	黑心	black_heart	
+笑臉與情緒	1FA76	1FA76	灰色愛心	grey_heart	
+笑臉與情緒	1F90D	1F90D	白心	white_heart	
+笑臉與情緒	1F48B	1F48B	唇印	kiss	
+笑臉與情緒	1F4AF	1F4AF	滿分	100	
+笑臉與情緒	1F4A2	1F4A2	怒	anger	
+笑臉與情緒	1FAEF	1FAEF	打鬥的雲		
+笑臉與情緒	1F4A5	1F4A5	碰撞	boom	
+笑臉與情緒	1F4AB	1F4AB	暈頭轉向	dizzy	
+笑臉與情緒	1F4A6	1F4A6	出汗	sweat_drops	
+笑臉與情緒	1F4A8	1F4A8	揚塵而去	dash	
+笑臉與情緒	1F573	1F573 FE0F	洞	hole	
+笑臉與情緒	1F4AC	1F4AC	對話框	speech_balloon	
+笑臉與情緒	1F5E8	1F5E8 FE0F	黑色對話框	left_speech_bubble	
+笑臉與情緒	1F5EF	1F5EF FE0F	爆炸對話框	right_anger_bubble	
+笑臉與情緒	1F4AD	1F4AD	心聲對話框	thought_balloon	
+笑臉與情緒	1F4A4	1F4A4	睡著	zzz	
+人物與身體	1F44B	1F44B	揮手	wave	F0278|1F44B 1F3FB,F0279|1F44B 1F3FC,F027A|1F44B 1F3FD,F027B|1F44B 1F3FE,F027C|1F44B 1F3FF
+人物與身體	1F91A	1F91A	豎起手掌	raised_back_of_hand	F027D|1F91A 1F3FB,F027E|1F91A 1F3FC,F027F|1F91A 1F3FD,F0280|1F91A 1F3FE,F0281|1F91A 1F3FF
+人物與身體	1F590	1F590 FE0F	停止	raised_hand_with_fingers_splayed	F0282|1F590 1F3FB,F0283|1F590 1F3FC,F0284|1F590 1F3FD,F0285|1F590 1F3FE,F0286|1F590 1F3FF
+人物與身體	270B	270B	舉手	hand	F0287|270B 1F3FB,F0288|270B 1F3FC,F0289|270B 1F3FD,F028A|270B 1F3FE,F028B|270B 1F3FF
+人物與身體	1F596	1F596	你好	vulcan_salute	F028C|1F596 1F3FB,F028D|1F596 1F3FC,F028E|1F596 1F3FD,F028F|1F596 1F3FE,F0290|1F596 1F3FF
+人物與身體	1FAF1	1FAF1	向右的手	rightwards_hand	F0291|1FAF1 1F3FB,F0292|1FAF1 1F3FC,F0293|1FAF1 1F3FD,F0294|1FAF1 1F3FE,F0295|1FAF1 1F3FF
+人物與身體	1FAF2	1FAF2	向左的手	leftwards_hand	F0296|1FAF2 1F3FB,F0297|1FAF2 1F3FC,F0298|1FAF2 1F3FD,F0299|1FAF2 1F3FE,F029A|1FAF2 1F3FF
+人物與身體	1FAF3	1FAF3	手掌向下	palm_down_hand	F029B|1FAF3 1F3FB,F029C|1FAF3 1F3FC,F029D|1FAF3 1F3FD,F029E|1FAF3 1F3FE,F029F|1FAF3 1F3FF
+人物與身體	1FAF4	1FAF4	手掌向上	palm_up_hand	F02A0|1FAF4 1F3FB,F02A1|1FAF4 1F3FC,F02A2|1FAF4 1F3FD,F02A3|1FAF4 1F3FE,F02A4|1FAF4 1F3FF
+人物與身體	1FAF7	1FAF7	手向左推	leftwards_pushing_hand	F02A5|1FAF7 1F3FB,F02A6|1FAF7 1F3FC,F02A7|1FAF7 1F3FD,F02A8|1FAF7 1F3FE,F02A9|1FAF7 1F3FF
+人物與身體	1FAF8	1FAF8	手向右推	rightwards_pushing_hand	F02AA|1FAF8 1F3FB,F02AB|1FAF8 1F3FC,F02AC|1FAF8 1F3FD,F02AD|1FAF8 1F3FE,F02AE|1FAF8 1F3FF
+人物與身體	1F44C	1F44C	OK 手勢	ok_hand	F02AF|1F44C 1F3FB,F02B0|1F44C 1F3FC,F02B1|1F44C 1F3FD,F02B2|1F44C 1F3FE,F02B3|1F44C 1F3FF
+人物與身體	1F90C	1F90C	捏手指	pinched_fingers	F02B4|1F90C 1F3FB,F02B5|1F90C 1F3FC,F02B6|1F90C 1F3FD,F02B7|1F90C 1F3FE,F02B8|1F90C 1F3FF
+人物與身體	1F90F	1F90F	捏	pinching_hand	F02B9|1F90F 1F3FB,F02BA|1F90F 1F3FC,F02BB|1F90F 1F3FD,F02BC|1F90F 1F3FE,F02BD|1F90F 1F3FF
+人物與身體	F000C	270C FE0F	勝利	v	F02BE|270C 1F3FB,F02BF|270C 1F3FC,F02C0|270C 1F3FD,F02C1|270C 1F3FE,F02C2|270C 1F3FF
+人物與身體	1F91E	1F91E	祝好運	crossed_fingers	F02C3|1F91E 1F3FB,F02C4|1F91E 1F3FC,F02C5|1F91E 1F3FD,F02C6|1F91E 1F3FE,F02C7|1F91E 1F3FF
+人物與身體	1FAF0	1FAF0	食指和拇指交叉的手	hand_with_index_finger_and_thumb_crossed	F02C8|1FAF0 1F3FB,F02C9|1FAF0 1F3FC,F02CA|1FAF0 1F3FD,F02CB|1FAF0 1F3FE,F02CC|1FAF0 1F3FF
+人物與身體	1F91F	1F91F	愛你手勢	love_you_gesture	F02CD|1F91F 1F3FB,F02CE|1F91F 1F3FC,F02CF|1F91F 1F3FD,F02D0|1F91F 1F3FE,F02D1|1F91F 1F3FF
+人物與身體	1F918	1F918	ROCK	metal	F02D2|1F918 1F3FB,F02D3|1F918 1F3FC,F02D4|1F918 1F3FD,F02D5|1F918 1F3FE,F02D6|1F918 1F3FF
+人物與身體	1F919	1F919	打給我	call_me_hand	F02D7|1F919 1F3FB,F02D8|1F919 1F3FC,F02D9|1F919 1F3FD,F02DA|1F919 1F3FE,F02DB|1F919 1F3FF
+人物與身體	1F448	1F448	左	point_left	F02DC|1F448 1F3FB,F02DD|1F448 1F3FC,F02DE|1F448 1F3FD,F02DF|1F448 1F3FE,F02E0|1F448 1F3FF
+人物與身體	1F449	1F449	右	point_right	F02E1|1F449 1F3FB,F02E2|1F449 1F3FC,F02E3|1F449 1F3FD,F02E4|1F449 1F3FE,F02E5|1F449 1F3FF
+人物與身體	1F446	1F446	上	point_up_2	F02E6|1F446 1F3FB,F02E7|1F446 1F3FC,F02E8|1F446 1F3FD,F02E9|1F446 1F3FE,F02EA|1F446 1F3FF
+人物與身體	1F595	1F595	中指	fu	F02EB|1F595 1F3FB,F02EC|1F595 1F3FC,F02ED|1F595 1F3FD,F02EE|1F595 1F3FE,F02EF|1F595 1F3FF
+人物與身體	1F447	1F447	下	point_down	F02F0|1F447 1F3FB,F02F1|1F447 1F3FC,F02F2|1F447 1F3FD,F02F3|1F447 1F3FE,F02F4|1F447 1F3FF
+人物與身體	F000D	261D FE0F	注意	point_up	F02F5|261D 1F3FB,F02F6|261D 1F3FC,F02F7|261D 1F3FD,F02F8|261D 1F3FE,F02F9|261D 1F3FF
+人物與身體	1FAF5	1FAF5	食指朝向觀眾	index_pointing_at_the_viewer	F02FA|1FAF5 1F3FB,F02FB|1FAF5 1F3FC,F02FC|1FAF5 1F3FD,F02FD|1FAF5 1F3FE,F02FE|1FAF5 1F3FF
+人物與身體	1F44D	1F44D	讚	+1	F02FF|1F44D 1F3FB,F0300|1F44D 1F3FC,F0301|1F44D 1F3FD,F0302|1F44D 1F3FE,F0303|1F44D 1F3FF
+人物與身體	1F44E	1F44E	遜	-1	F0304|1F44E 1F3FB,F0305|1F44E 1F3FC,F0306|1F44E 1F3FD,F0307|1F44E 1F3FE,F0308|1F44E 1F3FF
+人物與身體	270A	270A	拳頭	fist	F0309|270A 1F3FB,F030A|270A 1F3FC,F030B|270A 1F3FD,F030C|270A 1F3FE,F030D|270A 1F3FF
+人物與身體	1F44A	1F44A	出拳	facepunch	F030E|1F44A 1F3FB,F030F|1F44A 1F3FC,F0310|1F44A 1F3FD,F0311|1F44A 1F3FE,F0312|1F44A 1F3FF
+人物與身體	1F91B	1F91B	握右拳	fist_left	F0313|1F91B 1F3FB,F0314|1F91B 1F3FC,F0315|1F91B 1F3FD,F0316|1F91B 1F3FE,F0317|1F91B 1F3FF
+人物與身體	1F91C	1F91C	握左拳	fist_right	F0318|1F91C 1F3FB,F0319|1F91C 1F3FC,F031A|1F91C 1F3FD,F031B|1F91C 1F3FE,F031C|1F91C 1F3FF
+人物與身體	1F44F	1F44F	鼓掌	clap	F031D|1F44F 1F3FB,F031E|1F44F 1F3FC,F031F|1F44F 1F3FD,F0320|1F44F 1F3FE,F0321|1F44F 1F3FF
+人物與身體	1F64C	1F64C	歡呼	raised_hands	F0322|1F64C 1F3FB,F0323|1F64C 1F3FC,F0324|1F64C 1F3FD,F0325|1F64C 1F3FE,F0326|1F64C 1F3FF
+人物與身體	1FAF6	1FAF6	雙手心形	heart_hands	F0327|1FAF6 1F3FB,F0328|1FAF6 1F3FC,F0329|1FAF6 1F3FD,F032A|1FAF6 1F3FE,F032B|1FAF6 1F3FF
+人物與身體	1F450	1F450	攤開手	open_hands	F032C|1F450 1F3FB,F032D|1F450 1F3FC,F032E|1F450 1F3FD,F032F|1F450 1F3FE,F0330|1F450 1F3FF
+人物與身體	1F932	1F932	雙手掌朝上	palms_up_together	F0331|1F932 1F3FB,F0332|1F932 1F3FC,F0333|1F932 1F3FD,F0334|1F932 1F3FE,F0335|1F932 1F3FF
+人物與身體	1F91D	1F91D	握手	handshake	F0336|1F91D 1F3FB,F0337|1F91D 1F3FC,F0338|1F91D 1F3FD,F0339|1F91D 1F3FE,F033A|1F91D 1F3FF
+人物與身體	1F64F	1F64F	感恩	pray	F033B|1F64F 1F3FB,F033C|1F64F 1F3FC,F033D|1F64F 1F3FD,F033E|1F64F 1F3FE,F033F|1F64F 1F3FF
+人物與身體	F000E	270D FE0F	寫	writing_hand	F0340|270D 1F3FB,F0341|270D 1F3FC,F0342|270D 1F3FD,F0343|270D 1F3FE,F0344|270D 1F3FF
+人物與身體	1F485	1F485	指甲油	nail_care	F0345|1F485 1F3FB,F0346|1F485 1F3FC,F0347|1F485 1F3FD,F0348|1F485 1F3FE,F0349|1F485 1F3FF
+人物與身體	1F933	1F933	自拍	selfie	F034A|1F933 1F3FB,F034B|1F933 1F3FC,F034C|1F933 1F3FD,F034D|1F933 1F3FE,F034E|1F933 1F3FF
+人物與身體	1F4AA	1F4AA	肌肉	muscle	F034F|1F4AA 1F3FB,F0350|1F4AA 1F3FC,F0351|1F4AA 1F3FD,F0352|1F4AA 1F3FE,F0353|1F4AA 1F3FF
+人物與身體	1F9BE	1F9BE	機械手臂	mechanical_arm	
+人物與身體	1F9BF	1F9BF	機械腳	mechanical_leg	
+人物與身體	1F9B5	1F9B5	腿	leg	F0354|1F9B5 1F3FB,F0355|1F9B5 1F3FC,F0356|1F9B5 1F3FD,F0357|1F9B5 1F3FE,F0358|1F9B5 1F3FF
+人物與身體	1F9B6	1F9B6	腳	foot	F0359|1F9B6 1F3FB,F035A|1F9B6 1F3FC,F035B|1F9B6 1F3FD,F035C|1F9B6 1F3FE,F035D|1F9B6 1F3FF
+人物與身體	1F442	1F442	耳朵	ear	F035E|1F442 1F3FB,F035F|1F442 1F3FC,F0360|1F442 1F3FD,F0361|1F442 1F3FE,F0362|1F442 1F3FF
+人物與身體	1F9BB	1F9BB	戴助聽器的耳朵	ear_with_hearing_aid	F0363|1F9BB 1F3FB,F0364|1F9BB 1F3FC,F0365|1F9BB 1F3FD,F0366|1F9BB 1F3FE,F0367|1F9BB 1F3FF
+人物與身體	1F443	1F443	鼻子	nose	F0368|1F443 1F3FB,F0369|1F443 1F3FC,F036A|1F443 1F3FD,F036B|1F443 1F3FE,F036C|1F443 1F3FF
+人物與身體	1F9E0	1F9E0	腦	brain	
+人物與身體	1FAC0	1FAC0	心臟	anatomical_heart	
+人物與身體	1FAC1	1FAC1	肺	lungs	
+人物與身體	1F9B7	1F9B7	牙齒	tooth	
+人物與身體	1F9B4	1F9B4	骨頭	bone	
+人物與身體	1F440	1F440	雙眼	eyes	
+人物與身體	1F441	1F441 FE0F	眼睛	eye	
+人物與身體	1F445	1F445	舌頭	tongue	
+人物與身體	1F444	1F444	嘴巴	lips	
+人物與身體	1FAE6	1FAE6	咬唇	biting_lip	
+人物與身體	1F476	1F476	小寶寶	baby	F036D|1F476 1F3FB,F036E|1F476 1F3FC,F036F|1F476 1F3FD,F0370|1F476 1F3FE,F0371|1F476 1F3FF
+人物與身體	1F9D2	1F9D2	小孩	child	F0372|1F9D2 1F3FB,F0373|1F9D2 1F3FC,F0374|1F9D2 1F3FD,F0375|1F9D2 1F3FE,F0376|1F9D2 1F3FF
+人物與身體	1F466	1F466	男孩	boy	F0377|1F466 1F3FB,F0378|1F466 1F3FC,F0379|1F466 1F3FD,F037A|1F466 1F3FE,F037B|1F466 1F3FF
+人物與身體	1F467	1F467	女孩	girl	F037C|1F467 1F3FB,F037D|1F467 1F3FC,F037E|1F467 1F3FD,F037F|1F467 1F3FE,F0380|1F467 1F3FF
+人物與身體	1F9D1	1F9D1	大人	adult	F0381|1F9D1 1F3FB,F0382|1F9D1 1F3FC,F0383|1F9D1 1F3FD,F0384|1F9D1 1F3FE,F0385|1F9D1 1F3FF
+人物與身體	1F471	1F471	金髮人	blond_haired_person	F0386|1F471 1F3FB,F0387|1F471 1F3FC,F0388|1F471 1F3FD,F0389|1F471 1F3FE,F038A|1F471 1F3FF
+人物與身體	1F468	1F468	男人	man	F038B|1F468 1F3FB,F038C|1F468 1F3FC,F038D|1F468 1F3FD,F038E|1F468 1F3FE,F038F|1F468 1F3FF
+人物與身體	1F9D4	1F9D4	蓄鬍的人	bearded_person	F0390|1F9D4 1F3FB,F0391|1F9D4 1F3FC,F0392|1F9D4 1F3FD,F0393|1F9D4 1F3FE,F0394|1F9D4 1F3FF
+人物與身體	F000F	1F9D4 200D 2642 FE0F	男人: 蓄鬍的人	man_beard	F0395|1F9D4 1F3FB 200D 2642 FE0F,F0396|1F9D4 1F3FC 200D 2642 FE0F,F0397|1F9D4 1F3FD 200D 2642 FE0F,F0398|1F9D4 1F3FE 200D 2642 FE0F,F0399|1F9D4 1F3FF 200D 2642 FE0F
+人物與身體	F0010	1F9D4 200D 2640 FE0F	女人: 蓄鬍的人	woman_beard	F039A|1F9D4 1F3FB 200D 2640 FE0F,F039B|1F9D4 1F3FC 200D 2640 FE0F,F039C|1F9D4 1F3FD 200D 2640 FE0F,F039D|1F9D4 1F3FE 200D 2640 FE0F,F039E|1F9D4 1F3FF 200D 2640 FE0F
+人物與身體	F0011	1F468 200D 1F9B0	男人：紅髮	red_haired_man	F039F|1F468 1F3FB 200D 1F9B0,F03A0|1F468 1F3FC 200D 1F9B0,F03A1|1F468 1F3FD 200D 1F9B0,F03A2|1F468 1F3FE 200D 1F9B0,F03A3|1F468 1F3FF 200D 1F9B0
+人物與身體	F0012	1F468 200D 1F9B1	男人：卷髮	curly_haired_man	F03A4|1F468 1F3FB 200D 1F9B1,F03A5|1F468 1F3FC 200D 1F9B1,F03A6|1F468 1F3FD 200D 1F9B1,F03A7|1F468 1F3FE 200D 1F9B1,F03A8|1F468 1F3FF 200D 1F9B1
+人物與身體	F0013	1F468 200D 1F9B3	男人：白髮	white_haired_man	F03A9|1F468 1F3FB 200D 1F9B3,F03AA|1F468 1F3FC 200D 1F9B3,F03AB|1F468 1F3FD 200D 1F9B3,F03AC|1F468 1F3FE 200D 1F9B3,F03AD|1F468 1F3FF 200D 1F9B3
+人物與身體	F0014	1F468 200D 1F9B2	男人：禿頭	bald_man	F03AE|1F468 1F3FB 200D 1F9B2,F03AF|1F468 1F3FC 200D 1F9B2,F03B0|1F468 1F3FD 200D 1F9B2,F03B1|1F468 1F3FE 200D 1F9B2,F03B2|1F468 1F3FF 200D 1F9B2
+人物與身體	1F469	1F469	女人	woman	F03B3|1F469 1F3FB,F03B4|1F469 1F3FC,F03B5|1F469 1F3FD,F03B6|1F469 1F3FE,F03B7|1F469 1F3FF
+人物與身體	F0015	1F469 200D 1F9B0	女人：紅髮	red_haired_woman	F03B8|1F469 1F3FB 200D 1F9B0,F03B9|1F469 1F3FC 200D 1F9B0,F03BA|1F469 1F3FD 200D 1F9B0,F03BB|1F469 1F3FE 200D 1F9B0,F03BC|1F469 1F3FF 200D 1F9B0
+人物與身體	F0016	1F9D1 200D 1F9B0	大人：紅髮	person_red_hair	F03BD|1F9D1 1F3FB 200D 1F9B0,F03BE|1F9D1 1F3FC 200D 1F9B0,F03BF|1F9D1 1F3FD 200D 1F9B0,F03C0|1F9D1 1F3FE 200D 1F9B0,F03C1|1F9D1 1F3FF 200D 1F9B0
+人物與身體	F0017	1F469 200D 1F9B1	女人：卷髮	curly_haired_woman	F03C2|1F469 1F3FB 200D 1F9B1,F03C3|1F469 1F3FC 200D 1F9B1,F03C4|1F469 1F3FD 200D 1F9B1,F03C5|1F469 1F3FE 200D 1F9B1,F03C6|1F469 1F3FF 200D 1F9B1
+人物與身體	F0018	1F9D1 200D 1F9B1	大人：卷髮	person_curly_hair	F03C7|1F9D1 1F3FB 200D 1F9B1,F03C8|1F9D1 1F3FC 200D 1F9B1,F03C9|1F9D1 1F3FD 200D 1F9B1,F03CA|1F9D1 1F3FE 200D 1F9B1,F03CB|1F9D1 1F3FF 200D 1F9B1
+人物與身體	F0019	1F469 200D 1F9B3	女人：白髮	white_haired_woman	F03CC|1F469 1F3FB 200D 1F9B3,F03CD|1F469 1F3FC 200D 1F9B3,F03CE|1F469 1F3FD 200D 1F9B3,F03CF|1F469 1F3FE 200D 1F9B3,F03D0|1F469 1F3FF 200D 1F9B3
+人物與身體	F001A	1F9D1 200D 1F9B3	大人：白髮	person_white_hair	F03D1|1F9D1 1F3FB 200D 1F9B3,F03D2|1F9D1 1F3FC 200D 1F9B3,F03D3|1F9D1 1F3FD 200D 1F9B3,F03D4|1F9D1 1F3FE 200D 1F9B3,F03D5|1F9D1 1F3FF 200D 1F9B3
+人物與身體	F001B	1F469 200D 1F9B2	女人：禿頭	bald_woman	F03D6|1F469 1F3FB 200D 1F9B2,F03D7|1F469 1F3FC 200D 1F9B2,F03D8|1F469 1F3FD 200D 1F9B2,F03D9|1F469 1F3FE 200D 1F9B2,F03DA|1F469 1F3FF 200D 1F9B2
+人物與身體	F001C	1F9D1 200D 1F9B2	大人：禿頭	person_bald	F03DB|1F9D1 1F3FB 200D 1F9B2,F03DC|1F9D1 1F3FC 200D 1F9B2,F03DD|1F9D1 1F3FD 200D 1F9B2,F03DE|1F9D1 1F3FE 200D 1F9B2,F03DF|1F9D1 1F3FF 200D 1F9B2
+人物與身體	F001D	1F471 200D 2640 FE0F	金髮女	blond_haired_woman	F03E0|1F471 1F3FB 200D 2640 FE0F,F03E1|1F471 1F3FC 200D 2640 FE0F,F03E2|1F471 1F3FD 200D 2640 FE0F,F03E3|1F471 1F3FE 200D 2640 FE0F,F03E4|1F471 1F3FF 200D 2640 FE0F
+人物與身體	F001E	1F471 200D 2642 FE0F	金髮男	blond_haired_man	F03E5|1F471 1F3FB 200D 2642 FE0F,F03E6|1F471 1F3FC 200D 2642 FE0F,F03E7|1F471 1F3FD 200D 2642 FE0F,F03E8|1F471 1F3FE 200D 2642 FE0F,F03E9|1F471 1F3FF 200D 2642 FE0F
+人物與身體	1F9D3	1F9D3	長者	older_adult	F03EA|1F9D3 1F3FB,F03EB|1F9D3 1F3FC,F03EC|1F9D3 1F3FD,F03ED|1F9D3 1F3FE,F03EE|1F9D3 1F3FF
+人物與身體	1F474	1F474	老爺爺	older_man	F03EF|1F474 1F3FB,F03F0|1F474 1F3FC,F03F1|1F474 1F3FD,F03F2|1F474 1F3FE,F03F3|1F474 1F3FF
+人物與身體	1F475	1F475	老奶奶	older_woman	F03F4|1F475 1F3FB,F03F5|1F475 1F3FC,F03F6|1F475 1F3FD,F03F7|1F475 1F3FE,F03F8|1F475 1F3FF
+人物與身體	1F64D	1F64D	皺眉	frowning_person	F03F9|1F64D 1F3FB,F03FA|1F64D 1F3FC,F03FB|1F64D 1F3FD,F03FC|1F64D 1F3FE,F03FD|1F64D 1F3FF
+人物與身體	F001F	1F64D 200D 2642 FE0F	男生皺眉	frowning_man	F03FE|1F64D 1F3FB 200D 2642 FE0F,F03FF|1F64D 1F3FC 200D 2642 FE0F,F0400|1F64D 1F3FD 200D 2642 FE0F,F0401|1F64D 1F3FE 200D 2642 FE0F,F0402|1F64D 1F3FF 200D 2642 FE0F
+人物與身體	F0020	1F64D 200D 2640 FE0F	女生皺眉	frowning_woman	F0403|1F64D 1F3FB 200D 2640 FE0F,F0404|1F64D 1F3FC 200D 2640 FE0F,F0405|1F64D 1F3FD 200D 2640 FE0F,F0406|1F64D 1F3FE 200D 2640 FE0F,F0407|1F64D 1F3FF 200D 2640 FE0F
+人物與身體	1F64E	1F64E	生氣的人	pouting_face	F0408|1F64E 1F3FB,F0409|1F64E 1F3FC,F040A|1F64E 1F3FD,F040B|1F64E 1F3FE,F040C|1F64E 1F3FF
+人物與身體	F0021	1F64E 200D 2642 FE0F	男生噘嘴	pouting_man	F040D|1F64E 1F3FB 200D 2642 FE0F,F040E|1F64E 1F3FC 200D 2642 FE0F,F040F|1F64E 1F3FD 200D 2642 FE0F,F0410|1F64E 1F3FE 200D 2642 FE0F,F0411|1F64E 1F3FF 200D 2642 FE0F
+人物與身體	F0022	1F64E 200D 2640 FE0F	女生噘嘴	pouting_woman	F0412|1F64E 1F3FB 200D 2640 FE0F,F0413|1F64E 1F3FC 200D 2640 FE0F,F0414|1F64E 1F3FD 200D 2640 FE0F,F0415|1F64E 1F3FE 200D 2640 FE0F,F0416|1F64E 1F3FF 200D 2640 FE0F
+人物與身體	1F645	1F645	不行	no_good	F0417|1F645 1F3FB,F0418|1F645 1F3FC,F0419|1F645 1F3FD,F041A|1F645 1F3FE,F041B|1F645 1F3FF
+人物與身體	F0023	1F645 200D 2642 FE0F	男生手比叉	ng_man	F041C|1F645 1F3FB 200D 2642 FE0F,F041D|1F645 1F3FC 200D 2642 FE0F,F041E|1F645 1F3FD 200D 2642 FE0F,F041F|1F645 1F3FE 200D 2642 FE0F,F0420|1F645 1F3FF 200D 2642 FE0F
+人物與身體	F0024	1F645 200D 2640 FE0F	女生手比叉	ng_woman	F0421|1F645 1F3FB 200D 2640 FE0F,F0422|1F645 1F3FC 200D 2640 FE0F,F0423|1F645 1F3FD 200D 2640 FE0F,F0424|1F645 1F3FE 200D 2640 FE0F,F0425|1F645 1F3FF 200D 2640 FE0F
+人物與身體	1F646	1F646	可以	ok_person	F0426|1F646 1F3FB,F0427|1F646 1F3FC,F0428|1F646 1F3FD,F0429|1F646 1F3FE,F042A|1F646 1F3FF
+人物與身體	F0025	1F646 200D 2642 FE0F	男生手比圈	ok_man	F042B|1F646 1F3FB 200D 2642 FE0F,F042C|1F646 1F3FC 200D 2642 FE0F,F042D|1F646 1F3FD 200D 2642 FE0F,F042E|1F646 1F3FE 200D 2642 FE0F,F042F|1F646 1F3FF 200D 2642 FE0F
+人物與身體	F0026	1F646 200D 2640 FE0F	女生手比圈	ok_woman	F0430|1F646 1F3FB 200D 2640 FE0F,F0431|1F646 1F3FC 200D 2640 FE0F,F0432|1F646 1F3FD 200D 2640 FE0F,F0433|1F646 1F3FE 200D 2640 FE0F,F0434|1F646 1F3FF 200D 2640 FE0F
+人物與身體	1F481	1F481	服務台人員	information_desk_person	F0435|1F481 1F3FB,F0436|1F481 1F3FC,F0437|1F481 1F3FD,F0438|1F481 1F3FE,F0439|1F481 1F3FF
+人物與身體	F0027	1F481 200D 2642 FE0F	男生抬手	sassy_man	F043A|1F481 1F3FB 200D 2642 FE0F,F043B|1F481 1F3FC 200D 2642 FE0F,F043C|1F481 1F3FD 200D 2642 FE0F,F043D|1F481 1F3FE 200D 2642 FE0F,F043E|1F481 1F3FF 200D 2642 FE0F
+人物與身體	F0028	1F481 200D 2640 FE0F	女生抬手	sassy_woman	F043F|1F481 1F3FB 200D 2640 FE0F,F0440|1F481 1F3FC 200D 2640 FE0F,F0441|1F481 1F3FD 200D 2640 FE0F,F0442|1F481 1F3FE 200D 2640 FE0F,F0443|1F481 1F3FF 200D 2640 FE0F
+人物與身體	1F64B	1F64B	嗨	raising_hand	F0444|1F64B 1F3FB,F0445|1F64B 1F3FC,F0446|1F64B 1F3FD,F0447|1F64B 1F3FE,F0448|1F64B 1F3FF
+人物與身體	F0029	1F64B 200D 2642 FE0F	男生舉手	raising_hand_man	F0449|1F64B 1F3FB 200D 2642 FE0F,F044A|1F64B 1F3FC 200D 2642 FE0F,F044B|1F64B 1F3FD 200D 2642 FE0F,F044C|1F64B 1F3FE 200D 2642 FE0F,F044D|1F64B 1F3FF 200D 2642 FE0F
+人物與身體	F002A	1F64B 200D 2640 FE0F	女生舉手	raising_hand_woman	F044E|1F64B 1F3FB 200D 2640 FE0F,F044F|1F64B 1F3FC 200D 2640 FE0F,F0450|1F64B 1F3FD 200D 2640 FE0F,F0451|1F64B 1F3FE 200D 2640 FE0F,F0452|1F64B 1F3FF 200D 2640 FE0F
+人物與身體	1F9CF	1F9CF	聽障人士	deaf_person	F0453|1F9CF 1F3FB,F0454|1F9CF 1F3FC,F0455|1F9CF 1F3FD,F0456|1F9CF 1F3FE,F0457|1F9CF 1F3FF
+人物與身體	F002B	1F9CF 200D 2642 FE0F	聽障男子	deaf_man	F0458|1F9CF 1F3FB 200D 2642 FE0F,F0459|1F9CF 1F3FC 200D 2642 FE0F,F045A|1F9CF 1F3FD 200D 2642 FE0F,F045B|1F9CF 1F3FE 200D 2642 FE0F,F045C|1F9CF 1F3FF 200D 2642 FE0F
+人物與身體	F002C	1F9CF 200D 2640 FE0F	聽障女子	deaf_woman	F045D|1F9CF 1F3FB 200D 2640 FE0F,F045E|1F9CF 1F3FC 200D 2640 FE0F,F045F|1F9CF 1F3FD 200D 2640 FE0F,F0460|1F9CF 1F3FE 200D 2640 FE0F,F0461|1F9CF 1F3FF 200D 2640 FE0F
+人物與身體	1F647	1F647	鞠躬	bow	F0462|1F647 1F3FB,F0463|1F647 1F3FC,F0464|1F647 1F3FD,F0465|1F647 1F3FE,F0466|1F647 1F3FF
+人物與身體	F002D	1F647 200D 2642 FE0F	男生鞠躬	bowing_man	F0467|1F647 1F3FB 200D 2642 FE0F,F0468|1F647 1F3FC 200D 2642 FE0F,F0469|1F647 1F3FD 200D 2642 FE0F,F046A|1F647 1F3FE 200D 2642 FE0F,F046B|1F647 1F3FF 200D 2642 FE0F
+人物與身體	F002E	1F647 200D 2640 FE0F	女生鞠躬	bowing_woman	F046C|1F647 1F3FB 200D 2640 FE0F,F046D|1F647 1F3FC 200D 2640 FE0F,F046E|1F647 1F3FD 200D 2640 FE0F,F046F|1F647 1F3FE 200D 2640 FE0F,F0470|1F647 1F3FF 200D 2640 FE0F
+人物與身體	1F926	1F926	哦不	facepalm	F0471|1F926 1F3FB,F0472|1F926 1F3FC,F0473|1F926 1F3FD,F0474|1F926 1F3FE,F0475|1F926 1F3FF
+人物與身體	F002F	1F926 200D 2642 FE0F	男生遮臉	man_facepalming	F0476|1F926 1F3FB 200D 2642 FE0F,F0477|1F926 1F3FC 200D 2642 FE0F,F0478|1F926 1F3FD 200D 2642 FE0F,F0479|1F926 1F3FE 200D 2642 FE0F,F047A|1F926 1F3FF 200D 2642 FE0F
+人物與身體	F0030	1F926 200D 2640 FE0F	女生遮臉	woman_facepalming	F047B|1F926 1F3FB 200D 2640 FE0F,F047C|1F926 1F3FC 200D 2640 FE0F,F047D|1F926 1F3FD 200D 2640 FE0F,F047E|1F926 1F3FE 200D 2640 FE0F,F047F|1F926 1F3FF 200D 2640 FE0F
+人物與身體	1F937	1F937	聳肩	shrug	F0480|1F937 1F3FB,F0481|1F937 1F3FC,F0482|1F937 1F3FD,F0483|1F937 1F3FE,F0484|1F937 1F3FF
+人物與身體	F0031	1F937 200D 2642 FE0F	男生聳肩	man_shrugging	F0485|1F937 1F3FB 200D 2642 FE0F,F0486|1F937 1F3FC 200D 2642 FE0F,F0487|1F937 1F3FD 200D 2642 FE0F,F0488|1F937 1F3FE 200D 2642 FE0F,F0489|1F937 1F3FF 200D 2642 FE0F
+人物與身體	F0032	1F937 200D 2640 FE0F	女生聳肩	woman_shrugging	F048A|1F937 1F3FB 200D 2640 FE0F,F048B|1F937 1F3FC 200D 2640 FE0F,F048C|1F937 1F3FD 200D 2640 FE0F,F048D|1F937 1F3FE 200D 2640 FE0F,F048E|1F937 1F3FF 200D 2640 FE0F
+人物與身體	F0033	1F9D1 200D 2695 FE0F	醫護人員	health_worker	F048F|1F9D1 1F3FB 200D 2695 FE0F,F0490|1F9D1 1F3FC 200D 2695 FE0F,F0491|1F9D1 1F3FD 200D 2695 FE0F,F0492|1F9D1 1F3FE 200D 2695 FE0F,F0493|1F9D1 1F3FF 200D 2695 FE0F
+人物與身體	F0034	1F468 200D 2695 FE0F	男醫生	man_health_worker	F0494|1F468 1F3FB 200D 2695 FE0F,F0495|1F468 1F3FC 200D 2695 FE0F,F0496|1F468 1F3FD 200D 2695 FE0F,F0497|1F468 1F3FE 200D 2695 FE0F,F0498|1F468 1F3FF 200D 2695 FE0F
+人物與身體	F0035	1F469 200D 2695 FE0F	女醫生	woman_health_worker	F0499|1F469 1F3FB 200D 2695 FE0F,F049A|1F469 1F3FC 200D 2695 FE0F,F049B|1F469 1F3FD 200D 2695 FE0F,F049C|1F469 1F3FE 200D 2695 FE0F,F049D|1F469 1F3FF 200D 2695 FE0F
+人物與身體	F0036	1F9D1 200D 1F393	學生	student	F049E|1F9D1 1F3FB 200D 1F393,F049F|1F9D1 1F3FC 200D 1F393,F04A0|1F9D1 1F3FD 200D 1F393,F04A1|1F9D1 1F3FE 200D 1F393,F04A2|1F9D1 1F3FF 200D 1F393
+人物與身體	F0037	1F468 200D 1F393	男畢業生	man_student	F04A3|1F468 1F3FB 200D 1F393,F04A4|1F468 1F3FC 200D 1F393,F04A5|1F468 1F3FD 200D 1F393,F04A6|1F468 1F3FE 200D 1F393,F04A7|1F468 1F3FF 200D 1F393
+人物與身體	F0038	1F469 200D 1F393	女畢業生	woman_student	F04A8|1F469 1F3FB 200D 1F393,F04A9|1F469 1F3FC 200D 1F393,F04AA|1F469 1F3FD 200D 1F393,F04AB|1F469 1F3FE 200D 1F393,F04AC|1F469 1F3FF 200D 1F393
+人物與身體	F0039	1F9D1 200D 1F3EB	老師	teacher	F04AD|1F9D1 1F3FB 200D 1F3EB,F04AE|1F9D1 1F3FC 200D 1F3EB,F04AF|1F9D1 1F3FD 200D 1F3EB,F04B0|1F9D1 1F3FE 200D 1F3EB,F04B1|1F9D1 1F3FF 200D 1F3EB
+人物與身體	F003A	1F468 200D 1F3EB	男老師	man_teacher	F04B2|1F468 1F3FB 200D 1F3EB,F04B3|1F468 1F3FC 200D 1F3EB,F04B4|1F468 1F3FD 200D 1F3EB,F04B5|1F468 1F3FE 200D 1F3EB,F04B6|1F468 1F3FF 200D 1F3EB
+人物與身體	F003B	1F469 200D 1F3EB	女老師	woman_teacher	F04B7|1F469 1F3FB 200D 1F3EB,F04B8|1F469 1F3FC 200D 1F3EB,F04B9|1F469 1F3FD 200D 1F3EB,F04BA|1F469 1F3FE 200D 1F3EB,F04BB|1F469 1F3FF 200D 1F3EB
+人物與身體	F003C	1F9D1 200D 2696 FE0F	法官	judge	F04BC|1F9D1 1F3FB 200D 2696 FE0F,F04BD|1F9D1 1F3FC 200D 2696 FE0F,F04BE|1F9D1 1F3FD 200D 2696 FE0F,F04BF|1F9D1 1F3FE 200D 2696 FE0F,F04C0|1F9D1 1F3FF 200D 2696 FE0F
+人物與身體	F003D	1F468 200D 2696 FE0F	男法官	man_judge	F04C1|1F468 1F3FB 200D 2696 FE0F,F04C2|1F468 1F3FC 200D 2696 FE0F,F04C3|1F468 1F3FD 200D 2696 FE0F,F04C4|1F468 1F3FE 200D 2696 FE0F,F04C5|1F468 1F3FF 200D 2696 FE0F
+人物與身體	F003E	1F469 200D 2696 FE0F	女法官	woman_judge	F04C6|1F469 1F3FB 200D 2696 FE0F,F04C7|1F469 1F3FC 200D 2696 FE0F,F04C8|1F469 1F3FD 200D 2696 FE0F,F04C9|1F469 1F3FE 200D 2696 FE0F,F04CA|1F469 1F3FF 200D 2696 FE0F
+人物與身體	F003F	1F9D1 200D 1F33E	農民	farmer	F04CB|1F9D1 1F3FB 200D 1F33E,F04CC|1F9D1 1F3FC 200D 1F33E,F04CD|1F9D1 1F3FD 200D 1F33E,F04CE|1F9D1 1F3FE 200D 1F33E,F04CF|1F9D1 1F3FF 200D 1F33E
+人物與身體	F0040	1F468 200D 1F33E	農夫	man_farmer	F04D0|1F468 1F3FB 200D 1F33E,F04D1|1F468 1F3FC 200D 1F33E,F04D2|1F468 1F3FD 200D 1F33E,F04D3|1F468 1F3FE 200D 1F33E,F04D4|1F468 1F3FF 200D 1F33E
+人物與身體	F0041	1F469 200D 1F33E	農婦	woman_farmer	F04D5|1F469 1F3FB 200D 1F33E,F04D6|1F469 1F3FC 200D 1F33E,F04D7|1F469 1F3FD 200D 1F33E,F04D8|1F469 1F3FE 200D 1F33E,F04D9|1F469 1F3FF 200D 1F33E
+人物與身體	F0042	1F9D1 200D 1F373	廚師	cook	F04DA|1F9D1 1F3FB 200D 1F373,F04DB|1F9D1 1F3FC 200D 1F373,F04DC|1F9D1 1F3FD 200D 1F373,F04DD|1F9D1 1F3FE 200D 1F373,F04DE|1F9D1 1F3FF 200D 1F373
+人物與身體	F0043	1F468 200D 1F373	男廚師	man_cook	F04DF|1F468 1F3FB 200D 1F373,F04E0|1F468 1F3FC 200D 1F373,F04E1|1F468 1F3FD 200D 1F373,F04E2|1F468 1F3FE 200D 1F373,F04E3|1F468 1F3FF 200D 1F373
+人物與身體	F0044	1F469 200D 1F373	女廚師	woman_cook	F04E4|1F469 1F3FB 200D 1F373,F04E5|1F469 1F3FC 200D 1F373,F04E6|1F469 1F3FD 200D 1F373,F04E7|1F469 1F3FE 200D 1F373,F04E8|1F469 1F3FF 200D 1F373
+人物與身體	F0045	1F9D1 200D 1F527	技工	mechanic	F04E9|1F9D1 1F3FB 200D 1F527,F04EA|1F9D1 1F3FC 200D 1F527,F04EB|1F9D1 1F3FD 200D 1F527,F04EC|1F9D1 1F3FE 200D 1F527,F04ED|1F9D1 1F3FF 200D 1F527
+人物與身體	F0046	1F468 200D 1F527	男技工	man_mechanic	F04EE|1F468 1F3FB 200D 1F527,F04EF|1F468 1F3FC 200D 1F527,F04F0|1F468 1F3FD 200D 1F527,F04F1|1F468 1F3FE 200D 1F527,F04F2|1F468 1F3FF 200D 1F527
+人物與身體	F0047	1F469 200D 1F527	女技工	woman_mechanic	F04F3|1F469 1F3FB 200D 1F527,F04F4|1F469 1F3FC 200D 1F527,F04F5|1F469 1F3FD 200D 1F527,F04F6|1F469 1F3FE 200D 1F527,F04F7|1F469 1F3FF 200D 1F527
+人物與身體	F0048	1F9D1 200D 1F3ED	工廠作業員	factory_worker	F04F8|1F9D1 1F3FB 200D 1F3ED,F04F9|1F9D1 1F3FC 200D 1F3ED,F04FA|1F9D1 1F3FD 200D 1F3ED,F04FB|1F9D1 1F3FE 200D 1F3ED,F04FC|1F9D1 1F3FF 200D 1F3ED
+人物與身體	F0049	1F468 200D 1F3ED	工廠男作業員	man_factory_worker	F04FD|1F468 1F3FB 200D 1F3ED,F04FE|1F468 1F3FC 200D 1F3ED,F04FF|1F468 1F3FD 200D 1F3ED,F0500|1F468 1F3FE 200D 1F3ED,F0501|1F468 1F3FF 200D 1F3ED
+人物與身體	F004A	1F469 200D 1F3ED	工廠女作業員	woman_factory_worker	F0502|1F469 1F3FB 200D 1F3ED,F0503|1F469 1F3FC 200D 1F3ED,F0504|1F469 1F3FD 200D 1F3ED,F0505|1F469 1F3FE 200D 1F3ED,F0506|1F469 1F3FF 200D 1F3ED
+人物與身體	F004B	1F9D1 200D 1F4BC	上班族	office_worker	F0507|1F9D1 1F3FB 200D 1F4BC,F0508|1F9D1 1F3FC 200D 1F4BC,F0509|1F9D1 1F3FD 200D 1F4BC,F050A|1F9D1 1F3FE 200D 1F4BC,F050B|1F9D1 1F3FF 200D 1F4BC
+人物與身體	F004C	1F468 200D 1F4BC	男性上班族	man_office_worker	F050C|1F468 1F3FB 200D 1F4BC,F050D|1F468 1F3FC 200D 1F4BC,F050E|1F468 1F3FD 200D 1F4BC,F050F|1F468 1F3FE 200D 1F4BC,F0510|1F468 1F3FF 200D 1F4BC
+人物與身體	F004D	1F469 200D 1F4BC	女性上班族	woman_office_worker	F0511|1F469 1F3FB 200D 1F4BC,F0512|1F469 1F3FC 200D 1F4BC,F0513|1F469 1F3FD 200D 1F4BC,F0514|1F469 1F3FE 200D 1F4BC,F0515|1F469 1F3FF 200D 1F4BC
+人物與身體	F004E	1F9D1 200D 1F52C	科學家	scientist	F0516|1F9D1 1F3FB 200D 1F52C,F0517|1F9D1 1F3FC 200D 1F52C,F0518|1F9D1 1F3FD 200D 1F52C,F0519|1F9D1 1F3FE 200D 1F52C,F051A|1F9D1 1F3FF 200D 1F52C
+人物與身體	F004F	1F468 200D 1F52C	男科學家	man_scientist	F051B|1F468 1F3FB 200D 1F52C,F051C|1F468 1F3FC 200D 1F52C,F051D|1F468 1F3FD 200D 1F52C,F051E|1F468 1F3FE 200D 1F52C,F051F|1F468 1F3FF 200D 1F52C
+人物與身體	F0050	1F469 200D 1F52C	女科學家	woman_scientist	F0520|1F469 1F3FB 200D 1F52C,F0521|1F469 1F3FC 200D 1F52C,F0522|1F469 1F3FD 200D 1F52C,F0523|1F469 1F3FE 200D 1F52C,F0524|1F469 1F3FF 200D 1F52C
+人物與身體	F0051	1F9D1 200D 1F4BB	工程師	technologist	F0525|1F9D1 1F3FB 200D 1F4BB,F0526|1F9D1 1F3FC 200D 1F4BB,F0527|1F9D1 1F3FD 200D 1F4BB,F0528|1F9D1 1F3FE 200D 1F4BB,F0529|1F9D1 1F3FF 200D 1F4BB
+人物與身體	F0052	1F468 200D 1F4BB	男工程師	man_technologist	F052A|1F468 1F3FB 200D 1F4BB,F052B|1F468 1F3FC 200D 1F4BB,F052C|1F468 1F3FD 200D 1F4BB,F052D|1F468 1F3FE 200D 1F4BB,F052E|1F468 1F3FF 200D 1F4BB
+人物與身體	F0053	1F469 200D 1F4BB	女工程師	woman_technologist	F052F|1F469 1F3FB 200D 1F4BB,F0530|1F469 1F3FC 200D 1F4BB,F0531|1F469 1F3FD 200D 1F4BB,F0532|1F469 1F3FE 200D 1F4BB,F0533|1F469 1F3FF 200D 1F4BB
+人物與身體	F0054	1F9D1 200D 1F3A4	歌手	singer	F0534|1F9D1 1F3FB 200D 1F3A4,F0535|1F9D1 1F3FC 200D 1F3A4,F0536|1F9D1 1F3FD 200D 1F3A4,F0537|1F9D1 1F3FE 200D 1F3A4,F0538|1F9D1 1F3FF 200D 1F3A4
+人物與身體	F0055	1F468 200D 1F3A4	男歌手	man_singer	F0539|1F468 1F3FB 200D 1F3A4,F053A|1F468 1F3FC 200D 1F3A4,F053B|1F468 1F3FD 200D 1F3A4,F053C|1F468 1F3FE 200D 1F3A4,F053D|1F468 1F3FF 200D 1F3A4
+人物與身體	F0056	1F469 200D 1F3A4	女歌手	woman_singer	F053E|1F469 1F3FB 200D 1F3A4,F053F|1F469 1F3FC 200D 1F3A4,F0540|1F469 1F3FD 200D 1F3A4,F0541|1F469 1F3FE 200D 1F3A4,F0542|1F469 1F3FF 200D 1F3A4
+人物與身體	F0057	1F9D1 200D 1F3A8	藝術家	artist	F0543|1F9D1 1F3FB 200D 1F3A8,F0544|1F9D1 1F3FC 200D 1F3A8,F0545|1F9D1 1F3FD 200D 1F3A8,F0546|1F9D1 1F3FE 200D 1F3A8,F0547|1F9D1 1F3FF 200D 1F3A8
+人物與身體	F0058	1F468 200D 1F3A8	男藝術家	man_artist	F0548|1F468 1F3FB 200D 1F3A8,F0549|1F468 1F3FC 200D 1F3A8,F054A|1F468 1F3FD 200D 1F3A8,F054B|1F468 1F3FE 200D 1F3A8,F054C|1F468 1F3FF 200D 1F3A8
+人物與身體	F0059	1F469 200D 1F3A8	女藝術家	woman_artist	F054D|1F469 1F3FB 200D 1F3A8,F054E|1F469 1F3FC 200D 1F3A8,F054F|1F469 1F3FD 200D 1F3A8,F0550|1F469 1F3FE 200D 1F3A8,F0551|1F469 1F3FF 200D 1F3A8
+人物與身體	F005A	1F9D1 200D 2708 FE0F	機長	pilot	F0552|1F9D1 1F3FB 200D 2708 FE0F,F0553|1F9D1 1F3FC 200D 2708 FE0F,F0554|1F9D1 1F3FD 200D 2708 FE0F,F0555|1F9D1 1F3FE 200D 2708 FE0F,F0556|1F9D1 1F3FF 200D 2708 FE0F
+人物與身體	F005B	1F468 200D 2708 FE0F	男機長	man_pilot	F0557|1F468 1F3FB 200D 2708 FE0F,F0558|1F468 1F3FC 200D 2708 FE0F,F0559|1F468 1F3FD 200D 2708 FE0F,F055A|1F468 1F3FE 200D 2708 FE0F,F055B|1F468 1F3FF 200D 2708 FE0F
+人物與身體	F005C	1F469 200D 2708 FE0F	女機長	woman_pilot	F055C|1F469 1F3FB 200D 2708 FE0F,F055D|1F469 1F3FC 200D 2708 FE0F,F055E|1F469 1F3FD 200D 2708 FE0F,F055F|1F469 1F3FE 200D 2708 FE0F,F0560|1F469 1F3FF 200D 2708 FE0F
+人物與身體	F005D	1F9D1 200D 1F680	太空人	astronaut	F0561|1F9D1 1F3FB 200D 1F680,F0562|1F9D1 1F3FC 200D 1F680,F0563|1F9D1 1F3FD 200D 1F680,F0564|1F9D1 1F3FE 200D 1F680,F0565|1F9D1 1F3FF 200D 1F680
+人物與身體	F005E	1F468 200D 1F680	男太空人	man_astronaut	F0566|1F468 1F3FB 200D 1F680,F0567|1F468 1F3FC 200D 1F680,F0568|1F468 1F3FD 200D 1F680,F0569|1F468 1F3FE 200D 1F680,F056A|1F468 1F3FF 200D 1F680
+人物與身體	F005F	1F469 200D 1F680	女太空人	woman_astronaut	F056B|1F469 1F3FB 200D 1F680,F056C|1F469 1F3FC 200D 1F680,F056D|1F469 1F3FD 200D 1F680,F056E|1F469 1F3FE 200D 1F680,F056F|1F469 1F3FF 200D 1F680
+人物與身體	F0060	1F9D1 200D 1F692	消防員	firefighter	F0570|1F9D1 1F3FB 200D 1F692,F0571|1F9D1 1F3FC 200D 1F692,F0572|1F9D1 1F3FD 200D 1F692,F0573|1F9D1 1F3FE 200D 1F692,F0574|1F9D1 1F3FF 200D 1F692
+人物與身體	F0061	1F468 200D 1F692	男消防員	man_firefighter	F0575|1F468 1F3FB 200D 1F692,F0576|1F468 1F3FC 200D 1F692,F0577|1F468 1F3FD 200D 1F692,F0578|1F468 1F3FE 200D 1F692,F0579|1F468 1F3FF 200D 1F692
+人物與身體	F0062	1F469 200D 1F692	女消防員	woman_firefighter	F057A|1F469 1F3FB 200D 1F692,F057B|1F469 1F3FC 200D 1F692,F057C|1F469 1F3FD 200D 1F692,F057D|1F469 1F3FE 200D 1F692,F057E|1F469 1F3FF 200D 1F692
+人物與身體	1F46E	1F46E	警察	cop	F057F|1F46E 1F3FB,F0580|1F46E 1F3FC,F0581|1F46E 1F3FD,F0582|1F46E 1F3FE,F0583|1F46E 1F3FF
+人物與身體	F0063	1F46E 200D 2642 FE0F	男警	policeman	F0584|1F46E 1F3FB 200D 2642 FE0F,F0585|1F46E 1F3FC 200D 2642 FE0F,F0586|1F46E 1F3FD 200D 2642 FE0F,F0587|1F46E 1F3FE 200D 2642 FE0F,F0588|1F46E 1F3FF 200D 2642 FE0F
+人物與身體	F0064	1F46E 200D 2640 FE0F	女警	policewoman	F0589|1F46E 1F3FB 200D 2640 FE0F,F058A|1F46E 1F3FC 200D 2640 FE0F,F058B|1F46E 1F3FD 200D 2640 FE0F,F058C|1F46E 1F3FE 200D 2640 FE0F,F058D|1F46E 1F3FF 200D 2640 FE0F
+人物與身體	1F575	1F575 FE0F	偵探	detective	F058E|1F575 1F3FB,F058F|1F575 1F3FC,F0590|1F575 1F3FD,F0591|1F575 1F3FE,F0592|1F575 1F3FF
+人物與身體	F0065	1F575 FE0F 200D 2642 FE0F	男偵探	male_detective	F0593|1F575 1F3FB 200D 2642 FE0F,F0594|1F575 1F3FC 200D 2642 FE0F,F0595|1F575 1F3FD 200D 2642 FE0F,F0596|1F575 1F3FE 200D 2642 FE0F,F0597|1F575 1F3FF 200D 2642 FE0F
+人物與身體	F0066	1F575 FE0F 200D 2640 FE0F	女偵探	female_detective	F0598|1F575 1F3FB 200D 2640 FE0F,F0599|1F575 1F3FC 200D 2640 FE0F,F059A|1F575 1F3FD 200D 2640 FE0F,F059B|1F575 1F3FE 200D 2640 FE0F,F059C|1F575 1F3FF 200D 2640 FE0F
+人物與身體	1F482	1F482	衛兵	guard	F059D|1F482 1F3FB,F059E|1F482 1F3FC,F059F|1F482 1F3FD,F05A0|1F482 1F3FE,F05A1|1F482 1F3FF
+人物與身體	F0067	1F482 200D 2642 FE0F	男衛兵	guardsman	F05A2|1F482 1F3FB 200D 2642 FE0F,F05A3|1F482 1F3FC 200D 2642 FE0F,F05A4|1F482 1F3FD 200D 2642 FE0F,F05A5|1F482 1F3FE 200D 2642 FE0F,F05A6|1F482 1F3FF 200D 2642 FE0F
+人物與身體	F0068	1F482 200D 2640 FE0F	女衛兵	guardswoman	F05A7|1F482 1F3FB 200D 2640 FE0F,F05A8|1F482 1F3FC 200D 2640 FE0F,F05A9|1F482 1F3FD 200D 2640 FE0F,F05AA|1F482 1F3FE 200D 2640 FE0F,F05AB|1F482 1F3FF 200D 2640 FE0F
+人物與身體	1F977	1F977	忍者	ninja	F05AC|1F977 1F3FB,F05AD|1F977 1F3FC,F05AE|1F977 1F3FD,F05AF|1F977 1F3FE,F05B0|1F977 1F3FF
+人物與身體	1F477	1F477	建築工人	construction_worker	F05B1|1F477 1F3FB,F05B2|1F477 1F3FC,F05B3|1F477 1F3FD,F05B4|1F477 1F3FE,F05B5|1F477 1F3FF
+人物與身體	F0069	1F477 200D 2642 FE0F	男建築工人	construction_worker_man	F05B6|1F477 1F3FB 200D 2642 FE0F,F05B7|1F477 1F3FC 200D 2642 FE0F,F05B8|1F477 1F3FD 200D 2642 FE0F,F05B9|1F477 1F3FE 200D 2642 FE0F,F05BA|1F477 1F3FF 200D 2642 FE0F
+人物與身體	F006A	1F477 200D 2640 FE0F	女建築工人	construction_worker_woman	F05BB|1F477 1F3FB 200D 2640 FE0F,F05BC|1F477 1F3FC 200D 2640 FE0F,F05BD|1F477 1F3FD 200D 2640 FE0F,F05BE|1F477 1F3FE 200D 2640 FE0F,F05BF|1F477 1F3FF 200D 2640 FE0F
+人物與身體	1FAC5	1FAC5	戴皇冠的人	person_with_crown	F05C0|1FAC5 1F3FB,F05C1|1FAC5 1F3FC,F05C2|1FAC5 1F3FD,F05C3|1FAC5 1F3FE,F05C4|1FAC5 1F3FF
+人物與身體	1F934	1F934	王子	prince	F05C5|1F934 1F3FB,F05C6|1F934 1F3FC,F05C7|1F934 1F3FD,F05C8|1F934 1F3FE,F05C9|1F934 1F3FF
+人物與身體	1F478	1F478	公主	princess	F05CA|1F478 1F3FB,F05CB|1F478 1F3FC,F05CC|1F478 1F3FD,F05CD|1F478 1F3FE,F05CE|1F478 1F3FF
+人物與身體	1F473	1F473	戴頭巾的人	person_with_turban	F05CF|1F473 1F3FB,F05D0|1F473 1F3FC,F05D1|1F473 1F3FD,F05D2|1F473 1F3FE,F05D3|1F473 1F3FF
+人物與身體	F006B	1F473 200D 2642 FE0F	纏頭男人	man_with_turban	F05D4|1F473 1F3FB 200D 2642 FE0F,F05D5|1F473 1F3FC 200D 2642 FE0F,F05D6|1F473 1F3FD 200D 2642 FE0F,F05D7|1F473 1F3FE 200D 2642 FE0F,F05D8|1F473 1F3FF 200D 2642 FE0F
+人物與身體	F006C	1F473 200D 2640 FE0F	纏頭女人	woman_with_turban	F05D9|1F473 1F3FB 200D 2640 FE0F,F05DA|1F473 1F3FC 200D 2640 FE0F,F05DB|1F473 1F3FD 200D 2640 FE0F,F05DC|1F473 1F3FE 200D 2640 FE0F,F05DD|1F473 1F3FF 200D 2640 FE0F
+人物與身體	1F472	1F472	戴瓜皮帽的人	man_with_gua_pi_mao	F05DE|1F472 1F3FB,F05DF|1F472 1F3FC,F05E0|1F472 1F3FD,F05E1|1F472 1F3FE,F05E2|1F472 1F3FF
+人物與身體	1F9D5	1F9D5	包頭巾的女子	woman_with_headscarf	F05E3|1F9D5 1F3FB,F05E4|1F9D5 1F3FC,F05E5|1F9D5 1F3FD,F05E6|1F9D5 1F3FE,F05E7|1F9D5 1F3FF
+人物與身體	1F935	1F935	穿燕尾服的人	person_in_tuxedo	F05E8|1F935 1F3FB,F05E9|1F935 1F3FC,F05EA|1F935 1F3FD,F05EB|1F935 1F3FE,F05EC|1F935 1F3FF
+人物與身體	F006D	1F935 200D 2642 FE0F	穿燕尾服的男人	man_in_tuxedo	F05ED|1F935 1F3FB 200D 2642 FE0F,F05EE|1F935 1F3FC 200D 2642 FE0F,F05EF|1F935 1F3FD 200D 2642 FE0F,F05F0|1F935 1F3FE 200D 2642 FE0F,F05F1|1F935 1F3FF 200D 2642 FE0F
+人物與身體	F006E	1F935 200D 2640 FE0F	穿燕尾服的女子	woman_in_tuxedo	F05F2|1F935 1F3FB 200D 2640 FE0F,F05F3|1F935 1F3FC 200D 2640 FE0F,F05F4|1F935 1F3FD 200D 2640 FE0F,F05F5|1F935 1F3FE 200D 2640 FE0F,F05F6|1F935 1F3FF 200D 2640 FE0F
+人物與身體	1F470	1F470	披著頭紗的人	person_with_veil	F05F7|1F470 1F3FB,F05F8|1F470 1F3FC,F05F9|1F470 1F3FD,F05FA|1F470 1F3FE,F05FB|1F470 1F3FF
+人物與身體	F006F	1F470 200D 2642 FE0F	披著頭紗的男人	man_with_veil	F05FC|1F470 1F3FB 200D 2642 FE0F,F05FD|1F470 1F3FC 200D 2642 FE0F,F05FE|1F470 1F3FD 200D 2642 FE0F,F05FF|1F470 1F3FE 200D 2642 FE0F,F0600|1F470 1F3FF 200D 2642 FE0F
+人物與身體	F0070	1F470 200D 2640 FE0F	披著頭紗的女子	bride_with_veil	F0601|1F470 1F3FB 200D 2640 FE0F,F0602|1F470 1F3FC 200D 2640 FE0F,F0603|1F470 1F3FD 200D 2640 FE0F,F0604|1F470 1F3FE 200D 2640 FE0F,F0605|1F470 1F3FF 200D 2640 FE0F
+人物與身體	1F930	1F930	孕婦	pregnant_woman	F0606|1F930 1F3FB,F0607|1F930 1F3FC,F0608|1F930 1F3FD,F0609|1F930 1F3FE,F060A|1F930 1F3FF
+人物與身體	1FAC3	1FAC3	懷孕的男人	pregnant_man	F060B|1FAC3 1F3FB,F060C|1FAC3 1F3FC,F060D|1FAC3 1F3FD,F060E|1FAC3 1F3FE,F060F|1FAC3 1F3FF
+人物與身體	1FAC4	1FAC4	懷孕的人	pregnant_person	F0610|1FAC4 1F3FB,F0611|1FAC4 1F3FC,F0612|1FAC4 1F3FD,F0613|1FAC4 1F3FE,F0614|1FAC4 1F3FF
+人物與身體	1F931	1F931	哺乳	breast_feeding	F0615|1F931 1F3FB,F0616|1F931 1F3FC,F0617|1F931 1F3FD,F0618|1F931 1F3FE,F0619|1F931 1F3FF
+人物與身體	F0071	1F469 200D 1F37C	正在哺乳的媽媽	woman_feeding_baby	F061A|1F469 1F3FB 200D 1F37C,F061B|1F469 1F3FC 200D 1F37C,F061C|1F469 1F3FD 200D 1F37C,F061D|1F469 1F3FE 200D 1F37C,F061E|1F469 1F3FF 200D 1F37C
+人物與身體	F0072	1F468 200D 1F37C	正在餵奶的爸爸	man_feeding_baby	F061F|1F468 1F3FB 200D 1F37C,F0620|1F468 1F3FC 200D 1F37C,F0621|1F468 1F3FD 200D 1F37C,F0622|1F468 1F3FE 200D 1F37C,F0623|1F468 1F3FF 200D 1F37C
+人物與身體	F0073	1F9D1 200D 1F37C	正在哺乳的人	person_feeding_baby	F0624|1F9D1 1F3FB 200D 1F37C,F0625|1F9D1 1F3FC 200D 1F37C,F0626|1F9D1 1F3FD 200D 1F37C,F0627|1F9D1 1F3FE 200D 1F37C,F0628|1F9D1 1F3FF 200D 1F37C
+人物與身體	1F47C	1F47C	天使	angel	F0629|1F47C 1F3FB,F062A|1F47C 1F3FC,F062B|1F47C 1F3FD,F062C|1F47C 1F3FE,F062D|1F47C 1F3FF
+人物與身體	1F385	1F385	聖誕老人	santa	F062E|1F385 1F3FB,F062F|1F385 1F3FC,F0630|1F385 1F3FD,F0631|1F385 1F3FE,F0632|1F385 1F3FF
+人物與身體	1F936	1F936	聖誕老奶奶	mrs_claus	F0633|1F936 1F3FB,F0634|1F936 1F3FC,F0635|1F936 1F3FD,F0636|1F936 1F3FE,F0637|1F936 1F3FF
+人物與身體	F0074	1F9D1 200D 1F384	跨性別聖誕老人	mx_claus	F0638|1F9D1 1F3FB 200D 1F384,F0639|1F9D1 1F3FC 200D 1F384,F063A|1F9D1 1F3FD 200D 1F384,F063B|1F9D1 1F3FE 200D 1F384,F063C|1F9D1 1F3FF 200D 1F384
+人物與身體	1F9B8	1F9B8	超級英雄	superhero	F063D|1F9B8 1F3FB,F063E|1F9B8 1F3FC,F063F|1F9B8 1F3FD,F0640|1F9B8 1F3FE,F0641|1F9B8 1F3FF
+人物與身體	F0075	1F9B8 200D 2642 FE0F	超人	superhero_man	F0642|1F9B8 1F3FB 200D 2642 FE0F,F0643|1F9B8 1F3FC 200D 2642 FE0F,F0644|1F9B8 1F3FD 200D 2642 FE0F,F0645|1F9B8 1F3FE 200D 2642 FE0F,F0646|1F9B8 1F3FF 200D 2642 FE0F
+人物與身體	F0076	1F9B8 200D 2640 FE0F	女超人	superhero_woman	F0647|1F9B8 1F3FB 200D 2640 FE0F,F0648|1F9B8 1F3FC 200D 2640 FE0F,F0649|1F9B8 1F3FD 200D 2640 FE0F,F064A|1F9B8 1F3FE 200D 2640 FE0F,F064B|1F9B8 1F3FF 200D 2640 FE0F
+人物與身體	1F9B9	1F9B9	超級反派	supervillain	F064C|1F9B9 1F3FB,F064D|1F9B9 1F3FC,F064E|1F9B9 1F3FD,F064F|1F9B9 1F3FE,F0650|1F9B9 1F3FF
+人物與身體	F0077	1F9B9 200D 2642 FE0F	男超級反派	supervillain_man	F0651|1F9B9 1F3FB 200D 2642 FE0F,F0652|1F9B9 1F3FC 200D 2642 FE0F,F0653|1F9B9 1F3FD 200D 2642 FE0F,F0654|1F9B9 1F3FE 200D 2642 FE0F,F0655|1F9B9 1F3FF 200D 2642 FE0F
+人物與身體	F0078	1F9B9 200D 2640 FE0F	女超級反派	supervillain_woman	F0656|1F9B9 1F3FB 200D 2640 FE0F,F0657|1F9B9 1F3FC 200D 2640 FE0F,F0658|1F9B9 1F3FD 200D 2640 FE0F,F0659|1F9B9 1F3FE 200D 2640 FE0F,F065A|1F9B9 1F3FF 200D 2640 FE0F
+人物與身體	1F9D9	1F9D9	魔術師	mage	F065B|1F9D9 1F3FB,F065C|1F9D9 1F3FC,F065D|1F9D9 1F3FD,F065E|1F9D9 1F3FE,F065F|1F9D9 1F3FF
+人物與身體	F0079	1F9D9 200D 2642 FE0F	男巫	mage_man	F0660|1F9D9 1F3FB 200D 2642 FE0F,F0661|1F9D9 1F3FC 200D 2642 FE0F,F0662|1F9D9 1F3FD 200D 2642 FE0F,F0663|1F9D9 1F3FE 200D 2642 FE0F,F0664|1F9D9 1F3FF 200D 2642 FE0F
+人物與身體	F007A	1F9D9 200D 2640 FE0F	女巫師	mage_woman	F0665|1F9D9 1F3FB 200D 2640 FE0F,F0666|1F9D9 1F3FC 200D 2640 FE0F,F0667|1F9D9 1F3FD 200D 2640 FE0F,F0668|1F9D9 1F3FE 200D 2640 FE0F,F0669|1F9D9 1F3FF 200D 2640 FE0F
+人物與身體	1F9DA	1F9DA	仙女	fairy	F066A|1F9DA 1F3FB,F066B|1F9DA 1F3FC,F066C|1F9DA 1F3FD,F066D|1F9DA 1F3FE,F066E|1F9DA 1F3FF
+人物與身體	F007B	1F9DA 200D 2642 FE0F	男妖精	fairy_man	F066F|1F9DA 1F3FB 200D 2642 FE0F,F0670|1F9DA 1F3FC 200D 2642 FE0F,F0671|1F9DA 1F3FD 200D 2642 FE0F,F0672|1F9DA 1F3FE 200D 2642 FE0F,F0673|1F9DA 1F3FF 200D 2642 FE0F
+人物與身體	F007C	1F9DA 200D 2640 FE0F	女妖精	fairy_woman	F0674|1F9DA 1F3FB 200D 2640 FE0F,F0675|1F9DA 1F3FC 200D 2640 FE0F,F0676|1F9DA 1F3FD 200D 2640 FE0F,F0677|1F9DA 1F3FE 200D 2640 FE0F,F0678|1F9DA 1F3FF 200D 2640 FE0F
+人物與身體	1F9DB	1F9DB	吸血鬼	vampire	F0679|1F9DB 1F3FB,F067A|1F9DB 1F3FC,F067B|1F9DB 1F3FD,F067C|1F9DB 1F3FE,F067D|1F9DB 1F3FF
+人物與身體	F007D	1F9DB 200D 2642 FE0F	男吸血鬼	vampire_man	F067E|1F9DB 1F3FB 200D 2642 FE0F,F067F|1F9DB 1F3FC 200D 2642 FE0F,F0680|1F9DB 1F3FD 200D 2642 FE0F,F0681|1F9DB 1F3FE 200D 2642 FE0F,F0682|1F9DB 1F3FF 200D 2642 FE0F
+人物與身體	F007E	1F9DB 200D 2640 FE0F	女吸血鬼	vampire_woman	F0683|1F9DB 1F3FB 200D 2640 FE0F,F0684|1F9DB 1F3FC 200D 2640 FE0F,F0685|1F9DB 1F3FD 200D 2640 FE0F,F0686|1F9DB 1F3FE 200D 2640 FE0F,F0687|1F9DB 1F3FF 200D 2640 FE0F
+人物與身體	1F9DC	1F9DC	人魚	merperson	F0688|1F9DC 1F3FB,F0689|1F9DC 1F3FC,F068A|1F9DC 1F3FD,F068B|1F9DC 1F3FE,F068C|1F9DC 1F3FF
+人物與身體	F007F	1F9DC 200D 2642 FE0F	男人魚	merman	F068D|1F9DC 1F3FB 200D 2642 FE0F,F068E|1F9DC 1F3FC 200D 2642 FE0F,F068F|1F9DC 1F3FD 200D 2642 FE0F,F0690|1F9DC 1F3FE 200D 2642 FE0F,F0691|1F9DC 1F3FF 200D 2642 FE0F
+人物與身體	F0080	1F9DC 200D 2640 FE0F	美人魚	mermaid	F0692|1F9DC 1F3FB 200D 2640 FE0F,F0693|1F9DC 1F3FC 200D 2640 FE0F,F0694|1F9DC 1F3FD 200D 2640 FE0F,F0695|1F9DC 1F3FE 200D 2640 FE0F,F0696|1F9DC 1F3FF 200D 2640 FE0F
+人物與身體	1F9DD	1F9DD	小精靈	elf	F0697|1F9DD 1F3FB,F0698|1F9DD 1F3FC,F0699|1F9DD 1F3FD,F069A|1F9DD 1F3FE,F069B|1F9DD 1F3FF
+人物與身體	F0081	1F9DD 200D 2642 FE0F	男精靈	elf_man	F069C|1F9DD 1F3FB 200D 2642 FE0F,F069D|1F9DD 1F3FC 200D 2642 FE0F,F069E|1F9DD 1F3FD 200D 2642 FE0F,F069F|1F9DD 1F3FE 200D 2642 FE0F,F06A0|1F9DD 1F3FF 200D 2642 FE0F
+人物與身體	F0082	1F9DD 200D 2640 FE0F	女精靈	elf_woman	F06A1|1F9DD 1F3FB 200D 2640 FE0F,F06A2|1F9DD 1F3FC 200D 2640 FE0F,F06A3|1F9DD 1F3FD 200D 2640 FE0F,F06A4|1F9DD 1F3FE 200D 2640 FE0F,F06A5|1F9DD 1F3FF 200D 2640 FE0F
+人物與身體	1F9DE	1F9DE	精靈	genie	
+人物與身體	F0083	1F9DE 200D 2642 FE0F	藍精靈	genie_man	
+人物與身體	F0084	1F9DE 200D 2640 FE0F	女藍精靈	genie_woman	
+人物與身體	1F9DF	1F9DF	殭屍	zombie	
+人物與身體	F0085	1F9DF 200D 2642 FE0F	男殭屍	zombie_man	
+人物與身體	F0086	1F9DF 200D 2640 FE0F	女殭屍	zombie_woman	
+人物與身體	1F9CC	1F9CC	巨人	troll	
+人物與身體	1FAC8	1FAC8	毛怪		
+人物與身體	1F486	1F486	按摩	massage	F06A6|1F486 1F3FB,F06A7|1F486 1F3FC,F06A8|1F486 1F3FD,F06A9|1F486 1F3FE,F06AA|1F486 1F3FF
+人物與身體	F0087	1F486 200D 2642 FE0F	男生按摩	massage_man	F06AB|1F486 1F3FB 200D 2642 FE0F,F06AC|1F486 1F3FC 200D 2642 FE0F,F06AD|1F486 1F3FD 200D 2642 FE0F,F06AE|1F486 1F3FE 200D 2642 FE0F,F06AF|1F486 1F3FF 200D 2642 FE0F
+人物與身體	F0088	1F486 200D 2640 FE0F	女生按摩	massage_woman	F06B0|1F486 1F3FB 200D 2640 FE0F,F06B1|1F486 1F3FC 200D 2640 FE0F,F06B2|1F486 1F3FD 200D 2640 FE0F,F06B3|1F486 1F3FE 200D 2640 FE0F,F06B4|1F486 1F3FF 200D 2640 FE0F
+人物與身體	1F487	1F487	理髮	haircut	F06B5|1F487 1F3FB,F06B6|1F487 1F3FC,F06B7|1F487 1F3FD,F06B8|1F487 1F3FE,F06B9|1F487 1F3FF
+人物與身體	F0089	1F487 200D 2642 FE0F	男生理髮	haircut_man	F06BA|1F487 1F3FB 200D 2642 FE0F,F06BB|1F487 1F3FC 200D 2642 FE0F,F06BC|1F487 1F3FD 200D 2642 FE0F,F06BD|1F487 1F3FE 200D 2642 FE0F,F06BE|1F487 1F3FF 200D 2642 FE0F
+人物與身體	F008A	1F487 200D 2640 FE0F	女生理髮	haircut_woman	F06BF|1F487 1F3FB 200D 2640 FE0F,F06C0|1F487 1F3FC 200D 2640 FE0F,F06C1|1F487 1F3FD 200D 2640 FE0F,F06C2|1F487 1F3FE 200D 2640 FE0F,F06C3|1F487 1F3FF 200D 2640 FE0F
+人物與身體	1F6B6	1F6B6	行人	walking	F06C4|1F6B6 1F3FB,F06C5|1F6B6 1F3FC,F06C6|1F6B6 1F3FD,F06C7|1F6B6 1F3FE,F06C8|1F6B6 1F3FF
+人物與身體	F008B	1F6B6 200D 2642 FE0F	男行人	walking_man	F06C9|1F6B6 1F3FB 200D 2642 FE0F,F06CA|1F6B6 1F3FC 200D 2642 FE0F,F06CB|1F6B6 1F3FD 200D 2642 FE0F,F06CC|1F6B6 1F3FE 200D 2642 FE0F,F06CD|1F6B6 1F3FF 200D 2642 FE0F
+人物與身體	F008C	1F6B6 200D 2640 FE0F	女行人	walking_woman	F06CE|1F6B6 1F3FB 200D 2640 FE0F,F06CF|1F6B6 1F3FC 200D 2640 FE0F,F06D0|1F6B6 1F3FD 200D 2640 FE0F,F06D1|1F6B6 1F3FE 200D 2640 FE0F,F06D2|1F6B6 1F3FF 200D 2640 FE0F
+人物與身體	F008D	1F6B6 200D 27A1 FE0F	行人：面右		F06D3|1F6B6 1F3FB 200D 27A1 FE0F,F06D4|1F6B6 1F3FC 200D 27A1 FE0F,F06D5|1F6B6 1F3FD 200D 27A1 FE0F,F06D6|1F6B6 1F3FE 200D 27A1 FE0F,F06D7|1F6B6 1F3FF 200D 27A1 FE0F
+人物與身體	F008E	1F6B6 200D 2640 FE0F 200D 27A1 FE0F	女行人：面右		F06D8|1F6B6 1F3FB 200D 2640 FE0F 200D 27A1 FE0F,F06D9|1F6B6 1F3FC 200D 2640 FE0F 200D 27A1 FE0F,F06DA|1F6B6 1F3FD 200D 2640 FE0F 200D 27A1 FE0F,F06DB|1F6B6 1F3FE 200D 2640 FE0F 200D 27A1 FE0F,F06DC|1F6B6 1F3FF 200D 2640 FE0F 200D 27A1 FE0F
+人物與身體	F008F	1F6B6 200D 2642 FE0F 200D 27A1 FE0F	男行人：面右		F06DD|1F6B6 1F3FB 200D 2642 FE0F 200D 27A1 FE0F,F06DE|1F6B6 1F3FC 200D 2642 FE0F 200D 27A1 FE0F,F06DF|1F6B6 1F3FD 200D 2642 FE0F 200D 27A1 FE0F,F06E0|1F6B6 1F3FE 200D 2642 FE0F 200D 27A1 FE0F,F06E1|1F6B6 1F3FF 200D 2642 FE0F 200D 27A1 FE0F
+人物與身體	1F9CD	1F9CD	站著的人	standing_person	F06E2|1F9CD 1F3FB,F06E3|1F9CD 1F3FC,F06E4|1F9CD 1F3FD,F06E5|1F9CD 1F3FE,F06E6|1F9CD 1F3FF
+人物與身體	F0090	1F9CD 200D 2642 FE0F	站著的男子	standing_man	F06E7|1F9CD 1F3FB 200D 2642 FE0F,F06E8|1F9CD 1F3FC 200D 2642 FE0F,F06E9|1F9CD 1F3FD 200D 2642 FE0F,F06EA|1F9CD 1F3FE 200D 2642 FE0F,F06EB|1F9CD 1F3FF 200D 2642 FE0F
+人物與身體	F0091	1F9CD 200D 2640 FE0F	站著的女子	standing_woman	F06EC|1F9CD 1F3FB 200D 2640 FE0F,F06ED|1F9CD 1F3FC 200D 2640 FE0F,F06EE|1F9CD 1F3FD 200D 2640 FE0F,F06EF|1F9CD 1F3FE 200D 2640 FE0F,F06F0|1F9CD 1F3FF 200D 2640 FE0F
+人物與身體	1F9CE	1F9CE	跪著的人	kneeling_person	F06F1|1F9CE 1F3FB,F06F2|1F9CE 1F3FC,F06F3|1F9CE 1F3FD,F06F4|1F9CE 1F3FE,F06F5|1F9CE 1F3FF
+人物與身體	F0092	1F9CE 200D 2642 FE0F	跪著的男子	kneeling_man	F06F6|1F9CE 1F3FB 200D 2642 FE0F,F06F7|1F9CE 1F3FC 200D 2642 FE0F,F06F8|1F9CE 1F3FD 200D 2642 FE0F,F06F9|1F9CE 1F3FE 200D 2642 FE0F,F06FA|1F9CE 1F3FF 200D 2642 FE0F
+人物與身體	F0093	1F9CE 200D 2640 FE0F	跪著的女子	kneeling_woman	F06FB|1F9CE 1F3FB 200D 2640 FE0F,F06FC|1F9CE 1F3FC 200D 2640 FE0F,F06FD|1F9CE 1F3FD 200D 2640 FE0F,F06FE|1F9CE 1F3FE 200D 2640 FE0F,F06FF|1F9CE 1F3FF 200D 2640 FE0F
+人物與身體	F0094	1F9CE 200D 27A1 FE0F	跪著的人：面右		F0700|1F9CE 1F3FB 200D 27A1 FE0F,F0701|1F9CE 1F3FC 200D 27A1 FE0F,F0702|1F9CE 1F3FD 200D 27A1 FE0F,F0703|1F9CE 1F3FE 200D 27A1 FE0F,F0704|1F9CE 1F3FF 200D 27A1 FE0F
+人物與身體	F0095	1F9CE 200D 2640 FE0F 200D 27A1 FE0F	跪著的女子：面右		F0705|1F9CE 1F3FB 200D 2640 FE0F 200D 27A1 FE0F,F0706|1F9CE 1F3FC 200D 2640 FE0F 200D 27A1 FE0F,F0707|1F9CE 1F3FD 200D 2640 FE0F 200D 27A1 FE0F,F0708|1F9CE 1F3FE 200D 2640 FE0F 200D 27A1 FE0F,F0709|1F9CE 1F3FF 200D 2640 FE0F 200D 27A1 FE0F
+人物與身體	F0096	1F9CE 200D 2642 FE0F 200D 27A1 FE0F	跪著的男子：面右		F070A|1F9CE 1F3FB 200D 2642 FE0F 200D 27A1 FE0F,F070B|1F9CE 1F3FC 200D 2642 FE0F 200D 27A1 FE0F,F070C|1F9CE 1F3FD 200D 2642 FE0F 200D 27A1 FE0F,F070D|1F9CE 1F3FE 200D 2642 FE0F 200D 27A1 FE0F,F070E|1F9CE 1F3FF 200D 2642 FE0F 200D 27A1 FE0F
+人物與身體	F0097	1F9D1 200D 1F9AF	拿導盲手杖的人	person_with_probing_cane	F070F|1F9D1 1F3FB 200D 1F9AF,F0710|1F9D1 1F3FC 200D 1F9AF,F0711|1F9D1 1F3FD 200D 1F9AF,F0712|1F9D1 1F3FE 200D 1F9AF,F0713|1F9D1 1F3FF 200D 1F9AF
+人物與身體	F0098	1F9D1 200D 1F9AF 200D 27A1 FE0F	拿導盲手杖的人：面右		F0714|1F9D1 1F3FB 200D 1F9AF 200D 27A1 FE0F,F0715|1F9D1 1F3FC 200D 1F9AF 200D 27A1 FE0F,F0716|1F9D1 1F3FD 200D 1F9AF 200D 27A1 FE0F,F0717|1F9D1 1F3FE 200D 1F9AF 200D 27A1 FE0F,F0718|1F9D1 1F3FF 200D 1F9AF 200D 27A1 FE0F
+人物與身體	F0099	1F468 200D 1F9AF	拿導盲手杖的男子	man_with_probing_cane	F0719|1F468 1F3FB 200D 1F9AF,F071A|1F468 1F3FC 200D 1F9AF,F071B|1F468 1F3FD 200D 1F9AF,F071C|1F468 1F3FE 200D 1F9AF,F071D|1F468 1F3FF 200D 1F9AF
+人物與身體	F009A	1F468 200D 1F9AF 200D 27A1 FE0F	拿導盲手杖的男子：面右		F071E|1F468 1F3FB 200D 1F9AF 200D 27A1 FE0F,F071F|1F468 1F3FC 200D 1F9AF 200D 27A1 FE0F,F0720|1F468 1F3FD 200D 1F9AF 200D 27A1 FE0F,F0721|1F468 1F3FE 200D 1F9AF 200D 27A1 FE0F,F0722|1F468 1F3FF 200D 1F9AF 200D 27A1 FE0F
+人物與身體	F009B	1F469 200D 1F9AF	拿導盲手杖的女子	woman_with_probing_cane	F0723|1F469 1F3FB 200D 1F9AF,F0724|1F469 1F3FC 200D 1F9AF,F0725|1F469 1F3FD 200D 1F9AF,F0726|1F469 1F3FE 200D 1F9AF,F0727|1F469 1F3FF 200D 1F9AF
+人物與身體	F009C	1F469 200D 1F9AF 200D 27A1 FE0F	拿導盲手杖的女子：面右		F0728|1F469 1F3FB 200D 1F9AF 200D 27A1 FE0F,F0729|1F469 1F3FC 200D 1F9AF 200D 27A1 FE0F,F072A|1F469 1F3FD 200D 1F9AF 200D 27A1 FE0F,F072B|1F469 1F3FE 200D 1F9AF 200D 27A1 FE0F,F072C|1F469 1F3FF 200D 1F9AF 200D 27A1 FE0F
+人物與身體	F009D	1F9D1 200D 1F9BC	坐電動輪椅的人	person_in_motorized_wheelchair	F072D|1F9D1 1F3FB 200D 1F9BC,F072E|1F9D1 1F3FC 200D 1F9BC,F072F|1F9D1 1F3FD 200D 1F9BC,F0730|1F9D1 1F3FE 200D 1F9BC,F0731|1F9D1 1F3FF 200D 1F9BC
+人物與身體	F009E	1F9D1 200D 1F9BC 200D 27A1 FE0F	坐電動輪椅的人：面右		F0732|1F9D1 1F3FB 200D 1F9BC 200D 27A1 FE0F,F0733|1F9D1 1F3FC 200D 1F9BC 200D 27A1 FE0F,F0734|1F9D1 1F3FD 200D 1F9BC 200D 27A1 FE0F,F0735|1F9D1 1F3FE 200D 1F9BC 200D 27A1 FE0F,F0736|1F9D1 1F3FF 200D 1F9BC 200D 27A1 FE0F
+人物與身體	F009F	1F468 200D 1F9BC	坐電動輪椅的男子	man_in_motorized_wheelchair	F0737|1F468 1F3FB 200D 1F9BC,F0738|1F468 1F3FC 200D 1F9BC,F0739|1F468 1F3FD 200D 1F9BC,F073A|1F468 1F3FE 200D 1F9BC,F073B|1F468 1F3FF 200D 1F9BC
+人物與身體	F00A0	1F468 200D 1F9BC 200D 27A1 FE0F	坐電動輪椅的男子：面右		F073C|1F468 1F3FB 200D 1F9BC 200D 27A1 FE0F,F073D|1F468 1F3FC 200D 1F9BC 200D 27A1 FE0F,F073E|1F468 1F3FD 200D 1F9BC 200D 27A1 FE0F,F073F|1F468 1F3FE 200D 1F9BC 200D 27A1 FE0F,F0740|1F468 1F3FF 200D 1F9BC 200D 27A1 FE0F
+人物與身體	F00A1	1F469 200D 1F9BC	坐電動輪椅的女子	woman_in_motorized_wheelchair	F0741|1F469 1F3FB 200D 1F9BC,F0742|1F469 1F3FC 200D 1F9BC,F0743|1F469 1F3FD 200D 1F9BC,F0744|1F469 1F3FE 200D 1F9BC,F0745|1F469 1F3FF 200D 1F9BC
+人物與身體	F00A2	1F469 200D 1F9BC 200D 27A1 FE0F	坐電動輪椅的女子：面右		F0746|1F469 1F3FB 200D 1F9BC 200D 27A1 FE0F,F0747|1F469 1F3FC 200D 1F9BC 200D 27A1 FE0F,F0748|1F469 1F3FD 200D 1F9BC 200D 27A1 FE0F,F0749|1F469 1F3FE 200D 1F9BC 200D 27A1 FE0F,F074A|1F469 1F3FF 200D 1F9BC 200D 27A1 FE0F
+人物與身體	F00A3	1F9D1 200D 1F9BD	坐輪椅的人	person_in_manual_wheelchair	F074B|1F9D1 1F3FB 200D 1F9BD,F074C|1F9D1 1F3FC 200D 1F9BD,F074D|1F9D1 1F3FD 200D 1F9BD,F074E|1F9D1 1F3FE 200D 1F9BD,F074F|1F9D1 1F3FF 200D 1F9BD
+人物與身體	F00A4	1F9D1 200D 1F9BD 200D 27A1 FE0F	坐輪椅的人：面右		F0750|1F9D1 1F3FB 200D 1F9BD 200D 27A1 FE0F,F0751|1F9D1 1F3FC 200D 1F9BD 200D 27A1 FE0F,F0752|1F9D1 1F3FD 200D 1F9BD 200D 27A1 FE0F,F0753|1F9D1 1F3FE 200D 1F9BD 200D 27A1 FE0F,F0754|1F9D1 1F3FF 200D 1F9BD 200D 27A1 FE0F
+人物與身體	F00A5	1F468 200D 1F9BD	坐輪椅的男子	man_in_manual_wheelchair	F0755|1F468 1F3FB 200D 1F9BD,F0756|1F468 1F3FC 200D 1F9BD,F0757|1F468 1F3FD 200D 1F9BD,F0758|1F468 1F3FE 200D 1F9BD,F0759|1F468 1F3FF 200D 1F9BD
+人物與身體	F00A6	1F468 200D 1F9BD 200D 27A1 FE0F	坐輪椅的男子：面右		F075A|1F468 1F3FB 200D 1F9BD 200D 27A1 FE0F,F075B|1F468 1F3FC 200D 1F9BD 200D 27A1 FE0F,F075C|1F468 1F3FD 200D 1F9BD 200D 27A1 FE0F,F075D|1F468 1F3FE 200D 1F9BD 200D 27A1 FE0F,F075E|1F468 1F3FF 200D 1F9BD 200D 27A1 FE0F
+人物與身體	F00A7	1F469 200D 1F9BD	坐輪椅的女子	woman_in_manual_wheelchair	F075F|1F469 1F3FB 200D 1F9BD,F0760|1F469 1F3FC 200D 1F9BD,F0761|1F469 1F3FD 200D 1F9BD,F0762|1F469 1F3FE 200D 1F9BD,F0763|1F469 1F3FF 200D 1F9BD
+人物與身體	F00A8	1F469 200D 1F9BD 200D 27A1 FE0F	坐輪椅的女子：面右		F0764|1F469 1F3FB 200D 1F9BD 200D 27A1 FE0F,F0765|1F469 1F3FC 200D 1F9BD 200D 27A1 FE0F,F0766|1F469 1F3FD 200D 1F9BD 200D 27A1 FE0F,F0767|1F469 1F3FE 200D 1F9BD 200D 27A1 FE0F,F0768|1F469 1F3FF 200D 1F9BD 200D 27A1 FE0F
+人物與身體	1F3C3	1F3C3	跑者	runner	F0769|1F3C3 1F3FB,F076A|1F3C3 1F3FC,F076B|1F3C3 1F3FD,F076C|1F3C3 1F3FE,F076D|1F3C3 1F3FF
+人物與身體	F00A9	1F3C3 200D 2642 FE0F	男跑者	running_man	F076E|1F3C3 1F3FB 200D 2642 FE0F,F076F|1F3C3 1F3FC 200D 2642 FE0F,F0770|1F3C3 1F3FD 200D 2642 FE0F,F0771|1F3C3 1F3FE 200D 2642 FE0F,F0772|1F3C3 1F3FF 200D 2642 FE0F
+人物與身體	F00AA	1F3C3 200D 2640 FE0F	女跑者	running_woman	F0773|1F3C3 1F3FB 200D 2640 FE0F,F0774|1F3C3 1F3FC 200D 2640 FE0F,F0775|1F3C3 1F3FD 200D 2640 FE0F,F0776|1F3C3 1F3FE 200D 2640 FE0F,F0777|1F3C3 1F3FF 200D 2640 FE0F
+人物與身體	F00AB	1F3C3 200D 27A1 FE0F	跑者：面右		F0778|1F3C3 1F3FB 200D 27A1 FE0F,F0779|1F3C3 1F3FC 200D 27A1 FE0F,F077A|1F3C3 1F3FD 200D 27A1 FE0F,F077B|1F3C3 1F3FE 200D 27A1 FE0F,F077C|1F3C3 1F3FF 200D 27A1 FE0F
+人物與身體	F00AC	1F3C3 200D 2640 FE0F 200D 27A1 FE0F	女跑者：面右		F077D|1F3C3 1F3FB 200D 2640 FE0F 200D 27A1 FE0F,F077E|1F3C3 1F3FC 200D 2640 FE0F 200D 27A1 FE0F,F077F|1F3C3 1F3FD 200D 2640 FE0F 200D 27A1 FE0F,F0780|1F3C3 1F3FE 200D 2640 FE0F 200D 27A1 FE0F,F0781|1F3C3 1F3FF 200D 2640 FE0F 200D 27A1 FE0F
+人物與身體	F00AD	1F3C3 200D 2642 FE0F 200D 27A1 FE0F	男跑者：面右		F0782|1F3C3 1F3FB 200D 2642 FE0F 200D 27A1 FE0F,F0783|1F3C3 1F3FC 200D 2642 FE0F 200D 27A1 FE0F,F0784|1F3C3 1F3FD 200D 2642 FE0F 200D 27A1 FE0F,F0785|1F3C3 1F3FE 200D 2642 FE0F 200D 27A1 FE0F,F0786|1F3C3 1F3FF 200D 2642 FE0F 200D 27A1 FE0F
+人物與身體	F00AE	1F9D1 200D 1FA70	芭蕾舞者		F0787|1F9D1 1F3FB 200D 1FA70,F0788|1F9D1 1F3FC 200D 1FA70,F0789|1F9D1 1F3FD 200D 1FA70,F078A|1F9D1 1F3FE 200D 1FA70,F078B|1F9D1 1F3FF 200D 1FA70
+人物與身體	1F483	1F483	舞者	dancer	F078C|1F483 1F3FB,F078D|1F483 1F3FC,F078E|1F483 1F3FD,F078F|1F483 1F3FE,F0790|1F483 1F3FF
+人物與身體	1F57A	1F57A	男人跳著舞	man_dancing	F0791|1F57A 1F3FB,F0792|1F57A 1F3FC,F0793|1F57A 1F3FD,F0794|1F57A 1F3FE,F0795|1F57A 1F3FF
+人物與身體	1F574	1F574 FE0F	穿西裝的人	business_suit_levitating	F0796|1F574 1F3FB,F0797|1F574 1F3FC,F0798|1F574 1F3FD,F0799|1F574 1F3FE,F079A|1F574 1F3FF
+人物與身體	1F46F	1F46F	兔女郎	dancers	F079B|1F46F 1F3FB,F079C|1F46F 1F3FC,F079D|1F46F 1F3FD,F079E|1F46F 1F3FE,F079F|1F46F 1F3FF
+人物與身體	F00AF	1F46F 200D 2642 FE0F	雙人兔男郎	dancing_men	F07A0|1F46F 1F3FB 200D 2642 FE0F,F07A1|1F46F 1F3FC 200D 2642 FE0F,F07A2|1F46F 1F3FD 200D 2642 FE0F,F07A3|1F46F 1F3FE 200D 2642 FE0F,F07A4|1F46F 1F3FF 200D 2642 FE0F
+人物與身體	F00B0	1F46F 200D 2640 FE0F	雙人兔女郎	dancing_women	F07A5|1F46F 1F3FB 200D 2640 FE0F,F07A6|1F46F 1F3FC 200D 2640 FE0F,F07A7|1F46F 1F3FD 200D 2640 FE0F,F07A8|1F46F 1F3FE 200D 2640 FE0F,F07A9|1F46F 1F3FF 200D 2640 FE0F
+人物與身體	1F9D6	1F9D6	做蒸氣浴的人	sauna_person	F07AA|1F9D6 1F3FB,F07AB|1F9D6 1F3FC,F07AC|1F9D6 1F3FD,F07AD|1F9D6 1F3FE,F07AE|1F9D6 1F3FF
+人物與身體	F00B1	1F9D6 200D 2642 FE0F	做蒸氣浴的男子	sauna_man	F07AF|1F9D6 1F3FB 200D 2642 FE0F,F07B0|1F9D6 1F3FC 200D 2642 FE0F,F07B1|1F9D6 1F3FD 200D 2642 FE0F,F07B2|1F9D6 1F3FE 200D 2642 FE0F,F07B3|1F9D6 1F3FF 200D 2642 FE0F
+人物與身體	F00B2	1F9D6 200D 2640 FE0F	做蒸氣浴的女子	sauna_woman	F07B4|1F9D6 1F3FB 200D 2640 FE0F,F07B5|1F9D6 1F3FC 200D 2640 FE0F,F07B6|1F9D6 1F3FD 200D 2640 FE0F,F07B7|1F9D6 1F3FE 200D 2640 FE0F,F07B8|1F9D6 1F3FF 200D 2640 FE0F
+人物與身體	1F9D7	1F9D7	攀岩的人	climbing	F07B9|1F9D7 1F3FB,F07BA|1F9D7 1F3FC,F07BB|1F9D7 1F3FD,F07BC|1F9D7 1F3FE,F07BD|1F9D7 1F3FF
+人物與身體	F00B3	1F9D7 200D 2642 FE0F	攀岩男子	climbing_man	F07BE|1F9D7 1F3FB 200D 2642 FE0F,F07BF|1F9D7 1F3FC 200D 2642 FE0F,F07C0|1F9D7 1F3FD 200D 2642 FE0F,F07C1|1F9D7 1F3FE 200D 2642 FE0F,F07C2|1F9D7 1F3FF 200D 2642 FE0F
+人物與身體	F00B4	1F9D7 200D 2640 FE0F	攀岩女子	climbing_woman	F07C3|1F9D7 1F3FB 200D 2640 FE0F,F07C4|1F9D7 1F3FC 200D 2640 FE0F,F07C5|1F9D7 1F3FD 200D 2640 FE0F,F07C6|1F9D7 1F3FE 200D 2640 FE0F,F07C7|1F9D7 1F3FF 200D 2640 FE0F
+人物與身體	1F93A	1F93A	西洋劍	person_fencing	
+人物與身體	1F3C7	1F3C7	賽馬	horse_racing	F07C8|1F3C7 1F3FB,F07C9|1F3C7 1F3FC,F07CA|1F3C7 1F3FD,F07CB|1F3C7 1F3FE,F07CC|1F3C7 1F3FF
+人物與身體	F00B5	26F7 FE0F	滑雪者	skier	
+人物與身體	1F3C2	1F3C2	滑雪板	snowboarder	F07CD|1F3C2 1F3FB,F07CE|1F3C2 1F3FC,F07CF|1F3C2 1F3FD,F07D0|1F3C2 1F3FE,F07D1|1F3C2 1F3FF
+人物與身體	1F3CC	1F3CC FE0F	打高爾夫	golfing	F07D2|1F3CC 1F3FB,F07D3|1F3CC 1F3FC,F07D4|1F3CC 1F3FD,F07D5|1F3CC 1F3FE,F07D6|1F3CC 1F3FF
+人物與身體	F00B6	1F3CC FE0F 200D 2642 FE0F	男生打高爾夫	golfing_man	F07D7|1F3CC 1F3FB 200D 2642 FE0F,F07D8|1F3CC 1F3FC 200D 2642 FE0F,F07D9|1F3CC 1F3FD 200D 2642 FE0F,F07DA|1F3CC 1F3FE 200D 2642 FE0F,F07DB|1F3CC 1F3FF 200D 2642 FE0F
+人物與身體	F00B7	1F3CC FE0F 200D 2640 FE0F	女生打高爾夫	golfing_woman	F07DC|1F3CC 1F3FB 200D 2640 FE0F,F07DD|1F3CC 1F3FC 200D 2640 FE0F,F07DE|1F3CC 1F3FD 200D 2640 FE0F,F07DF|1F3CC 1F3FE 200D 2640 FE0F,F07E0|1F3CC 1F3FF 200D 2640 FE0F
+人物與身體	1F3C4	1F3C4	衝浪	surfer	F07E1|1F3C4 1F3FB,F07E2|1F3C4 1F3FC,F07E3|1F3C4 1F3FD,F07E4|1F3C4 1F3FE,F07E5|1F3C4 1F3FF
+人物與身體	F00B8	1F3C4 200D 2642 FE0F	男生衝浪	surfing_man	F07E6|1F3C4 1F3FB 200D 2642 FE0F,F07E7|1F3C4 1F3FC 200D 2642 FE0F,F07E8|1F3C4 1F3FD 200D 2642 FE0F,F07E9|1F3C4 1F3FE 200D 2642 FE0F,F07EA|1F3C4 1F3FF 200D 2642 FE0F
+人物與身體	F00B9	1F3C4 200D 2640 FE0F	女生衝浪	surfing_woman	F07EB|1F3C4 1F3FB 200D 2640 FE0F,F07EC|1F3C4 1F3FC 200D 2640 FE0F,F07ED|1F3C4 1F3FD 200D 2640 FE0F,F07EE|1F3C4 1F3FE 200D 2640 FE0F,F07EF|1F3C4 1F3FF 200D 2640 FE0F
+人物與身體	1F6A3	1F6A3	划艇	rowboat	F07F0|1F6A3 1F3FB,F07F1|1F6A3 1F3FC,F07F2|1F6A3 1F3FD,F07F3|1F6A3 1F3FE,F07F4|1F6A3 1F3FF
+人物與身體	F00BA	1F6A3 200D 2642 FE0F	男生划船	rowing_man	F07F5|1F6A3 1F3FB 200D 2642 FE0F,F07F6|1F6A3 1F3FC 200D 2642 FE0F,F07F7|1F6A3 1F3FD 200D 2642 FE0F,F07F8|1F6A3 1F3FE 200D 2642 FE0F,F07F9|1F6A3 1F3FF 200D 2642 FE0F
+人物與身體	F00BB	1F6A3 200D 2640 FE0F	女生划船	rowing_woman	F07FA|1F6A3 1F3FB 200D 2640 FE0F,F07FB|1F6A3 1F3FC 200D 2640 FE0F,F07FC|1F6A3 1F3FD 200D 2640 FE0F,F07FD|1F6A3 1F3FE 200D 2640 FE0F,F07FE|1F6A3 1F3FF 200D 2640 FE0F
+人物與身體	1F3CA	1F3CA	游泳	swimmer	F07FF|1F3CA 1F3FB,F0800|1F3CA 1F3FC,F0801|1F3CA 1F3FD,F0802|1F3CA 1F3FE,F0803|1F3CA 1F3FF
+人物與身體	F00BC	1F3CA 200D 2642 FE0F	男生游泳	swimming_man	F0804|1F3CA 1F3FB 200D 2642 FE0F,F0805|1F3CA 1F3FC 200D 2642 FE0F,F0806|1F3CA 1F3FD 200D 2642 FE0F,F0807|1F3CA 1F3FE 200D 2642 FE0F,F0808|1F3CA 1F3FF 200D 2642 FE0F
+人物與身體	F00BD	1F3CA 200D 2640 FE0F	女生游泳	swimming_woman	F0809|1F3CA 1F3FB 200D 2640 FE0F,F080A|1F3CA 1F3FC 200D 2640 FE0F,F080B|1F3CA 1F3FD 200D 2640 FE0F,F080C|1F3CA 1F3FE 200D 2640 FE0F,F080D|1F3CA 1F3FF 200D 2640 FE0F
+人物與身體	F00BE	26F9 FE0F	打球	bouncing_ball_person	F080E|26F9 1F3FB,F080F|26F9 1F3FC,F0810|26F9 1F3FD,F0811|26F9 1F3FE,F0812|26F9 1F3FF
+人物與身體	F00BF	26F9 FE0F 200D 2642 FE0F	男生打球	basketball_man	F0813|26F9 1F3FB 200D 2642 FE0F,F0814|26F9 1F3FC 200D 2642 FE0F,F0815|26F9 1F3FD 200D 2642 FE0F,F0816|26F9 1F3FE 200D 2642 FE0F,F0817|26F9 1F3FF 200D 2642 FE0F
+人物與身體	F00C0	26F9 FE0F 200D 2640 FE0F	女生打球	basketball_woman	F0818|26F9 1F3FB 200D 2640 FE0F,F0819|26F9 1F3FC 200D 2640 FE0F,F081A|26F9 1F3FD 200D 2640 FE0F,F081B|26F9 1F3FE 200D 2640 FE0F,F081C|26F9 1F3FF 200D 2640 FE0F
+人物與身體	1F3CB	1F3CB FE0F	舉重	weight_lifting	F081D|1F3CB 1F3FB,F081E|1F3CB 1F3FC,F081F|1F3CB 1F3FD,F0820|1F3CB 1F3FE,F0821|1F3CB 1F3FF
+人物與身體	F00C1	1F3CB FE0F 200D 2642 FE0F	男生舉重	weight_lifting_man	F0822|1F3CB 1F3FB 200D 2642 FE0F,F0823|1F3CB 1F3FC 200D 2642 FE0F,F0824|1F3CB 1F3FD 200D 2642 FE0F,F0825|1F3CB 1F3FE 200D 2642 FE0F,F0826|1F3CB 1F3FF 200D 2642 FE0F
+人物與身體	F00C2	1F3CB FE0F 200D 2640 FE0F	女生舉重	weight_lifting_woman	F0827|1F3CB 1F3FB 200D 2640 FE0F,F0828|1F3CB 1F3FC 200D 2640 FE0F,F0829|1F3CB 1F3FD 200D 2640 FE0F,F082A|1F3CB 1F3FE 200D 2640 FE0F,F082B|1F3CB 1F3FF 200D 2640 FE0F
+人物與身體	1F6B4	1F6B4	騎自行車	bicyclist	F082C|1F6B4 1F3FB,F082D|1F6B4 1F3FC,F082E|1F6B4 1F3FD,F082F|1F6B4 1F3FE,F0830|1F6B4 1F3FF
+人物與身體	F00C3	1F6B4 200D 2642 FE0F	男自行車手	biking_man	F0831|1F6B4 1F3FB 200D 2642 FE0F,F0832|1F6B4 1F3FC 200D 2642 FE0F,F0833|1F6B4 1F3FD 200D 2642 FE0F,F0834|1F6B4 1F3FE 200D 2642 FE0F,F0835|1F6B4 1F3FF 200D 2642 FE0F
+人物與身體	F00C4	1F6B4 200D 2640 FE0F	女自行車手	biking_woman	F0836|1F6B4 1F3FB 200D 2640 FE0F,F0837|1F6B4 1F3FC 200D 2640 FE0F,F0838|1F6B4 1F3FD 200D 2640 FE0F,F0839|1F6B4 1F3FE 200D 2640 FE0F,F083A|1F6B4 1F3FF 200D 2640 FE0F
+人物與身體	1F6B5	1F6B5	騎登山車	mountain_bicyclist	F083B|1F6B5 1F3FB,F083C|1F6B5 1F3FC,F083D|1F6B5 1F3FD,F083E|1F6B5 1F3FE,F083F|1F6B5 1F3FF
+人物與身體	F00C5	1F6B5 200D 2642 FE0F	男登山車手	mountain_biking_man	F0840|1F6B5 1F3FB 200D 2642 FE0F,F0841|1F6B5 1F3FC 200D 2642 FE0F,F0842|1F6B5 1F3FD 200D 2642 FE0F,F0843|1F6B5 1F3FE 200D 2642 FE0F,F0844|1F6B5 1F3FF 200D 2642 FE0F
+人物與身體	F00C6	1F6B5 200D 2640 FE0F	女登山車手	mountain_biking_woman	F0845|1F6B5 1F3FB 200D 2640 FE0F,F0846|1F6B5 1F3FC 200D 2640 FE0F,F0847|1F6B5 1F3FD 200D 2640 FE0F,F0848|1F6B5 1F3FE 200D 2640 FE0F,F0849|1F6B5 1F3FF 200D 2640 FE0F
+人物與身體	1F938	1F938	側翻	cartwheeling	F084A|1F938 1F3FB,F084B|1F938 1F3FC,F084C|1F938 1F3FD,F084D|1F938 1F3FE,F084E|1F938 1F3FF
+人物與身體	F00C7	1F938 200D 2642 FE0F	男生側翻	man_cartwheeling	F084F|1F938 1F3FB 200D 2642 FE0F,F0850|1F938 1F3FC 200D 2642 FE0F,F0851|1F938 1F3FD 200D 2642 FE0F,F0852|1F938 1F3FE 200D 2642 FE0F,F0853|1F938 1F3FF 200D 2642 FE0F
+人物與身體	F00C8	1F938 200D 2640 FE0F	女生側翻	woman_cartwheeling	F0854|1F938 1F3FB 200D 2640 FE0F,F0855|1F938 1F3FC 200D 2640 FE0F,F0856|1F938 1F3FD 200D 2640 FE0F,F0857|1F938 1F3FE 200D 2640 FE0F,F0858|1F938 1F3FF 200D 2640 FE0F
+人物與身體	1F93C	1F93C	摔角手	wrestling	F0859|1F93C 1F3FB,F085A|1F93C 1F3FC,F085B|1F93C 1F3FD,F085C|1F93C 1F3FE,F085D|1F93C 1F3FF
+人物與身體	F00C9	1F93C 200D 2642 FE0F	男子摔角	men_wrestling	F085E|1F93C 1F3FB 200D 2642 FE0F,F085F|1F93C 1F3FC 200D 2642 FE0F,F0860|1F93C 1F3FD 200D 2642 FE0F,F0861|1F93C 1F3FE 200D 2642 FE0F,F0862|1F93C 1F3FF 200D 2642 FE0F
+人物與身體	F00CA	1F93C 200D 2640 FE0F	女子摔角	women_wrestling	F0863|1F93C 1F3FB 200D 2640 FE0F,F0864|1F93C 1F3FC 200D 2640 FE0F,F0865|1F93C 1F3FD 200D 2640 FE0F,F0866|1F93C 1F3FE 200D 2640 FE0F,F0867|1F93C 1F3FF 200D 2640 FE0F
+人物與身體	1F93D	1F93D	水球運動	water_polo	F0868|1F93D 1F3FB,F0869|1F93D 1F3FC,F086A|1F93D 1F3FD,F086B|1F93D 1F3FE,F086C|1F93D 1F3FF
+人物與身體	F00CB	1F93D 200D 2642 FE0F	男生打水球	man_playing_water_polo	F086D|1F93D 1F3FB 200D 2642 FE0F,F086E|1F93D 1F3FC 200D 2642 FE0F,F086F|1F93D 1F3FD 200D 2642 FE0F,F0870|1F93D 1F3FE 200D 2642 FE0F,F0871|1F93D 1F3FF 200D 2642 FE0F
+人物與身體	F00CC	1F93D 200D 2640 FE0F	女生打水球	woman_playing_water_polo	F0872|1F93D 1F3FB 200D 2640 FE0F,F0873|1F93D 1F3FC 200D 2640 FE0F,F0874|1F93D 1F3FD 200D 2640 FE0F,F0875|1F93D 1F3FE 200D 2640 FE0F,F0876|1F93D 1F3FF 200D 2640 FE0F
+人物與身體	1F93E	1F93E	手球	handball_person	F0877|1F93E 1F3FB,F0878|1F93E 1F3FC,F0879|1F93E 1F3FD,F087A|1F93E 1F3FE,F087B|1F93E 1F3FF
+人物與身體	F00CD	1F93E 200D 2642 FE0F	男生打手球	man_playing_handball	F087C|1F93E 1F3FB 200D 2642 FE0F,F087D|1F93E 1F3FC 200D 2642 FE0F,F087E|1F93E 1F3FD 200D 2642 FE0F,F087F|1F93E 1F3FE 200D 2642 FE0F,F0880|1F93E 1F3FF 200D 2642 FE0F
+人物與身體	F00CE	1F93E 200D 2640 FE0F	女生打手球	woman_playing_handball	F0881|1F93E 1F3FB 200D 2640 FE0F,F0882|1F93E 1F3FC 200D 2640 FE0F,F0883|1F93E 1F3FD 200D 2640 FE0F,F0884|1F93E 1F3FE 200D 2640 FE0F,F0885|1F93E 1F3FF 200D 2640 FE0F
+人物與身體	1F939	1F939	雜耍	juggling_person	F0886|1F939 1F3FB,F0887|1F939 1F3FC,F0888|1F939 1F3FD,F0889|1F939 1F3FE,F088A|1F939 1F3FF
+人物與身體	F00CF	1F939 200D 2642 FE0F	男生玩雜耍	man_juggling	F088B|1F939 1F3FB 200D 2642 FE0F,F088C|1F939 1F3FC 200D 2642 FE0F,F088D|1F939 1F3FD 200D 2642 FE0F,F088E|1F939 1F3FE 200D 2642 FE0F,F088F|1F939 1F3FF 200D 2642 FE0F
+人物與身體	F00D0	1F939 200D 2640 FE0F	女生玩雜耍	woman_juggling	F0890|1F939 1F3FB 200D 2640 FE0F,F0891|1F939 1F3FC 200D 2640 FE0F,F0892|1F939 1F3FD 200D 2640 FE0F,F0893|1F939 1F3FE 200D 2640 FE0F,F0894|1F939 1F3FF 200D 2640 FE0F
+人物與身體	1F9D8	1F9D8	盤坐	lotus_position	F0895|1F9D8 1F3FB,F0896|1F9D8 1F3FC,F0897|1F9D8 1F3FD,F0898|1F9D8 1F3FE,F0899|1F9D8 1F3FF
+人物與身體	F00D1	1F9D8 200D 2642 FE0F	盤坐男子	lotus_position_man	F089A|1F9D8 1F3FB 200D 2642 FE0F,F089B|1F9D8 1F3FC 200D 2642 FE0F,F089C|1F9D8 1F3FD 200D 2642 FE0F,F089D|1F9D8 1F3FE 200D 2642 FE0F,F089E|1F9D8 1F3FF 200D 2642 FE0F
+人物與身體	F00D2	1F9D8 200D 2640 FE0F	盤坐女子	lotus_position_woman	F089F|1F9D8 1F3FB 200D 2640 FE0F,F08A0|1F9D8 1F3FC 200D 2640 FE0F,F08A1|1F9D8 1F3FD 200D 2640 FE0F,F08A2|1F9D8 1F3FE 200D 2640 FE0F,F08A3|1F9D8 1F3FF 200D 2640 FE0F
+人物與身體	1F6C0	1F6C0	盆浴	bath	F08A4|1F6C0 1F3FB,F08A5|1F6C0 1F3FC,F08A6|1F6C0 1F3FD,F08A7|1F6C0 1F3FE,F08A8|1F6C0 1F3FF
+人物與身體	1F6CC	1F6CC	睡覺	sleeping_bed	F08A9|1F6CC 1F3FB,F08AA|1F6CC 1F3FC,F08AB|1F6CC 1F3FD,F08AC|1F6CC 1F3FE,F08AD|1F6CC 1F3FF
+人物與身體	F00D3	1F9D1 200D 1F91D 200D 1F9D1	握手的人	people_holding_hands	F08AE|1F9D1 1F3FB 200D 1F91D 200D 1F9D1 1F3FB,F08AF|1F9D1 1F3FC 200D 1F91D 200D 1F9D1 1F3FC,F08B0|1F9D1 1F3FD 200D 1F91D 200D 1F9D1 1F3FD,F08B1|1F9D1 1F3FE 200D 1F91D 200D 1F9D1 1F3FE,F08B2|1F9D1 1F3FF 200D 1F91D 200D 1F9D1 1F3FF
+人物與身體	1F46D	1F46D	兩個女人	two_women_holding_hands	F08B3|1F46D 1F3FB,F08B4|1F46D 1F3FC,F08B5|1F46D 1F3FD,F08B6|1F46D 1F3FE,F08B7|1F46D 1F3FF
+人物與身體	1F46B	1F46B	一男一女	couple	F08B8|1F46B 1F3FB,F08B9|1F46B 1F3FC,F08BA|1F46B 1F3FD,F08BB|1F46B 1F3FE,F08BC|1F46B 1F3FF
+人物與身體	1F46C	1F46C	兩個男人	two_men_holding_hands	F08BD|1F46C 1F3FB,F08BE|1F46C 1F3FC,F08BF|1F46C 1F3FD,F08C0|1F46C 1F3FE,F08C1|1F46C 1F3FF
+人物與身體	1F48F	1F48F	親	couplekiss	F08C2|1F48F 1F3FB,F08C3|1F48F 1F3FC,F08C4|1F48F 1F3FD,F08C5|1F48F 1F3FE,F08C6|1F48F 1F3FF
+人物與身體	F00D4	1F469 200D 2764 FE0F 200D 1F48B 200D 1F468	親：女人 男人	couplekiss_man_woman	F08C7|1F469 1F3FB 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FB,F08C8|1F469 1F3FC 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FC,F08C9|1F469 1F3FD 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FD,F08CA|1F469 1F3FE 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FE,F08CB|1F469 1F3FF 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FF
+人物與身體	F00D5	1F468 200D 2764 FE0F 200D 1F48B 200D 1F468	親：男人 男人	couplekiss_man_man	F08CC|1F468 1F3FB 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FB,F08CD|1F468 1F3FC 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FC,F08CE|1F468 1F3FD 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FD,F08CF|1F468 1F3FE 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FE,F08D0|1F468 1F3FF 200D 2764 FE0F 200D 1F48B 200D 1F468 1F3FF
+人物與身體	F00D6	1F469 200D 2764 FE0F 200D 1F48B 200D 1F469	親：女人 女人	couplekiss_woman_woman	F08D1|1F469 1F3FB 200D 2764 FE0F 200D 1F48B 200D 1F469 1F3FB,F08D2|1F469 1F3FC 200D 2764 FE0F 200D 1F48B 200D 1F469 1F3FC,F08D3|1F469 1F3FD 200D 2764 FE0F 200D 1F48B 200D 1F469 1F3FD,F08D4|1F469 1F3FE 200D 2764 FE0F 200D 1F48B 200D 1F469 1F3FE,F08D5|1F469 1F3FF 200D 2764 FE0F 200D 1F48B 200D 1F469 1F3FF
+人物與身體	1F491	1F491	相愛	couple_with_heart	F08D6|1F491 1F3FB,F08D7|1F491 1F3FC,F08D8|1F491 1F3FD,F08D9|1F491 1F3FE,F08DA|1F491 1F3FF
+人物與身體	F00D7	1F469 200D 2764 FE0F 200D 1F468	相愛：女人 男人	couple_with_heart_woman_man	F08DB|1F469 1F3FB 200D 2764 FE0F 200D 1F468 1F3FB,F08DC|1F469 1F3FC 200D 2764 FE0F 200D 1F468 1F3FC,F08DD|1F469 1F3FD 200D 2764 FE0F 200D 1F468 1F3FD,F08DE|1F469 1F3FE 200D 2764 FE0F 200D 1F468 1F3FE,F08DF|1F469 1F3FF 200D 2764 FE0F 200D 1F468 1F3FF
+人物與身體	F00D8	1F468 200D 2764 FE0F 200D 1F468	相愛：男人 男人	couple_with_heart_man_man	F08E0|1F468 1F3FB 200D 2764 FE0F 200D 1F468 1F3FB,F08E1|1F468 1F3FC 200D 2764 FE0F 200D 1F468 1F3FC,F08E2|1F468 1F3FD 200D 2764 FE0F 200D 1F468 1F3FD,F08E3|1F468 1F3FE 200D 2764 FE0F 200D 1F468 1F3FE,F08E4|1F468 1F3FF 200D 2764 FE0F 200D 1F468 1F3FF
+人物與身體	F00D9	1F469 200D 2764 FE0F 200D 1F469	相愛：女人 女人	couple_with_heart_woman_woman	F08E5|1F469 1F3FB 200D 2764 FE0F 200D 1F469 1F3FB,F08E6|1F469 1F3FC 200D 2764 FE0F 200D 1F469 1F3FC,F08E7|1F469 1F3FD 200D 2764 FE0F 200D 1F469 1F3FD,F08E8|1F469 1F3FE 200D 2764 FE0F 200D 1F469 1F3FE,F08E9|1F469 1F3FF 200D 2764 FE0F 200D 1F469 1F3FF
+人物與身體	F00DA	1F468 200D 1F469 200D 1F466	家庭：男人 女人 男孩	family_man_woman_boy	
+人物與身體	F00DB	1F468 200D 1F469 200D 1F467	家庭：男人 女人 女孩	family_man_woman_girl	
+人物與身體	F00DC	1F468 200D 1F469 200D 1F467 200D 1F466	家庭：男人 女人 女孩 男孩	family_man_woman_girl_boy	
+人物與身體	F00DD	1F468 200D 1F469 200D 1F466 200D 1F466	家庭：男人 女人 男孩 男孩	family_man_woman_boy_boy	
+人物與身體	F00DE	1F468 200D 1F469 200D 1F467 200D 1F467	家庭：男人 女人 女孩 女孩	family_man_woman_girl_girl	
+人物與身體	F00DF	1F468 200D 1F468 200D 1F466	家庭：男人 男人 男孩	family_man_man_boy	
+人物與身體	F00E0	1F468 200D 1F468 200D 1F467	家庭：男人 男人 女孩	family_man_man_girl	
+人物與身體	F00E1	1F468 200D 1F468 200D 1F467 200D 1F466	家庭：男人 男人 女孩 男孩	family_man_man_girl_boy	
+人物與身體	F00E2	1F468 200D 1F468 200D 1F466 200D 1F466	家庭：男人 男人 男孩 男孩	family_man_man_boy_boy	
+人物與身體	F00E3	1F468 200D 1F468 200D 1F467 200D 1F467	家庭：男人 男人 女孩 女孩	family_man_man_girl_girl	
+人物與身體	F00E4	1F469 200D 1F469 200D 1F466	家庭：女人 女人 男孩	family_woman_woman_boy	
+人物與身體	F00E5	1F469 200D 1F469 200D 1F467	家庭：女人 女人 女孩	family_woman_woman_girl	
+人物與身體	F00E6	1F469 200D 1F469 200D 1F467 200D 1F466	家庭：女人 女人 女孩 男孩	family_woman_woman_girl_boy	
+人物與身體	F00E7	1F469 200D 1F469 200D 1F466 200D 1F466	家庭：女人 女人 男孩 男孩	family_woman_woman_boy_boy	
+人物與身體	F00E8	1F469 200D 1F469 200D 1F467 200D 1F467	家庭：女人 女人 女孩 女孩	family_woman_woman_girl_girl	
+人物與身體	F00E9	1F468 200D 1F466	家庭：男人 男孩	family_man_boy	
+人物與身體	F00EA	1F468 200D 1F466 200D 1F466	家庭：男人 男孩 男孩	family_man_boy_boy	
+人物與身體	F00EB	1F468 200D 1F467	家庭：男人 女孩	family_man_girl	
+人物與身體	F00EC	1F468 200D 1F467 200D 1F466	家庭：男人 女孩 男孩	family_man_girl_boy	
+人物與身體	F00ED	1F468 200D 1F467 200D 1F467	家庭：男人 女孩 女孩	family_man_girl_girl	
+人物與身體	F00EE	1F469 200D 1F466	家庭：女人 男孩	family_woman_boy	
+人物與身體	F00EF	1F469 200D 1F466 200D 1F466	家庭：女人 男孩 男孩	family_woman_boy_boy	
+人物與身體	F00F0	1F469 200D 1F467	家庭：女人 女孩	family_woman_girl	
+人物與身體	F00F1	1F469 200D 1F467 200D 1F466	家庭：女人 女孩 男孩	family_woman_girl_boy	
+人物與身體	F00F2	1F469 200D 1F467 200D 1F467	家庭：女人 女孩 女孩	family_woman_girl_girl	
+人物與身體	1F5E3	1F5E3 FE0F	說話的人影	speaking_head	
+人物與身體	1F464	1F464	肖像剪影	bust_in_silhouette	
+人物與身體	1F465	1F465	雙人肖像剪影	busts_in_silhouette	
+人物與身體	1FAC2	1FAC2	擁抱的人	people_hugging	
+人物與身體	1F46A	1F46A	家庭	family	
+人物與身體	F00F3	1F9D1 200D 1F9D1 200D 1F9D2	家庭：兩大一小		
+人物與身體	F00F4	1F9D1 200D 1F9D1 200D 1F9D2 200D 1F9D2	家庭：兩大兩小		
+人物與身體	F00F5	1F9D1 200D 1F9D2	家庭：一大一小		
+人物與身體	F00F6	1F9D1 200D 1F9D2 200D 1F9D2	家庭：一大兩小		
+人物與身體	1F463	1F463	腳印	footprints	
+人物與身體	1FAC6	1FAC6	指紋		
+動物與自然	1F435	1F435	猴子頭	monkey_face	
+動物與自然	1F412	1F412	猴子	monkey	
+動物與自然	1F98D	1F98D	大猩猩	gorilla	
+動物與自然	1F9A7	1F9A7	猩猩	orangutan	
+動物與自然	1F436	1F436	狗頭	dog	
+動物與自然	1F415	1F415	狗	dog2	
+動物與自然	1F9AE	1F9AE	導盲犬	guide_dog	
+動物與自然	F00F7	1F415 200D 1F9BA	服務犬	service_dog	
+動物與自然	1F429	1F429	貴賓犬	poodle	
+動物與自然	1F43A	1F43A	狼	wolf	
+動物與自然	1F98A	1F98A	狐狸	fox_face	
+動物與自然	1F99D	1F99D	浣熊	raccoon	
+動物與自然	1F431	1F431	貓頭	cat	
+動物與自然	1F408	1F408	貓	cat2	
+動物與自然	F00F8	1F408 200D 2B1B	黑貓	black_cat	
+動物與自然	1F981	1F981	獅子	lion	
+動物與自然	1F42F	1F42F	老虎頭	tiger	
+動物與自然	1F405	1F405	老虎	tiger2	
+動物與自然	1F406	1F406	花豹	leopard	
+動物與自然	1F434	1F434	馬頭	horse	
+動物與自然	1FACE	1FACE	麋鹿	moose	
+動物與自然	1FACF	1FACF	驢	donkey	
+動物與自然	1F40E	1F40E	馬	racehorse	
+動物與自然	1F984	1F984	獨角獸	unicorn	
+動物與自然	1F993	1F993	斑馬	zebra	
+動物與自然	1F98C	1F98C	鹿	deer	
+動物與自然	1F9AC	1F9AC	野牛	bison	
+動物與自然	1F42E	1F42E	牛頭	cow	
+動物與自然	1F402	1F402	公牛	ox	
+動物與自然	1F403	1F403	水牛	water_buffalo	
+動物與自然	1F404	1F404	乳牛	cow2	
+動物與自然	1F437	1F437	豬頭	pig	
+動物與自然	1F416	1F416	豬	pig2	
+動物與自然	1F417	1F417	野豬	boar	
+動物與自然	1F43D	1F43D	豬鼻子	pig_nose	
+動物與自然	1F40F	1F40F	公羊	ram	
+動物與自然	1F411	1F411	綿羊	sheep	
+動物與自然	1F410	1F410	山羊	goat	
+動物與自然	1F42A	1F42A	單峰駱駝	dromedary_camel	
+動物與自然	1F42B	1F42B	雙峰駱駝	camel	
+動物與自然	1F999	1F999	羊駝	llama	
+動物與自然	1F992	1F992	長頸鹿	giraffe	
+動物與自然	1F418	1F418	大象	elephant	
+動物與自然	1F9A3	1F9A3	毛象	mammoth	
+動物與自然	1F98F	1F98F	犀牛	rhinoceros	
+動物與自然	1F99B	1F99B	河馬	hippopotamus	
+動物與自然	1F42D	1F42D	老鼠頭	mouse	
+動物與自然	1F401	1F401	小老鼠	mouse2	
+動物與自然	1F400	1F400	老鼠	rat	
+動物與自然	1F439	1F439	倉鼠	hamster	
+動物與自然	1F430	1F430	兔子頭	rabbit	
+動物與自然	1F407	1F407	兔子	rabbit2	
+動物與自然	1F43F	1F43F FE0F	松鼠	chipmunk	
+動物與自然	1F9AB	1F9AB	海狸	beaver	
+動物與自然	1F994	1F994	刺蝟	hedgehog	
+動物與自然	1F987	1F987	蝙蝠	bat	
+動物與自然	1F43B	1F43B	熊	bear	
+動物與自然	F00F9	1F43B 200D 2744 FE0F	北極熊	polar_bear	
+動物與自然	1F428	1F428	無尾熊	koala	
+動物與自然	1F43C	1F43C	熊貓	panda_face	
+動物與自然	1F9A5	1F9A5	樹懶	sloth	
+動物與自然	1F9A6	1F9A6	水獺	otter	
+動物與自然	1F9A8	1F9A8	臭鼬	skunk	
+動物與自然	1F998	1F998	袋鼠	kangaroo	
+動物與自然	1F9A1	1F9A1	獾	badger	
+動物與自然	1F43E	1F43E	動物腳印	feet	
+動物與自然	1F983	1F983	火雞	turkey	
+動物與自然	1F414	1F414	雞	chicken	
+動物與自然	1F413	1F413	公雞	rooster	
+動物與自然	1F423	1F423	小雞破蛋	hatching_chick	
+動物與自然	1F424	1F424	小雞的臉	baby_chick	
+動物與自然	1F425	1F425	小雞	hatched_chick	
+動物與自然	1F426	1F426	鳥	bird	
+動物與自然	1F427	1F427	企鵝	penguin	
+動物與自然	1F54A	1F54A FE0F	飛鳥	dove	
+動物與自然	1F985	1F985	老鷹	eagle	
+動物與自然	1F986	1F986	鴨子	duck	
+動物與自然	1F9A2	1F9A2	天鵝	swan	
+動物與自然	1F989	1F989	貓頭鷹	owl	
+動物與自然	1F9A4	1F9A4	渡渡鳥	dodo	
+動物與自然	1FAB6	1FAB6	羽毛	feather	
+動物與自然	1F9A9	1F9A9	紅鶴	flamingo	
+動物與自然	1F99A	1F99A	孔雀	peacock	
+動物與自然	1F99C	1F99C	鸚鵡	parrot	
+動物與自然	1FABD	1FABD	翅膀	wing	
+動物與自然	F00FA	1F426 200D 2B1B	黑鳥	black_bird	
+動物與自然	1FABF	1FABF	鵝	goose	
+動物與自然	F00FB	1F426 200D 1F525	鳳凰		
+動物與自然	1F438	1F438	青蛙	frog	
+動物與自然	1F40A	1F40A	鱷魚	crocodile	
+動物與自然	1F422	1F422	烏龜	turtle	
+動物與自然	1F98E	1F98E	蜥蜴	lizard	
+動物與自然	1F40D	1F40D	蛇	snake	
+動物與自然	1F432	1F432	龍頭	dragon_face	
+動物與自然	1F409	1F409	龍	dragon	
+動物與自然	1F995	1F995	蜥腳類恐龍	sauropod	
+動物與自然	1F996	1F996	暴龍	t-rex	
+動物與自然	1F433	1F433	鯨魚	whale	
+動物與自然	1F40B	1F40B	藍鯨	whale2	
+動物與自然	1F42C	1F42C	海豚	dolphin	
+動物與自然	1FACD	1FACD	虎鯨		
+動物與自然	1F9AD	1F9AD	海豹	seal	
+動物與自然	1F41F	1F41F	魚	fish	
+動物與自然	1F420	1F420	熱帶魚	tropical_fish	
+動物與自然	1F421	1F421	河豚	blowfish	
+動物與自然	1F988	1F988	鯊魚	shark	
+動物與自然	1F419	1F419	章魚	octopus	
+動物與自然	1F41A	1F41A	海螺	shell	
+動物與自然	1FAB8	1FAB8	珊瑚	coral	
+動物與自然	1FABC	1FABC	水母	jellyfish	
+動物與自然	1F980	1F980	螃蟹	crab	
+動物與自然	1F99E	1F99E	龍蝦	lobster	
+動物與自然	1F990	1F990	蝦子	shrimp	
+動物與自然	1F991	1F991	魷魚	squid	
+動物與自然	1F9AA	1F9AA	牡蠣	oyster	
+動物與自然	1F40C	1F40C	蝸牛	snail	
+動物與自然	1F98B	1F98B	蝴蝶	butterfly	
+動物與自然	1F41B	1F41B	毛毛蟲	bug	
+動物與自然	1F41C	1F41C	螞蟻	ant	
+動物與自然	1F41D	1F41D	蜜蜂	bee	
+動物與自然	1FAB2	1FAB2	甲蟲	beetle	
+動物與自然	1F41E	1F41E	瓢蟲	lady_beetle	
+動物與自然	1F997	1F997	蟋蟀	cricket	
+動物與自然	1FAB3	1FAB3	蟑螂	cockroach	
+動物與自然	1F577	1F577 FE0F	蜘蛛	spider	
+動物與自然	1F578	1F578 FE0F	蜘蛛網	spider_web	
+動物與自然	1F982	1F982	蠍子	scorpion	
+動物與自然	1F99F	1F99F	蚊子	mosquito	
+動物與自然	1FAB0	1FAB0	蒼蠅	fly	
+動物與自然	1FAB1	1FAB1	蠕蟲	worm	
+動物與自然	1F9A0	1F9A0	微生物	microbe	
+動物與自然	1F490	1F490	花束	bouquet	
+動物與自然	1F338	1F338	櫻花	cherry_blossom	
+動物與自然	1F4AE	1F4AE	白花	white_flower	
+動物與自然	1FAB7	1FAB7	蓮花	lotus	
+動物與自然	1F3F5	1F3F5 FE0F	花朵	rosette	
+動物與自然	1F339	1F339	玫瑰	rose	
+動物與自然	1F940	1F940	枯萎花朵	wilted_flower	
+動物與自然	1F33A	1F33A	芙蓉	hibiscus	
+動物與自然	1F33B	1F33B	向日葵	sunflower	
+動物與自然	1F33C	1F33C	開花	blossom	
+動物與自然	1F337	1F337	鬱金香	tulip	
+動物與自然	1FABB	1FABB	風信子	hyacinth	
+動物與自然	1F331	1F331	苗	seedling	
+動物與自然	1FAB4	1FAB4	盆景	potted_plant	
+動物與自然	1F332	1F332	常青樹	evergreen_tree	
+動物與自然	1F333	1F333	落葉樹	deciduous_tree	
+動物與自然	1F334	1F334	棕櫚樹	palm_tree	
+動物與自然	1F335	1F335	仙人掌	cactus	
+動物與自然	1F33E	1F33E	水稻	ear_of_rice	
+動物與自然	1F33F	1F33F	草藥	herb	
+動物與自然	F00FC	2618 FE0F	三葉草	shamrock	
+動物與自然	1F340	1F340	幸運草	four_leaf_clover	
+動物與自然	1F341	1F341	楓葉	maple_leaf	
+動物與自然	1F342	1F342	落葉	fallen_leaf	
+動物與自然	1F343	1F343	隨風飄落的葉子	leaves	
+動物與自然	1FAB9	1FAB9	空巢	empty_nest	
+動物與自然	1FABA	1FABA	有蛋的巢	nest_with_eggs	
+動物與自然	1F344	1F344	蘑菇	mushroom	
+動物與自然	1FABE	1FABE	沒有葉子的樹		
+食物與飲料	1F347	1F347	葡萄	grapes	
+食物與飲料	1F348	1F348	瓜	melon	
+食物與飲料	1F349	1F349	西瓜	watermelon	
+食物與飲料	1F34A	1F34A	橘子	mandarin	
+食物與飲料	1F34B	1F34B	檸檬	lemon	
+食物與飲料	F00FD	1F34B 200D 1F7E9	萊姆		
+食物與飲料	1F34C	1F34C	香蕉	banana	
+食物與飲料	1F34D	1F34D	鳳梨	pineapple	
+食物與飲料	1F96D	1F96D	芒果	mango	
+食物與飲料	1F34E	1F34E	紅蘋果	apple	
+食物與飲料	1F34F	1F34F	青蘋果	green_apple	
+食物與飲料	1F350	1F350	梨子	pear	
+食物與飲料	1F351	1F351	桃子	peach	
+食物與飲料	1F352	1F352	櫻桃	cherries	
+食物與飲料	1F353	1F353	草莓	strawberry	
+食物與飲料	1FAD0	1FAD0	藍莓	blueberries	
+食物與飲料	1F95D	1F95D	奇異果	kiwi_fruit	
+食物與飲料	1F345	1F345	番茄	tomato	
+食物與飲料	1FAD2	1FAD2	橄欖	olive	
+食物與飲料	1F965	1F965	椰子	coconut	
+食物與飲料	1F951	1F951	酪梨	avocado	
+食物與飲料	1F346	1F346	茄子	eggplant	
+食物與飲料	1F954	1F954	馬鈴薯	potato	
+食物與飲料	1F955	1F955	胡蘿蔔	carrot	
+食物與飲料	1F33D	1F33D	玉米	corn	
+食物與飲料	1F336	1F336 FE0F	辣椒	hot_pepper	
+食物與飲料	1FAD1	1FAD1	甜椒	bell_pepper	
+食物與飲料	1F952	1F952	小黃瓜	cucumber	
+食物與飲料	1F96C	1F96C	綠葉蔬菜	leafy_green	
+食物與飲料	1F966	1F966	花椰菜	broccoli	
+食物與飲料	1F9C4	1F9C4	大蒜	garlic	
+食物與飲料	1F9C5	1F9C5	洋蔥	onion	
+食物與飲料	1F95C	1F95C	花生	peanuts	
+食物與飲料	1FAD8	1FAD8	豆子	beans	
+食物與飲料	1F330	1F330	栗子	chestnut	
+食物與飲料	1FADA	1FADA	薑	ginger_root	
+食物與飲料	1FADB	1FADB	豌豆莢	pea_pod	
+食物與飲料	F00FE	1F344 200D 1F7EB	棕色蕈菇		
+食物與飲料	1FADC	1FADC	根莖類蔬菜		
+食物與飲料	1F35E	1F35E	吐司	bread	
+食物與飲料	1F950	1F950	可頌	croissant	
+食物與飲料	1F956	1F956	法國麵包	baguette_bread	
+食物與飲料	1FAD3	1FAD3	麵餅	flatbread	
+食物與飲料	1F968	1F968	蝴蝶餅	pretzel	
+食物與飲料	1F96F	1F96F	貝果	bagel	
+食物與飲料	1F95E	1F95E	鬆餅	pancakes	
+食物與飲料	1F9C7	1F9C7	格子鬆餅	waffle	
+食物與飲料	1F9C0	1F9C0	起士	cheese	
+食物與飲料	1F356	1F356	排骨	meat_on_bone	
+食物與飲料	1F357	1F357	雞腿	poultry_leg	
+食物與飲料	1F969	1F969	肉片	cut_of_meat	
+食物與飲料	1F953	1F953	培根	bacon	
+食物與飲料	1F354	1F354	漢堡	hamburger	
+食物與飲料	1F35F	1F35F	薯條	fries	
+食物與飲料	1F355	1F355	披薩	pizza	
+食物與飲料	1F32D	1F32D	熱狗	hotdog	
+食物與飲料	1F96A	1F96A	三明治	sandwich	
+食物與飲料	1F32E	1F32E	夾餅	taco	
+食物與飲料	1F32F	1F32F	捲餅	burrito	
+食物與飲料	1FAD4	1FAD4	玉米粉蒸肉	tamale	
+食物與飲料	1F959	1F959	薄捲餅	stuffed_flatbread	
+食物與飲料	1F9C6	1F9C6	油炸鷹嘴豆餅	falafel	
+食物與飲料	1F95A	1F95A	蛋	egg	
+食物與飲料	1F373	1F373	煎蛋	fried_egg	
+食物與飲料	1F958	1F958	淺鍋料理	shallow_pan_of_food	
+食物與飲料	1F372	1F372	火鍋	stew	
+食物與飲料	1FAD5	1FAD5	涮製菜餚	fondue	
+食物與飲料	1F963	1F963	碗和湯匙	bowl_with_spoon	
+食物與飲料	1F957	1F957	生菜沙拉	green_salad	
+食物與飲料	1F37F	1F37F	爆米花	popcorn	
+食物與飲料	1F9C8	1F9C8	奶油	butter	
+食物與飲料	1F9C2	1F9C2	鹽	salt	
+食物與飲料	1F96B	1F96B	罐頭食品	canned_food	
+食物與飲料	1F371	1F371	便當	bento	
+食物與飲料	1F358	1F358	米果	rice_cracker	
+食物與飲料	1F359	1F359	飯糰	rice_ball	
+食物與飲料	1F35A	1F35A	米飯	rice	
+食物與飲料	1F35B	1F35B	咖哩飯	curry	
+食物與飲料	1F35C	1F35C	湯麵	ramen	
+食物與飲料	1F35D	1F35D	義大利麵	spaghetti	
+食物與飲料	1F360	1F360	烤地瓜	sweet_potato	
+食物與飲料	1F362	1F362	關東煮	oden	
+食物與飲料	1F363	1F363	壽司	sushi	
+食物與飲料	1F364	1F364	天婦羅	fried_shrimp	
+食物與飲料	1F365	1F365	魚板	fish_cake	
+食物與飲料	1F96E	1F96E	月餅	moon_cake	
+食物與飲料	1F361	1F361	糥米丸子	dango	
+食物與飲料	1F95F	1F95F	水餃	dumpling	
+食物與飲料	1F960	1F960	幸運餅乾	fortune_cookie	
+食物與飲料	1F961	1F961	外帶餐盒	takeout_box	
+食物與飲料	1F366	1F366	霜淇淋	icecream	
+食物與飲料	1F367	1F367	刨冰	shaved_ice	
+食物與飲料	1F368	1F368	冰淇淋	ice_cream	
+食物與飲料	1F369	1F369	甜甜圈	doughnut	
+食物與飲料	1F36A	1F36A	餅乾	cookie	
+食物與飲料	1F382	1F382	生日蛋糕	birthday	
+食物與飲料	1F370	1F370	蛋糕	cake	
+食物與飲料	1F9C1	1F9C1	杯子蛋糕	cupcake	
+食物與飲料	1F967	1F967	派	pie	
+食物與飲料	1F36B	1F36B	巧克力	chocolate_bar	
+食物與飲料	1F36C	1F36C	糖	candy	
+食物與飲料	1F36D	1F36D	棒棒糖	lollipop	
+食物與飲料	1F36E	1F36E	卡士達	custard	
+食物與飲料	1F36F	1F36F	蜂蜜	honey_pot	
+食物與飲料	1F37C	1F37C	奶瓶	baby_bottle	
+食物與飲料	1F95B	1F95B	一杯牛奶	milk_glass	
+食物與飲料	2615	2615	熱飲	coffee	
+食物與飲料	1FAD6	1FAD6	茶壺	teapot	
+食物與飲料	1F375	1F375	熱茶	tea	
+食物與飲料	1F376	1F376	清酒	sake	
+食物與飲料	1F37E	1F37E	洋酒	champagne	
+食物與飲料	1F377	1F377	葡萄酒	wine_glass	
+食物與飲料	1F378	1F378	雞尾酒	cocktail	
+食物與飲料	1F379	1F379	熱帶水果飲料	tropical_drink	
+食物與飲料	1F37A	1F37A	啤酒	beer	
+食物與飲料	1F37B	1F37B	乾杯吧	beers	
+食物與飲料	1F942	1F942	乾杯	clinking_glasses	
+食物與飲料	1F943	1F943	威士忌杯	tumbler_glass	
+食物與飲料	1FAD7	1FAD7	倒出液體	pouring_liquid	
+食物與飲料	1F964	1F964	杯子和吸管	cup_with_straw	
+食物與飲料	1F9CB	1F9CB	珍珠奶茶	bubble_tea	
+食物與飲料	1F9C3	1F9C3	鋁箔包	beverage_box	
+食物與飲料	1F9C9	1F9C9	瑪黛茶	mate	
+食物與飲料	1F9CA	1F9CA	冰塊	ice_cube	
+食物與飲料	1F962	1F962	筷子	chopsticks	
+食物與飲料	1F37D	1F37D FE0F	餐具	plate_with_cutlery	
+食物與飲料	1F374	1F374	刀叉	fork_and_knife	
+食物與飲料	1F944	1F944	湯匙	spoon	
+食物與飲料	1F52A	1F52A	菜刀	hocho	
+食物與飲料	1FAD9	1FAD9	廣口瓶	jar	
+食物與飲料	1F3FA	1F3FA	陶罐	amphora	
+旅遊與地點	1F30D	1F30D	歐洲及非洲	earth_africa	
+旅遊與地點	1F30E	1F30E	美洲	earth_americas	
+旅遊與地點	1F30F	1F30F	亞洲及澳洲	earth_asia	
+旅遊與地點	1F310	1F310	子午線	globe_with_meridians	
+旅遊與地點	1F5FA	1F5FA FE0F	世界地圖	world_map	
+旅遊與地點	1F5FE	1F5FE	日本	japan	
+旅遊與地點	1F9ED	1F9ED	指南針	compass	
+旅遊與地點	1F3D4	1F3D4 FE0F	雪山	mountain_snow	
+旅遊與地點	F00FF	26F0 FE0F	山	mountain	
+旅遊與地點	1F6D8	1F6D8	山崩		
+旅遊與地點	1F30B	1F30B	火山	volcano	
+旅遊與地點	1F5FB	1F5FB	富士山	mount_fuji	
+旅遊與地點	1F3D5	1F3D5 FE0F	露營	camping	
+旅遊與地點	1F3D6	1F3D6 FE0F	海灘陽傘	beach_umbrella	
+旅遊與地點	1F3DC	1F3DC FE0F	沙漠	desert	
+旅遊與地點	1F3DD	1F3DD FE0F	熱帶小島	desert_island	
+旅遊與地點	1F3DE	1F3DE FE0F	國家公園	national_park	
+旅遊與地點	1F3DF	1F3DF FE0F	競技場	stadium	
+旅遊與地點	1F3DB	1F3DB FE0F	古典建築	classical_building	
+旅遊與地點	1F3D7	1F3D7 FE0F	施工中	building_construction	
+旅遊與地點	1F9F1	1F9F1	磚塊	bricks	
+旅遊與地點	1FAA8	1FAA8	石頭	rock	
+旅遊與地點	1FAB5	1FAB5	木頭	wood	
+旅遊與地點	1F6D6	1F6D6	小屋	hut	
+旅遊與地點	1F3D8	1F3D8 FE0F	房屋建築	houses	
+旅遊與地點	1F3DA	1F3DA FE0F	廢墟	derelict_house	
+旅遊與地點	1F3E0	1F3E0	房子	house	
+旅遊與地點	1F3E1	1F3E1	別墅	house_with_garden	
+旅遊與地點	1F3E2	1F3E2	辦公大樓	office	
+旅遊與地點	1F3E3	1F3E3	日本郵局	post_office	
+旅遊與地點	1F3E4	1F3E4	歐洲郵局	european_post_office	
+旅遊與地點	1F3E5	1F3E5	醫院	hospital	
+旅遊與地點	1F3E6	1F3E6	銀行	bank	
+旅遊與地點	1F3E8	1F3E8	旅館	hotel	
+旅遊與地點	1F3E9	1F3E9	賓館	love_hotel	
+旅遊與地點	1F3EA	1F3EA	便利商店	convenience_store	
+旅遊與地點	1F3EB	1F3EB	學校	school	
+旅遊與地點	1F3EC	1F3EC	百貨公司	department_store	
+旅遊與地點	1F3ED	1F3ED	工廠	factory	
+旅遊與地點	1F3EF	1F3EF	日式城堡	japanese_castle	
+旅遊與地點	1F3F0	1F3F0	歐式城堡	european_castle	
+旅遊與地點	1F492	1F492	婚禮	wedding	
+旅遊與地點	1F5FC	1F5FC	東京鐵塔	tokyo_tower	
+旅遊與地點	1F5FD	1F5FD	自由女神	statue_of_liberty	
+旅遊與地點	26EA	26EA	教堂	church	
+旅遊與地點	1F54C	1F54C	清真寺	mosque	
+旅遊與地點	1F6D5	1F6D5	印度廟	hindu_temple	
+旅遊與地點	1F54D	1F54D	猶太教堂	synagogue	
+旅遊與地點	F0100	26E9 FE0F	神社	shinto_shrine	
+旅遊與地點	1F54B	1F54B	天房	kaaba	
+旅遊與地點	26F2	26F2	噴泉	fountain	
+旅遊與地點	26FA	26FA	帳篷	tent	
+旅遊與地點	1F301	1F301	霧	foggy	
+旅遊與地點	1F303	1F303	星空	night_with_stars	
+旅遊與地點	1F3D9	1F3D9 FE0F	都市風景	cityscape	
+旅遊與地點	1F304	1F304	日出	sunrise_over_mountains	
+旅遊與地點	1F305	1F305	旭日	sunrise	
+旅遊與地點	1F306	1F306	黃昏	city_sunset	
+旅遊與地點	1F307	1F307	夕陽	city_sunrise	
+旅遊與地點	1F309	1F309	夜橋	bridge_at_night	
+旅遊與地點	F0101	2668 FE0F	溫泉	hotsprings	
+旅遊與地點	1F3A0	1F3A0	旋轉木馬	carousel_horse	
+旅遊與地點	1F6DD	1F6DD	溜滑梯	playground_slide	
+旅遊與地點	1F3A1	1F3A1	摩天輪	ferris_wheel	
+旅遊與地點	1F3A2	1F3A2	雲霄飛車	roller_coaster	
+旅遊與地點	1F488	1F488	理髮店	barber	
+旅遊與地點	1F3AA	1F3AA	馬戲團	circus_tent	
+旅遊與地點	1F682	1F682	蒸汽火車	steam_locomotive	
+旅遊與地點	1F683	1F683	有軌電車	railway_car	
+旅遊與地點	1F684	1F684	高鐵	bullettrain_side	
+旅遊與地點	1F685	1F685	高鐡車頭	bullettrain_front	
+旅遊與地點	1F686	1F686	火車	train2	
+旅遊與地點	1F687	1F687	地鐵	metro	
+旅遊與地點	1F688	1F688	輕軌	light_rail	
+旅遊與地點	1F689	1F689	車站	station	
+旅遊與地點	1F68A	1F68A	路面電車	tram	
+旅遊與地點	1F69D	1F69D	單軌	monorail	
+旅遊與地點	1F69E	1F69E	山區鐵路	mountain_railway	
+旅遊與地點	1F68B	1F68B	電纜車	train	
+旅遊與地點	1F68C	1F68C	公車	bus	
+旅遊與地點	1F68D	1F68D	公共汽車	oncoming_bus	
+旅遊與地點	1F68E	1F68E	無軌電車	trolleybus	
+旅遊與地點	1F690	1F690	小型巴士	minibus	
+旅遊與地點	1F691	1F691	救護車	ambulance	
+旅遊與地點	1F692	1F692	消防車	fire_engine	
+旅遊與地點	1F693	1F693	警車	police_car	
+旅遊與地點	1F694	1F694	警察車	oncoming_police_car	
+旅遊與地點	1F695	1F695	計程車	taxi	
+旅遊與地點	1F696	1F696	小黃	oncoming_taxi	
+旅遊與地點	1F697	1F697	汽車	car	
+旅遊與地點	1F698	1F698	轎車	oncoming_automobile	
+旅遊與地點	1F699	1F699	休旅車	blue_car	
+旅遊與地點	1F6FB	1F6FB	皮卡車	pickup_truck	
+旅遊與地點	1F69A	1F69A	貨車	truck	
+旅遊與地點	1F69B	1F69B	卡車	articulated_lorry	
+旅遊與地點	1F69C	1F69C	拖弋機	tractor	
+旅遊與地點	1F3CE	1F3CE FE0F	賽車	racing_car	
+旅遊與地點	1F3CD	1F3CD FE0F	機車	motorcycle	
+旅遊與地點	1F6F5	1F6F5	摩托車	motor_scooter	
+旅遊與地點	1F9BD	1F9BD	輪椅	manual_wheelchair	
+旅遊與地點	1F9BC	1F9BC	電動輪椅	motorized_wheelchair	
+旅遊與地點	1F6FA	1F6FA	嘟嘟車	auto_rickshaw	
+旅遊與地點	1F6B2	1F6B2	自行車	bike	
+旅遊與地點	1F6F4	1F6F4	滑板車	kick_scooter	
+旅遊與地點	1F6F9	1F6F9	滑板	skateboard	
+旅遊與地點	1F6FC	1F6FC	輪式溜冰鞋	roller_skate	
+旅遊與地點	1F68F	1F68F	公車站	busstop	
+旅遊與地點	1F6E3	1F6E3 FE0F	高速公路	motorway	
+旅遊與地點	1F6E4	1F6E4 FE0F	鐵軌	railway_track	
+旅遊與地點	1F6E2	1F6E2 FE0F	油桶	oil_drum	
+旅遊與地點	26FD	26FD	加油站	fuelpump	
+旅遊與地點	1F6DE	1F6DE	輪子	wheel	
+旅遊與地點	1F6A8	1F6A8	警車燈	rotating_light	
+旅遊與地點	1F6A5	1F6A5	紅綠燈	traffic_light	
+旅遊與地點	1F6A6	1F6A6	直式紅綠燈	vertical_traffic_light	
+旅遊與地點	1F6D1	1F6D1	停止標誌	stop_sign	
+旅遊與地點	1F6A7	1F6A7	施工	construction	
+旅遊與地點	2693	2693	錨	anchor	
+旅遊與地點	1F6DF	1F6DF	救生圈	ring_buoy	
+旅遊與地點	26F5	26F5	帆船	boat	
+旅遊與地點	1F6F6	1F6F6	獨木舟	canoe	
+旅遊與地點	1F6A4	1F6A4	快艇	speedboat	
+旅遊與地點	1F6F3	1F6F3 FE0F	客船	passenger_ship	
+旅遊與地點	F0102	26F4 FE0F	渡輪	ferry	
+旅遊與地點	1F6E5	1F6E5 FE0F	汽艇	motor_boat	
+旅遊與地點	1F6A2	1F6A2	船	ship	
+旅遊與地點	F0103	2708 FE0F	飛機	airplane	
+旅遊與地點	1F6E9	1F6E9 FE0F	小飛機	small_airplane	
+旅遊與地點	1F6EB	1F6EB	飛機起飛	flight_departure	
+旅遊與地點	1F6EC	1F6EC	飛機著陸	flight_arrival	
+旅遊與地點	1FA82	1FA82	降落傘	parachute	
+旅遊與地點	1F4BA	1F4BA	座位	seat	
+旅遊與地點	1F681	1F681	直升機	helicopter	
+旅遊與地點	1F69F	1F69F	懸索鐵路	suspension_railway	
+旅遊與地點	1F6A0	1F6A0	纜車	mountain_cableway	
+旅遊與地點	1F6A1	1F6A1	空中纜車	aerial_tramway	
+旅遊與地點	1F6F0	1F6F0 FE0F	衛星	artificial_satellite	
+旅遊與地點	1F680	1F680	火箭	rocket	
+旅遊與地點	1F6F8	1F6F8	飛碟	flying_saucer	
+旅遊與地點	1F6CE	1F6CE FE0F	服務鈴	bellhop_bell	
+旅遊與地點	1F9F3	1F9F3	行李	luggage	
+旅遊與地點	231B	231B	沙漏	hourglass	
+旅遊與地點	23F3	23F3	流動的沙漏	hourglass_flowing_sand	
+旅遊與地點	231A	231A	手錶	watch	
+旅遊與地點	23F0	23F0	鬧鐘	alarm_clock	
+旅遊與地點	F0104	23F1 FE0F	碼錶	stopwatch	
+旅遊與地點	F0105	23F2 FE0F	計時器	timer_clock	
+旅遊與地點	1F570	1F570 FE0F	座鐘	mantelpiece_clock	
+旅遊與地點	1F55B	1F55B	十二點	clock12	
+旅遊與地點	1F567	1F567	十二點半	clock1230	
+旅遊與地點	1F550	1F550	一點	clock1	
+旅遊與地點	1F55C	1F55C	一點半	clock130	
+旅遊與地點	1F551	1F551	兩點	clock2	
+旅遊與地點	1F55D	1F55D	兩點半	clock230	
+旅遊與地點	1F552	1F552	三點	clock3	
+旅遊與地點	1F55E	1F55E	三點半	clock330	
+旅遊與地點	1F553	1F553	四點	clock4	
+旅遊與地點	1F55F	1F55F	四點半	clock430	
+旅遊與地點	1F554	1F554	五點	clock5	
+旅遊與地點	1F560	1F560	五點半	clock530	
+旅遊與地點	1F555	1F555	六點	clock6	
+旅遊與地點	1F561	1F561	六點半	clock630	
+旅遊與地點	1F556	1F556	七點	clock7	
+旅遊與地點	1F562	1F562	七點半	clock730	
+旅遊與地點	1F557	1F557	八點	clock8	
+旅遊與地點	1F563	1F563	八點半	clock830	
+旅遊與地點	1F558	1F558	九點	clock9	
+旅遊與地點	1F564	1F564	九點半	clock930	
+旅遊與地點	1F559	1F559	十點	clock10	
+旅遊與地點	1F565	1F565	十點半	clock1030	
+旅遊與地點	1F55A	1F55A	十一點	clock11	
+旅遊與地點	1F566	1F566	十一點半	clock1130	
+旅遊與地點	1F311	1F311	新月	new_moon	
+旅遊與地點	1F312	1F312	眉形新月	waxing_crescent_moon	
+旅遊與地點	1F313	1F313	上弦月	first_quarter_moon	
+旅遊與地點	1F314	1F314	盈凸月	moon	
+旅遊與地點	1F315	1F315	滿月	full_moon	
+旅遊與地點	1F316	1F316	虧凸月	waning_gibbous_moon	
+旅遊與地點	1F317	1F317	下弦月	last_quarter_moon	
+旅遊與地點	1F318	1F318	眉形殘月	waning_crescent_moon	
+旅遊與地點	1F319	1F319	彎月	crescent_moon	
+旅遊與地點	1F31A	1F31A	月亮公公	new_moon_with_face	
+旅遊與地點	1F31B	1F31B	彎月臉朝左	first_quarter_moon_with_face	
+旅遊與地點	1F31C	1F31C	彎月臉朝右	last_quarter_moon_with_face	
+旅遊與地點	1F321	1F321 FE0F	溫度計	thermometer	
+旅遊與地點	F0106	2600 FE0F	太陽	sunny	
+旅遊與地點	1F31D	1F31D	微笑的滿月	full_moon_with_face	
+旅遊與地點	1F31E	1F31E	微笑的太陽	sun_with_face	
+旅遊與地點	1FA90	1FA90	帶行星環的行星	ringed_planet	
+旅遊與地點	2B50	2B50	星星	star	
+旅遊與地點	1F31F	1F31F	閃爍的星星	star2	
+旅遊與地點	1F320	1F320	流星	stars	
+旅遊與地點	1F30C	1F30C	銀河	milky_way	
+旅遊與地點	F0107	2601 FE0F	雲	cloud	
+旅遊與地點	26C5	26C5	陰天	partly_sunny	
+旅遊與地點	F0108	26C8 FE0F	雷雨	cloud_with_lightning_and_rain	
+旅遊與地點	1F324	1F324 FE0F	晴偶有雲	sun_behind_small_cloud	
+旅遊與地點	1F325	1F325 FE0F	晴時多雲	sun_behind_large_cloud	
+旅遊與地點	1F326	1F326 FE0F	晴時有雨	sun_behind_rain_cloud	
+旅遊與地點	1F327	1F327 FE0F	雨天	cloud_with_rain	
+旅遊與地點	1F328	1F328 FE0F	下雪	cloud_with_snow	
+旅遊與地點	1F329	1F329 FE0F	閃電	cloud_with_lightning	
+旅遊與地點	1F32A	1F32A FE0F	龍捲風	tornado	
+旅遊與地點	1F32B	1F32B FE0F	有霧	fog	
+旅遊與地點	1F32C	1F32C FE0F	刮風	wind_face	
+旅遊與地點	1F300	1F300	颱風	cyclone	
+旅遊與地點	1F308	1F308	彩虹	rainbow	
+旅遊與地點	1F302	1F302	收合的傘	closed_umbrella	
+旅遊與地點	F0109	2602 FE0F	雨傘	open_umbrella	
+旅遊與地點	2614	2614	雨中的傘	umbrella	
+旅遊與地點	F010A	26F1 FE0F	遮陽傘	parasol_on_ground	
+旅遊與地點	26A1	26A1	高壓電	zap	
+旅遊與地點	F010B	2744 FE0F	雪花	snowflake	
+旅遊與地點	F010C	2603 FE0F	雪中的雪人	snowman_with_snow	
+旅遊與地點	26C4	26C4	雪人	snowman	
+旅遊與地點	F010D	2604 FE0F	慧星	comet	
+旅遊與地點	1F525	1F525	火	fire	
+旅遊與地點	1F4A7	1F4A7	水滴	droplet	
+旅遊與地點	1F30A	1F30A	波浪	ocean	
+活動	1F383	1F383	南瓜燈	jack_o_lantern	
+活動	1F384	1F384	聖誕樹	christmas_tree	
+活動	1F386	1F386	爆竹	fireworks	
+活動	1F387	1F387	煙花	sparkler	
+活動	1F9E8	1F9E8	鞭炮	firecracker	
+活動	2728	2728	閃爍	sparkles	
+活動	1F388	1F388	氣球	balloon	
+活動	1F389	1F389	拉炮	tada	
+活動	1F38A	1F38A	五彩紙屑	confetti_ball	
+活動	1F38B	1F38B	七夕	tanabata_tree	
+活動	1F38D	1F38D	盆栽	bamboo	
+活動	1F38E	1F38E	女兒節	dolls	
+活動	1F38F	1F38F	鯉魚旗	flags	
+活動	1F390	1F390	風鈴	wind_chime	
+活動	1F391	1F391	賞月	rice_scene	
+活動	1F9E7	1F9E7	紅包	red_envelope	
+活動	1F380	1F380	蝴蝶結	ribbon	
+活動	1F381	1F381	禮物	gift	
+活動	1F397	1F397 FE0F	黃絲帶	reminder_ribbon	
+活動	1F39F	1F39F FE0F	入場券	tickets	
+活動	1F3AB	1F3AB	門票	ticket	
+活動	1F396	1F396 FE0F	軍事獎章	medal_military	
+活動	1F3C6	1F3C6	獎盃	trophy	
+活動	1F3C5	1F3C5	獎牌	medal_sports	
+活動	1F947	1F947	金牌	1st_place_medal	
+活動	1F948	1F948	銀牌	2nd_place_medal	
+活動	1F949	1F949	銅牌	3rd_place_medal	
+活動	26BD	26BD	足球	soccer	
+活動	26BE	26BE	棒球	baseball	
+活動	1F94E	1F94E	壘球	softball	
+活動	1F3C0	1F3C0	籃球	basketball	
+活動	1F3D0	1F3D0	排球	volleyball	
+活動	1F3C8	1F3C8	美式足球	football	
+活動	1F3C9	1F3C9	橄欖球	rugby_football	
+活動	1F3BE	1F3BE	網球	tennis	
+活動	1F94F	1F94F	飛盤	flying_disc	
+活動	1F3B3	1F3B3	保齡球	bowling	
+活動	1F3CF	1F3CF	板球	cricket_game	
+活動	1F3D1	1F3D1	曲棍球	field_hockey	
+活動	1F3D2	1F3D2	冰上曲棍球	ice_hockey	
+活動	1F94D	1F94D	袋棍球	lacrosse	
+活動	1F3D3	1F3D3	桌球	ping_pong	
+活動	1F3F8	1F3F8	羽毛球	badminton	
+活動	1F94A	1F94A	拳擊手套	boxing_glove	
+活動	1F94B	1F94B	道服	martial_arts_uniform	
+活動	1F945	1F945	球門	goal_net	
+活動	26F3	26F3	高爾夫	golf	
+活動	F010E	26F8 FE0F	溜冰鞋	ice_skate	
+活動	1F3A3	1F3A3	釣魚	fishing_pole_and_fish	
+活動	1F93F	1F93F	潛水面罩	diving_mask	
+活動	1F3BD	1F3BD	運動服	running_shirt_with_sash	
+活動	1F3BF	1F3BF	滑雪	ski	
+活動	1F6F7	1F6F7	雪橇	sled	
+活動	1F94C	1F94C	冰石壺	curling_stone	
+活動	1F3AF	1F3AF	命中	dart	
+活動	1FA80	1FA80	溜溜球	yo_yo	
+活動	1FA81	1FA81	風箏	kite	
+活動	1F52B	1F52B	水槍	gun	
+活動	1F3B1	1F3B1	撞球	8ball	
+活動	1F52E	1F52E	水晶球	crystal_ball	
+活動	1FA84	1FA84	魔杖	magic_wand	
+活動	1F3AE	1F3AE	電玩	video_game	
+活動	1F579	1F579 FE0F	搖桿	joystick	
+活動	1F3B0	1F3B0	吃角子老虎	slot_machine	
+活動	1F3B2	1F3B2	骰子	game_die	
+活動	1F9E9	1F9E9	拼圖	jigsaw	
+活動	1F9F8	1F9F8	泰迪熊	teddy_bear	
+活動	1FA85	1FA85	皮納塔	pinata	
+活動	1FAA9	1FAA9	鏡面球	mirror_ball	
+活動	1FA86	1FA86	俄羅斯娃娃	nesting_dolls	
+活動	F010F	2660 FE0F	黑桃	spades	
+活動	F0110	2665 FE0F	紅心	hearts	
+活動	F0111	2666 FE0F	方塊	diamonds	
+活動	F0112	2663 FE0F	梅花	clubs	
+活動	F0113	265F FE0F	卒	chess_pawn	
+活動	1F0CF	1F0CF	鬼牌	black_joker	
+活動	1F004	1F004	紅中	mahjong	
+活動	1F3B4	1F3B4	花牌	flower_playing_cards	
+活動	1F3AD	1F3AD	戲劇	performing_arts	
+活動	1F5BC	1F5BC FE0F	裱框畫	framed_picture	
+活動	1F3A8	1F3A8	調色板	art	
+活動	1F9F5	1F9F5	線	thread	
+活動	1FAA1	1FAA1	裁縫針	sewing_needle	
+活動	1F9F6	1F9F6	毛線球	yarn	
+活動	1FAA2	1FAA2	繩結	knot	
+物品	1F453	1F453	眼鏡	eyeglasses	
+物品	1F576	1F576 FE0F	太陽眼鏡	dark_sunglasses	
+物品	1F97D	1F97D	蛙鏡	goggles	
+物品	1F97C	1F97C	實驗袍	lab_coat	
+物品	1F9BA	1F9BA	救生衣	safety_vest	
+物品	1F454	1F454	領帶	necktie	
+物品	1F455	1F455	T恤	shirt	
+物品	1F456	1F456	牛仔褲	jeans	
+物品	1F9E3	1F9E3	圍巾	scarf	
+物品	1F9E4	1F9E4	手套	gloves	
+物品	1F9E5	1F9E5	外套	coat	
+物品	1F9E6	1F9E6	襪子	socks	
+物品	1F457	1F457	洋裝	dress	
+物品	1F458	1F458	和服	kimono	
+物品	1F97B	1F97B	莎麗服	sari	
+物品	1FA71	1FA71	一件式泳裝	one_piece_swimsuit	
+物品	1FA72	1FA72	泳褲	swim_brief	
+物品	1FA73	1FA73	短泳褲	shorts	
+物品	1F459	1F459	比基尼	bikini	
+物品	1F45A	1F45A	女裝	womans_clothes	
+物品	1FAAD	1FAAD	摺扇	folding_hand_fan	
+物品	1F45B	1F45B	錢包	purse	
+物品	1F45C	1F45C	手提包	handbag	
+物品	1F45D	1F45D	手拿包	pouch	
+物品	1F6CD	1F6CD FE0F	紙袋	shopping	
+物品	1F392	1F392	書包	school_satchel	
+物品	1FA74	1FA74	人字拖	thong_sandal	
+物品	1F45E	1F45E	皮鞋	mans_shoe	
+物品	1F45F	1F45F	運動鞋	athletic_shoe	
+物品	1F97E	1F97E	登山靴	hiking_boot	
+物品	1F97F	1F97F	平底鞋	flat_shoe	
+物品	1F460	1F460	高跟鞋	high_heel	
+物品	1F461	1F461	涼鞋	sandal	
+物品	1FA70	1FA70	芭蕾舞鞋	ballet_shoes	
+物品	1F462	1F462	靴子	boot	
+物品	1FAAE	1FAAE	梳子	hair_pick	
+物品	1F451	1F451	皇冠	crown	
+物品	1F452	1F452	帽子	womans_hat	
+物品	1F3A9	1F3A9	禮帽	tophat	
+物品	1F393	1F393	畢業帽	mortar_board	
+物品	1F9E2	1F9E2	鴨舌帽	billed_cap	
+物品	1FA96	1FA96	頭盔	military_helmet	
+物品	F0114	26D1 FE0F	工程安全帽	rescue_worker_helmet	
+物品	1F4FF	1F4FF	項鍊	prayer_beads	
+物品	1F484	1F484	口紅	lipstick	
+物品	1F48D	1F48D	戒指	ring	
+物品	1F48E	1F48E	鑽石	gem	
+物品	1F507	1F507	關掉喇叭	mute	
+物品	1F508	1F508	喇叭	speaker	
+物品	1F509	1F509	低音量	sound	
+物品	1F50A	1F50A	高音量	loud_sound	
+物品	1F4E2	1F4E2	大聲公	loudspeaker	
+物品	1F4E3	1F4E3	擴音器	mega	
+物品	1F4EF	1F4EF	郵件通知	postal_horn	
+物品	1F514	1F514	鈴鐺	bell	
+物品	1F515	1F515	靜音	no_bell	
+物品	1F3BC	1F3BC	樂譜	musical_score	
+物品	1F3B5	1F3B5	音符	musical_note	
+物品	1F3B6	1F3B6	樂符	notes	
+物品	1F399	1F399 FE0F	錄音室麥克風	studio_microphone	
+物品	1F39A	1F39A FE0F	調整桿	level_slider	
+物品	1F39B	1F39B FE0F	控制旋鈕	control_knobs	
+物品	1F3A4	1F3A4	麥克風	microphone	
+物品	1F3A7	1F3A7	耳機	headphones	
+物品	1F4FB	1F4FB	收音機	radio	
+物品	1F3B7	1F3B7	薩克斯風	saxophone	
+物品	1F3BA	1F3BA	小號	trumpet	
+物品	1FA8A	1FA8A	長號		
+物品	1FA97	1FA97	手風琴	accordion	
+物品	1F3B8	1F3B8	吉他	guitar	
+物品	1F3B9	1F3B9	鋼琴	musical_keyboard	
+物品	1F3BB	1F3BB	小提琴	violin	
+物品	1FA95	1FA95	斑鳩琴	banjo	
+物品	1F941	1F941	鼓	drum	
+物品	1FA98	1FA98	長鼓	long_drum	
+物品	1FA87	1FA87	沙鈴	maracas	
+物品	1FA88	1FA88	長笛	flute	
+物品	1FA89	1FA89	豎琴		
+物品	1F4F1	1F4F1	手機	iphone	
+物品	1F4F2	1F4F2	接電話	calling	
+物品	F0115	260E FE0F	電話	phone	
+物品	1F4DE	1F4DE	聽筒	telephone_receiver	
+物品	1F4DF	1F4DF	呼叫器	pager	
+物品	1F4E0	1F4E0	傳真機	fax	
+物品	1F50B	1F50B	電池	battery	
+物品	1FAAB	1FAAB	電量不足	low_battery	
+物品	1F50C	1F50C	插頭	electric_plug	
+物品	1F4BB	1F4BB	筆電	computer	
+物品	1F5A5	1F5A5 FE0F	電腦	desktop_computer	
+物品	1F5A8	1F5A8 FE0F	印表機	printer	
+物品	F0116	2328 FE0F	鍵盤	keyboard	
+物品	1F5B1	1F5B1 FE0F	滑鼠	computer_mouse	
+物品	1F5B2	1F5B2 FE0F	軌跡球	trackball	
+物品	1F4BD	1F4BD	迷你光碟	minidisc	
+物品	1F4BE	1F4BE	磁碟片	floppy_disk	
+物品	1F4BF	1F4BF	光碟	cd	
+物品	1F4C0	1F4C0	DVD	dvd	
+物品	1F9EE	1F9EE	算盤	abacus	
+物品	1F3A5	1F3A5	電影攝影機	movie_camera	
+物品	1F39E	1F39E FE0F	電影膠卷	film_strip	
+物品	1F4FD	1F4FD FE0F	電影放映機	film_projector	
+物品	1F3AC	1F3AC	場記板	clapper	
+物品	1F4FA	1F4FA	電視	tv	
+物品	1F4F7	1F4F7	相機	camera	
+物品	1F4F8	1F4F8	開閃光燈	camera_flash	
+物品	1F4F9	1F4F9	攝影機	video_camera	
+物品	1F4FC	1F4FC	錄影帶	vhs	
+物品	1F50D	1F50D	向左的放大鏡	mag	
+物品	1F50E	1F50E	放大鏡	mag_right	
+物品	1F56F	1F56F FE0F	蠟燭	candle	
+物品	1F4A1	1F4A1	燈泡	bulb	
+物品	1F526	1F526	手電筒	flashlight	
+物品	1F3EE	1F3EE	燈籠	izakaya_lantern	
+物品	1FA94	1FA94	陶碗油燈	diya_lamp	
+物品	1F4D4	1F4D4	彩色封面的筆記本	notebook_with_decorative_cover	
+物品	1F4D5	1F4D5	合起來的書本	closed_book	
+物品	1F4D6	1F4D6	打開來的書本	book	
+物品	1F4D7	1F4D7	綠色的書本	green_book	
+物品	1F4D8	1F4D8	藍色的書本	blue_book	
+物品	1F4D9	1F4D9	橘色的書本	orange_book	
+物品	1F4DA	1F4DA	書本	books	
+物品	1F4D3	1F4D3	筆記本	notebook	
+物品	1F4D2	1F4D2	帳本	ledger	
+物品	1F4C3	1F4C3	文件檔	page_with_curl	
+物品	1F4DC	1F4DC	捲軸	scroll	
+物品	1F4C4	1F4C4	文件	page_facing_up	
+物品	1F4F0	1F4F0	報紙	newspaper	
+物品	1F5DE	1F5DE FE0F	捲好的報紙	newspaper_roll	
+物品	1F4D1	1F4D1	頁籤	bookmark_tabs	
+物品	1F516	1F516	書籤	bookmark	
+物品	1F3F7	1F3F7 FE0F	吊牌	label	
+物品	1FA99	1FA99	硬幣	coin	
+物品	1F4B0	1F4B0	錢袋	moneybag	
+物品	1FA8E	1FA8E	藏寶箱		
+物品	1F4B4	1F4B4	日幣	yen	
+物品	1F4B5	1F4B5	美金	dollar	
+物品	1F4B6	1F4B6	歐元	euro	
+物品	1F4B7	1F4B7	英鎊	pound	
+物品	1F4B8	1F4B8	錢飛了	money_with_wings	
+物品	1F4B3	1F4B3	信用卡	credit_card	
+物品	1F9FE	1F9FE	收據	receipt	
+物品	1F4B9	1F4B9	貨幣升值	chart	
+物品	F0117	2709 FE0F	郵件	envelope	
+物品	1F4E7	1F4E7	電子郵件	e-mail	
+物品	1F4E8	1F4E8	收到郵件	incoming_envelope	
+物品	1F4E9	1F4E9	寄出郵件	envelope_with_arrow	
+物品	1F4E4	1F4E4	寄件匣	outbox_tray	
+物品	1F4E5	1F4E5	收件匣	inbox_tray	
+物品	1F4E6	1F4E6	包裹	package	
+物品	1F4EB	1F4EB	有待收郵件	mailbox	
+物品	1F4EA	1F4EA	無待收郵件	mailbox_closed	
+物品	1F4EC	1F4EC	有新郵件	mailbox_with_mail	
+物品	1F4ED	1F4ED	沒有新郵件	mailbox_with_no_mail	
+物品	1F4EE	1F4EE	信箱	postbox	
+物品	1F5F3	1F5F3 FE0F	投票箱	ballot_box	
+物品	F0118	270F FE0F	鉛筆	pencil2	
+物品	F0119	2712 FE0F	鋼筆頭	black_nib	
+物品	1F58B	1F58B FE0F	鋼筆	fountain_pen	
+物品	1F58A	1F58A FE0F	筆	pen	
+物品	1F58C	1F58C FE0F	畫筆	paintbrush	
+物品	1F58D	1F58D FE0F	蠟筆	crayon	
+物品	1F4DD	1F4DD	備忘錄	memo	
+物品	1F4BC	1F4BC	公事包	briefcase	
+物品	1F4C1	1F4C1	資料夾	file_folder	
+物品	1F4C2	1F4C2	打開資料夾	open_file_folder	
+物品	1F5C2	1F5C2 FE0F	索引隔板	card_index_dividers	
+物品	1F4C5	1F4C5	行事曆	date	
+物品	1F4C6	1F4C6	日曆	calendar	
+物品	1F5D2	1F5D2 FE0F	線圈筆記本	spiral_notepad	
+物品	1F5D3	1F5D3 FE0F	線圈日曆	spiral_calendar	
+物品	1F4C7	1F4C7	索引卡	card_index	
+物品	1F4C8	1F4C8	漲	chart_with_upwards_trend	
+物品	1F4C9	1F4C9	跌	chart_with_downwards_trend	
+物品	1F4CA	1F4CA	圖表	bar_chart	
+物品	1F4CB	1F4CB	寫字夾板	clipboard	
+物品	1F4CC	1F4CC	圖釘	pushpin	
+物品	1F4CD	1F4CD	圓圖釘	round_pushpin	
+物品	1F4CE	1F4CE	迴紋針	paperclip	
+物品	1F587	1F587 FE0F	相連的回紋針	paperclips	
+物品	1F4CF	1F4CF	直尺	straight_ruler	
+物品	1F4D0	1F4D0	三角尺	triangular_ruler	
+物品	F011A	2702 FE0F	剪刀	scissors	
+物品	1F5C3	1F5C3 FE0F	卡片目錄盒	card_file_box	
+物品	1F5C4	1F5C4 FE0F	檔案櫃	file_cabinet	
+物品	1F5D1	1F5D1 FE0F	廢紙簍	wastebasket	
+物品	1F512	1F512	上鎖	lock	
+物品	1F513	1F513	開鎖	unlock	
+物品	1F50F	1F50F	鋼筆和鎖	lock_with_ink_pen	
+物品	1F510	1F510	鑰匙和鎖	closed_lock_with_key	
+物品	1F511	1F511	鑰匙	key	
+物品	1F5DD	1F5DD FE0F	老鑰匙	old_key	
+物品	1F528	1F528	鎚子	hammer	
+物品	1FA93	1FA93	斧頭	axe	
+物品	F011B	26CF FE0F	十字鎬	pick	
+物品	F011C	2692 FE0F	鎚子和十字鎬	hammer_and_pick	
+物品	1F6E0	1F6E0 FE0F	鎚子和扳手	hammer_and_wrench	
+物品	1F5E1	1F5E1 FE0F	匕首	dagger	
+物品	F011D	2694 FE0F	劍	crossed_swords	
+物品	1F4A3	1F4A3	炸彈	bomb	
+物品	1FA83	1FA83	迴力鏢	boomerang	
+物品	1F3F9	1F3F9	弓箭	bow_and_arrow	
+物品	1F6E1	1F6E1 FE0F	盾牌	shield	
+物品	1FA9A	1FA9A	木工鋸	carpentry_saw	
+物品	1F527	1F527	扳手	wrench	
+物品	1FA9B	1FA9B	螺絲起子	screwdriver	
+物品	1F529	1F529	螺絲	nut_and_bolt	
+物品	F011E	2699 FE0F	齒輪	gear	
+物品	1F5DC	1F5DC FE0F	壓縮機	clamp	
+物品	F011F	2696 FE0F	天平	balance_scale	
+物品	1F9AF	1F9AF	導盲手杖	probing_cane	
+物品	1F517	1F517	連結	link	
+物品	F0120	26D3 FE0F 200D 1F4A5	斷掉的鏈條		
+物品	F0121	26D3 FE0F	鍊條	chains	
+物品	1FA9D	1FA9D	鉤子	hook	
+物品	1F9F0	1F9F0	工具箱	toolbox	
+物品	1F9F2	1F9F2	磁鐵	magnet	
+物品	1FA9C	1FA9C	梯子	ladder	
+物品	1FA8F	1FA8F	鏟子		
+物品	F0122	2697 FE0F	蒸餾器	alembic	
+物品	1F9EA	1F9EA	試管	test_tube	
+物品	1F9EB	1F9EB	培養皿	petri_dish	
+物品	1F9EC	1F9EC	DNA	dna	
+物品	1F52C	1F52C	顯微鏡	microscope	
+物品	1F52D	1F52D	望遠鏡	telescope	
+物品	1F4E1	1F4E1	衛星天線	satellite	
+物品	1F489	1F489	針筒	syringe	
+物品	1FA78	1FA78	血滴	drop_of_blood	
+物品	1F48A	1F48A	藥丸	pill	
+物品	1FA79	1FA79	OK 繃	adhesive_bandage	
+物品	1FA7C	1FA7C	拐杖	crutch	
+物品	1FA7A	1FA7A	聽診器	stethoscope	
+物品	1FA7B	1FA7B	X 光	x_ray	
+物品	1F6AA	1F6AA	門	door	
+物品	1F6D7	1F6D7	電梯	elevator	
+物品	1FA9E	1FA9E	鏡子	mirror	
+物品	1FA9F	1FA9F	窗戶	window	
+物品	1F6CF	1F6CF FE0F	床	bed	
+物品	1F6CB	1F6CB FE0F	沙發和立燈	couch_and_lamp	
+物品	1FA91	1FA91	椅子	chair	
+物品	1F6BD	1F6BD	馬桶	toilet	
+物品	1FAA0	1FAA0	吸把	plunger	
+物品	1F6BF	1F6BF	淋浴	shower	
+物品	1F6C1	1F6C1	澡盆	bathtub	
+物品	1FAA4	1FAA4	捕鼠器	mouse_trap	
+物品	1FA92	1FA92	剃刀	razor	
+物品	1F9F4	1F9F4	乳液瓶	lotion_bottle	
+物品	1F9F7	1F9F7	安全別針	safety_pin	
+物品	1F9F9	1F9F9	掃帚	broom	
+物品	1F9FA	1F9FA	籃子	basket	
+物品	1F9FB	1F9FB	捲筒衛生紙	roll_of_paper	
+物品	1FAA3	1FAA3	水桶	bucket	
+物品	1F9FC	1F9FC	肥皂	soap	
+物品	1FAE7	1FAE7	泡泡	bubbles	
+物品	1FAA5	1FAA5	牙刷	toothbrush	
+物品	1F9FD	1F9FD	海綿	sponge	
+物品	1F9EF	1F9EF	滅火器	fire_extinguisher	
+物品	1F6D2	1F6D2	購物車	shopping_cart	
+物品	1F6AC	1F6AC	吸煙	smoking	
+物品	F0123	26B0 FE0F	棺木	coffin	
+物品	1FAA6	1FAA6	墓石	headstone	
+物品	F0124	26B1 FE0F	骨灰罈	funeral_urn	
+物品	1F9FF	1F9FF	邪眼	nazar_amulet	
+物品	1FAAC	1FAAC	法蒂瑪之手	hamsa	
+物品	1F5FF	1F5FF	復活節島	moyai	
+物品	1FAA7	1FAA7	告示牌	placard	
+物品	1FAAA	1FAAA	識別證	identification_card	
+符號	1F3E7	1F3E7	提款機	atm	
+符號	1F6AE	1F6AE	垃圾桶	put_litter_in_its_place	
+符號	1F6B0	1F6B0	飲用水	potable_water	
+符號	267F	267F	無障礙空間	wheelchair	
+符號	1F6B9	1F6B9	男廁	mens	
+符號	1F6BA	1F6BA	女廁	womens	
+符號	1F6BB	1F6BB	洗手間	restroom	
+符號	1F6BC	1F6BC	寶寶	baby_symbol	
+符號	1F6BE	1F6BE	廁所	wc	
+符號	1F6C2	1F6C2	護照查驗	passport_control	
+符號	1F6C3	1F6C3	海關	customs	
+符號	1F6C4	1F6C4	提取行李	baggage_claim	
+符號	1F6C5	1F6C5	寄存行李	left_luggage	
+符號	F0125	26A0 FE0F	警告	warning	
+符號	1F6B8	1F6B8	小心兒童	children_crossing	
+符號	26D4	26D4	禁止進入	no_entry	
+符號	1F6AB	1F6AB	禁止通行	no_entry_sign	
+符號	1F6B3	1F6B3	禁行自行車	no_bicycles	
+符號	1F6AD	1F6AD	禁止吸煙	no_smoking	
+符號	1F6AF	1F6AF	禁止亂丟垃圾	do_not_litter	
+符號	1F6B1	1F6B1	非飲用水	non-potable_water	
+符號	1F6B7	1F6B7	禁止行人通行	no_pedestrians	
+符號	1F4F5	1F4F5	禁用手機	no_mobile_phones	
+符號	1F51E	1F51E	未成年人不宜	underage	
+符號	F0126	2622 FE0F	放射性	radioactive	
+符號	F0127	2623 FE0F	危害生物	biohazard	
+符號	F0128	2B06 FE0F	向上箭頭	arrow_up	
+符號	F0129	2197 FE0F	右上箭頭	arrow_upper_right	
+符號	F012A	27A1 FE0F	向右箭頭	arrow_right	
+符號	F012B	2198 FE0F	右下箭頭	arrow_lower_right	
+符號	F012C	2B07 FE0F	向下箭頭	arrow_down	
+符號	F012D	2199 FE0F	左下箭頭	arrow_lower_left	
+符號	F012E	2B05 FE0F	向左箭頭	arrow_left	
+符號	F012F	2196 FE0F	左上箭頭	arrow_upper_left	
+符號	F0130	2195 FE0F	上下箭頭	arrow_up_down	
+符號	F0131	2194 FE0F	左右箭頭	left_right_arrow	
+符號	F0132	21A9 FE0F	向左彎的右箭頭	leftwards_arrow_with_hook	
+符號	F0133	21AA FE0F	向右彎的左箭頭	arrow_right_hook	
+符號	F0134	2934 FE0F	右上旋轉箭頭	arrow_heading_up	
+符號	F0135	2935 FE0F	右下旋轉箭頭	arrow_heading_down	
+符號	1F503	1F503	順時針方向	arrows_clockwise	
+符號	1F504	1F504	逆時針	arrows_counterclockwise	
+符號	1F519	1F519	返回	back	
+符號	1F51A	1F51A	結束	end	
+符號	1F51B	1F51B	ON	on	
+符號	1F51C	1F51C	馬上	soon	
+符號	1F51D	1F51D	置頂	top	
+符號	1F6D0	1F6D0	祈禱	place_of_worship	
+符號	F0136	269B FE0F	原子	atom_symbol	
+符號	1F549	1F549 FE0F	唵	om	
+符號	F0137	2721 FE0F	六芒星	star_of_david	
+符號	F0138	2638 FE0F	法輪	wheel_of_dharma	
+符號	F0139	262F FE0F	陰陽	yin_yang	
+符號	F013A	271D FE0F	拉丁十字架	latin_cross	
+符號	F013B	2626 FE0F	東正教十字架	orthodox_cross	
+符號	F013C	262A FE0F	伊斯蘭教星月	star_and_crescent	
+符號	F013D	262E FE0F	和平	peace_symbol	
+符號	1F54E	1F54E	猶太燭台	menorah	
+符號	1F52F	1F52F	六芒星加圓點	six_pointed_star	
+符號	1FAAF	1FAAF	堪達	khanda	
+符號	2648	2648	牡羊座	aries	
+符號	2649	2649	金牛座	taurus	
+符號	264A	264A	雙子座	gemini	
+符號	264B	264B	巨蟹座	cancer	
+符號	264C	264C	獅子座	leo	
+符號	264D	264D	處女座	virgo	
+符號	264E	264E	天秤座	libra	
+符號	264F	264F	天蠍座	scorpius	
+符號	2650	2650	射手座	sagittarius	
+符號	2651	2651	摩羯座	capricorn	
+符號	2652	2652	水瓶座	aquarius	
+符號	2653	2653	雙魚座	pisces	
+符號	26CE	26CE	蛇夫座	ophiuchus	
+符號	1F500	1F500	隨機播放	twisted_rightwards_arrows	
+符號	1F501	1F501	重複播放	repeat	
+符號	1F502	1F502	重複目前單曲	repeat_one	
+符號	F013E	25B6 FE0F	播放	arrow_forward	
+符號	23E9	23E9	向前快轉	fast_forward	
+符號	F013F	23ED FE0F	下一首	next_track_button	
+符號	F0140	23EF FE0F	播放或暫停	play_or_pause_button	
+符號	F0141	25C0 FE0F	倒轉	arrow_backward	
+符號	23EA	23EA	向後快轉	rewind	
+符號	F0142	23EE FE0F	上一首	previous_track_button	
+符號	1F53C	1F53C	向上	arrow_up_small	
+符號	23EB	23EB	快速向上	arrow_double_up	
+符號	1F53D	1F53D	向下	arrow_down_small	
+符號	23EC	23EC	快速向下	arrow_double_down	
+符號	F0143	23F8 FE0F	暫停	pause_button	
+符號	F0144	23F9 FE0F	停止播放	stop_button	
+符號	F0145	23FA FE0F	錄製	record_button	
+符號	F0146	23CF FE0F	退出	eject_button	
+符號	1F3A6	1F3A6	電影院	cinema	
+符號	1F505	1F505	低亮度	low_brightness	
+符號	1F506	1F506	高亮度	high_brightness	
+符號	1F4F6	1F4F6	訊號強弱	signal_strength	
+符號	1F6DC	1F6DC	無線	wireless	
+符號	1F4F3	1F4F3	震動模式	vibration_mode	
+符號	1F4F4	1F4F4	手機關機	mobile_phone_off	
+符號	F0147	2640 FE0F	女	female_sign	
+符號	F0148	2642 FE0F	男	male_sign	
+符號	F0149	26A7 FE0F	變性符號	transgender_symbol	
+符號	F014A	2716 FE0F	乘	heavy_multiplication_x	
+符號	2795	2795	加	heavy_plus_sign	
+符號	2796	2796	減	heavy_minus_sign	
+符號	2797	2797	除	heavy_division_sign	
+符號	1F7F0	1F7F0	粗體等號	heavy_equals_sign	
+符號	F014B	267E FE0F	無限大	infinity	
+符號	F014C	203C FE0F	雙驚嘆號	bangbang	
+符號	F014D	2049 FE0F	驚嘆號加問號	interrobang	
+符號	2753	2753	紅色問號	question	
+符號	2754	2754	白色問號	grey_question	
+符號	2755	2755	白色驚嘆號	grey_exclamation	
+符號	2757	2757	紅色驚嘆號	exclamation	
+符號	F014E	3030 FE0F	波浪線	wavy_dash	
+符號	1F4B1	1F4B1	貨幣兌換	currency_exchange	
+符號	1F4B2	1F4B2	貨幣符號	heavy_dollar_sign	
+符號	F014F	2695 FE0F	醫療符號	medical_symbol	
+符號	F0150	267B FE0F	回收	recycle	
+符號	F0151	269C FE0F	鳶尾花	fleur_de_lis	
+符號	1F531	1F531	三叉戟	trident	
+符號	1F4DB	1F4DB	名牌	name_badge	
+符號	1F530	1F530	日本初學者符號	beginner	
+符號	2B55	2B55	圓圈	o	
+符號	2705	2705	白色勾勾	white_check_mark	
+符號	F0152	2611 FE0F	勾選	ballot_box_with_check	
+符號	F0153	2714 FE0F	打勾	heavy_check_mark	
+符號	274C	274C	叉	x	
+符號	274E	274E	叉叉	negative_squared_cross_mark	
+符號	27B0	27B0	日本單環標誌	curly_loop	
+符號	27BF	27BF	日本免費電話標誌	loop	
+符號	F0154	303D FE0F	歌唱	part_alternation_mark	
+符號	F0155	2733 FE0F	八芒星	eight_spoked_asterisk	
+符號	F0156	2734 FE0F	八角星	eight_pointed_black_star	
+符號	F0157	2747 FE0F	火花	sparkle	
+符號	F0158	A9 FE0F	版權	copyright	
+符號	F0159	AE FE0F	註冊	registered	
+符號	F015A	2122 FE0F	商標	tm	
+符號	1FADF	1FADF	潑濺		
+符號	F015B	23 FE0F 20E3	按鍵：#	hash	
+符號	F015C	2A FE0F 20E3	按鍵：*	asterisk	
+符號	F015D	30 FE0F 20E3	按鍵：0	zero	
+符號	F015E	31 FE0F 20E3	按鍵：1	one	
+符號	F015F	32 FE0F 20E3	按鍵：2	two	
+符號	F0160	33 FE0F 20E3	按鍵：3	three	
+符號	F0161	34 FE0F 20E3	按鍵：4	four	
+符號	F0162	35 FE0F 20E3	按鍵：5	five	
+符號	F0163	36 FE0F 20E3	按鍵：6	six	
+符號	F0164	37 FE0F 20E3	按鍵：7	seven	
+符號	F0165	38 FE0F 20E3	按鍵：8	eight	
+符號	F0166	39 FE0F 20E3	按鍵：9	nine	
+符號	1F51F	1F51F	按鍵：10	keycap_ten	
+符號	1F520	1F520	大寫字母鍵	capital_abcd	
+符號	1F521	1F521	小寫字母鍵	abcd	
+符號	1F522	1F522	數字鍵	1234	
+符號	1F523	1F523	符號鍵	symbols	
+符號	1F524	1F524	拉丁字母鍵	abc	
+符號	1F170	1F170 FE0F	A型	a	
+符號	1F18E	1F18E	AB型	ab	
+符號	1F171	1F171 FE0F	B型	b	
+符號	1F191	1F191	CL	cl	
+符號	1F192	1F192	酷	cool	
+符號	1F193	1F193	免費	free	
+符號	F0167	2139 FE0F	資訊	information_source	
+符號	1F194	1F194	身分	id	
+符號	F0168	24C2 FE0F	M	m	
+符號	1F195	1F195	新	new	
+符號	1F196	1F196	NG	ng	
+符號	1F17E	1F17E FE0F	O型	o2	
+符號	1F197	1F197	好的	ok	
+符號	1F17F	1F17F FE0F	P	parking	
+符號	1F198	1F198	救命	sos	
+符號	1F199	1F199	UP	up	
+符號	1F19A	1F19A	對戰	vs	
+符號	1F201	1F201	日文KOKO	koko	
+符號	1F202	1F202 FE0F	日文服務區	sa	
+符號	1F237	1F237 FE0F	月	u6708	
+符號	1F236	1F236	有	u6709	
+符號	1F22F	1F22F	指	u6307	
+符號	1F250	1F250	得	ideograph_advantage	
+符號	1F239	1F239	割	u5272	
+符號	1F21A	1F21A	無	u7121	
+符號	1F232	1F232	禁	u7981	
+符號	1F251	1F251	可	accept	
+符號	1F238	1F238	申	u7533	
+符號	1F234	1F234	合	u5408	
+符號	1F233	1F233	空的	u7a7a	
+符號	F0169	3297 FE0F	祝	congratulations	
+符號	F016A	3299 FE0F	秘	secret	
+符號	1F23A	1F23A	營	u55b6	
+符號	1F235	1F235	滿	u6e80	
+符號	1F534	1F534	大紅色圓形	red_circle	
+符號	1F7E0	1F7E0	橘色圓形	orange_circle	
+符號	1F7E1	1F7E1	黃色圓形	yellow_circle	
+符號	1F7E2	1F7E2	綠色圓形	green_circle	
+符號	1F535	1F535	大藍色圓形	large_blue_circle	
+符號	1F7E3	1F7E3	紫色圓形	purple_circle	
+符號	1F7E4	1F7E4	褐色圓形	brown_circle	
+符號	26AB	26AB	黑色圓形	black_circle	
+符號	26AA	26AA	白色圓形	white_circle	
+符號	1F7E5	1F7E5	紅色方形	red_square	
+符號	1F7E7	1F7E7	橘色方形	orange_square	
+符號	1F7E8	1F7E8	黃色方形	yellow_square	
+符號	1F7E9	1F7E9	綠色方形	green_square	
+符號	1F7E6	1F7E6	藍色方形	blue_square	
+符號	1F7EA	1F7EA	紫色方形	purple_square	
+符號	1F7EB	1F7EB	褐色方形	brown_square	
+符號	2B1B	2B1B	黑色大方塊	black_large_square	
+符號	2B1C	2B1C	白色大方塊	white_large_square	
+符號	F016B	25FC FE0F	黑色中方塊	black_medium_square	
+符號	F016C	25FB FE0F	白色中方塊	white_medium_square	
+符號	25FE	25FE	黑色中小型方塊	black_medium_small_square	
+符號	25FD	25FD	白色中小型方塊	white_medium_small_square	
+符號	F016D	25AA FE0F	黑色小方塊	black_small_square	
+符號	F016E	25AB FE0F	白色小方塊	white_small_square	
+符號	1F536	1F536	大橙色菱形	large_orange_diamond	
+符號	1F537	1F537	大藍色菱形	large_blue_diamond	
+符號	1F538	1F538	小橙色菱形	small_orange_diamond	
+符號	1F539	1F539	小藍色菱形	small_blue_diamond	
+符號	1F53A	1F53A	向上紅色三角	small_red_triangle	
+符號	1F53B	1F53B	向下紅色三角	small_red_triangle_down	
+符號	1F4A0	1F4A0	菱形加圓點	diamond_shape_with_a_dot_inside	
+符號	1F518	1F518	按鈕	radio_button	
+符號	1F533	1F533	白色方按鈕	white_square_button	
+符號	1F532	1F532	黑色方按鈕	black_square_button	
+旗幟	1F3C1	1F3C1	終點旗	checkered_flag	
+旗幟	1F6A9	1F6A9	三角旗	triangular_flag_on_post	
+旗幟	1F38C	1F38C	紀念日	crossed_flags	
+旗幟	1F3F4	1F3F4	黑旗	black_flag	
+旗幟	1F3F3	1F3F3 FE0F	白旗	white_flag	
+旗幟	F016F	1F3F3 FE0F 200D 1F308	彩虹旗	rainbow_flag	
+旗幟	F0170	1F3F3 FE0F 200D 26A7 FE0F	跨性別旗	transgender_flag	
+旗幟	F0171	1F3F4 200D 2620 FE0F	海盜旗	pirate_flag	
+旗幟	F0172	1F1E6 1F1E8	旗子：阿森松島	ascension_island	
+旗幟	F0173	1F1E6 1F1E9	旗子：安道爾	andorra	
+旗幟	F0174	1F1E6 1F1EA	旗子：阿拉伯聯合大公國	united_arab_emirates	
+旗幟	F0175	1F1E6 1F1EB	旗子：阿富汗	afghanistan	
+旗幟	F0176	1F1E6 1F1EC	旗子：安地卡及巴布達	antigua_barbuda	
+旗幟	F0177	1F1E6 1F1EE	旗子：安奎拉	anguilla	
+旗幟	F0178	1F1E6 1F1F1	旗子：阿爾巴尼亞	albania	
+旗幟	F0179	1F1E6 1F1F2	旗子：亞美尼亞	armenia	
+旗幟	F017A	1F1E6 1F1F4	旗子：安哥拉	angola	
+旗幟	F017B	1F1E6 1F1F6	旗子：南極洲	antarctica	
+旗幟	F017C	1F1E6 1F1F7	旗子：阿根廷	argentina	
+旗幟	F017D	1F1E6 1F1F8	旗子：美屬薩摩亞	american_samoa	
+旗幟	F017E	1F1E6 1F1F9	旗子：奧地利	austria	
+旗幟	F017F	1F1E6 1F1FA	旗子：澳洲	australia	
+旗幟	F0180	1F1E6 1F1FC	旗子：荷屬阿魯巴	aruba	
+旗幟	F0181	1F1E6 1F1FD	旗子：奧蘭群島	aland_islands	
+旗幟	F0182	1F1E6 1F1FF	旗子：亞塞拜然	azerbaijan	
+旗幟	F0183	1F1E7 1F1E6	旗子：波士尼亞與赫塞哥維納	bosnia_herzegovina	
+旗幟	F0184	1F1E7 1F1E7	旗子：巴貝多	barbados	
+旗幟	F0185	1F1E7 1F1E9	旗子：孟加拉	bangladesh	
+旗幟	F0186	1F1E7 1F1EA	旗子：比利時	belgium	
+旗幟	F0187	1F1E7 1F1EB	旗子：布吉納法索	burkina_faso	
+旗幟	F0188	1F1E7 1F1EC	旗子：保加利亞	bulgaria	
+旗幟	F0189	1F1E7 1F1ED	旗子：巴林	bahrain	
+旗幟	F018A	1F1E7 1F1EE	旗子：蒲隆地	burundi	
+旗幟	F018B	1F1E7 1F1EF	旗子：貝南	benin	
+旗幟	F018C	1F1E7 1F1F1	旗子：聖巴瑟米	st_barthelemy	
+旗幟	F018D	1F1E7 1F1F2	旗子：百慕達	bermuda	
+旗幟	F018E	1F1E7 1F1F3	旗子：汶萊	brunei	
+旗幟	F018F	1F1E7 1F1F4	旗子：玻利維亞	bolivia	
+旗幟	F0190	1F1E7 1F1F6	旗子：荷蘭加勒比區	caribbean_netherlands	
+旗幟	F0191	1F1E7 1F1F7	旗子：巴西	brazil	
+旗幟	F0192	1F1E7 1F1F8	旗子：巴哈馬	bahamas	
+旗幟	F0193	1F1E7 1F1F9	旗子：不丹	bhutan	
+旗幟	F0194	1F1E7 1F1FB	旗子：布威島	bouvet_island	
+旗幟	F0195	1F1E7 1F1FC	旗子：波札那	botswana	
+旗幟	F0196	1F1E7 1F1FE	旗子：白俄羅斯	belarus	
+旗幟	F0197	1F1E7 1F1FF	旗子：貝里斯	belize	
+旗幟	F0198	1F1E8 1F1E6	旗子：加拿大	canada	
+旗幟	F0199	1F1E8 1F1E8	旗子：科克斯（基靈）群島	cocos_islands	
+旗幟	F019A	1F1E8 1F1E9	旗子：剛果（金夏沙）	congo_kinshasa	
+旗幟	F019B	1F1E8 1F1EB	旗子：中非共和國	central_african_republic	
+旗幟	F019C	1F1E8 1F1EC	旗子：剛果（布拉薩）	congo_brazzaville	
+旗幟	F019D	1F1E8 1F1ED	旗子：瑞士	switzerland	
+旗幟	F019E	1F1E8 1F1EE	旗子：象牙海岸	cote_divoire	
+旗幟	F019F	1F1E8 1F1F0	旗子：庫克群島	cook_islands	
+旗幟	F01A0	1F1E8 1F1F1	旗子：智利	chile	
+旗幟	F01A1	1F1E8 1F1F2	旗子：喀麥隆	cameroon	
+旗幟	F01A2	1F1E8 1F1F3	旗子：中國	cn	
+旗幟	F01A3	1F1E8 1F1F4	旗子：哥倫比亞	colombia	
+旗幟	F01A4	1F1E8 1F1F5	旗子：克里派頓島	clipperton_island	
+旗幟	F01A5	1F1E8 1F1F6	旗子：薩克島		
+旗幟	F01A6	1F1E8 1F1F7	旗子：哥斯大黎加	costa_rica	
+旗幟	F01A7	1F1E8 1F1FA	旗子：古巴	cuba	
+旗幟	F01A8	1F1E8 1F1FB	旗子：維德角	cape_verde	
+旗幟	F01A9	1F1E8 1F1FC	旗子：庫拉索	curacao	
+旗幟	F01AA	1F1E8 1F1FD	旗子：聖誕島	christmas_island	
+旗幟	F01AB	1F1E8 1F1FE	旗子：賽普勒斯	cyprus	
+旗幟	F01AC	1F1E8 1F1FF	旗子：捷克	czech_republic	
+旗幟	F01AD	1F1E9 1F1EA	旗子：德國	de	
+旗幟	F01AE	1F1E9 1F1EC	旗子：迪亞哥加西亞島	diego_garcia	
+旗幟	F01AF	1F1E9 1F1EF	旗子：吉布地	djibouti	
+旗幟	F01B0	1F1E9 1F1F0	旗子：丹麥	denmark	
+旗幟	F01B1	1F1E9 1F1F2	旗子：多米尼克	dominica	
+旗幟	F01B2	1F1E9 1F1F4	旗子：多明尼加共和國	dominican_republic	
+旗幟	F01B3	1F1E9 1F1FF	旗子：阿爾及利亞	algeria	
+旗幟	F01B4	1F1EA 1F1E6	旗子：休達與梅利利亞	ceuta_melilla	
+旗幟	F01B5	1F1EA 1F1E8	旗子：厄瓜多	ecuador	
+旗幟	F01B6	1F1EA 1F1EA	旗子：愛沙尼亞	estonia	
+旗幟	F01B7	1F1EA 1F1EC	旗子：埃及	egypt	
+旗幟	F01B8	1F1EA 1F1ED	旗子：西撒哈拉	western_sahara	
+旗幟	F01B9	1F1EA 1F1F7	旗子：厄利垂亞	eritrea	
+旗幟	F01BA	1F1EA 1F1F8	旗子：西班牙	es	
+旗幟	F01BB	1F1EA 1F1F9	旗子：衣索比亞	ethiopia	
+旗幟	F01BC	1F1EA 1F1FA	旗子：歐盟	eu	
+旗幟	F01BD	1F1EB 1F1EE	旗子：芬蘭	finland	
+旗幟	F01BE	1F1EB 1F1EF	旗子：斐濟	fiji	
+旗幟	F01BF	1F1EB 1F1F0	旗子：福克蘭群島	falkland_islands	
+旗幟	F01C0	1F1EB 1F1F2	旗子：密克羅尼西亞	micronesia	
+旗幟	F01C1	1F1EB 1F1F4	旗子：法羅群島	faroe_islands	
+旗幟	F01C2	1F1EB 1F1F7	旗子：法國	fr	
+旗幟	F01C3	1F1EC 1F1E6	旗子：加彭	gabon	
+旗幟	F01C4	1F1EC 1F1E7	旗子：英國	gb	
+旗幟	F01C5	1F1EC 1F1E9	旗子：格瑞那達	grenada	
+旗幟	F01C6	1F1EC 1F1EA	旗子：喬治亞	georgia	
+旗幟	F01C7	1F1EC 1F1EB	旗子：法屬圭亞那	french_guiana	
+旗幟	F01C8	1F1EC 1F1EC	旗子：根息	guernsey	
+旗幟	F01C9	1F1EC 1F1ED	旗子：迦納	ghana	
+旗幟	F01CA	1F1EC 1F1EE	旗子：直布羅陀	gibraltar	
+旗幟	F01CB	1F1EC 1F1F1	旗子：格陵蘭	greenland	
+旗幟	F01CC	1F1EC 1F1F2	旗子：甘比亞	gambia	
+旗幟	F01CD	1F1EC 1F1F3	旗子：幾內亞	guinea	
+旗幟	F01CE	1F1EC 1F1F5	旗子：瓜地洛普	guadeloupe	
+旗幟	F01CF	1F1EC 1F1F6	旗子：赤道幾內亞	equatorial_guinea	
+旗幟	F01D0	1F1EC 1F1F7	旗子：希臘	greece	
+旗幟	F01D1	1F1EC 1F1F8	旗子：南喬治亞與南三明治群島	south_georgia_south_sandwich_islands	
+旗幟	F01D2	1F1EC 1F1F9	旗子：瓜地馬拉	guatemala	
+旗幟	F01D3	1F1EC 1F1FA	旗子：關島	guam	
+旗幟	F01D4	1F1EC 1F1FC	旗子：幾內亞比索	guinea_bissau	
+旗幟	F01D5	1F1EC 1F1FE	旗子：蓋亞那	guyana	
+旗幟	F01D6	1F1ED 1F1F0	旗子：中國香港特別行政區	hong_kong	
+旗幟	F01D7	1F1ED 1F1F2	旗子：赫德島及麥唐納群島	heard_mcdonald_islands	
+旗幟	F01D8	1F1ED 1F1F3	旗子：宏都拉斯	honduras	
+旗幟	F01D9	1F1ED 1F1F7	旗子：克羅埃西亞	croatia	
+旗幟	F01DA	1F1ED 1F1F9	旗子：海地	haiti	
+旗幟	F01DB	1F1ED 1F1FA	旗子：匈牙利	hungary	
+旗幟	F01DC	1F1EE 1F1E8	旗子：加那利群島	canary_islands	
+旗幟	F01DD	1F1EE 1F1E9	旗子：印尼	indonesia	
+旗幟	F01DE	1F1EE 1F1EA	旗子：愛爾蘭	ireland	
+旗幟	F01DF	1F1EE 1F1F1	旗子：以色列	israel	
+旗幟	F01E0	1F1EE 1F1F2	旗子：曼島	isle_of_man	
+旗幟	F01E1	1F1EE 1F1F3	旗子：印度	india	
+旗幟	F01E2	1F1EE 1F1F4	旗子：英屬印度洋領地	british_indian_ocean_territory	
+旗幟	F01E3	1F1EE 1F1F6	旗子：伊拉克	iraq	
+旗幟	F01E4	1F1EE 1F1F7	旗子：伊朗	iran	
+旗幟	F01E5	1F1EE 1F1F8	旗子：冰島	iceland	
+旗幟	F01E6	1F1EE 1F1F9	旗子：義大利	it	
+旗幟	F01E7	1F1EF 1F1EA	旗子：澤西島	jersey	
+旗幟	F01E8	1F1EF 1F1F2	旗子：牙買加	jamaica	
+旗幟	F01E9	1F1EF 1F1F4	旗子：約旦	jordan	
+旗幟	F01EA	1F1EF 1F1F5	旗子：日本	jp	
+旗幟	F01EB	1F1F0 1F1EA	旗子：肯亞	kenya	
+旗幟	F01EC	1F1F0 1F1EC	旗子：吉爾吉斯	kyrgyzstan	
+旗幟	F01ED	1F1F0 1F1ED	旗子：柬埔寨	cambodia	
+旗幟	F01EE	1F1F0 1F1EE	旗子：吉里巴斯	kiribati	
+旗幟	F01EF	1F1F0 1F1F2	旗子：葛摩	comoros	
+旗幟	F01F0	1F1F0 1F1F3	旗子：聖克里斯多福及尼維斯	st_kitts_nevis	
+旗幟	F01F1	1F1F0 1F1F5	旗子：北韓	north_korea	
+旗幟	F01F2	1F1F0 1F1F7	旗子：南韓	kr	
+旗幟	F01F3	1F1F0 1F1FC	旗子：科威特	kuwait	
+旗幟	F01F4	1F1F0 1F1FE	旗子：開曼群島	cayman_islands	
+旗幟	F01F5	1F1F0 1F1FF	旗子：哈薩克	kazakhstan	
+旗幟	F01F6	1F1F1 1F1E6	旗子：寮國	laos	
+旗幟	F01F7	1F1F1 1F1E7	旗子：黎巴嫩	lebanon	
+旗幟	F01F8	1F1F1 1F1E8	旗子：聖露西亞	st_lucia	
+旗幟	F01F9	1F1F1 1F1EE	旗子：列支敦斯登	liechtenstein	
+旗幟	F01FA	1F1F1 1F1F0	旗子：斯里蘭卡	sri_lanka	
+旗幟	F01FB	1F1F1 1F1F7	旗子：賴比瑞亞	liberia	
+旗幟	F01FC	1F1F1 1F1F8	旗子：賴索托	lesotho	
+旗幟	F01FD	1F1F1 1F1F9	旗子：立陶宛	lithuania	
+旗幟	F01FE	1F1F1 1F1FA	旗子：盧森堡	luxembourg	
+旗幟	F01FF	1F1F1 1F1FB	旗子：拉脫維亞	latvia	
+旗幟	F0200	1F1F1 1F1FE	旗子：利比亞	libya	
+旗幟	F0201	1F1F2 1F1E6	旗子：摩洛哥	morocco	
+旗幟	F0202	1F1F2 1F1E8	旗子：摩納哥	monaco	
+旗幟	F0203	1F1F2 1F1E9	旗子：摩爾多瓦	moldova	
+旗幟	F0204	1F1F2 1F1EA	旗子：蒙特內哥羅	montenegro	
+旗幟	F0205	1F1F2 1F1EB	旗子：法屬聖馬丁	st_martin	
+旗幟	F0206	1F1F2 1F1EC	旗子：馬達加斯加	madagascar	
+旗幟	F0207	1F1F2 1F1ED	旗子：馬紹爾群島	marshall_islands	
+旗幟	F0208	1F1F2 1F1F0	旗子：北馬其頓	macedonia	
+旗幟	F0209	1F1F2 1F1F1	旗子：馬利	mali	
+旗幟	F020A	1F1F2 1F1F2	旗子：緬甸	myanmar	
+旗幟	F020B	1F1F2 1F1F3	旗子：蒙古	mongolia	
+旗幟	F020C	1F1F2 1F1F4	旗子：中國澳門特別行政區	macau	
+旗幟	F020D	1F1F2 1F1F5	旗子：北馬利安納群島	northern_mariana_islands	
+旗幟	F020E	1F1F2 1F1F6	旗子：馬丁尼克	martinique	
+旗幟	F020F	1F1F2 1F1F7	旗子：茅利塔尼亞	mauritania	
+旗幟	F0210	1F1F2 1F1F8	旗子：蒙哲臘	montserrat	
+旗幟	F0211	1F1F2 1F1F9	旗子：馬爾他	malta	
+旗幟	F0212	1F1F2 1F1FA	旗子：模里西斯	mauritius	
+旗幟	F0213	1F1F2 1F1FB	旗子：馬爾地夫	maldives	
+旗幟	F0214	1F1F2 1F1FC	旗子：馬拉威	malawi	
+旗幟	F0215	1F1F2 1F1FD	旗子：墨西哥	mexico	
+旗幟	F0216	1F1F2 1F1FE	旗子：馬來西亞	malaysia	
+旗幟	F0217	1F1F2 1F1FF	旗子：莫三比克	mozambique	
+旗幟	F0218	1F1F3 1F1E6	旗子：納米比亞	namibia	
+旗幟	F0219	1F1F3 1F1E8	旗子：新喀里多尼亞	new_caledonia	
+旗幟	F021A	1F1F3 1F1EA	旗子：尼日	niger	
+旗幟	F021B	1F1F3 1F1EB	旗子：諾福克島	norfolk_island	
+旗幟	F021C	1F1F3 1F1EC	旗子：奈及利亞	nigeria	
+旗幟	F021D	1F1F3 1F1EE	旗子：尼加拉瓜	nicaragua	
+旗幟	F021E	1F1F3 1F1F1	旗子：荷蘭	netherlands	
+旗幟	F021F	1F1F3 1F1F4	旗子：挪威	norway	
+旗幟	F0220	1F1F3 1F1F5	旗子：尼泊爾	nepal	
+旗幟	F0221	1F1F3 1F1F7	旗子：諾魯	nauru	
+旗幟	F0222	1F1F3 1F1FA	旗子：紐埃島	niue	
+旗幟	F0223	1F1F3 1F1FF	旗子：紐西蘭	new_zealand	
+旗幟	F0224	1F1F4 1F1F2	旗子：阿曼	oman	
+旗幟	F0225	1F1F5 1F1E6	旗子：巴拿馬	panama	
+旗幟	F0226	1F1F5 1F1EA	旗子：秘魯	peru	
+旗幟	F0227	1F1F5 1F1EB	旗子：法屬玻里尼西亞	french_polynesia	
+旗幟	F0228	1F1F5 1F1EC	旗子：巴布亞紐幾內亞	papua_new_guinea	
+旗幟	F0229	1F1F5 1F1ED	旗子：菲律賓	philippines	
+旗幟	F022A	1F1F5 1F1F0	旗子：巴基斯坦	pakistan	
+旗幟	F022B	1F1F5 1F1F1	旗子：波蘭	poland	
+旗幟	F022C	1F1F5 1F1F2	旗子：聖皮埃與密克隆群島	st_pierre_miquelon	
+旗幟	F022D	1F1F5 1F1F3	旗子：皮特肯群島	pitcairn_islands	
+旗幟	F022E	1F1F5 1F1F7	旗子：波多黎各	puerto_rico	
+旗幟	F022F	1F1F5 1F1F8	旗子：巴勒斯坦自治區	palestinian_territories	
+旗幟	F0230	1F1F5 1F1F9	旗子：葡萄牙	portugal	
+旗幟	F0231	1F1F5 1F1FC	旗子：帛琉	palau	
+旗幟	F0232	1F1F5 1F1FE	旗子：巴拉圭	paraguay	
+旗幟	F0233	1F1F6 1F1E6	旗子：卡達	qatar	
+旗幟	F0234	1F1F7 1F1EA	旗子：留尼旺	reunion	
+旗幟	F0235	1F1F7 1F1F4	旗子：羅馬尼亞	romania	
+旗幟	F0236	1F1F7 1F1F8	旗子：塞爾維亞	serbia	
+旗幟	F0237	1F1F7 1F1FA	旗子：俄羅斯	ru	
+旗幟	F0238	1F1F7 1F1FC	旗子：盧安達	rwanda	
+旗幟	F0239	1F1F8 1F1E6	旗子：沙烏地阿拉伯	saudi_arabia	
+旗幟	F023A	1F1F8 1F1E7	旗子：索羅門群島	solomon_islands	
+旗幟	F023B	1F1F8 1F1E8	旗子：塞席爾	seychelles	
+旗幟	F023C	1F1F8 1F1E9	旗子：蘇丹	sudan	
+旗幟	F023D	1F1F8 1F1EA	旗子：瑞典	sweden	
+旗幟	F023E	1F1F8 1F1EC	旗子：新加坡	singapore	
+旗幟	F023F	1F1F8 1F1ED	旗子：聖赫勒拿島	st_helena	
+旗幟	F0240	1F1F8 1F1EE	旗子：斯洛維尼亞	slovenia	
+旗幟	F0241	1F1F8 1F1EF	旗子：挪威屬斯瓦巴及尖棉	svalbard_jan_mayen	
+旗幟	F0242	1F1F8 1F1F0	旗子：斯洛伐克	slovakia	
+旗幟	F0243	1F1F8 1F1F1	旗子：獅子山	sierra_leone	
+旗幟	F0244	1F1F8 1F1F2	旗子：聖馬利諾	san_marino	
+旗幟	F0245	1F1F8 1F1F3	旗子：塞內加爾	senegal	
+旗幟	F0246	1F1F8 1F1F4	旗子：索馬利亞	somalia	
+旗幟	F0247	1F1F8 1F1F7	旗子：蘇利南	suriname	
+旗幟	F0248	1F1F8 1F1F8	旗子：南蘇丹	south_sudan	
+旗幟	F0249	1F1F8 1F1F9	旗子：聖多美普林西比	sao_tome_principe	
+旗幟	F024A	1F1F8 1F1FB	旗子：薩爾瓦多	el_salvador	
+旗幟	F024B	1F1F8 1F1FD	旗子：荷屬聖馬丁	sint_maarten	
+旗幟	F024C	1F1F8 1F1FE	旗子：敘利亞	syria	
+旗幟	F024D	1F1F8 1F1FF	旗子：史瓦帝尼	swaziland	
+旗幟	F024E	1F1F9 1F1E6	旗子：特里斯坦達庫尼亞群島	tristan_da_cunha	
+旗幟	F024F	1F1F9 1F1E8	旗子：土克斯及開科斯群島	turks_caicos_islands	
+旗幟	F0250	1F1F9 1F1E9	旗子：查德	chad	
+旗幟	F0251	1F1F9 1F1EB	旗子：法屬南部屬地	french_southern_territories	
+旗幟	F0252	1F1F9 1F1EC	旗子：多哥	togo	
+旗幟	F0253	1F1F9 1F1ED	旗子：泰國	thailand	
+旗幟	F0254	1F1F9 1F1EF	旗子：塔吉克	tajikistan	
+旗幟	F0255	1F1F9 1F1F0	旗子：托克勞群島	tokelau	
+旗幟	F0256	1F1F9 1F1F1	旗子：東帝汶	timor_leste	
+旗幟	F0257	1F1F9 1F1F2	旗子：土庫曼	turkmenistan	
+旗幟	F0258	1F1F9 1F1F3	旗子：突尼西亞	tunisia	
+旗幟	F0259	1F1F9 1F1F4	旗子：東加	tonga	
+旗幟	F025A	1F1F9 1F1F7	旗子：土耳其	tr	
+旗幟	F025B	1F1F9 1F1F9	旗子：千里達及托巴哥	trinidad_tobago	
+旗幟	F025C	1F1F9 1F1FB	旗子：吐瓦魯	tuvalu	
+旗幟	F025D	1F1F9 1F1FC	旗子：台灣	taiwan	
+旗幟	F025E	1F1F9 1F1FF	旗子：坦尚尼亞	tanzania	
+旗幟	F025F	1F1FA 1F1E6	旗子：烏克蘭	ukraine	
+旗幟	F0260	1F1FA 1F1EC	旗子：烏干達	uganda	
+旗幟	F0261	1F1FA 1F1F2	旗子：美國本土外小島嶼	us_outlying_islands	
+旗幟	F0262	1F1FA 1F1F3	旗子：聯合國	united_nations	
+旗幟	F0263	1F1FA 1F1F8	旗子：美國	us	
+旗幟	F0264	1F1FA 1F1FE	旗子：烏拉圭	uruguay	
+旗幟	F0265	1F1FA 1F1FF	旗子：烏茲別克	uzbekistan	
+旗幟	F0266	1F1FB 1F1E6	旗子：梵蒂岡	vatican_city	
+旗幟	F0267	1F1FB 1F1E8	旗子：聖文森及格瑞那丁	st_vincent_grenadines	
+旗幟	F0268	1F1FB 1F1EA	旗子：委內瑞拉	venezuela	
+旗幟	F0269	1F1FB 1F1EC	旗子：英屬維京群島	british_virgin_islands	
+旗幟	F026A	1F1FB 1F1EE	旗子：美屬維京群島	us_virgin_islands	
+旗幟	F026B	1F1FB 1F1F3	旗子：越南	vietnam	
+旗幟	F026C	1F1FB 1F1FA	旗子：萬那杜	vanuatu	
+旗幟	F026D	1F1FC 1F1EB	旗子：瓦利斯群島和富圖那群島	wallis_futuna	
+旗幟	F026E	1F1FC 1F1F8	旗子：薩摩亞	samoa	
+旗幟	F026F	1F1FD 1F1F0	旗子：科索沃	kosovo	
+旗幟	F0270	1F1FE 1F1EA	旗子：葉門	yemen	
+旗幟	F0271	1F1FE 1F1F9	旗子：馬約特島	mayotte	
+旗幟	F0272	1F1FF 1F1E6	旗子：南非	south_africa	
+旗幟	F0273	1F1FF 1F1F2	旗子：尚比亞	zambia	
+旗幟	F0274	1F1FF 1F1FC	旗子：辛巴威	zimbabwe	
+旗幟	F0275	1F3F4 E0067 E0062 E0065 E006E E0067 E007F	旗子：英格蘭	england	
+旗幟	F0276	1F3F4 E0067 E0062 E0073 E0063 E0074 E007F	旗子：蘇格蘭	scotland	
+旗幟	F0277	1F3F4 E0067 E0062 E0077 E006C E0073 E007F	旗子：威爾斯	wales	

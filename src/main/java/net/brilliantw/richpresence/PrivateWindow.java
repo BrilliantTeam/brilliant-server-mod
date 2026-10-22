@@ -108,7 +108,26 @@ public final class PrivateWindow {
 		}
 	}
 
+	public static EditBox createEmojiSearch() {
+		return EMOJI_PANEL.createSearch();
+	}
+
 	public static boolean keyPressed(ChatScreen screen, KeyEvent event) {
+		if (popup == Popup.EMOJI && EMOJI_PANEL.searchFocused(screen)) {
+			if (event.isEscape()) {
+				popup = Popup.NONE;
+				screen.setFocused(input);
+				return true;
+			}
+			if (event.isConfirmation()) {
+				EmojiPicker.Emoji emoji = EMOJI_PANEL.first();
+				if (emoji != null && input != null) {
+					input.insertText(emoji.insert());
+				}
+				return true;
+			}
+			return event.isUp() || event.isDown();
+		}
 		if (!inputFocused(screen) || event.isEscape()) {
 			return false;
 		}
@@ -398,7 +417,7 @@ public final class PrivateWindow {
 		Rect frame = frame(screen.width, screen.height, true);
 		if (popup == Popup.EMOJI && emojiPanel(frame).contains(mouseX, mouseY)) {
 			Rect panel = emojiPanel(frame);
-			EmojiPicker.Emoji emoji = EMOJI_PANEL.click(panel.x(), panel.y(), panel.w(), panel.h(), mouseX, mouseY);
+			EmojiPicker.Emoji emoji = EMOJI_PANEL.click(screen, panel.x(), panel.y(), panel.w(), panel.h(), mouseX, mouseY);
 			if (emoji != null && input != null) {
 				input.insertText(emoji.insert());
 				screen.setFocused(input);
@@ -466,6 +485,9 @@ public final class PrivateWindow {
 			}
 			if (footerChip(frame, 1).contains(mouseX, mouseY)) {
 				popup = popup == Popup.EMOJI ? Popup.NONE : Popup.EMOJI;
+				if (popup == Popup.EMOJI) {
+					EMOJI_PANEL.open(screen);
+				}
 				return true;
 			}
 			if (footerChip(frame, 2).contains(mouseX, mouseY)) {

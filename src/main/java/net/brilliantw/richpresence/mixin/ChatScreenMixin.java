@@ -53,6 +53,8 @@ public abstract class ChatScreenMixin extends Screen {
 	private void brilliant$addPrivateInput(CallbackInfo ci) {
 		addRenderableWidget(PrivateWindow.createInput());
 		addRenderableWidget(ChatMenu.createSearch());
+		addRenderableWidget(EmojiPicker.createSearch());
+		addRenderableWidget(PrivateWindow.createEmojiSearch());
 		ChatMenu.onInit((ChatScreen) (Object) this);
 		ChatTabs.open();
 	}
@@ -67,7 +69,8 @@ public abstract class ChatScreenMixin extends Screen {
 		Gfx gfx = new Gfx(graphics);
 		PrivateWindow.render(gfx, width, height, mouseX, mouseY, true);
 		ScriptMonitor.render(gfx, width, height, mouseX, mouseY, true);
-		if (!ChatMenu.isOpen() && getFocused() == ChatMenu.search()) {
+		boolean emojiOrphaned = EmojiPicker.orphanedSearch(getFocused());
+		if (emojiOrphaned || !ChatMenu.isOpen() && getFocused() == ChatMenu.search()) {
 			setFocused(input);
 		}
 		if (!brilliant$typingCommand() && RichPresenceModClient.featuresActive()) {
@@ -125,6 +128,13 @@ public abstract class ChatScreenMixin extends Screen {
 
 	@Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
 	private void brilliant$typePrivateMessage(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
+		if (EmojiPicker.keyPressed((ChatScreen) (Object) this, event)) {
+			if (!EmojiPicker.isOpen()) {
+				setFocused(input);
+			}
+			cir.setReturnValue(true);
+			return;
+		}
 		if (PrivateWindow.keyPressed((ChatScreen) (Object) this, event) || ChatMenu.keyPressed((ChatScreen) (Object) this, event)) {
 			cir.setReturnValue(true);
 		}
