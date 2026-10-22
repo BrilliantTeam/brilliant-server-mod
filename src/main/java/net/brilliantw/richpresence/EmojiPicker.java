@@ -454,10 +454,12 @@ public final class EmojiPicker {
 		private void drawItem(Gfx gfx, Font font, Emoji emoji, int x, int y, int size) {
 			if (stickerTab) {
 				int box = size - STICKER_GAP * 2;
-				float scale = box / (float) STICKER_GLYPH;
-				float width = Math.min(box, Math.max(0, font.width(emoji.symbol()) - 1) * scale);
+				int glyphWidth = Math.max(1, font.width(emoji.symbol()) - 1);
+				float scale = box / (float) Math.max(STICKER_GLYPH, glyphWidth);
+				float width = glyphWidth * scale;
+				float height = STICKER_GLYPH * scale;
 				gfx.scissor(x + STICKER_GAP, y + STICKER_GAP, x + size - STICKER_GAP, y + size - STICKER_GAP);
-				gfx.push(x + (size - width) / 2f, y + STICKER_GAP + (STICKER_ASCENT - GLYPH) * scale, scale);
+				gfx.push(x + (size - width) / 2f, y + (size - height) / 2f + (STICKER_ASCENT - GLYPH) * scale, scale);
 				gfx.text(font, emoji.symbol(), 0, 0, 0xFFFFFFFF);
 				gfx.pop();
 				gfx.endScissor();
