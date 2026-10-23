@@ -9,8 +9,11 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.zip.GZIPInputStream;
@@ -38,6 +41,8 @@ public final class MapStore {
 	public static final int SIZE = 256;
 	private static final int MAGIC = 0x42534D31;
 	private static final int MAX_REGIONS = 96;
+	private static final int OVERVIEW = 64;
+	private static final int MAX_OVERVIEWS = 1024;
 	private static final int ROCK = 0xFF26292D;
 	private static final int ABYSS = 0xFF0B0D10;
 	private static final int CAVE_UP = 3;
@@ -78,6 +83,23 @@ public final class MapStore {
 			return true;
 		}
 	};
+	private static final class Overview {
+		volatile int[] pixels;
+		Identifier texture;
+	}
+
+	private static final Map<String, Overview> OVERVIEWS = new LinkedHashMap<>(256, 0.75f, true) {
+		@Override
+		protected boolean removeEldestEntry(Map.Entry<String, Overview> eldest) {
+			if (size() <= MAX_OVERVIEWS) {
+				return false;
+			}
+			release(eldest.getValue().texture);
+			return true;
+		}
+	};
+	private static final Map<String, List<Long>> KNOWN = new ConcurrentHashMap<>();
+	private static final Map<String, Long> KNOWN_AT = new HashMap<>();
 	private static final Map<Long, Long> SCANNED = new HashMap<>();
 	private static final Map<String, Long> ABSENT = new HashMap<>();
 	private static String scannedFor = "";
@@ -119,6 +141,88 @@ public final class MapStore {
 		}
 		REGIONS.put(key, region);
 		return region;
+	}
+
+	public static Set<Long> known(String world, String layer) {
+		String key = world + "/" + layer;
+		long now = System.currentTimeMillis();
+		Long at = KNOWN_AT.get(key);
+		if (at == null || now - at > 5000) {
+			KNOWN_AT.put(key, now);
+			Path dir = root().resolve(world).resolve(layer);
+			boolean memory = ModSettings.get().mapMemory;
+			IO.execute(() -> {
+				List<Long> found = new ArrayList<>();
+				if (memory && Files.isDirectory(dir)) {
+					try (var stream = Files.list(dir)) {
+						stream.forEach(path -> {
+							String name = path.getFileName().toString();
+							int sep = name.indexOf('_');
+							if (sep > 0 && name.endsWith(".bin")) {
+								try {
+									found.add(MapMarkers.key(Integer.parseInt(name.substring(0, sep)), Integer.parseInt(name.substring(sep + 1, name.length() - 4))));
+								} catch (NumberFormatException ignored) {
+								}
+							}
+						});
+					} catch (Exception ignored) {
+					}
+				}
+				KNOWN.put(key, found);
+			});
+		}
+		Set<Long> result = new LinkedHashSet<>(KNOWN.getOrDefault(key, List.of()));
+		String prefix = key + "/";
+		for (String loaded : REGIONS.keySet()) {
+			if (loaded.startsWith(prefix)) {
+				String[] parts = loaded.substring(prefix.length()).split("/");
+				result.add(MapMarkers.key(Integer.parseInt(parts[0]), Integer.parseInt(parts[1])));
+			}
+		}
+		return result;
+	}
+
+	public static Identifier overview(String world, String layer, int rx, int rz) {
+		String key = world + "/" + layer + "/" + rx + "/" + rz;
+		Region region = REGIONS.get(key);
+		if (region != null) {
+			return texture(region);
+		}
+		Overview overview = OVERVIEWS.get(key);
+		if (overview == null) {
+			Overview created = new Overview();
+			OVERVIEWS.put(key, created);
+			Path file = file(world, layer, rx, rz);
+			IO.execute(() -> {
+				Region loaded = new Region(key, file);
+				read(loaded);
+				int step = SIZE / OVERVIEW;
+				int[] pixels = new int[OVERVIEW * OVERVIEW];
+				for (int i = 0; i < pixels.length; i++) {
+					pixels[i] = loaded.color[i / OVERVIEW * step * SIZE + i % OVERVIEW * step];
+				}
+				created.pixels = pixels;
+			});
+			return null;
+		}
+		int[] pixels = overview.pixels;
+		if (overview.texture == null && pixels != null) {
+			DynamicTexture dynamic = new DynamicTexture(() -> "brilliant-server-mod map overview", OVERVIEW, OVERVIEW, false);
+			NativeImage image = dynamic.getPixels();
+			for (int i = 0; i < pixels.length; i++) {
+				image.setPixel(i % OVERVIEW, i / OVERVIEW, pixels[i]);
+			}
+			dynamic.upload();
+			overview.texture = Identifier.fromNamespaceAndPath("brilliant-server-mod", "map/overview_" + counter++);
+			Minecraft.getInstance().getTextureManager().register(overview.texture, dynamic);
+		}
+		return overview.texture;
+	}
+
+	private static void release(Identifier texture) {
+		if (texture != null) {
+			Minecraft.getInstance().getTextureManager().release(texture);
+		}
 	}
 
 	private static Region lastRegion;
@@ -411,6 +515,10 @@ public final class MapStore {
 		short[] height = region.height.clone();
 		Path file = region.file;
 		region.dirty = false;
+		Overview stale = OVERVIEWS.remove(region.key);
+		if (stale != null) {
+			release(stale.texture);
+		}
 		IO.execute(() -> {
 			try {
 				Files.createDirectories(file.getParent());
@@ -477,6 +585,15 @@ public final class MapStore {
 			}
 			return false;
 		});
+		OVERVIEWS.entrySet().removeIf(entry -> {
+			if (entry.getKey().startsWith(prefix)) {
+				release(entry.getValue().texture);
+				return true;
+			}
+			return false;
+		});
+		KNOWN.clear();
+		KNOWN_AT.clear();
 		ABSENT.clear();
 		SCANNED.clear();
 		LAYERS.clear();

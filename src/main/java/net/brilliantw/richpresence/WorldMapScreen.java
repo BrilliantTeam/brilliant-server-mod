@@ -29,9 +29,8 @@ import net.minecraft.world.phys.Vec3;
 public final class WorldMapScreen extends Screen {
 	private static final int HEADER = 24;
 	private static final int FOOTER = 16;
-	private static final double MIN_SCALE = 0.5;
+	private static final double MIN_SCALE = 1.0 / 32;
 	private static final double MAX_SCALE = 8;
-	private static final double MIN_SEED_SCALE = 1.0 / 32;
 	private static final int PANEL = 176;
 	private static final int ROW = 16;
 	private static final int ROW2 = 24;
@@ -127,10 +126,6 @@ public final class WorldMapScreen extends Screen {
 
 	private boolean seedActive() {
 		return seedMode && view != null && SeedMaps.seed(view) != null;
-	}
-
-	private double minScale() {
-		return seedActive() ? MIN_SEED_SCALE : MIN_SCALE;
 	}
 
 	private double toScreenX(double worldX) {
@@ -291,22 +286,22 @@ public final class WorldMapScreen extends Screen {
 			return;
 		}
 		double[] w = visibleWorld(area);
-		for (int cz = Math.floorDiv((int) Math.floor(w[1]), 16); cz <= Math.floorDiv((int) Math.floor(w[3]), 16); cz++) {
-			for (int cx = Math.floorDiv((int) Math.floor(w[0]), 16); cx <= Math.floorDiv((int) Math.floor(w[2]), 16); cx++) {
-				Integer left = regen.minutesLeft(cx, cz);
-				if (left == null) {
-					continue;
-				}
-				int x0 = (int) Math.round(toScreenX(cx * 16.0));
-				int y0 = (int) Math.round(toScreenY(cz * 16.0));
-				int x1 = (int) Math.round(toScreenX(cx * 16.0 + 16));
-				int y1 = (int) Math.round(toScreenY(cz * 16.0 + 16));
-				gfx.fill(x0, y0, x1, y1, left <= 0 ? Minimap.REGEN_READY : Minimap.REGEN_PENDING);
-				if (scale >= 2) {
-					int edge = left <= 0 ? 0x80FF4D4D : 0x70FFB020;
-					gfx.fill(x0, y0, x1, y0 + 1, edge);
-					gfx.fill(x0, y0, x0 + 1, y1, edge);
-				}
+		for (long packed : regen.minutes().keySet()) {
+			int cx = (int) (packed >> 32);
+			int cz = (int) packed;
+			if ((cx + 1) * 16 < w[0] || cx * 16 > w[2] || (cz + 1) * 16 < w[1] || cz * 16 > w[3]) {
+				continue;
+			}
+			int left = regen.minutesLeft(cx, cz);
+			int x0 = (int) Math.round(toScreenX(cx * 16.0));
+			int y0 = (int) Math.round(toScreenY(cz * 16.0));
+			int x1 = (int) Math.round(toScreenX(cx * 16.0 + 16));
+			int y1 = (int) Math.round(toScreenY(cz * 16.0 + 16));
+			gfx.fill(x0, y0, x1, y1, left <= 0 ? Minimap.REGEN_READY : Minimap.REGEN_PENDING);
+			if (scale >= 2) {
+				int edge = left <= 0 ? 0x80FF4D4D : 0x70FFB020;
+				gfx.fill(x0, y0, x1, y0 + 1, edge);
+				gfx.fill(x0, y0, x0 + 1, y1, edge);
 			}
 		}
 	}
@@ -680,7 +675,7 @@ public final class WorldMapScreen extends Screen {
 		showTarget(cx, cz, a.label());
 		Rect area = mapArea();
 		double fit = Math.min(area.w() / Math.max(16, (a.maxX() - a.minX()) * 1.6), area.h() / Math.max(16, (a.maxZ() - a.minZ()) * 1.6));
-		scale = Math.clamp(fit, minScale(), 4);
+		scale = Math.clamp(fit, MIN_SCALE, 4);
 	}
 
 	private void panel(Gfx gfx, int mouseX, int mouseY) {
@@ -1024,14 +1019,26 @@ public final class WorldMapScreen extends Screen {
 		double right = toWorldX(area.x() + area.w());
 		double top = toWorldZ(area.y());
 		double bottom = toWorldZ(area.y() + area.h());
-		{
-			int span = MapStore.SIZE;
-			for (int rz = MapMath.tileOf((int) Math.floor(top), span); rz <= MapMath.tileOf((int) Math.floor(bottom), span); rz++) {
-				for (int rx = MapMath.tileOf((int) Math.floor(left), span); rx <= MapMath.tileOf((int) Math.floor(right), span); rx++) {
-					MapStore.Region region = MapStore.region(view.local(), view.layer(), rx, rz, false);
-					if (region != null) {
-						blitTile(gfx, MapStore.texture(region), (double) rx * span, (double) rz * span, span);
-					}
+		int span = MapStore.SIZE;
+		if (scale < 0.5) {
+			for (long packed : MapStore.known(view.local(), view.layer())) {
+				int rx = (int) (packed >> 32);
+				int rz = (int) packed;
+				if ((rx + 1) * span < left || rx * span > right || (rz + 1) * span < top || rz * span > bottom) {
+					continue;
+				}
+				Identifier texture = MapStore.overview(view.local(), view.layer(), rx, rz);
+				if (texture != null) {
+					blitTile(gfx, texture, (double) rx * span, (double) rz * span, span);
+				}
+			}
+			return;
+		}
+		for (int rz = MapMath.tileOf((int) Math.floor(top), span); rz <= MapMath.tileOf((int) Math.floor(bottom), span); rz++) {
+			for (int rx = MapMath.tileOf((int) Math.floor(left), span); rx <= MapMath.tileOf((int) Math.floor(right), span); rx++) {
+				MapStore.Region region = MapStore.region(view.local(), view.layer(), rx, rz, false);
+				if (region != null) {
+					blitTile(gfx, MapStore.texture(region), (double) rx * span, (double) rz * span, span);
 				}
 			}
 		}
@@ -1208,7 +1215,6 @@ public final class WorldMapScreen extends Screen {
 				if (seedMode) {
 					tab = Tab.STRUCTURES;
 				}
-				scale = Math.clamp(scale, minScale(), MAX_SCALE);
 				targetLabel = null;
 				highlight = -1;
 			});
@@ -1224,7 +1230,6 @@ public final class WorldMapScreen extends Screen {
 				all.addAll(caves);
 				int index = all.indexOf(view.layer());
 				view = WorldMaps.view(view.shard(), view.dimension(), all.get((index + 1) % all.size()));
-				scale = Math.max(scale, minScale());
 			});
 			right -= 6;
 		}
@@ -1259,7 +1264,6 @@ public final class WorldMapScreen extends Screen {
 			return;
 		}
 		view = WorldMaps.view(shard, dimension, WorldMaps.SURFACE);
-		scale = Math.max(scale, minScale());
 		highlight = -1;
 		targetLabel = null;
 		notice = null;
@@ -1330,8 +1334,7 @@ public final class WorldMapScreen extends Screen {
 			view = current;
 			centerX = player.getX();
 			centerZ = player.getZ();
-			scale = Math.max(scale, minScale());
-		}
+			}
 	}
 
 	@Override
@@ -1411,7 +1414,7 @@ public final class WorldMapScreen extends Screen {
 		}
 		double wx = toWorldX(mouseX);
 		double wz = toWorldZ(mouseY);
-		scale = Math.clamp(scale * (scrollY > 0 ? 1.25 : 0.8), minScale(), MAX_SCALE);
+		scale = Math.clamp(scale * (scrollY > 0 ? 1.25 : 0.8), MIN_SCALE, MAX_SCALE);
 		rememberedScale = scale;
 		Rect area = mapArea();
 		centerX = wx - (mouseX - area.x() - area.w() / 2.0) / scale;
