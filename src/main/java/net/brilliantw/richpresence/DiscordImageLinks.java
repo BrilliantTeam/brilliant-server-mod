@@ -1,6 +1,8 @@
 package net.brilliantw.richpresence;
 
 import java.net.URI;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -9,8 +11,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +64,47 @@ public final class DiscordImageLinks {
 				FULL_URLS.put(base(url), url);
 			}
 		}
+	}
+
+	public static Component shorten(Component message) {
+		if (message == null || !DISCORD_URL.matcher(message.getString()).find()) {
+			return message;
+		}
+		remember(message.getString());
+		MutableComponent out = Component.empty();
+		message.visit((Style style, String text) -> {
+			Matcher matcher = DISCORD_URL.matcher(text);
+			int last = 0;
+			while (matcher.find()) {
+				if (matcher.start() > last) {
+					out.append(Component.literal(text.substring(last, matcher.start())).setStyle(style));
+				}
+				out.append(label(matcher.group(), style));
+				last = matcher.end();
+			}
+			if (last < text.length()) {
+				out.append(Component.literal(text.substring(last)).setStyle(style));
+			}
+			return Optional.empty();
+		}, Style.EMPTY);
+		return out;
+	}
+
+	private static Component label(String url, Style style) {
+		URI uri;
+		try {
+			uri = URI.create(url);
+		} catch (IllegalArgumentException e) {
+			return Component.literal(url).setStyle(style);
+		}
+		String path = base(url);
+		String lower = path.toLowerCase(Locale.ROOT);
+		String kind = IMAGE.matcher(lower).find() ? "圖片" : VIDEO.matcher(lower).find() ? "影片" : "檔案";
+		String name = URLDecoder.decode(path.substring(path.lastIndexOf('/') + 1), StandardCharsets.UTF_8);
+		Component hover = Component.literal(name).withStyle(ChatFormatting.WHITE)
+				.append(Component.literal("\n" + (kind.equals("圖片") ? "點擊檢視圖片" : "點擊開啟")).withStyle(ChatFormatting.GRAY));
+		return Component.literal("[" + kind + "]").setStyle(style.withColor(ChatFormatting.AQUA)
+				.withClickEvent(new ClickEvent.OpenUrl(uri)).withHoverEvent(new HoverEvent.ShowText(hover)));
 	}
 
 	public static URI repair(URI uri) {
