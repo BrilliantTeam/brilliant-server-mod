@@ -121,12 +121,14 @@ jobs:
             keep="$keep $(jq -r '.id' response.json)"
           done
 
-          versions=$(curl -sS -f "https://api.modrinth.com/v2/project/$MODRINTH_PROJECT/version" \
+          status=$(curl -sS -o versions.json -w '%{http_code}' "https://api.modrinth.com/v2/project/$MODRINTH_PROJECT/version" \
             -H "Authorization: $token" \
-            -H "User-Agent: BrilliantTeam/brilliant-server-mod (GitHub Actions)" | jq -r '.[] | "\(.id) \(.version_number)"') || {
-            echo "::warning::讀取 Modrinth 版本清單失敗，這次不清理舊版"
+            -H "User-Agent: BrilliantTeam/brilliant-server-mod (GitHub Actions)") || status=000
+          if [ "$status" != 200 ]; then
+            echo "::warning::讀取 Modrinth 版本清單失敗（HTTP $status），這次不清理舊版；專案未公開時 MODRINTH_TOKEN 需要 Read projects 與 Read versions 權限"
             exit 0
-          }
+          fi
+          versions=$(jq -r '.[] | "\(.id) \(.version_number)"' versions.json)
           total=$(printf '%s\n' "$versions" | grep -c . || true)
           deleted=0
           failed=0
