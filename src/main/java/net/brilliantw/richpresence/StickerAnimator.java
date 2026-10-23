@@ -103,9 +103,7 @@ public final class StickerAnimator {
 
 	private static Map<Integer, Info> load() {
 		Map<Integer, Info> info = new HashMap<>();
-		read(info, "/stickers.txt", parts -> parts.length >= 6 && parts[4].equals("gif") ? new String[] { parts[0], "https://media.discordapp.net/stickers/" + parts[3] + ".gif?size=320", parts[3], parts[5] } : null);
-		read(info, "/animated_emojis.txt", parts -> parts.length >= 3 ? new String[] { parts[0], "https://cdn.discordapp.com/emojis/" + parts[1] + ".gif?size=64", parts[1], parts[2] } : null);
-		return info;
+		read(info, "/stickers.txt", parts -> parts.length >= 6 && parts[4].equals("gif") ? new String[] { parts[0], "https://media.discordapp.net/stickers/" + parts[3] + ".gif?size=320", parts[3], parts[5] } : null);		return info;
 	}
 
 	private static void read(Map<Integer, Info> info, String resource, java.util.function.Function<String[], String[]> row) {

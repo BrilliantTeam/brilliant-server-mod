@@ -29,7 +29,7 @@
 - 設定存於 `config/brilliant-server-mod-*.json`，腳本紀錄檔存於 `config/brilliant-server-mod-logs/`
 - 自動續驗證只連線至微軟、Xbox Live 與 Mojang 官方登入服務；續期用的權杖存於 `~/.brilliant-server-mod/auth.json`，並與輝煌啟動器的帳號檔互相同步，請勿分享這些檔案
 - 地圖標記（領地、資源再生）取自官網；跑過的地圖存於 `config/brilliant-server-mod/map-cache/`，可在設定關閉或清除
-- 動態表情與動態貼圖出現在畫面上時才從 Discord 的 CDN 下載動畫，60 秒沒出現就釋放
+- 動態貼圖出現在畫面上時才從 Discord 的 CDN 下載動畫，60 秒沒出現就釋放；動態表情直接由資源包播放
 - 聊天、私訊與圖片只暫存在記憶體
 
 ## 授權

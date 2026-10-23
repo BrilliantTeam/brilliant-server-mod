@@ -21,6 +21,8 @@ import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.objects.AtlasSprite;
+import net.minecraft.resources.Identifier;
 
 public final class EmojiPicker {
 	public record Emoji(String symbol, String insert, String name, String code, List<Emoji> tones) {
@@ -42,6 +44,7 @@ public final class EmojiPicker {
 	private static final Map<String, String> SEQUENCES = new HashMap<>();
 	private static final Map<Character, Integer> SEQUENCE_LENGTHS = new HashMap<>();
 	private static final Map<String, Emoji> BY_INSERT = new HashMap<>();
+	private static final Map<String, Component> SPRITES = new HashMap<>();
 	private static final ThreadLocal<Boolean> PLAIN = ThreadLocal.withInitial(() -> false);
 	private static final List<Section> SECTIONS = load();
 	private static final List<Emoji> STICKERS = lines("/stickers.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length >= 3)
@@ -87,6 +90,16 @@ public final class EmojiPicker {
 					return new Emoji(parts[0], code, code, "", List.of());
 				})
 				.toList();
+		List<Emoji> sprites = lines("/sprite_emojis.txt")
+				.map(line -> line.split("\t"))
+				.filter(parts -> parts.length == 2 && parts[1].matches("[a-z0-9_.-]+"))
+				.map(parts -> {
+					String code = ":" + parts[0] + ":";
+					SPRITES.put(code, Component.object(new AtlasSprite(AtlasSprite.DEFAULT_ATLAS, Identifier.fromNamespaceAndPath("brilliant", "block/emoji/" + parts[1]))));
+					return new Emoji(code, code, "", code, List.of());
+				})
+				.toList();
+		brilliant = Stream.concat(brilliant.stream(), sprites.stream()).toList();
 		if (!brilliant.isEmpty()) {
 			sections.add(new Section(BRILLIANT, brilliant.getFirst().symbol(), brilliant));
 		}
@@ -221,6 +234,14 @@ public final class EmojiPicker {
 	}
 
 	private static void drawGlyph(Gfx gfx, Font font, String symbol, int x, int y, int size, float scale, int glyph) {
+		Component sprite = SPRITES.get(symbol);
+		if (sprite != null) {
+			float width = Math.max(0, font.width(sprite)) * scale;
+			gfx.push(x + (size - width) / 2f, y + (size - glyph * scale) / 2f, scale);
+			gfx.text(font, sprite, 0, 0, 0xFFFFFFFF);
+			gfx.pop();
+			return;
+		}
 		float width = Math.max(0, font.width(symbol) - 1) * scale;
 		gfx.push(x + (size - width) / 2f, y + (size - glyph * scale) / 2f, scale);
 		gfx.text(font, symbol, 0, 0, 0xFFFFFFFF);
