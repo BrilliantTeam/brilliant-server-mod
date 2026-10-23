@@ -86,6 +86,7 @@ jobs:
           token=$(printf '%s' "$MODRINTH_TOKEN" | tr -d '[:space:]')
           token=${token#Bearer}
           mod_version=$(sed -n 's/^mod\.version = "\(.*\)"$/\1/p' stonecutter.properties.toml)
+          keep=""
           for jar in release/*.jar; do
             mc=$(basename "$jar" .jar)
             mc=${mc##*+}
@@ -117,4 +118,24 @@ jobs:
               echo "::error::上傳 $number 失敗（HTTP $status）"
               exit 1
             fi
+            keep="$keep $(jq -r '.id' response.json)"
           done
+
+          versions=$(curl -sS -f "https://api.modrinth.com/v2/project/$MODRINTH_PROJECT/version" \
+            -H "Authorization: $token" \
+            -H "User-Agent: BrilliantTeam/brilliant-server-mod (GitHub Actions)" | jq -r '.[] | "\(.id) \(.version_number)"') || {
+            echo "::warning::讀取 Modrinth 版本清單失敗，這次不清理舊版"
+            exit 0
+          }
+          while read -r id number; do
+            [ -z "$id" ] && continue
+            case " $keep " in *" $id "*) continue ;; esac
+            status=$(curl -sS -o /dev/null -w '%{http_code}' -X DELETE "https://api.modrinth.com/v2/version/$id" \
+              -H "Authorization: $token" \
+              -H "User-Agent: BrilliantTeam/brilliant-server-mod (GitHub Actions)") || status=000
+            if [ "$status" = 401 ]; then
+              echo "::warning::Modrinth 不允許刪除舊版（HTTP 401）：請在 MODRINTH_TOKEN 勾選 Delete versions 權限"
+              break
+            fi
+            echo "刪除舊版 $number（HTTP $status）"
+          done <<< "$versions"
