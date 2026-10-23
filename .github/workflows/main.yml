@@ -127,15 +127,25 @@ jobs:
             echo "::warning::讀取 Modrinth 版本清單失敗，這次不清理舊版"
             exit 0
           }
+          total=$(printf '%s\n' "$versions" | grep -c . || true)
+          deleted=0
+          failed=0
           while read -r id number; do
             [ -z "$id" ] && continue
             case " $keep " in *" $id "*) continue ;; esac
-            status=$(curl -sS -o /dev/null -w '%{http_code}' -X DELETE "https://api.modrinth.com/v2/version/$id" \
+            status=$(curl -sS -o delete.json -w '%{http_code}' -X DELETE "https://api.modrinth.com/v2/version/$id" \
               -H "Authorization: $token" \
               -H "User-Agent: BrilliantTeam/brilliant-server-mod (GitHub Actions)") || status=000
-            if [ "$status" = 401 ]; then
-              echo "::warning::Modrinth 不允許刪除舊版（HTTP 401）：請在 MODRINTH_TOKEN 勾選 Delete versions 權限"
+            if [ "$status" -lt 300 ] 2>/dev/null; then
+              deleted=$((deleted + 1))
+              echo "刪除舊版 $number"
+              continue
+            fi
+            failed=$((failed + 1))
+            echo "::warning::刪除 $number 失敗（HTTP $status）：$(head -c 300 delete.json 2>/dev/null)"
+            if [ "$status" = 401 ] || [ "$status" = 403 ] || [ "$failed" -ge 3 ]; then
               break
             fi
-            echo "刪除舊版 $number（HTTP $status）"
+            sleep 1
           done <<< "$versions"
+          echo "::notice::Modrinth 共 $total 個版本，保留這次上傳的 $(echo $keep | wc -w) 個，刪除 $deleted 個，失敗 $failed 個"
