@@ -20,6 +20,7 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,15 +37,13 @@ import net.minecraft.client.gui.font.glyphs.BakedSheetGlyph;
 import org.w3c.dom.Node;
 
 public final class StickerAnimator {
-	private static final int FIRST = 0xE100;
-	private static final int LAST = 0xE1FF;
 	private static final long ACTIVE_MS = 5_000;
 	private static final long FORGET_MS = 60_000;
 	private static final long RETRY_MS = 300_000;
 	private static final float MAX_RATIO = 1.7f;
 	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NORMAL).build();
 
-	private record Info(String id, int x0, int y0, int x1, int y1) {}
+	private record Info(String url, int x0, int y0, int x1, int y1) {}
 
 	private record Frames(NativeImage[] images, int[] ends) {
 		int at(long now) {
@@ -87,9 +86,14 @@ public final class StickerAnimator {
 	}
 
 	private static final Map<Integer, Info> INFO = load();
+	private static final BitSet ANIMATED = new BitSet(0x10000);
 	private static final Map<Object, Integer> UNBAKED = Collections.synchronizedMap(new WeakHashMap<>());
 	private static final Map<Integer, Slot> SLOTS = new HashMap<>();
-	private static final long[] SEEN = new long[LAST - FIRST + 1];
+	private static final Map<Integer, Long> SEEN = new HashMap<>();
+
+	static {
+		INFO.keySet().forEach(ANIMATED::set);
+	}
 
 	private StickerAnimator() {}
 
@@ -99,24 +103,34 @@ public final class StickerAnimator {
 
 	private static Map<Integer, Info> load() {
 		Map<Integer, Info> info = new HashMap<>();
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(StickerAnimator.class.getResourceAsStream("/stickers.txt"), StandardCharsets.UTF_8))) {
-			reader.lines().map(line -> line.split("\t")).filter(parts -> parts.length >= 6 && parts[4].equals("gif")).forEach(parts -> {
-				String[] box = parts[5].split(",");
-				if (box.length == 4 && parts[3].matches("\\d{1,20}")) {
-					info.put(Integer.parseInt(parts[0], 16), new Info(parts[3], Integer.parseInt(box[0]), Integer.parseInt(box[1]), Integer.parseInt(box[2]), Integer.parseInt(box[3])));
+		read(info, "/stickers.txt", parts -> parts.length >= 6 && parts[4].equals("gif") ? new String[] { parts[0], "https://media.discordapp.net/stickers/" + parts[3] + ".gif?size=320", parts[3], parts[5] } : null);
+		read(info, "/animated_emojis.txt", parts -> parts.length >= 3 ? new String[] { parts[0], "https://cdn.discordapp.com/emojis/" + parts[1] + ".gif?size=64", parts[1], parts[2] } : null);
+		return info;
+	}
+
+	private static void read(Map<Integer, Info> info, String resource, java.util.function.Function<String[], String[]> row) {
+		var stream = StickerAnimator.class.getResourceAsStream(resource);
+		if (stream == null) {
+			return;
+		}
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+			reader.lines().map(line -> row.apply(line.split("\t"))).filter(java.util.Objects::nonNull).forEach(parts -> {
+				String[] box = parts[3].split(",");
+				int codepoint = Integer.parseInt(parts[0], 16);
+				if (box.length == 4 && parts[2].matches("\\d{1,20}") && codepoint <= 0xFFFF) {
+					info.put(codepoint, new Info(parts[1], Integer.parseInt(box[0]), Integer.parseInt(box[1]), Integer.parseInt(box[2]), Integer.parseInt(box[3])));
 				}
 			});
 		} catch (Exception ignored) {
 		}
-		return info;
 	}
 
-	public static boolean isSticker(char c) {
-		return c >= FIRST && c <= LAST;
+	public static boolean isAnimated(char c) {
+		return ANIMATED.get(c);
 	}
 
 	public static void seen(char c) {
-		SEEN[c - FIRST] = System.currentTimeMillis();
+		SEEN.put((int) c, System.currentTimeMillis());
 	}
 
 	public static void unbaked(int codepoint, Object glyph) {
@@ -158,7 +172,7 @@ public final class StickerAnimator {
 				}
 				continue;
 			}
-			long idle = now - SEEN[entry.getKey() - FIRST];
+			long idle = now - SEEN.getOrDefault(entry.getKey(), 0L);
 			if (idle > FORGET_MS) {
 				if (slot.frames != null) {
 					slot.frames.close();
@@ -195,7 +209,7 @@ public final class StickerAnimator {
 
 	private static void fetch(Slot slot) {
 		slot.loading = true;
-		HttpRequest request = HttpRequest.newBuilder(URI.create("https://media.discordapp.net/stickers/" + slot.info.id() + ".gif?size=320"))
+		HttpRequest request = HttpRequest.newBuilder(URI.create(slot.info.url()))
 				.timeout(Duration.ofSeconds(20)).header("User-Agent", RPConfig.USER_AGENT).GET().build();
 		HTTP.sendAsync(request, HttpResponse.BodyHandlers.ofByteArray()).thenApply(response -> {
 			if (response.statusCode() != 200 || response.body().length > 8 << 20) {

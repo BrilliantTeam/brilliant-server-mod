@@ -121,7 +121,7 @@ public final class EmojiPicker {
 		boolean found = false;
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
-			if (StickerAnimator.isSticker(c)) {
+			if (StickerAnimator.isAnimated(c)) {
 				StickerAnimator.seen(c);
 			} else if (c == '️' || c == '‍' || c == '⃣' || c == '\uDB40') {
 				found = true;
