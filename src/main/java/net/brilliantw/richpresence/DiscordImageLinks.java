@@ -1,8 +1,6 @@
 package net.brilliantw.richpresence;
 
 import java.net.URI;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -28,6 +26,8 @@ public final class DiscordImageLinks {
 	private static final Pattern IMAGE = Pattern.compile("\\.(png|jpe?g|gif|webp)$");
 	private static final Pattern VIDEO = Pattern.compile("\\.(mp4|webm|mov|mkv|m4v)(\\?|$)", Pattern.CASE_INSENSITIVE);
 	private static final Logger LOGGER = LoggerFactory.getLogger("brilliant-server-mod");
+	private static final int ACCENT = 0xF6E0A4;
+	private static final int HINT = 0xF6C236;
 	private static final int MAX_ENTRIES = 300;
 	private static final Map<String, Image> IMAGES = new LinkedHashMap<>(16, 0.75f, true) {
 		@Override
@@ -97,14 +97,17 @@ public final class DiscordImageLinks {
 		} catch (IllegalArgumentException e) {
 			return Component.literal(url).setStyle(style);
 		}
-		String path = base(url);
-		String lower = path.toLowerCase(Locale.ROOT);
-		String kind = IMAGE.matcher(lower).find() ? "圖片" : VIDEO.matcher(lower).find() ? "影片" : "檔案";
-		String name = URLDecoder.decode(path.substring(path.lastIndexOf('/') + 1), StandardCharsets.UTF_8);
-		Component hover = Component.literal(name).withStyle(ChatFormatting.WHITE)
-				.append(Component.literal("\n" + (kind.equals("圖片") ? "點擊檢視圖片" : "點擊開啟")).withStyle(ChatFormatting.GRAY));
-		return Component.literal("[" + kind + "]").setStyle(style.withColor(ChatFormatting.AQUA)
-				.withClickEvent(new ClickEvent.OpenUrl(uri)).withHoverEvent(new HoverEvent.ShowText(hover)));
+		String lower = base(url).toLowerCase(Locale.ROOT);
+		boolean image = IMAGE.matcher(lower).find();
+		boolean video = !image && VIDEO.matcher(lower).find();
+		String noun = image ? "一張圖片" : video ? "一段影片" : "一個檔案";
+		String hint = image ? "點擊後即可在遊戲內預覽這張圖片" : video ? "點擊後即可在遊戲外查看這段影片" : "點擊後即可在遊戲外查看這個檔案";
+		Style link = Style.EMPTY.withClickEvent(new ClickEvent.OpenUrl(uri))
+				.withHoverEvent(new HoverEvent.ShowText(Component.literal(hint).withColor(HINT)));
+		return Component.empty().setStyle(link)
+				.append(Component.literal("發佈了：「").withStyle(ChatFormatting.GRAY))
+				.append(Component.literal(noun).withColor(ACCENT))
+				.append(Component.literal("」").withStyle(ChatFormatting.GRAY));
 	}
 
 	public static URI repair(URI uri) {
