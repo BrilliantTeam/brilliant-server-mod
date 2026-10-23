@@ -111,6 +111,7 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		ScreenshotMeta.register();
 		SettingsEntry.register();
 		CommandKeys.register();
+		StickerAnimator.register();
 	}
 
 	public static boolean isOnBrilliantServer() {

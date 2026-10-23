@@ -44,7 +44,7 @@ public final class EmojiPicker {
 	private static final Map<String, Emoji> BY_INSERT = new HashMap<>();
 	private static final ThreadLocal<Boolean> PLAIN = ThreadLocal.withInitial(() -> false);
 	private static final List<Section> SECTIONS = load();
-	private static final List<Emoji> STICKERS = lines("/stickers.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length == 3)
+	private static final List<Emoji> STICKERS = lines("/stickers.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length >= 3)
 			.map(parts -> new Emoji(fromHex(parts[0]), ":" + parts[1] + ":", parts[2], ":" + parts[1] + ":", List.of()))
 			.toList();
 	private static final String STICKER_TAB = "貼圖";
@@ -118,19 +118,19 @@ public final class EmojiPicker {
 	}
 
 	private static boolean maySequence(String text) {
+		boolean found = false;
 		for (int i = 0; i < text.length(); i++) {
 			char c = text.charAt(i);
-			if (c == '️' || c == '‍' || c == '⃣' || c == '\uDB40') {
-				return true;
-			}
-			if (c == '\uD83C' && i + 1 < text.length()) {
+			if (StickerAnimator.isSticker(c)) {
+				StickerAnimator.seen(c);
+			} else if (c == '️' || c == '‍' || c == '⃣' || c == '\uDB40') {
+				found = true;
+			} else if (c == '\uD83C' && i + 1 < text.length()) {
 				char next = text.charAt(i + 1);
-				if (next >= '\uDDE6' && next <= '\uDDFF' || next >= '\uDFFB' && next <= '\uDFFF') {
-					return true;
-				}
+				found |= next >= '\uDDE6' && next <= '\uDDFF' || next >= '\uDFFB' && next <= '\uDFFF';
 			}
 		}
-		return false;
+		return found;
 	}
 
 	public static String display(String text) {

@@ -27,7 +27,10 @@
 		"LightmapMixin",
 		"NightVisionScaleMixin",
 		"StringDecomposerMixin",
-		"MouseHandlerMixin"
+		"MouseHandlerMixin",
+		"BakedSheetGlyphAccessor",
+		"BitmapProviderMixin",
+		"BitmapGlyphMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
