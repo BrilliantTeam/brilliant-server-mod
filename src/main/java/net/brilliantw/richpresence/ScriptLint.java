@@ -8,7 +8,7 @@ import java.util.Set;
 
 public final class ScriptLint {
 	public static final int TRADE_COOLDOWN = 1200;
-	private static final Set<String> PACED = Set.of("act_tap", "key_press", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "act_face", "act_turn");
+	private static final Set<String> PACED = Set.of("act_tap", "key_press", "key_combo", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "act_face", "act_turn");
 	private static final Set<String> SENDS = Set.of("say", "command", "msg", "say_channel", "reply");
 	private static final Set<String> LOOPS = Set.of("forever", "repeat", "repeat_until", "for_each");
 	private static final Set<String> MESSAGE_EVENTS = Set.of("ev_message", "ev_channel", "ev_private", "ev_mention", "ev_player_join", "ev_player_leave", "ev_res_enter", "ev_res_leave",

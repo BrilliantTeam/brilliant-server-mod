@@ -374,6 +374,7 @@ public final class ScriptEngine {
 			}
 			return;
 		}
+		hotkeys(client);
 		for (int i = 0; i < KEYS.length; i++) {
 			String index = ScriptBlocks.KEYS.get(i);
 			while (KEYS[i] != null && KEYS[i].consumeClick()) {
@@ -767,7 +768,7 @@ public final class ScriptEngine {
 					frame.index++;
 					return;
 				}
-				case "key_press" -> {
+				case "key_press", "key_combo" -> {
 					act(run, block);
 					frame.index++;
 					run.waitUntil = now + INPUT_GAP_MS;
@@ -1056,7 +1057,7 @@ public final class ScriptEngine {
 
 	private static final java.util.Set<String> CLIENT_ACTIONS = java.util.Set.of("insert", "local", "local_color", "actionbar", "sound", "copy", "title",
 			"act_tap", "act_press", "act_release", "act_release_all", "act_hotbar", "act_face", "act_turn",
-			"key_press", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "gui_close", "gui_click_name",
+			"key_press", "key_combo", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "gui_close", "gui_click_name",
 			"act_hotbar_find", "note", "notify");
 
 	static net.minecraft.client.gui.screens.Screen screen() {
@@ -1102,30 +1103,57 @@ public final class ScriptEngine {
 	}
 
 	private static int keyCode(String name) {
-		return switch (name) {
-			case "Enter" -> InputConstants.KEY_RETURN;
-			case "Tab" -> InputConstants.KEY_TAB;
-			case "F1" -> InputConstants.KEY_F1;
-			case "F2" -> InputConstants.KEY_F2;
-			case "F3" -> InputConstants.KEY_F3;
-			case "F5" -> InputConstants.KEY_F5;
-			case "E" -> InputConstants.KEY_E;
-			default -> InputConstants.KEY_ESCAPE;
-		};
+		return KeyCombos.code(name);
+	}
+
+	private static int modifiers(String name) {
+		return KeyCombos.parse(name);
+	}
+
+	private static final java.util.Set<Integer> HOTKEY_DOWN = new java.util.HashSet<>();
+
+	private static void hotkeys(Minecraft client) {
+		List<Scripts.Block> hats = Scripts.activeStacks().stream().filter(s -> !s.blocks.isEmpty() && s.blocks.getFirst().op.equals("ev_hotkey")).map(s -> s.blocks.getFirst()).toList();
+		java.util.Set<Integer> wanted = new java.util.HashSet<>();
+		hats.forEach(hat -> wanted.add(keyCode(hat.text(1))));
+		HOTKEY_DOWN.retainAll(wanted);
+		boolean ready = screen() == null;
+		int held = KeyCombos.held();
+		for (int code : wanted) {
+			if (!CommandKeys.keyDown(client, code)) {
+				HOTKEY_DOWN.remove(code);
+				continue;
+			}
+			if (!HOTKEY_DOWN.add(code) || !ready) {
+				continue;
+			}
+			List<Scripts.Block> same = hats.stream().filter(hat -> keyCode(hat.text(1)) == code).toList();
+			List<Integer> combos = same.stream().map(hat -> modifiers(hat.text(0))).distinct().toList();
+			for (int want : combos) {
+				if (KeyCombos.fires(want, held, combos.stream().filter(other -> other != want).toList())) {
+					fire("ev_hotkey", hat -> keyCode(hat.text(1)) == code && modifiers(hat.text(0)) == want, Map.of());
+				}
+			}
+		}
 	}
 
 	private static void pressKey(Minecraft client, Scripts.Block block) {
+		boolean combo = block.op.equals("key_combo");
+		pressKey(client, block, combo ? block.text(1) : block.text(0), combo ? modifiers(block.text(0)) : 0);
+	}
+
+	private static void pressKey(Minecraft client, Scripts.Block block, String name, int combo) {
 		net.minecraft.client.gui.screens.Screen screen = screen();
 		if (screen instanceof ScriptEditorScreen || screen instanceof ScriptTemplateScreen || screen instanceof ScriptImportScreen) {
 			fail(block, "腳本編輯器開著時不會操作介面或按鍵，請先關閉編輯器再測試");
 			return;
 		}
-		if (screen instanceof ChatScreen && block.text(0).equals("Enter")) {
+		if (screen instanceof ChatScreen && name.equals("Enter")) {
 			fail(block, "聊天欄開著時不能用 Enter 送出，要送訊息請用「送出訊息」積木（才會遵守每 3 秒一則的限制）");
 			return;
 		}
 		KeyboardHandlerInvoker keyboard = (KeyboardHandlerInvoker) client.keyboardHandler;
-		net.minecraft.client.input.KeyEvent event = new net.minecraft.client.input.KeyEvent(keyCode(block.text(0)), 0, 0);
+		net.minecraft.client.input.KeyEvent event = new net.minecraft.client.input.KeyEvent(keyCode(name), 0, KeyCombos.eventMods(combo));
 		long window = client.getWindow().handle();
 		keyboard.brilliant$keyPress(window, InputConstants.PRESS, event);
 		keyboard.brilliant$keyPress(window, InputConstants.RELEASE, event);
@@ -1384,7 +1412,7 @@ public final class ScriptEngine {
 					player.getInventory().setSelectedSlot((int) Math.clamp(Math.round(number(eval(run, block.args.getFirst()))) - 1, 0, 8));
 				}
 			}
-			case "key_press" -> pressKey(client, block);
+			case "key_press", "key_combo" -> pressKey(client, block);
 			case "gui_click_slot" -> clickSlot(client, run, block);
 			case "gui_click_text" -> clickText(run, block);
 			case "gui_click_xy" -> {
@@ -2041,6 +2069,11 @@ public final class ScriptEngine {
 			case "s_key" -> {
 				int index = ScriptBlocks.KEYS.indexOf(block.text(0));
 				yield bool(index >= 0 && KEYS[index] != null && KEYS[index].isDown());
+			}
+			case "s_hotkey" -> {
+				String name = block.text(0);
+				int combo = modifiers(name);
+				yield bool(ScriptBlocks.MODIFIERS.contains(name) ? (KeyCombos.held() & combo) == combo : CommandKeys.keyDown(Minecraft.getInstance(), keyCode(name)));
 			}
 			case "s_timer" -> format(Math.round((System.currentTimeMillis() - timerStart) / 100.0) / 10.0);
 			case "op_math" -> {

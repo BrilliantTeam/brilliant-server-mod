@@ -57,7 +57,19 @@ public final class ScriptBlocks {
 	public static final List<String> CHANNELS = List.of("聊天", "交易", "區域", "公會", "領地");
 	public static final List<String> MATH = List.of("絕對值", "平方根", "無條件捨去", "無條件進位");
 	public static final List<String> ACTIONS = List.of("攻擊／挖掘", "使用／放置", "跳躍", "蹲下", "衝刺", "前進", "後退", "向左", "向右", "丟棄物品", "副手交換");
-	public static final List<String> KEYBOARD = List.of("ESC", "Enter", "Tab", "F1", "F2", "F3", "F5", "E");
+	public static final List<String> LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars().mapToObj(c -> String.valueOf((char) c)).toList();
+	public static final List<String> DIGITS = List.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+	public static final List<String> FUNCTION_KEYS = List.of("F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12");
+	public static final List<String> SPECIAL_KEYS = List.of("空白鍵", "Enter", "Tab", "Backspace", "Delete", "Insert", "Home", "End", "PageUp", "PageDown", "上", "下", "左", "右");
+	public static final List<String> HOTKEYS = join(LETTERS, DIGITS, FUNCTION_KEYS, SPECIAL_KEYS);
+	public static final List<String> KEYBOARD = join(List.of("ESC", "Enter", "Tab"), FUNCTION_KEYS, LETTERS, DIGITS, SPECIAL_KEYS.stream().filter(k -> !k.equals("Enter") && !k.equals("Tab")).toList());
+	public static final List<String> MODIFIERS = List.of("Ctrl", "Shift", "Alt", "Ctrl+Shift", "Ctrl+Alt", "Shift+Alt", "Ctrl+Shift+Alt", "不按");
+	public static final List<String> HELD_KEYS = join(List.of("Ctrl", "Shift", "Alt"), HOTKEYS);
+
+	@SafeVarargs
+	private static List<String> join(List<String>... lists) {
+		return java.util.Arrays.stream(lists).flatMap(List::stream).toList();
+	}
 	public static final List<String> CLICKS = List.of("左鍵", "右鍵", "Shift+左鍵", "丟出");
 	public static final List<String> DIRECTIONS = List.of("南", "西", "北", "東");
 	public static final List<String> HEARD = List.of("任何音效", "釣魚浮標濺水", "爆炸", "苦力怕引信", "雷聲", "物品撿起", "經驗球", "升級", "村民", "箱子開啟", "鐘聲", "傳送", "受傷", "附魔", "鐵砧");
@@ -110,6 +122,7 @@ public final class ScriptBlocks {
 		def("ev_dawn", c, Shape.HAT, "當天亮時");
 		def("ev_dusk", c, Shape.HAT, "當天黑時");
 		def("ev_key_release", c, Shape.HAT, "當放開腳本鍵 % 時", dropdown(KEYS));
+		def("ev_hotkey", c, Shape.HAT, "當按下 % + % 時", dropdown(MODIFIERS), dropdown(HOTKEYS));
 		def("ev_announcement", c, Shape.HAT, "當有新公告時");
 
 		c = Category.CONTROL;
@@ -172,6 +185,7 @@ public final class ScriptBlocks {
 		def("act_turn", c, Shape.STACK, "轉動視角 左右 % 度 上下 % 度", number("90"), number("0"));
 		def("s_pressing", c, Shape.BOOLEAN, "正在按著 % ?", dropdown(ACTIONS));
 		def("key_press", c, Shape.STACK, "按下鍵盤 %", dropdown(KEYBOARD));
+		def("key_combo", c, Shape.STACK, "按下組合鍵 % + %", dropdown(MODIFIERS), dropdown(KEYBOARD));
 		def("gui_click_slot", c, Shape.STACK, "點擊介面第 % 格 用 %", number("1"), dropdown(CLICKS));
 		def("gui_move", c, Shape.STACK, "把介面第 % 格的物品移到第 % 格", number("10"), number("37"));
 		def("gui_click_text", c, Shape.STACK, "點擊介面上寫著 % 的按鈕", text("確定"));
@@ -267,6 +281,7 @@ public final class ScriptBlocks {
 		def("s_announcement", c, Shape.REPORTER, "最新公告標題");
 		def("s_timestamp", c, Shape.REPORTER, "現在時間戳");
 		def("s_key", c, Shape.BOOLEAN, "腳本鍵 % 被按住?", dropdown(KEYS));
+		def("s_hotkey", c, Shape.BOOLEAN, "鍵盤 % 被按住?", dropdown(HELD_KEYS));
 		def("s_timer", c, Shape.REPORTER, "計時器");
 		def("timer_reset", c, Shape.STACK, "重設計時器");
 

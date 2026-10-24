@@ -48,10 +48,14 @@ public final class CommandKeys {
 		if (key.getType() == InputConstants.Type.MOUSE) {
 			return key.getValue() >= 0 && key.getValue() < MOUSE.length && MOUSE[key.getValue()];
 		}
+		return keyDown(client, key.getValue());
+	}
+
+	static boolean keyDown(Minecraft client, int keyCode) {
 		//? if >=26.3 {
-		/*return InputConstants.isKeyDown(key.getValue());
+		/*return InputConstants.isKeyDown(keyCode);
 		*///?} else {
-		return InputConstants.isKeyDown(client.getWindow(), key.getValue());
+		return InputConstants.isKeyDown(client.getWindow(), keyCode);
 		//?}
 	}
 

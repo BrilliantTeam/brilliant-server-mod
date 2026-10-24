@@ -48,7 +48,18 @@ public final class ScriptEditorScreen extends Screen {
 
 	private record Target(List<Scripts.Block> list, int index, Scripts.Stack stack, int shiftY) {}
 
-	private record Popup(Scripts.Block block, int index, List<String> options, int x, int y, int w) {}
+	private record Popup(Scripts.Block block, int index, List<String> options, int x, int y, int w, int rows) {
+		int cols() {
+			return (options.size() + rows - 1) / rows;
+		}
+
+		int at(double mx, double my) {
+			int col = (int) Math.floor((mx - x) / w);
+			int row = (int) Math.floor((my - y - 2) / 12);
+			int i = col * rows + row;
+			return mx >= x && col < cols() && row >= 0 && row < rows && i < options.size() ? i : -1;
+		}
+	}
 
 	private record MenuEntry(String label, Runnable action) {}
 
@@ -1015,15 +1026,18 @@ public final class ScriptEditorScreen extends Screen {
 			gfx.pop();
 		}
 		if (popup != null) {
-			int h = popup.options().size() * 12 + 4;
-			gfx.fill(popup.x() - 1, popup.y() - 1, popup.x() + popup.w() + 1, popup.y() + h + 1, Theme.ACCENT_DIM);
-			gfx.fill(popup.x(), popup.y(), popup.x() + popup.w(), popup.y() + h, Theme.PANEL);
+			int h = popup.rows() * 12 + 4;
+			int w = popup.cols() * popup.w();
+			gfx.fill(popup.x() - 1, popup.y() - 1, popup.x() + w + 1, popup.y() + h + 1, Theme.ACCENT_DIM);
+			gfx.fill(popup.x(), popup.y(), popup.x() + w, popup.y() + h, Theme.PANEL);
+			int hover = popup.at(mouseX, mouseY);
 			for (int i = 0; i < popup.options().size(); i++) {
-				int oy = popup.y() + 2 + i * 12;
-				if (mouseX >= popup.x() && mouseX < popup.x() + popup.w() && mouseY >= oy && mouseY < oy + 12) {
-					gfx.fill(popup.x(), oy, popup.x() + popup.w(), oy + 12, Theme.SELECTED);
+				int ox = popup.x() + i / popup.rows() * popup.w();
+				int oy = popup.y() + 2 + i % popup.rows() * 12;
+				if (i == hover) {
+					gfx.fill(ox, oy, ox + popup.w(), oy + 12, Theme.SELECTED);
 				}
-				gfx.label(font, popup.options().get(i), popup.x() + 4, oy, 12, Theme.TEXT);
+				gfx.label(font, popup.options().get(i), ox + 4, oy, 12, Theme.TEXT);
 			}
 		}
 		if (menu != null) {
@@ -1419,11 +1433,14 @@ public final class ScriptEditorScreen extends Screen {
 			return;
 		}
 		int w = options.stream().mapToInt(font::width).max().orElse(0) + 12;
-		int h = options.size() * 12 + 4;
+		int rows = Math.min(options.size(), Math.clamp((height - 8) / 12, 4, 16));
+		int h = rows * 12 + 4;
+		int cols = (options.size() + rows - 1) / rows;
 		int top = sy(slot.y());
 		int bottom = sy(slot.y() + slot.h());
-		int y = bottom + h > height ? top - h : bottom;
-		popup = new Popup(slot.block(), slot.index(), List.copyOf(options), sx(slot.x()), y, w);
+		int y = Math.max(2, bottom + h > height ? top - h : bottom);
+		int x = Math.max(2, Math.min(sx(slot.x()), width - cols * w - 2));
+		popup = new Popup(slot.block(), slot.index(), List.copyOf(options), x, y, w, rows);
 	}
 
 	private void detach(Node node) {
@@ -1745,10 +1762,10 @@ public final class ScriptEditorScreen extends Screen {
 			return true;
 		}
 		if (popup != null) {
-			int index = (int) ((my - popup.y() - 2) / 12);
 			Popup open = popup;
 			popup = null;
-			if (mx >= open.x() && mx < open.x() + open.w() && index >= 0 && index < open.options().size() && my >= open.y() + 2) {
+			int index = open.at(mx, my);
+			if (index >= 0) {
 				open.block().args.get(open.index()).text = open.options().get(index);
 			}
 			return true;
