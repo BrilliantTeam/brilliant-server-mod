@@ -372,6 +372,11 @@ public final class ScriptView {
 			double pulse = 0.65 + 0.35 * Math.sin(now / 160.0);
 			outline(gfx, node.x, top, node.w, bottom - top, alpha(CURRENT, pulse));
 		}
+		if (ScriptEngine.isBreakpoint(node.block)) {
+			int cy = node.rowY + node.rowH / 2;
+			gfx.fill(node.x - 4, cy - 4, node.x + 4, cy + 4, 0xFFFFFFFF);
+			gfx.fill(node.x - 3, cy - 3, node.x + 3, cy + 3, 0xFFE03131);
+		}
 		double progress = ScriptEngine.waitProgress(node.block, now);
 		if (progress >= 0) {
 			gfx.fill(node.x + 2, bottom - 3, node.x + node.w - 2, bottom - 1, 0x80000000);

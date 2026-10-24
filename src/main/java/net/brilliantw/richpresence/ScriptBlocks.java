@@ -70,7 +70,7 @@ public final class ScriptBlocks {
 	private static List<String> join(List<String>... lists) {
 		return java.util.Arrays.stream(lists).flatMap(List::stream).toList();
 	}
-	public static final List<String> CLICKS = List.of("左鍵", "右鍵", "Shift+左鍵", "丟出");
+	public static final List<String> CLICKS = List.of("左鍵", "右鍵", "Shift+左鍵", "丟出", "丟出整組");
 	public static final List<String> DIRECTIONS = List.of("南", "西", "北", "東");
 	public static final List<String> HEARD = List.of("任何音效", "釣魚浮標濺水", "爆炸", "苦力怕引信", "雷聲", "物品撿起", "經驗球", "升級", "村民", "箱子開啟", "鐘聲", "傳送", "受傷", "附魔", "鐵砧");
 	public static final List<String> EXTRACTS = List.of("數字", "整數", "冒號後面", "括號裡", "英文或玩家名");

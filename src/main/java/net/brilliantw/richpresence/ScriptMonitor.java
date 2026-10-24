@@ -29,6 +29,7 @@ public final class ScriptMonitor {
 
 	private static final int HEADER = 13;
 	private static final int CONTROLS = 16;
+	private static final int DEBUG_BAR = 14;
 	private static final int LINE = 10;
 	private static final int GRIP = 7;
 	private static final int MIN_WIDTH = 160;
@@ -116,8 +117,19 @@ public final class ScriptMonitor {
 	private static List<String> lines() {
 		List<String> lines = new ArrayList<>();
 		Scripts.Group group = currentGroup();
+		boolean paused = false;
+		for (Scripts.Stack stack : group == null ? List.<Scripts.Stack>of() : group.stacks) {
+			if (ScriptEngine.paused(stack)) {
+				Scripts.Block at = ScriptEngine.currentOf(stack);
+				lines.add("\u0004⏸ 已暫停：" + (at == null ? "腳本結尾" : describe(at)));
+				paused = true;
+			}
+		}
+		if (paused) {
+			lines.add("\u0004" + ScriptEngine.debugKeyName(0) + " 下一步、" + ScriptEngine.debugKeyName(1) + " 繼續（開著介面時也能用）");
+		}
 		List<String> variables = Scripts.variablesOf(group);
-		for (int i = 0; i < Math.min(MAX_VARIABLES, variables.size()); i++) {
+		for (int i = 0; i < Math.min(paused ? variables.size() : MAX_VARIABLES, variables.size()); i++) {
 			lines.add("§" + variables.get(i) + " = " + ScriptEngine.variable(group, variables.get(i)));
 		}
 		FIELDS.forEach((name, value) -> lines.add("\u0003" + name + "：" + value));
@@ -252,7 +264,7 @@ public final class ScriptMonitor {
 		Scripts.Stack stack = shown(interactive);
 		List<String> lines = lines();
 		int controlsY = y + HEADER;
-		int top = interactive ? controlsY + CONTROLS : controlsY;
+		int top = interactive ? controlsY + CONTROLS + DEBUG_BAR : controlsY;
 		int available = y + h - top;
 		Preview preview = null;
 		int previewH = 0;
@@ -280,6 +292,34 @@ public final class ScriptMonitor {
 			case 2 -> new Rect(frame.x() + frame.w() - 63, y, 30, CONTROLS - 4);
 			default -> new Rect(frame.x() + frame.w() - 32, y, 29, CONTROLS - 4);
 		};
+	}
+
+	private record Chip(Rect rect, String label, String action, boolean enabled) {}
+
+	private static List<Chip> debugChips(Layout layout) {
+		Font font = font();
+		Scripts.Stack stack = layout.stack();
+		boolean running = stack != null && ScriptEngine.isRunning(stack);
+		boolean paused = stack != null && ScriptEngine.paused(stack);
+		String first = !running ? "除錯執行" : paused ? "繼續" : "暫停";
+		String[][] specs = {
+				{first, !running ? "debug" : paused ? "resume" : "pause", String.valueOf(stack != null)},
+				{"下一步", "step", String.valueOf(paused)},
+				{trace() ? "追蹤：開" : "追蹤：關", "trace", "true"}
+		};
+		List<Chip> chips = new ArrayList<>();
+		int x = layout.frame().x() + 3;
+		int y = layout.controlsY() + CONTROLS + 1;
+		for (String[] spec : specs) {
+			int w = font.width(spec[0]) + 8;
+			chips.add(new Chip(new Rect(x, y, w, DEBUG_BAR - 3), spec[0], spec[1], Boolean.parseBoolean(spec[2])));
+			x += w + 3;
+		}
+		return chips;
+	}
+
+	private static boolean trace() {
+		return ScriptEngine.trace;
 	}
 
 	private static Rect grip(Rect frame) {
@@ -399,6 +439,11 @@ public final class ScriptMonitor {
 				y += LINE;
 				continue;
 			}
+			if (line.startsWith("\u0004")) {
+				gfx.text(font, font.plainSubstrByWidth(line.substring(1), frame.w() - 8), frame.x() + 4, y + 1, 0xFFFFD43B);
+				y += LINE;
+				continue;
+			}
 			boolean variable = line.startsWith("§");
 			boolean warning = line.length() > 9 && line.charAt(9) == '⚠';
 			String text = variable ? line.substring(1) : line;
@@ -453,6 +498,20 @@ public final class ScriptMonitor {
 		boolean showNotice = notice != null && System.currentTimeMillis() - noticeAt < 2500;
 		String name = showNotice ? notice : stack == null ? "沒有可執行的腳本" : describe(stack.blocks.getFirst());
 		gfx.label(font, font.plainSubstrByWidth(name, nameW), nameX, layout.controlsY(), CONTROLS, showNotice ? 0xFFFF7A7A : running ? Theme.SUCCESS : Theme.TEXT);
+		int barY = layout.controlsY() + CONTROLS;
+		gfx.fill(frame.x(), barY, frame.x() + frame.w(), barY + DEBUG_BAR, 0x40000000);
+		int end = frame.x() + 3;
+		for (Chip chip : debugChips(layout)) {
+			Rect r = chip.rect();
+			chip(gfx, r, chip.enabled() && r.contains(mouseX, mouseY), chip.enabled());
+			boolean on = chip.action().equals("trace") && trace() || chip.action().equals("resume");
+			gfx.label(font, chip.label(), r.x() + 4, r.y(), r.h(), !chip.enabled() ? Theme.TEXT_DIM : on ? 0xFFFFAB19 : Theme.TEXT);
+			end = r.x() + r.w() + 6;
+		}
+		String hint = "點預覽中的積木設中斷點";
+		if (end + font.width(hint) < frame.x() + frame.w() - 4) {
+			gfx.label(font, hint, frame.x() + frame.w() - 4 - font.width(hint), barY + 1, DEBUG_BAR - 3, Theme.TEXT_DIM);
+		}
 	}
 
 	private static void drawPreview(Gfx gfx, Preview preview, int x, int w, int y) {
@@ -533,6 +592,27 @@ public final class ScriptMonitor {
 			return true;
 		}
 		Scripts.Stack stack = layout.stack();
+		for (Chip chip : debugChips(layout)) {
+			if (!chip.rect().contains(mouseX, mouseY)) {
+				continue;
+			}
+			if (chip.enabled()) {
+				debugAction(chip.action(), stack);
+			}
+			return true;
+		}
+		Preview preview = layout.preview();
+		if (preview != null && mouseY >= layout.previewY() && mouseY < layout.previewY() + preview.height()) {
+			double lx = (mouseX - frame.x() - 6) / preview.scale();
+			double ly = (mouseY - layout.previewY() - 4 + scroll) / preview.scale();
+			ScriptView.Node node = view().nodeAt(preview.laid().nodes(), lx, ly);
+			if (node != null && !node.def.isReporter() && node.def.shape() != ScriptBlocks.Shape.HAT) {
+				boolean set = ScriptEngine.toggleBreakpoint(node.block);
+				say(set ? "已設中斷點" : "已移除中斷點");
+				log((set ? "● 中斷點：" : "○ 移除中斷點：") + describe(node.block));
+			}
+			return true;
+		}
 		if (control(layout, 0).contains(mouseX, mouseY)) {
 			cycle(-1);
 		} else if (control(layout, 1).contains(mouseX, mouseY)) {
@@ -549,6 +629,29 @@ public final class ScriptMonitor {
 			log("已停止：" + describe(stack.blocks.getFirst()));
 		}
 		return true;
+	}
+
+	private static void debugAction(String action, Scripts.Stack stack) {
+		switch (action) {
+			case "trace" -> {
+				ScriptEngine.trace = !ScriptEngine.trace;
+				say(ScriptEngine.trace ? "已開啟執行追蹤，每執行一塊都會記在下方" : "已關閉執行追蹤");
+			}
+			case "debug" -> {
+				picked = stack;
+				if (!ScriptEngine.active()) {
+					say(Scripts.data().enabled ? "要在輝煌伺服器上才能執行" : "腳本已停用");
+				} else if (ScriptEngine.startDebug(stack)) {
+					scroll = 0;
+					say("已暫停在第一塊，按「下一步」一次執行一塊");
+				}
+			}
+			case "pause" -> ScriptEngine.pause(stack);
+			case "resume" -> ScriptEngine.resume(stack);
+			case "step" -> ScriptEngine.step(stack);
+			default -> {
+			}
+		}
 	}
 
 	public static boolean mouseDragged(double mouseX, double mouseY) {

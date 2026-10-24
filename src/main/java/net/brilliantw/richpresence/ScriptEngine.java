@@ -58,6 +58,7 @@ public final class ScriptEngine {
 		boolean done;
 		boolean debug;
 		int stepsRequested;
+		Scripts.Block resumed;
 		Scripts.Block retryBlock;
 		long retryStart;
 		int moveStage;
@@ -140,6 +141,10 @@ public final class ScriptEngine {
 	private static Scripts.Stack lastStack;
 	private static long lastStackAt;
 	private static final KeyMapping[] KEYS = new KeyMapping[ScriptBlocks.KEYS.size()];
+	private static final KeyMapping[] DEBUG_KEYS = new KeyMapping[2];
+	private static final boolean[] DEBUG_HELD = new boolean[2];
+	private static final java.util.Set<Scripts.Block> BREAKPOINTS = java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<>());
+	static boolean trace;
 	private static long lastSent;
 	private static String lastText = "";
 	private static boolean echoing;
@@ -159,6 +164,96 @@ public final class ScriptEngine {
 			/*KEYS[i] = KeyBindingHelper.registerKeyBinding(key);
 			*///?}
 		}
+		String[] names = {"script_debug_step", "script_debug_continue"};
+		int[] defaults = {InputConstants.KEY_F6, InputConstants.KEY_F7};
+		for (int i = 0; i < DEBUG_KEYS.length; i++) {
+			KeyMapping key = new KeyMapping("key.brilliant-server-mod." + names[i], defaults[i], category);
+			//? if >=26.1 {
+			DEBUG_KEYS[i] = KeyMappingHelper.registerKeyMapping(key);
+			//?} else {
+			/*DEBUG_KEYS[i] = KeyBindingHelper.registerKeyBinding(key);
+			*///?}
+		}
+	}
+
+	static String debugKeyName(int index) {
+		KeyMapping key = DEBUG_KEYS[index];
+		return key == null || key.isUnbound() ? "未設定" : key.getTranslatedKeyMessage().getString();
+	}
+
+	private static void debugKeys(Minecraft client) {
+		for (int i = 0; i < DEBUG_KEYS.length; i++) {
+			KeyMapping mapping = DEBUG_KEYS[i];
+			if (mapping == null) {
+				continue;
+			}
+			while (mapping.consumeClick()) {
+			}
+			InputConstants.Key bound = InputConstants.getKey(mapping.saveString());
+			boolean down = bound != InputConstants.UNKNOWN && bound.getType() != InputConstants.Type.MOUSE && CommandKeys.keyDown(client, bound.getValue());
+			if (down && !DEBUG_HELD[i]) {
+				Run run = debugRun();
+				if (run != null && i == 0) {
+					run.stepsRequested++;
+				} else if (run != null) {
+					resume(run);
+				}
+			}
+			DEBUG_HELD[i] = down;
+		}
+	}
+
+	public static boolean isBreakpoint(Scripts.Block block) {
+		return BREAKPOINTS.contains(block);
+	}
+
+	public static boolean toggleBreakpoint(Scripts.Block block) {
+		if (BREAKPOINTS.remove(block)) {
+			return false;
+		}
+		BREAKPOINTS.add(block);
+		return true;
+	}
+
+	private static Run runOf(Scripts.Stack stack) {
+		for (Run run : RUNS) {
+			if (!run.done && run.stack == stack) {
+				return run;
+			}
+		}
+		return null;
+	}
+
+	public static boolean paused(Scripts.Stack stack) {
+		Run run = runOf(stack);
+		return run != null && run.debug;
+	}
+
+	public static void pause(Scripts.Stack stack) {
+		Run run = runOf(stack);
+		if (run != null && !run.debug) {
+			run.debug = true;
+			run.current = next(run);
+		}
+	}
+
+	public static void step(Scripts.Stack stack) {
+		Run run = runOf(stack);
+		if (run != null && run.debug) {
+			run.stepsRequested++;
+		}
+	}
+
+	public static void resume(Scripts.Stack stack) {
+		Run run = runOf(stack);
+		if (run != null && run.debug) {
+			resume(run);
+		}
+	}
+
+	private static void resume(Run run) {
+		run.debug = false;
+		run.resumed = run.current;
 	}
 
 	static boolean active() {
@@ -311,7 +406,7 @@ public final class ScriptEngine {
 	public static void debugContinue() {
 		Run run = debugRun();
 		if (run != null) {
-			run.debug = false;
+			resume(run);
 		}
 	}
 
@@ -375,6 +470,7 @@ public final class ScriptEngine {
 			return;
 		}
 		hotkeys(client);
+		debugKeys(client);
 		for (int i = 0; i < KEYS.length; i++) {
 			String index = ScriptBlocks.KEYS.get(i);
 			while (KEYS[i] != null && KEYS[i].consumeClick()) {
@@ -758,6 +854,16 @@ public final class ScriptEngine {
 				continue;
 			}
 			Scripts.Block block = frame.list.get(frame.index);
+			if (!run.debug && block != run.resumed && BREAKPOINTS.contains(block)) {
+				run.debug = true;
+				run.current = block;
+				ScriptMonitor.log("⏸ 停在中斷點：" + ScriptMonitor.describe(block));
+				return;
+			}
+			run.resumed = null;
+			if (trace) {
+				ScriptMonitor.log("→ " + ScriptMonitor.describe(block));
+			}
 			run.current = block;
 			FLASH.put(block, now);
 			switch (block.op) {
@@ -1191,10 +1297,14 @@ public final class ScriptEngine {
 		if (slot == null || player == null || client.gameMode == null) {
 			return;
 		}
-		int button = block.text(1).equals("右鍵") ? 1 : 0;
-		String kind = switch (block.text(1)) {
+		click(screen, slot, block.text(1));
+	}
+
+	private static void click(net.minecraft.client.gui.screens.Screen screen, net.minecraft.world.inventory.Slot slot, String how) {
+		int button = how.equals("右鍵") || how.equals("丟出整組") ? 1 : 0;
+		String kind = switch (how) {
 			case "Shift+左鍵" -> "QUICK_MOVE";
-			case "丟出" -> "THROW";
+			case "丟出", "丟出整組" -> "THROW";
 			default -> "PICKUP";
 		};
 		click(screen, slot, button, kind);
@@ -1449,12 +1559,7 @@ public final class ScriptEngine {
 					if (found == null) {
 						fail(block, "介面裡找不到名稱含有「" + needle + "」的物品");
 					} else {
-						String kind = switch (block.text(1)) {
-							case "Shift+左鍵" -> "QUICK_MOVE";
-							case "丟出" -> "THROW";
-							default -> "PICKUP";
-						};
-						click(screen, found, block.text(1).equals("右鍵") ? 1 : 0, kind);
+						click(screen, found, block.text(1));
 					}
 				}
 			}

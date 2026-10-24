@@ -5,6 +5,8 @@
 	"key.brilliant-server-mod.script_3": "Script Key 3",
 	"key.brilliant-server-mod.script_4": "Script Key 4",
 	"key.brilliant-server-mod.script_5": "Script Key 5",
+	"key.brilliant-server-mod.script_debug_step": "Script Debug: Step",
+	"key.brilliant-server-mod.script_debug_continue": "Script Debug: Continue",
 	"modmenu.nameTranslation.brilliant-server-mod": "Brilliant Mod",
 	"modmenu.summaryTranslation.brilliant-server-mod": "Client companion for the Brilliant server: Discord Rich Presence, minimap and world map, Discord-style emoji and sticker picker, searchable chat menu, channel tabs, PM window, automation scripts, and more.",
 	"modmenu.descriptionTranslation.brilliant-server-mod": "The official client companion for the Brilliant server (brilliantw.net).\n\n• Discord Rich Presence with sub-server and play time\n• Searchable chat menu: announcements, articles, chat history, quick messages, custom commands\n• Channel tabs and a private message window\n• Minimap and world map with residences, regenerating chunks, slime chunks, and waypoints\n• Discord-style emoji and sticker picker; animated emojis and stickers play in chat\n• Scratch-style automation scripts with a template library\n• Key bindings for custom commands, including mouse side buttons and Ctrl / Alt / Shift combos\n• Command aliases and TAB completion\n• Auto reconnect and auto re-authentication\n• Color preview, HD image viewer, recipe book fix, slot numbers, full anvil cost\n• In-game update notices\n\nOnly active on brilliantw.net.",
