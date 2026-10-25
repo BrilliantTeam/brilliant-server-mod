@@ -39,6 +39,7 @@ public final class ScriptEngine {
 		int total;
 		String[] args;
 		List<String> items;
+		Scripts.Block tryBlock;
 
 		Frame(List<Scripts.Block> list, int index) {
 			this.list = list;
@@ -74,9 +75,16 @@ public final class ScriptEngine {
 		long walkStart;
 		double walkBest;
 		long walkProgressAt;
-		Scripts.Block mineBlock;
-		net.minecraft.core.BlockPos minePos;
-		long mineStart;
+		Scripts.Block taskBlock;
+		int taskStage;
+		long taskStart;
+		int taskSlot;
+		int taskCount;
+		int taskSaved;
+		net.minecraft.core.BlockPos taskPos;
+		boolean taskOpened;
+		String error;
+		String lastError;
 		java.util.Set<Integer> movedSlots = new java.util.HashSet<>();
 		Scripts.Group group;
 
@@ -152,7 +160,18 @@ public final class ScriptEngine {
 	private static String lastText = "";
 	private static boolean echoing;
 	private static long timerStart = System.currentTimeMillis();
+	private static Run stepping;
+	private static boolean firingError;
+	private static int lastDurability = -1;
+	private static String lastDurabilityKey;
+	private static int lastFood = -1;
+	private static int lastLevel = -1;
+	private static String lastTarget;
+	private static int worldTick;
+	private static final Map<Scripts.Stack, Boolean> NEARBY = new IdentityHashMap<>();
 	private static final List<String> WEEKDAYS = List.of("一", "二", "三", "四", "五", "六", "日");
+	private static final List<String> MOON_PHASES = List.of("滿月", "虧凸月", "下弦月", "殘月", "新月", "眉月", "上弦月", "盈凸月");
+	private static final Pattern TEMPLATE_FIELD = Pattern.compile("\\{([^{}]{1,32})\\}");
 	private static final Map<String, String> CHANNEL_PREFIX = Map.of("聊天", "!", "交易", "?", "區域", "-", "公會", "+", "領地", "*");
 
 	private ScriptEngine() {}
@@ -334,7 +353,48 @@ public final class ScriptEngine {
 		if (block != null) {
 			ERRORS.put(block, System.currentTimeMillis());
 		}
+		if (stepping != null && catching(stepping)) {
+			stepping.error = message;
+			ScriptMonitor.log("⚠ " + message + "（交給「如果失敗」處理）");
+			return;
+		}
 		ScriptMonitor.alert(message);
+		boolean fromHandler = stepping != null && !stepping.stack.blocks.isEmpty() && stepping.stack.blocks.getFirst().op.equals("ev_error");
+		if (!firingError && !fromHandler) {
+			firingError = true;
+			try {
+				fire("ev_error", hat -> true, Map.of("message", message, "error", message));
+			} finally {
+				firingError = false;
+			}
+		}
+	}
+
+	private static boolean catching(Run run) {
+		return run.frames.stream().anyMatch(frame -> frame.tryBlock != null);
+	}
+
+	private static void unwind(Run run) {
+		String message = run.error;
+		run.error = null;
+		while (!run.frames.isEmpty()) {
+			Frame top = run.frames.pop();
+			if (top.tryBlock != null) {
+				run.lastError = message;
+				run.waitUntil = 0;
+				run.waitCondition = null;
+				run.retryBlock = null;
+				run.turnBlock = null;
+				run.walkBlock = null;
+				endTask(run);
+				run.moveStage = 0;
+				run.movedSlots.clear();
+				HELD.entrySet().stream().filter(entry -> entry.getValue().owner() == run).map(Map.Entry::getKey).toList().forEach(ScriptEngine::release);
+				run.frames.push(new Frame(top.tryBlock.elseBody, 0));
+				return;
+			}
+		}
+		run.done = true;
 	}
 
 	public static int runningCount() {
@@ -671,7 +731,17 @@ public final class ScriptEngine {
 		online = null;
 		lastHealth = -1;
 		wasFull = false;
+		lastDurability = -1;
+		lastFood = -1;
+		lastLevel = -1;
+		lastTarget = null;
+		NEARBY.clear();
 		fire("ev_join", hat -> true, Map.of());
+	}
+
+	public static void onPickup(net.minecraft.world.item.ItemStack stack, int amount) {
+		String name = ScriptExtras.itemName(stack);
+		fire("ev_pickup", hat -> hat.text(0).isBlank() || ScriptExtras.matches(stack, hat.text(0)), Map.of("message", name, "amount", Integer.toString(amount)));
 	}
 
 	public static void onServerChange() {
@@ -777,9 +847,13 @@ public final class ScriptEngine {
 		try {
 			step(run, now, budget);
 		} catch (RuntimeException | StackOverflowError e) {
+			org.slf4j.LoggerFactory.getLogger("brilliant-server-mod").warn("Script error", e);
+			if (catching(run)) {
+				run.error = "積木執行時發生錯誤（" + e.getClass().getSimpleName() + "）";
+				return;
+			}
 			run.done = true;
 			fail(run.current, "積木執行時發生錯誤，這個腳本已停止（" + e.getClass().getSimpleName() + "）");
-			org.slf4j.LoggerFactory.getLogger("brilliant-server-mod").warn("Script error", e);
 		}
 	}
 
@@ -788,7 +862,21 @@ public final class ScriptEngine {
 	}
 
 	static void step(Run run, long now, int steps) {
+		Run outer = stepping;
+		stepping = run;
+		try {
+			steps(run, now, steps);
+		} finally {
+			stepping = outer;
+		}
+	}
+
+	private static void steps(Run run, long now, int steps) {
 		for (int budget = steps; budget > 0 && !run.done; budget--) {
+			if (run.error != null) {
+				unwind(run);
+				continue;
+			}
 			if (run.waitUntil > now) {
 				return;
 			}
@@ -877,7 +965,21 @@ public final class ScriptEngine {
 					frame.index++;
 					return;
 				}
-				case "key_press", "key_combo", "act_select_item" -> {
+				case "wait_ticks" -> {
+					run.waitStart = now;
+					run.waitBlock = block;
+					run.waitUntil = now + (long) (Math.clamp(number(eval(run, block.args.getFirst())), 0, 72000) * 50);
+					frame.index++;
+					return;
+				}
+				case "try" -> {
+					Frame body = new Frame(block.body, 0);
+					body.tryBlock = block;
+					run.lastError = null;
+					run.frames.push(body);
+					continue;
+				}
+				case "key_press", "key_combo" -> {
 					act(run, block);
 					frame.index++;
 					run.waitUntil = now + INPUT_GAP_MS;
@@ -1118,21 +1220,20 @@ public final class ScriptEngine {
 					run.waitUntil = now + 1;
 					return;
 				}
-				case "act_mine" -> {
-					if (mineStep(run, block, now)) {
-						run.mineBlock = null;
-						frame.index++;
+				case "act_select_item", "act_drop_item", "act_mine", "act_eat", "act_best_tool", "act_walk_drop", "act_walk_block",
+						"act_hotbar_put", "act_offhand", "act_equip", "gui_take", "act_attack_until" -> {
+					if (run.taskBlock != block) {
+						endTask(run);
+						run.taskBlock = block;
+						run.taskStart = now;
 					}
-					run.waitUntil = now + 1;
-					return;
-				}
-				case "act_drop_item" -> {
-					if (dropStep(run, block)) {
-						run.moveStage = 0;
-						run.movedSlots.clear();
+					long gap = task(run, block, now);
+					if (gap < 0) {
+						endTask(run);
 						frame.index++;
+						gap = INPUT_GAP_MS;
 					}
-					run.waitUntil = now + INPUT_GAP_MS;
+					run.waitUntil = now + gap;
 					return;
 				}
 				case "repeat" -> {
@@ -1193,7 +1294,7 @@ public final class ScriptEngine {
 	private static final java.util.Set<String> CLIENT_ACTIONS = java.util.Set.of("insert", "local", "local_color", "actionbar", "sound", "copy", "title",
 			"act_tap", "act_press", "act_release", "act_release_all", "act_hotbar", "act_face", "act_turn",
 			"key_press", "key_combo", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "gui_close", "gui_click_name",
-			"act_hotbar_find", "note", "notify", "act_select_item");
+			"act_hotbar_find", "note", "notify");
 
 	static net.minecraft.client.gui.screens.Screen screen() {
 		Minecraft client = Minecraft.getInstance();
@@ -1579,19 +1680,18 @@ public final class ScriptEngine {
 					}
 				}
 			}
-			case "act_select_item" -> {
-				LocalPlayer player = client.player;
-				String name = eval(run, block.args.getFirst()).strip();
-				if (player == null || client.gameMode == null || !playerControl(block)) {
-					break;
-				}
-				int slot = ScriptExtras.inventoryFind(player, name);
-				if (slot < 0) {
-					fail(block, "背包裡沒有名稱含有「" + name + "」的物品");
-				} else if (slot < 9) {
-					player.getInventory().setSelectedSlot(slot);
-				} else {
-					inventoryClick(client, player, slot, player.getInventory().getSelectedSlot(), "SWAP");
+			case "list_from_inventory" -> {
+				List<String> values = list(run, block, 0);
+				LocalPlayer player = client == null ? null : client.player;
+				if (values != null && player != null) {
+					values.clear();
+					for (int i = 0; i < Math.min(36, player.getInventory().getContainerSize()); i++) {
+						String name = ScriptExtras.itemName(player.getInventory().getItem(i));
+						if (!name.isEmpty() && !values.contains(name) && values.size() < Scripts.MAX_LIST_ITEMS) {
+							values.add(cap(name));
+						}
+					}
+					valuesDirty = true;
 				}
 			}
 			case "gui_click_name" -> {
@@ -2263,6 +2363,96 @@ public final class ScriptEngine {
 			}
 			case "s_drop_count" -> Integer.toString(ScriptExtras.drops(player(), number(arg(run, block, 0)), arg(run, block, 1)).stream().mapToInt(item -> item.getItem().getCount()).sum());
 			case "s_nearest_drop" -> ScriptExtras.drops(player(), ScriptExtras.ENTITY_SIGHT, "").stream().findFirst().map(item -> ScriptExtras.itemName(item.getItem())).orElse("");
+			case "s_pickup_count" -> run.context.getOrDefault("amount", "0");
+			case "s_error" -> run.lastError != null ? run.lastError : run.context.getOrDefault("error", "");
+			case "s_enchanted" -> bool(player() != null && ScriptExtras.enchantLevel(player().getMainHandItem(), arg(run, block, 0)) > 0);
+			case "s_enchant_level" -> player() == null ? "0" : Integer.toString(ScriptExtras.enchantLevel(player().getMainHandItem(), arg(run, block, 0)));
+			case "s_cooldown" -> {
+				LocalPlayer self = player();
+				String name = arg(run, block, 0);
+				if (self == null) {
+					yield bool(false);
+				}
+				int slot = ScriptExtras.matches(self.getMainHandItem(), name) ? self.getInventory().getSelectedSlot() : ScriptExtras.inventoryFind(self, name);
+				yield bool(slot >= 0 && self.getCooldowns().isOnCooldown(self.getInventory().getItem(slot)));
+			}
+			case "s_inv_item" -> {
+				LocalPlayer self = player();
+				int index = (int) Math.round(number(arg(run, block, 0))) - 1;
+				yield self == null || index < 0 || index >= Math.min(36, self.getInventory().getContainerSize()) ? "" : ScriptExtras.itemName(self.getInventory().getItem(index));
+			}
+			case "s_armor_durability" -> {
+				int lowest = 100;
+				for (String part : ScriptBlocks.EQUIPMENT) {
+					int percent = ScriptExtras.durabilityPercent(ScriptExtras.equipment(player(), part));
+					if (percent >= 0) {
+						lowest = Math.min(lowest, percent);
+					}
+				}
+				yield Integer.toString(lowest);
+			}
+			case "s_equip_durability" -> Integer.toString(Math.max(0, ScriptExtras.durabilityPercent(ScriptExtras.equipment(player(), block.text(0)))));
+			case "s_sign_text", "s_target_light", "s_target_distance" -> {
+				Minecraft client = Minecraft.getInstance();
+				LocalPlayer self = player();
+				if (self == null || !(client.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit) || hit.getType() != net.minecraft.world.phys.HitResult.Type.BLOCK) {
+					yield block.op.equals("s_sign_text") ? "" : "0";
+				}
+				yield switch (block.op) {
+					case "s_sign_text" -> ScriptExtras.signText(self, hit.getBlockPos());
+					case "s_target_light" -> Integer.toString(self.level().getBrightness(net.minecraft.world.level.LightLayer.BLOCK, hit.getBlockPos().relative(hit.getDirection())));
+					default -> format(Math.round(self.getEyePosition().distanceTo(hit.getLocation()) * 10) / 10.0);
+				};
+			}
+			case "s_entity_pos" -> {
+				LocalPlayer self = player();
+				var entity = ScriptExtras.coordsHidden(self) ? null : ScriptExtras.nearestCreature(self, arg(run, block, 0));
+				yield entity == null ? "" : ScriptExtras.axis(entity.blockPosition(), block.text(1));
+			}
+			case "s_target_health" -> lookedEntity(Minecraft.getInstance()) instanceof net.minecraft.world.entity.LivingEntity living
+					? format(Math.round(living.getHealth() * 10) / 10.0) : "0";
+			case "s_speed" -> {
+				LocalPlayer self = player();
+				yield self == null ? "0" : format(Math.round(Math.sqrt(Math.pow(self.getX() - self.xo, 2) + Math.pow(self.getZ() - self.zo, 2)) * 200) / 10.0);
+			}
+			case "s_falling" -> {
+				LocalPlayer self = player();
+				yield bool(self != null && !self.onGround() && self.getDeltaMovement().y < -0.08 && !self.getAbilities().flying && !self.isFallFlying()
+						&& !self.isInWater() && !self.onClimbable() && !self.isPassenger());
+			}
+			case "s_in_lava" -> bool(player() != null && player().isInLava());
+			case "s_moon" -> {
+				long time = dayTime();
+				yield time < 0 ? "" : MOON_PHASES.get((int) (time / 24000 % 8));
+			}
+			case "s_can_sleep" -> {
+				LocalPlayer self = player();
+				long time = dayTime();
+				yield bool(self != null && time >= 0 && self.level().dimension() == net.minecraft.world.level.Level.OVERWORLD
+						&& (self.level().isThundering() || time % 24000 >= 12542 && time % 24000 <= 23459));
+			}
+			case "s_score" -> ScreenText.sidebarScore(arg(run, block, 0));
+			case "op_chance" -> bool(ThreadLocalRandom.current().nextDouble() * 100 < Math.clamp(number(arg(run, block, 0)), 0, 100));
+			case "op_template" -> {
+				List<String> names = Scripts.variablesOf(run.group);
+				java.util.regex.Matcher matcher = TEMPLATE_FIELD.matcher(arg(run, block, 0));
+				StringBuilder out = new StringBuilder();
+				while (matcher.find()) {
+					String name = matcher.group(1).strip();
+					matcher.appendReplacement(out, java.util.regex.Matcher.quoteReplacement(names.contains(name) ? getVariable(run, name) : matcher.group()));
+				}
+				matcher.appendTail(out);
+				yield cap(out.toString());
+			}
+			case "list_sum", "list_max", "list_min" -> {
+				var numbers = listValue(run.group, block.text(0)).stream().filter(ScriptEngine::isNumber).mapToDouble(ScriptEngine::number);
+				yield switch (block.op) {
+					case "list_sum" -> format(numbers.sum());
+					case "list_max" -> numbers.max().stream().mapToObj(ScriptEngine::format).findFirst().orElse("");
+					default -> numbers.min().stream().mapToObj(ScriptEngine::format).findFirst().orElse("");
+				};
+			}
+			case "list_join" -> cap(String.join(arg(run, block, 1), listValue(run.group, block.text(0))));
 			case "op_math" -> {
 				double value = number(arg(run, block, 1));
 				yield format(switch (block.text(0)) {
@@ -2400,18 +2590,21 @@ public final class ScriptEngine {
 
 	private static boolean walkStep(Run run, Scripts.Block block, long now) {
 		LocalPlayer player = player();
+		if (player != null && ScriptExtras.coordsHidden(player)) {
+			release(mapping("前進"));
+			fail(block, "伺服器隱藏了座標資訊，無法走到座標");
+			return true;
+		}
+		return walkTo(run, block, now, number(eval(run, block.args.get(0))) + 0.5, number(eval(run, block.args.get(1))) + 0.5, 0.8);
+	}
+
+	private static boolean walkTo(Run run, Scripts.Block block, long now, double tx, double tz, double reach) {
+		LocalPlayer player = player();
 		KeyMapping forward = mapping("前進");
 		if (player == null || !playerControl(block)) {
 			release(forward);
 			return true;
 		}
-		if (ScriptExtras.coordsHidden(player)) {
-			release(forward);
-			fail(block, "伺服器隱藏了座標資訊，無法走到座標");
-			return true;
-		}
-		double tx = number(eval(run, block.args.get(0))) + 0.5;
-		double tz = number(eval(run, block.args.get(1))) + 0.5;
 		double dx = tx - player.getX();
 		double dz = tz - player.getZ();
 		double distance = Math.sqrt(dx * dx + dz * dz);
@@ -2421,7 +2614,7 @@ public final class ScriptEngine {
 			run.walkBest = distance;
 			run.walkProgressAt = now;
 		}
-		if (distance < 0.8) {
+		if (distance < reach) {
 			release(forward);
 			return true;
 		}
@@ -2447,75 +2640,514 @@ public final class ScriptEngine {
 		return false;
 	}
 
-	private static void inventoryClick(Minecraft client, LocalPlayer player, int slot, int button, String kind) {
-		//? if >=26.1 {
-		client.gameMode.handleContainerInput(player.inventoryMenu.containerId, slot, button, net.minecraft.world.inventory.ContainerInput.valueOf(kind), player);
-		//?} else {
-		/*client.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, slot, button, net.minecraft.world.inventory.ClickType.valueOf(kind), player);
-		*///?}
+	private static final long DONE = -1;
+	private static final long TICK_MS = 50;
+	private static final long EAT_LIMIT_MS = 8000;
+
+	private static void endTask(Run run) {
+		closeInventory(run);
+		run.taskBlock = null;
+		run.taskStage = 0;
+		run.taskSlot = 0;
+		run.taskCount = 0;
+		run.taskSaved = 0;
+		run.taskPos = null;
+		run.walkBlock = null;
+		run.moveStage = 0;
+		run.movedSlots.clear();
 	}
 
-	private static boolean dropStep(Run run, Scripts.Block block) {
-		Minecraft client = Minecraft.getInstance();
-		LocalPlayer player = player();
-		if (player == null || client.gameMode == null || !playerControl(block)) {
-			return true;
+	private static void closeInventory(Run run) {
+		if (run.taskOpened && screen() instanceof net.minecraft.client.gui.screens.inventory.InventoryScreen inventory) {
+			inventory.onClose();
 		}
-		String name = eval(run, block.args.getFirst()).strip();
-		if (name.isEmpty()) {
-			fail(block, "請填入要丟掉的物品名稱（不會一次丟掉整個背包）");
-			return true;
-		}
-		for (int i = 0; i < Math.min(36, player.getInventory().getContainerSize()); i++) {
-			if (!run.movedSlots.contains(i) && ScriptExtras.matches(player.getInventory().getItem(i), name)) {
-				run.movedSlots.add(i);
-				inventoryClick(client, player, i < 9 ? i + 36 : i, 1, "THROW");
-				return ++run.moveStage >= 36;
-			}
-		}
-		if (run.moveStage == 0) {
-			fail(block, "背包裡沒有名稱含有「" + name + "」的物品");
-		}
-		return true;
+		run.taskOpened = false;
+		run.moveStage = 0;
 	}
 
-	private static boolean mineStep(Run run, Scripts.Block block, long now) {
+	private static int menuSlot(int inventorySlot) {
+		return inventorySlot < 9 ? 36 + inventorySlot : inventorySlot;
+	}
+
+	private static long missing(Scripts.Block block, String name) {
+		fail(block, "背包裡沒有名稱含有「" + name + "」的物品");
+		return DONE;
+	}
+
+	private static long inventoryStep(Run run, Scripts.Block block, java.util.function.ToLongFunction<net.minecraft.client.gui.screens.inventory.InventoryScreen> work) {
+		net.minecraft.client.gui.screens.Screen open = screen();
+		if (open instanceof net.minecraft.client.gui.screens.inventory.InventoryScreen inventory) {
+			if (run.moveStage++ == 0 && !inventory.getMenu().getCarried().isEmpty()) {
+				fail(block, "滑鼠上拿著物品，先放下再整理背包");
+				return DONE;
+			}
+			return work.applyAsLong(inventory);
+		}
+		if (run.taskOpened) {
+			fail(block, "背包被關掉了，這一步已停止");
+			return DONE;
+		}
+		if (editorScreen(open)) {
+			fail(block, "腳本編輯器開著時不會操作介面或按鍵，請先關閉編輯器再測試");
+			return DONE;
+		}
+		if (open != null) {
+			fail(block, "開著其他介面時不能整理背包，請先關閉介面");
+			return DONE;
+		}
+		CommandMenuScreen.setScreen(new net.minecraft.client.gui.screens.inventory.InventoryScreen(player()));
+		run.taskOpened = true;
+		run.moveStage = 0;
+		return INPUT_GAP_MS;
+	}
+
+	private static long swapInto(Run run, Scripts.Block block, int inventorySlot, int button) {
+		if (inventorySlot == button) {
+			return DONE;
+		}
+		return inventoryStep(run, block, inventory -> {
+			click(inventory, inventory.getMenu().slots.get(menuSlot(inventorySlot)), button, "SWAP");
+			return DONE;
+		});
+	}
+
+	private static net.minecraft.core.BlockPos lookedBlock(Minecraft client) {
+		return client.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit && hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK ? hit.getBlockPos() : null;
+	}
+
+	private static net.minecraft.world.entity.Entity lookedEntity(Minecraft client) {
+		return client.hitResult instanceof net.minecraft.world.phys.EntityHitResult hit && client.player != null && !hit.getEntity().isInvisibleTo(client.player) ? hit.getEntity() : null;
+	}
+
+	private static long task(Run run, Scripts.Block block, long now) {
 		Minecraft client = Minecraft.getInstance();
 		LocalPlayer player = player();
-		KeyMapping attack = mapping("攻擊／挖掘");
-		if (player == null || !playerControl(block)) {
-			release(attack);
-			return true;
+		if (client == null || player == null || client.gameMode == null) {
+			return DONE;
 		}
-		net.minecraft.core.BlockPos looking = client.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit && hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
-				? hit.getBlockPos() : null;
-		boolean first = run.mineBlock != block;
-		if (first) {
-			if (looking == null) {
-				fail(block, "沒有看著任何方塊");
-				return true;
+		var inventory = player.getInventory();
+		return switch (block.op) {
+			case "act_select_item" -> {
+				if (run.taskStage == 0) {
+					String name = arg(run, block, 0).strip();
+					int slot = ScriptExtras.inventoryFind(player, name);
+					if (slot < 0) {
+						yield missing(block, name);
+					}
+					if (slot < 9) {
+						if (playerControl(block)) {
+							inventory.setSelectedSlot(slot);
+						}
+						yield DONE;
+					}
+					run.taskSlot = slot;
+					run.taskStage = 1;
+				}
+				yield swapInto(run, block, run.taskSlot, inventory.getSelectedSlot());
 			}
-			run.mineBlock = block;
-			run.minePos = looking;
-			run.mineStart = now;
+			case "act_hotbar_put" -> {
+				if (run.taskStage == 0) {
+					String name = arg(run, block, 0).strip();
+					run.taskSaved = (int) Math.clamp(Math.round(number(arg(run, block, 1))) - 1, 0, 8);
+					run.taskSlot = ScriptExtras.inventoryFind(player, name);
+					if (run.taskSlot < 0) {
+						yield missing(block, name);
+					}
+					run.taskStage = 1;
+				}
+				yield swapInto(run, block, run.taskSlot, run.taskSaved);
+			}
+			case "act_offhand" -> {
+				if (run.taskStage == 0) {
+					String name = arg(run, block, 0).strip();
+					if (ScriptExtras.matches(player.getOffhandItem(), name)) {
+						yield DONE;
+					}
+					run.taskSlot = ScriptExtras.inventoryFind(player, name);
+					if (run.taskSlot < 0) {
+						yield missing(block, name);
+					}
+					run.taskStage = 1;
+				}
+				yield swapInto(run, block, run.taskSlot, 40);
+			}
+			case "act_drop_item" -> {
+				String name = arg(run, block, 0).strip();
+				if (name.isEmpty()) {
+					fail(block, "請填入要丟掉的物品名稱（不會一次丟掉整個背包）");
+					yield DONE;
+				}
+				if (ScriptExtras.inventoryFind(player, name) < 0 && run.movedSlots.isEmpty()) {
+					yield missing(block, name);
+				}
+				yield inventoryStep(run, block, screen -> {
+					for (int i = 0; i < Math.min(36, inventory.getContainerSize()); i++) {
+						if (!run.movedSlots.contains(i) && ScriptExtras.matches(inventory.getItem(i), name)) {
+							run.movedSlots.add(i);
+							click(screen, screen.getMenu().slots.get(menuSlot(i)), 1, "THROW");
+							return INPUT_GAP_MS;
+						}
+					}
+					return DONE;
+				});
+			}
+			case "act_equip" -> {
+				if (run.taskStage == 0) {
+					String name = arg(run, block, 0).strip();
+					run.taskSlot = -1;
+					for (int i = 0; i < Math.min(36, inventory.getContainerSize()) && run.taskSlot < 0; i++) {
+						if (ScriptExtras.matches(inventory.getItem(i), name) && ScriptExtras.armorMenuSlot(inventory.getItem(i)) >= 0) {
+							run.taskSlot = i;
+							run.taskSaved = ScriptExtras.armorMenuSlot(inventory.getItem(i));
+						}
+					}
+					if (run.taskSlot < 0) {
+						fail(block, "背包裡沒有可以穿的「" + name + "」");
+						yield DONE;
+					}
+					run.taskStage = 1;
+				}
+				yield inventoryStep(run, block, screen -> {
+					var slots = screen.getMenu().slots;
+					switch (run.taskCount++) {
+						case 0 -> click(screen, slots.get(menuSlot(run.taskSlot)), 0, "PICKUP");
+						case 1 -> click(screen, slots.get(run.taskSaved), 0, "PICKUP");
+						default -> {
+							if (!screen.getMenu().getCarried().isEmpty()) {
+								click(screen, slots.get(menuSlot(run.taskSlot)), 0, "PICKUP");
+							}
+							return DONE;
+						}
+					}
+					return INPUT_GAP_MS;
+				});
+			}
+			case "act_best_tool" -> {
+				if (run.taskStage == 0) {
+					net.minecraft.core.BlockPos pos = lookedBlock(client);
+					if (pos == null) {
+						fail(block, "沒有看著任何方塊");
+						yield DONE;
+					}
+					var state = ScriptExtras.confirmedState(player, pos);
+					float best = ScriptExtras.toolScore(player.getMainHandItem(), state);
+					run.taskSlot = -1;
+					for (int i = 0; i < Math.min(36, inventory.getContainerSize()); i++) {
+						float score = ScriptExtras.toolScore(inventory.getItem(i), state);
+						if (score > best + 0.001f) {
+							best = score;
+							run.taskSlot = i;
+						}
+					}
+					if (run.taskSlot < 0) {
+						yield DONE;
+					}
+					if (run.taskSlot < 9) {
+						if (playerControl(block)) {
+							inventory.setSelectedSlot(run.taskSlot);
+						}
+						yield DONE;
+					}
+					run.taskStage = 1;
+				}
+				yield swapInto(run, block, run.taskSlot, inventory.getSelectedSlot());
+			}
+			case "act_eat" -> eatStep(run, block, client, player, now);
+			case "act_mine" -> {
+				KeyMapping attack = mapping("攻擊／挖掘");
+				if (!playerControl(block)) {
+					release(attack);
+					yield DONE;
+				}
+				net.minecraft.core.BlockPos looking = lookedBlock(client);
+				boolean first = run.taskStage == 0;
+				if (first) {
+					if (looking == null) {
+						fail(block, "沒有看著任何方塊");
+						yield DONE;
+					}
+					run.taskPos = looking;
+					run.taskStage = 1;
+				}
+				if (ScriptExtras.confirmedState(player, run.taskPos).isAir()) {
+					release(attack);
+					yield DONE;
+				}
+				if (!run.taskPos.equals(looking)) {
+					release(attack);
+					fail(block, "視角離開了要挖的方塊，已停止挖掘");
+					yield DONE;
+				}
+				double seconds = Math.clamp(number(arg(run, block, 0)), 0, MAX_HOLD_SECONDS);
+				if (now - run.taskStart > seconds * 1000) {
+					release(attack);
+					fail(block, "挖了 " + format(seconds) + " 秒還沒挖掉，已停止");
+					yield DONE;
+				}
+				hold(run, attack, now + 200, first);
+				yield 1;
+			}
+			case "act_attack_until" -> {
+				if (!playerControl(block)) {
+					yield DONE;
+				}
+				net.minecraft.world.entity.Entity looking = lookedEntity(client);
+				if (run.taskStage == 0) {
+					if (looking instanceof net.minecraft.world.entity.player.Player) {
+						fail(block, "不會自動攻擊玩家");
+						yield DONE;
+					}
+					if (!(looking instanceof net.minecraft.world.entity.LivingEntity)) {
+						fail(block, "準心沒有對著生物");
+						yield DONE;
+					}
+					run.taskSlot = looking.getId();
+					run.taskStage = 1;
+				}
+				net.minecraft.world.entity.Entity target = player.level().getEntity(run.taskSlot);
+				if (target == null || !target.isAlive()) {
+					yield DONE;
+				}
+				if (looking != target) {
+					fail(block, "準心離開了目標，已停止攻擊");
+					yield DONE;
+				}
+				double seconds = Math.clamp(number(arg(run, block, 0)), 0, MAX_HOLD_SECONDS);
+				if (now - run.taskStart > seconds * 1000) {
+					fail(block, "攻擊了 " + format(seconds) + " 秒還沒打倒，已停止");
+					yield DONE;
+				}
+				KeyMapping attack = mapping("攻擊／挖掘");
+				if (player.getAttackStrengthScale(0.5f) >= 1f && attack != null && ((KeyMappingAccessor) attack).brilliant$getClickCount() == 0) {
+					hold(run, attack, now + 60, true);
+				}
+				yield TICK_MS;
+			}
+			case "act_walk_drop" -> {
+				String name = arg(run, block, 0).strip();
+				var drop = ScriptExtras.drops(player, ScriptExtras.ENTITY_SIGHT, name).stream().findFirst().orElse(null);
+				if (drop == null) {
+					release(mapping("前進"));
+					if (run.taskStage == 0) {
+						fail(block, name.isEmpty() ? "附近看不到地上的掉落物" : "附近看不到地上的「" + name + "」");
+					}
+					yield DONE;
+				}
+				run.taskStage = 1;
+				yield walkTo(run, block, now, drop.getX(), drop.getZ(), 0.3) ? DONE : 1;
+			}
+			case "act_walk_block" -> {
+				if (run.taskStage == 0) {
+					String name = arg(run, block, 0).strip();
+					run.taskPos = ScriptExtras.blocksNear(player, ScriptExtras.BLOCK_SCAN, name, 1).stream().findFirst().orElse(null);
+					if (run.taskPos == null) {
+						fail(block, "附近 " + ScriptExtras.BLOCK_SCAN + " 格內看不到「" + name + "」方塊");
+						yield DONE;
+					}
+					run.taskStage = 1;
+				}
+				yield walkTo(run, block, now, run.taskPos.getX() + 0.5, run.taskPos.getZ() + 0.5, 1.3) ? DONE : 1;
+			}
+			case "gui_take" -> takeStep(run, block, now);
+			default -> DONE;
+		};
+	}
+
+	private static long eatStep(Run run, Scripts.Block block, Minecraft client, LocalPlayer player, long now) {
+		var inventory = player.getInventory();
+		KeyMapping use = mapping("使用／放置");
+		switch (run.taskStage) {
+			case 0 -> {
+				String name = arg(run, block, 0).strip();
+				int slot = -1;
+				for (int i = 0; i < Math.min(36, inventory.getContainerSize()) && slot < 0; i++) {
+					var stack = inventory.getItem(i);
+					if (ScriptExtras.isFood(stack) && (name.isEmpty() || ScriptExtras.matches(stack, name))) {
+						slot = i;
+					}
+				}
+				if (ScriptExtras.isFood(player.getMainHandItem()) && (name.isEmpty() || ScriptExtras.matches(player.getMainHandItem(), name))) {
+					slot = inventory.getSelectedSlot();
+				}
+				if (slot < 0) {
+					fail(block, name.isEmpty() ? "背包裡沒有食物" : "背包裡沒有可以吃的「" + name + "」");
+					return DONE;
+				}
+				if (!ScriptExtras.canEat(player, inventory.getItem(slot))) {
+					fail(block, "現在吃不下（飢餓值已滿）");
+					return DONE;
+				}
+				run.taskSaved = inventory.getSelectedSlot();
+				if (slot < 9) {
+					if (!playerControl(block)) {
+						return DONE;
+					}
+					inventory.setSelectedSlot(slot);
+					run.taskSlot = -1;
+					run.taskStage = 2;
+				} else {
+					run.taskSlot = slot;
+					run.taskStage = 1;
+				}
+				return INPUT_GAP_MS;
+			}
+			case 1 -> {
+				long gap = swapInto(run, block, run.taskSlot, run.taskSaved);
+				if (gap != DONE) {
+					return gap;
+				}
+				closeInventory(run);
+				run.taskStage = 2;
+				return INPUT_GAP_MS;
+			}
+			case 2, 3 -> {
+				if (!playerControl(block) || !ScriptExtras.isFood(player.getMainHandItem()) && run.taskStage == 2) {
+					release(use);
+					return DONE;
+				}
+				if (run.taskStage == 2) {
+					run.taskStage = 3;
+					run.taskStart = now;
+					run.taskCount = player.getMainHandItem().getCount();
+					hold(run, use, now + 200, true);
+					return TICK_MS;
+				}
+				var held = player.getMainHandItem();
+				if (!ScriptExtras.isFood(held) || held.getCount() < run.taskCount) {
+					release(use);
+					run.taskStage = 4;
+					return INPUT_GAP_MS;
+				}
+				if (now - run.taskStart > EAT_LIMIT_MS) {
+					release(use);
+					fail(block, "吃了 " + EAT_LIMIT_MS / 1000 + " 秒還沒吃完，已停止");
+					return DONE;
+				}
+				hold(run, use, now + 200, false);
+				return TICK_MS;
+			}
+			default -> {
+				if (run.taskSlot < 0) {
+					if (playerControl(block)) {
+						inventory.setSelectedSlot(run.taskSaved);
+					}
+					return DONE;
+				}
+				return swapInto(run, block, run.taskSlot, run.taskSaved);
+			}
 		}
-		if (ScriptExtras.confirmedState(player, run.minePos).isAir()) {
-			release(attack);
-			return true;
+	}
+
+	private static long takeStep(Run run, Scripts.Block block, long now) {
+		net.minecraft.client.gui.screens.Screen open = screen();
+		if (editorScreen(open)) {
+			fail(block, "腳本編輯器開著時不會操作介面或按鍵，請先關閉編輯器再測試");
+			return DONE;
 		}
-		if (!run.minePos.equals(looking)) {
-			release(attack);
-			fail(block, "視角離開了要挖的方塊，已停止挖掘");
-			return true;
+		if (!(open instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> container)
+				|| open instanceof net.minecraft.client.gui.screens.inventory.InventoryScreen || open instanceof net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen) {
+			if (now - run.taskStart < GUI_WAIT_MS) {
+				return TICK_MS;
+			}
+			fail(block, "等了 " + GUI_WAIT_MS / 1000 + " 秒都沒有開啟箱子等介面，已略過");
+			return DONE;
 		}
-		double seconds = Math.clamp(number(eval(run, block.args.getFirst())), 0, MAX_HOLD_SECONDS);
-		if (now - run.mineStart > seconds * 1000) {
-			release(attack);
-			fail(block, "挖了 " + format(seconds) + " 秒還沒挖掉，已停止");
-			return true;
+		var menu = container.getMenu();
+		var slots = menu.slots;
+		String name = arg(run, block, 1).strip();
+		switch (run.taskStage) {
+			case 0 -> {
+				if (name.isEmpty()) {
+					fail(block, "請填入要拿的物品名稱");
+					return DONE;
+				}
+				if (!menu.getCarried().isEmpty()) {
+					fail(block, "滑鼠上已經拿著物品，先放下再拿");
+					return DONE;
+				}
+				run.taskCount = (int) Math.clamp(Math.round(number(arg(run, block, 0))), 1, 64 * 36);
+				run.taskSaved = 0;
+				run.taskStage = 1;
+				return 1;
+			}
+			case 1 -> {
+				if (run.taskCount <= 0) {
+					return DONE;
+				}
+				net.minecraft.world.inventory.Slot from = null;
+				for (var slot : slots) {
+					if (!(slot.container instanceof net.minecraft.world.entity.player.Inventory) && slot.isActive() && ScriptExtras.matches(slot.getItem(), name)) {
+						from = slot;
+						break;
+					}
+				}
+				if (from == null) {
+					fail(block, run.taskSaved == 0 ? "介面裡找不到「" + name + "」" : "介面裡只有 " + run.taskSaved + " 個「" + name + "」");
+					return DONE;
+				}
+				int before = from.getItem().getCount();
+				if (before <= run.taskCount) {
+					click(open, from, 0, "QUICK_MOVE");
+					int moved = before - (from.hasItem() && ScriptExtras.matches(from.getItem(), name) ? from.getItem().getCount() : 0);
+					if (moved <= 0) {
+						fail(block, "背包放不下了");
+						return DONE;
+					}
+					run.taskCount -= moved;
+					run.taskSaved += moved;
+					return INPUT_GAP_MS;
+				}
+				click(open, from, 0, "PICKUP");
+				run.taskSlot = slots.indexOf(from);
+				run.taskStage = 2;
+				return INPUT_GAP_MS;
+			}
+			case 2 -> {
+				var carried = menu.getCarried();
+				net.minecraft.world.inventory.Slot to = null;
+				for (var slot : slots) {
+					if (slot.container instanceof net.minecraft.world.entity.player.Inventory && slot.isActive() && slot.hasItem()
+							&& net.minecraft.world.item.ItemStack.isSameItemSameComponents(slot.getItem(), carried) && slot.getItem().getCount() < slot.getMaxStackSize(slot.getItem())) {
+						to = slot;
+						break;
+					}
+				}
+				for (int i = 0; to == null && i < slots.size(); i++) {
+					var slot = slots.get(i);
+					if (slot.container instanceof net.minecraft.world.entity.player.Inventory && slot.isActive() && !slot.hasItem() && slot.mayPlace(carried)) {
+						to = slot;
+					}
+				}
+				if (carried.isEmpty() || to == null) {
+					putBack(run, block, open);
+					if (to != null) {
+						return DONE;
+					}
+					fail(block, "背包放不下了");
+					return DONE;
+				}
+				click(open, to, 1, "PICKUP");
+				run.taskSaved++;
+				if (--run.taskCount <= 0) {
+					run.taskStage = 3;
+				}
+				return INPUT_GAP_MS;
+			}
+			default -> {
+				putBack(run, block, open);
+				return DONE;
+			}
 		}
-		hold(run, attack, now + 200, first);
-		return false;
+	}
+
+	private static void putBack(Run run, Scripts.Block block, net.minecraft.client.gui.screens.Screen open) {
+		var menu = ((net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?>) open).getMenu();
+		if (!menu.getCarried().isEmpty() && run.taskSlot >= 0 && run.taskSlot < menu.slots.size()) {
+			click(open, menu.slots.get(run.taskSlot), 0, "PICKUP");
+		}
+		if (!menu.getCarried().isEmpty()) {
+			fail(block, "原本的格子放不回去，剩下的物品還在滑鼠上");
+		}
 	}
 
 	private static boolean moveAllStep(Run run, Scripts.Block block) {
@@ -2627,6 +3259,52 @@ public final class ScriptEngine {
 		lastDimension = dimension;
 		var held = player.getMainHandItem();
 		String heldKey = held.isEmpty() ? "" : held.getItem() + "|" + held.getHoverName().getString();
+		int durability = held.isDamageableItem() ? held.getMaxDamage() - held.getDamageValue() : -1;
+		String durabilityKey = heldKey + "#" + player.getInventory().getSelectedSlot();
+		if (durabilityKey.equals(lastDurabilityKey) && lastDurability >= 0 && durability >= 0 && durability < lastDurability) {
+			int before = lastDurability;
+			startAll(active, "ev_durability", hat -> {
+				double threshold = number(hat.text(0));
+				return before >= threshold && durability < threshold;
+			}, Map.of("message", Integer.toString(durability)), null);
+		}
+		lastDurability = durability;
+		lastDurabilityKey = durabilityKey;
+		int food = player.getFoodData().getFoodLevel();
+		if (lastFood >= 0 && food < lastFood) {
+			int before = lastFood;
+			startAll(active, "ev_food", hat -> {
+				double threshold = number(hat.text(0));
+				return before >= threshold && food < threshold;
+			}, Map.of("message", Integer.toString(food)), null);
+		}
+		lastFood = food;
+		if (lastLevel >= 0 && player.experienceLevel != lastLevel) {
+			startAll(active, "ev_level", hat -> true, Map.of("message", Integer.toString(player.experienceLevel)), null);
+		}
+		lastLevel = player.experienceLevel;
+		net.minecraft.core.BlockPos looking = lookedBlock(client);
+		String target = looking == null ? "" : looking.asLong() + "|" + ScriptExtras.blockName(player, looking);
+		if (lastTarget != null && !lastTarget.equals(target)) {
+			startAll(active, "ev_target_block", hat -> true, Map.of("message", looking == null ? "" : ScriptExtras.blockName(player, looking)), null);
+		}
+		lastTarget = target;
+		NEARBY.keySet().retainAll(new java.util.HashSet<>(active));
+		if (++worldTick % 5 == 0) {
+			for (Scripts.Stack stack : active) {
+				if (stack.blocks.isEmpty() || !stack.blocks.getFirst().op.equals("ev_entity_near")) {
+					continue;
+				}
+				Scripts.Block hat = stack.blocks.getFirst();
+				boolean present = ScriptExtras.entityCount(player, number(hat.text(0)), hat.text(1)) > 0;
+				if (present && !Boolean.TRUE.equals(NEARBY.put(stack, true))) {
+					var nearest = ScriptExtras.nearestCreature(player, hat.text(1));
+					start(stack, Map.of("message", nearest == null ? hat.text(1) : nearest.getName().getString()), true);
+				} else if (!present) {
+					NEARBY.put(stack, false);
+				}
+			}
+		}
 		if (lastHeld != null && !lastHeld.equals(heldKey)) {
 			startAll(active, "ev_held", hat -> true, Map.of("message", held.isEmpty() ? "" : held.getHoverName().getString()), null);
 		}

@@ -8,12 +8,14 @@ import java.util.Set;
 
 public final class ScriptLint {
 	public static final int TRADE_COOLDOWN = 1200;
-	private static final Set<String> PACED = Set.of("act_tap", "key_press", "key_combo", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "act_face", "act_turn", "act_select_item", "act_drop_item", "act_mine", "act_face_block", "act_face_entity");
+	private static final Set<String> PACED = Set.of("act_tap", "key_press", "key_combo", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "act_face", "act_turn", "act_select_item", "act_drop_item", "act_mine", "act_face_block", "act_face_entity",
+			"act_eat", "act_best_tool", "act_walk_drop", "act_walk_block", "act_hotbar_put", "act_offhand", "act_equip", "gui_take", "act_attack_until");
 	private static final Set<String> SENDS = Set.of("say", "command", "msg", "say_channel", "reply");
 	private static final Set<String> LOOPS = Set.of("forever", "repeat", "repeat_until", "for_each");
 	private static final Set<String> MESSAGE_EVENTS = Set.of("ev_message", "ev_channel", "ev_private", "ev_mention", "ev_player_join", "ev_player_leave", "ev_res_enter", "ev_res_leave",
 			"ev_title", "ev_actionbar", "ev_bossbar", "ev_sidebar", "ev_bossbar_gone", "ev_sound", "ev_gui_open", "ev_gui_close", "ev_hurt",
-			"ev_dimension", "ev_held", "ev_item_count", "ev_announcement", "ev_health", "ev_var_change");
+			"ev_dimension", "ev_held", "ev_item_count", "ev_announcement", "ev_health", "ev_var_change",
+			"ev_pickup", "ev_durability", "ev_food", "ev_entity_near", "ev_target_block", "ev_level", "ev_error");
 	private static final Set<String> MESSAGE_READERS = Set.of("s_message", "s_sender", "s_contains", "s_channel");
 
 	private ScriptLint() {}
@@ -175,7 +177,12 @@ public final class ScriptLint {
 	private static double waits(List<Scripts.Block> blocks) {
 		double total = 0;
 		for (Scripts.Block block : blocks) {
-			if (block.op.equals("wait")) {
+			if (block.op.equals("wait_ticks")) {
+				if (block.args.getFirst().block != null) {
+					return Double.POSITIVE_INFINITY;
+				}
+				total += ScriptEngine.number(block.text(0)) / 20;
+			} else if (block.op.equals("wait")) {
 				if (block.args.getFirst().block != null) {
 					return Double.POSITIVE_INFINITY;
 				}

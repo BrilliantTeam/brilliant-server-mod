@@ -125,6 +125,13 @@ public final class ScriptBlocks {
 		def("ev_key_release", c, Shape.HAT, "當放開腳本鍵 % 時", dropdown(KEYS));
 		def("ev_hotkey", c, Shape.HAT, "當按下 % + % 時", dropdown(MODIFIERS), dropdown(HOTKEYS));
 		def("ev_announcement", c, Shape.HAT, "當有新公告時");
+		def("ev_pickup", c, Shape.HAT, "當撿到 % 時", text(""));
+		def("ev_durability", c, Shape.HAT, "當手上物品耐久低於 % 時", number("20"));
+		def("ev_food", c, Shape.HAT, "當飢餓值低於 % 時", number("14"));
+		def("ev_entity_near", c, Shape.HAT, "當附近 % 格內出現 % 時", number("16"), text("苦力怕"));
+		def("ev_target_block", c, Shape.HAT, "當看著的方塊改變時");
+		def("ev_level", c, Shape.HAT, "當經驗等級改變時");
+		def("ev_error", c, Shape.HAT, "當腳本出錯時");
 
 		c = Category.CONTROL;
 		def("wait", c, Shape.STACK, "等待 % 秒", number("1"));
@@ -146,6 +153,8 @@ public final class ScriptBlocks {
 		defElse("if_elif", c, "如果 % 那麼…否則如果 %", "否則如果成立時", bool(), bool());
 		def("fork", c, Shape.C, "在背景同時執行");
 		def("stop_others", c, Shape.STACK, "停止這個分組的其他腳本");
+		defElse("try", c, "嘗試執行", "如果失敗");
+		def("wait_ticks", c, Shape.STACK, "等待 % 個 tick", number("20"));
 
 		c = Category.CHAT;
 		def("say", c, Shape.STACK, "送出訊息 %", text("大家好！"));
@@ -207,6 +216,15 @@ public final class ScriptBlocks {
 		def("act_face_block", c, Shape.STACK, "面向附近 % 格內最近的 % 方塊", number("6"), text("箱子"));
 		def("act_face_entity", c, Shape.STACK, "面向最近的 % 生物", text("殭屍"));
 		def("act_mine", c, Shape.STACK, "挖掉看著的方塊 最多 % 秒", number("10"));
+		def("act_eat", c, Shape.STACK, "吃 %", text("麵包"));
+		def("act_best_tool", c, Shape.STACK, "換上最適合挖看著方塊的工具");
+		def("act_walk_drop", c, Shape.STACK, "走去撿最近的 %", text(""));
+		def("act_walk_block", c, Shape.STACK, "走到最近的 % 方塊", text("箱子"));
+		def("act_hotbar_put", c, Shape.STACK, "把 % 放到快捷欄第 % 格", text("鑽石劍"), number("1"));
+		def("act_offhand", c, Shape.STACK, "把副手換成 %", text("盾牌"));
+		def("act_equip", c, Shape.STACK, "穿上 %", text("鞘翅"));
+		def("gui_take", c, Shape.STACK, "從介面拿出 % 個 %", number("1"), text("鑽石"));
+		def("act_attack_until", c, Shape.STACK, "攻擊看著的生物直到死亡 最多 % 秒", number("10"));
 
 		c = Category.SENSE;
 		def("s_message", c, Shape.REPORTER, "訊息內容");
@@ -307,6 +325,25 @@ public final class ScriptBlocks {
 		def("s_target_grown", c, Shape.BOOLEAN, "看著的作物成熟了?");
 		def("s_drop_count", c, Shape.REPORTER, "附近 % 格內地上 % 的數量", number("16"), text(""));
 		def("s_nearest_drop", c, Shape.REPORTER, "最近的掉落物");
+		def("s_pickup_count", c, Shape.REPORTER, "撿到的數量");
+		def("s_error", c, Shape.REPORTER, "錯誤訊息");
+		def("s_enchanted", c, Shape.BOOLEAN, "手上物品有 % 附魔?", text("效率"));
+		def("s_enchant_level", c, Shape.REPORTER, "手上物品 % 附魔等級", text("效率"));
+		def("s_cooldown", c, Shape.BOOLEAN, "% 正在冷卻中?", text("終界珍珠"));
+		def("s_inv_item", c, Shape.REPORTER, "背包第 % 格的物品", number("1"));
+		def("s_armor_durability", c, Shape.REPORTER, "盔甲最低耐久百分比");
+		def("s_equip_durability", c, Shape.REPORTER, "身上的 % 耐久百分比", dropdown(EQUIPMENT));
+		def("s_sign_text", c, Shape.REPORTER, "看著的告示牌文字");
+		def("s_target_light", c, Shape.REPORTER, "看著的位置亮度（不含天空光）");
+		def("s_target_distance", c, Shape.REPORTER, "看著的方塊距離");
+		def("s_entity_pos", c, Shape.REPORTER, "最近的 % 生物座標 %", text("殭屍"), dropdown(AXES));
+		def("s_target_health", c, Shape.REPORTER, "看著的生物血量");
+		def("s_speed", c, Shape.REPORTER, "移動速度");
+		def("s_falling", c, Shape.BOOLEAN, "正在掉落?");
+		def("s_in_lava", c, Shape.BOOLEAN, "在岩漿裡?");
+		def("s_moon", c, Shape.REPORTER, "月相");
+		def("s_can_sleep", c, Shape.BOOLEAN, "現在可以睡覺?");
+		def("s_score", c, Shape.REPORTER, "記分板 % 的分數", text("金錢"));
 		def("s_timer", c, Shape.REPORTER, "計時器");
 		def("timer_reset", c, Shape.STACK, "重設計時器");
 
@@ -351,6 +388,8 @@ public final class ScriptBlocks {
 		def("op_split", c, Shape.REPORTER, "% 用 % 分開的第 % 項", text("蘋果,香蕉"), text(","), number("1"));
 		def("op_pick", c, Shape.REPORTER, "從 % 隨機選一個", text("蘋果,香蕉,橘子"));
 		def("op_if", c, Shape.REPORTER, "如果 % 就是 % 否則 %", bool(), text("是"), text("否"));
+		def("op_chance", c, Shape.BOOLEAN, "有 % ％ 的機率成立?", number("50"));
+		def("op_template", c, Shape.REPORTER, "文字範本 %", text("{名稱} 收購 {數量} 個"));
 
 		c = Category.VARIABLE;
 		def("var_get", c, Shape.REPORTER, "%", variable());
@@ -374,6 +413,11 @@ public final class ScriptBlocks {
 		def("map_get", c, Shape.REPORTER, "清單 % 中 % 的值", list(), text("鑽石"));
 		def("map_remove", c, Shape.STACK, "從清單 % 刪除 % 這個鍵", list(), text("鑽石"));
 		def("map_has", c, Shape.BOOLEAN, "清單 % 有 % 這個鍵?", list(), text("鑽石"));
+		def("list_sum", c, Shape.REPORTER, "清單 % 的總和", list());
+		def("list_max", c, Shape.REPORTER, "清單 % 的最大值", list());
+		def("list_min", c, Shape.REPORTER, "清單 % 的最小值", list());
+		def("list_join", c, Shape.REPORTER, "把清單 % 用 % 連成文字", list(), text("、"));
+		def("list_from_inventory", c, Shape.STACK, "把背包物品存到清單 %", list());
 
 		c = Category.PROC;
 		def("proc_def", c, Shape.HAT, "定義積木 %", text("打招呼"));

@@ -28,8 +28,13 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.brilliantw.richpresence.mixin.BlockStatePredictionHandlerAccessor;
@@ -263,6 +268,64 @@ public final class ScriptExtras {
 			case "靴子" -> EquipmentSlot.FEET;
 			default -> EquipmentSlot.HEAD;
 		});
+	}
+
+	public static int enchantLevel(ItemStack stack, String name) {
+		if (stack == null || stack.isEmpty() || name.isBlank()) {
+			return 0;
+		}
+		int best = 0;
+		for (ItemEnchantments enchantments : List.of(stack.getEnchantments(), stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY))) {
+			for (var entry : enchantments.entrySet()) {
+				if (named(entry.getKey().value().description().getString(), entry.getKey().getRegisteredName(), name)) {
+					best = Math.max(best, entry.getIntValue());
+				}
+			}
+		}
+		return best;
+	}
+
+	public static int durabilityPercent(ItemStack stack) {
+		return stack == null || !stack.isDamageableItem() ? -1 : Math.round(100f * (stack.getMaxDamage() - stack.getDamageValue()) / stack.getMaxDamage());
+	}
+
+	public static boolean isFood(ItemStack stack) {
+		return stack != null && stack.has(DataComponents.FOOD);
+	}
+
+	public static boolean canEat(LocalPlayer player, ItemStack stack) {
+		FoodProperties food = stack.get(DataComponents.FOOD);
+		return food != null && player.canEat(food.canAlwaysEat());
+	}
+
+	public static int armorMenuSlot(ItemStack stack) {
+		Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+		if (equippable == null) {
+			return -1;
+		}
+		return switch (equippable.slot()) {
+			case HEAD -> 5;
+			case CHEST -> 6;
+			case LEGS -> 7;
+			case FEET -> 8;
+			default -> -1;
+		};
+	}
+
+	public static float toolScore(ItemStack stack, BlockState state) {
+		return (stack.isCorrectToolForDrops(state) ? 1000 : 0) + stack.getDestroySpeed(state);
+	}
+
+	public static String signText(LocalPlayer player, BlockPos pos) {
+		if (!(player.level().getBlockEntity(pos) instanceof SignBlockEntity sign)) {
+			return "";
+		}
+		//? if >=26.3 {
+		/*List<Component> lines = sign.getText(sign.getSlotPlayerIsFacing(player)).getMessages(false);
+		*///?} else {
+		List<Component> lines = List.of(sign.getText(sign.isFacingFrontText(player)).getMessages(false));
+		//?}
+		return String.join(" ", lines.stream().map(line -> line.getString().strip()).filter(line -> !line.isEmpty()).toList());
 	}
 
 	public static String axis(BlockPos pos, String axis) {

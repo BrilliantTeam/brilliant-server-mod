@@ -52,15 +52,19 @@ public final class ScriptTemplates {
 			new Template("自動釣魚", "手上拿著釣竿時，聽到魚上鉤的水花聲就自動收竿再拋竿", () -> group("自動釣魚",
 					stack(b("ev_sound", "4", "釣魚浮標濺水"), body(b("if", b("op_contains", b("s_held"), "釣竿")),
 							body(b("cooldown", "2"), b("act_tap", "使用／放置"), b("wait_random", "0.5", "0.9"), b("act_tap", "使用／放置")))))),
-			new Template("自動吃東西", "飢餓值低於 14 時，自動切到快捷欄的食物吃下去，把「牛排」改成你帶的食物", () -> group("自動吃東西",
-					stack(b("ev_timer", "10"), body(b("if", b("op_and", b("op_lt", b("s_food"), "14"), b("op_not", b("s_using")))),
-							b("act_hotbar_find", "牛排"), b("act_hold", "使用／放置", "2"))))),
+			new Template("自動吃東西", "飢餓值低於 14 時，自動拿出背包裡的食物吃下去再換回原本的物品；沒有食物時提醒你", () -> group("自動吃東西",
+					stack(b("ev_food", "14"), attempt(List.of(b("act_eat", "")), b("actionbar", join("沒辦法自動吃東西：", b("s_error"))))))),
 			new Template("簽到提醒", "上線時伺服器提醒還沒簽到，就跳出大字和通知提醒你", () -> group("簽到提醒",
 					stack(b("ev_message", "還沒有簽到"), b("wait", "3"), b("sound", "升級"), b("title", "記得簽到！", "今天還沒有簽到喔"), b("notify", "記得簽到", "今天還沒有簽到喔")))),
 			new Template("死亡座標紀錄", "死亡時顯示座標、複製到剪貼簿，並寫入「死亡紀錄」檔案", ScriptTemplates::deathLog),
-			new Template("附近苦力怕警報", "每 5 秒檢查附近 16 格，有苦力怕就跳出警告，把「苦力怕」改成其他生物也可以", () -> group("附近苦力怕警報",
-					stack(b("ev_timer", "5"), body(b("if", b("op_gt", b("s_entity_count", "16", "苦力怕"), "0")),
-							body(b("cooldown", "15"), b("note", "鐘", "18"), b("title", "苦力怕在附近！", join("數量：", b("s_entity_count", "16", "苦力怕")))))))),
+			new Template("附近苦力怕警報", "附近 16 格內出現苦力怕就跳出警告，把「苦力怕」改成其他生物也可以", () -> group("附近苦力怕警報",
+					stack(b("ev_entity_near", "16", "苦力怕"), body(b("cooldown", "15"), b("note", "鐘", "18"),
+							b("title", "苦力怕在附近！", join("數量：", b("s_entity_count", "16", "苦力怕"))))))),
+			new Template("背包滿了自動丟垃圾", "背包塞滿時自動丟掉清單裡的垃圾，可以自己增減「垃圾清單」的內容", ScriptTemplates::trash),
+			new Template("作物成熟提醒", "看著農作物時，成熟了就在畫面下方提醒你可以收成", () -> group("作物成熟提醒",
+					stack(b("ev_target_block"), body(b("if", b("s_target_grown")), b("note", "鐵琴", "18"), b("actionbar", join(b("s_message"), " 成熟了，可以收成")))))),
+			new Template("工具快壞提醒", "手上工具耐久剩不到 20 時提醒你修理或換一把", () -> group("工具快壞提醒",
+					stack(b("ev_durability", "20"), b("sound", "鈴"), b("title", "工具快壞了！", join(b("s_held"), join(" 剩下耐久 ", b("s_message"))))))),
 			new Template("礦物自動存箱", "打開名稱含「礦物」的箱子時，自動把背包裡的礦物存進去（箱子可以用鐵砧改名）", ScriptTemplates::oreStorage),
 			new Template("交易計算機", "按「▶ 執行」後輸入數量和單價，自動算出總價", ScriptTemplates::calculator),
 			new Template("天黑提醒", "遊戲內天黑時提醒你小心怪物", () -> group("天黑提醒",
@@ -108,6 +112,23 @@ public final class ScriptTemplates {
 		group.variables.add("礦物");
 		group.lists.add("礦物清單");
 		return group;
+	}
+
+	private static Scripts.Group trash() {
+		Scripts.Group group = group("背包滿了自動丟垃圾", stack(b("ev_full"),
+				b("list_from_text", "腐肉,泥土,碎石,閃長岩,安山岩,花崗岩,深板岩", ",", "垃圾清單"),
+				body(b("for_each", "垃圾清單", "垃圾"),
+						body(b("if", b("s_inv_has", b("var_get", "垃圾"))), b("act_drop_item", b("var_get", "垃圾")))),
+				b("actionbar", "背包滿了，已丟掉垃圾")));
+		group.variables.add("垃圾");
+		group.lists.add("垃圾清單");
+		return group;
+	}
+
+	private static Scripts.Block attempt(List<Scripts.Block> body, Scripts.Block... handler) {
+		Scripts.Block block = body(b("try"), body.toArray(Scripts.Block[]::new));
+		block.elseBody = new ArrayList<>(List.of(handler));
+		return block;
 	}
 
 	private static Scripts.Group calculator() {

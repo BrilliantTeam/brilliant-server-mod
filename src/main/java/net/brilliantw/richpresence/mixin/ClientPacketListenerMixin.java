@@ -43,6 +43,15 @@ public abstract class ClientPacketListenerMixin {
 		}
 	}
 
+	@Inject(method = "handleTakeItemEntity", at = @At("HEAD"))
+	private void brilliant$pickedUp(net.minecraft.network.protocol.game.ClientboundTakeItemEntityPacket packet, CallbackInfo ci) {
+		var client = net.minecraft.client.Minecraft.getInstance();
+		if (client.isSameThread() && client.level != null && client.player != null && packet.getPlayerId() == client.player.getId()
+				&& client.level.getEntity(packet.getItemId()) instanceof net.minecraft.world.entity.item.ItemEntity item) {
+			ScriptEngine.onPickup(item.getItem(), packet.getAmount());
+		}
+	}
+
 	@Inject(method = "handleCommands", at = @At("TAIL"))
 	private void brilliant$installAliases(ClientboundCommandsPacket packet, CallbackInfo ci) {
 		CommandAliases.install();

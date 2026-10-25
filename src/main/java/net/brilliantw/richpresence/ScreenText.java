@@ -3,6 +3,10 @@ package net.brilliantw.richpresence;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.brilliantw.richpresence.mixin.BossHealthOverlayAccessor;
 import net.brilliantw.richpresence.mixin.HudTextAccessor;
 import net.brilliantw.richpresence.mixin.PlayerTabOverlayAccessor;
@@ -97,8 +101,12 @@ public final class ScreenText {
 	}
 
 	public static List<String> sidebarLines() {
+		return sidebarEntries().stream().map(Map.Entry::getKey).toList();
+	}
+
+	private static List<Map.Entry<String, Integer>> sidebarEntries() {
 		Objective objective = sidebar();
-		List<String> lines = new ArrayList<>();
+		List<Map.Entry<String, Integer>> lines = new ArrayList<>();
 		if (objective == null) {
 			return lines;
 		}
@@ -107,7 +115,25 @@ public final class ScreenText {
 				.filter(entry -> !entry.isHidden())
 				.sorted(Comparator.comparingInt(PlayerScoreEntry::value).reversed().thenComparing(PlayerScoreEntry::owner, String.CASE_INSENSITIVE_ORDER))
 				.limit(15)
-				.forEach(entry -> lines.add(PlayerTeam.formatNameForTeam(scoreboard.getPlayersTeam(entry.owner()), entry.ownerName()).getString()));
+				.forEach(entry -> lines.add(Map.entry(PlayerTeam.formatNameForTeam(scoreboard.getPlayersTeam(entry.owner()), entry.ownerName()).getString(), entry.value())));
 		return lines;
+	}
+
+	private static final Pattern SCORE_NUMBER = Pattern.compile("-?\\d[\\d,]*(?:\\.\\d+)?");
+
+	public static String sidebarScore(String keyword) {
+		String needle = keyword.strip().toLowerCase(Locale.ROOT);
+		if (needle.isEmpty()) {
+			return "";
+		}
+		for (Map.Entry<String, Integer> line : sidebarEntries()) {
+			String lower = line.getKey().toLowerCase(Locale.ROOT);
+			int at = lower.indexOf(needle);
+			if (at >= 0) {
+				Matcher number = SCORE_NUMBER.matcher(line.getKey().substring(at + needle.length()));
+				return number.find() ? number.group().replace(",", "") : Integer.toString(line.getValue());
+			}
+		}
+		return "";
 	}
 }
