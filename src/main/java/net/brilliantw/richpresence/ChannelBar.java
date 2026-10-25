@@ -153,6 +153,15 @@ public final class ChannelBar {
 		return AnnouncementStore.totalUnread() + (ModUpdate.available() != null ? 1 : 0);
 	}
 
+	public static int chipsRight(ChatScreen screen) {
+		List<Button<Integer>> chips = chips(Minecraft.getInstance().font, screen);
+		return chips.isEmpty() ? 0 : chips.getLast().x() + chips.getLast().width();
+	}
+
+	public static int menuLeft(ChatScreen screen) {
+		return menuButton(Minecraft.getInstance().font, screen).x();
+	}
+
 	public static int menuRight(ChatScreen screen) {
 		Font font = Minecraft.getInstance().font;
 		Button<Void> menu = menuButton(font, screen);

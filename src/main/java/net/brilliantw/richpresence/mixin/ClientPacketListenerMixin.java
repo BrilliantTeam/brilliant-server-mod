@@ -1,5 +1,6 @@
 package net.brilliantw.richpresence.mixin;
 
+import net.brilliantw.richpresence.ChatReply;
 import net.brilliantw.richpresence.CommandAliases;
 import net.brilliantw.richpresence.DiscordImageLinks;
 import net.minecraft.network.protocol.game.ClientboundCommandsPacket;
@@ -17,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class ClientPacketListenerMixin {
 	@Inject(method = "sendUnattendedCommand", at = @At("HEAD"), cancellable = true)
 	private void brilliant$openImageViewer(String command, Screen screen, CallbackInfo ci) {
-		if (DiscordImageLinks.intercept(command)) {
+		if (DiscordImageLinks.intercept(command) || ChatReply.intercept(command, screen)) {
 			ci.cancel();
 		}
 	}

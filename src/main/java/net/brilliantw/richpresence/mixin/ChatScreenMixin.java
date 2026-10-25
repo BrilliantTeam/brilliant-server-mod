@@ -2,6 +2,7 @@ package net.brilliantw.richpresence.mixin;
 
 import net.brilliantw.richpresence.ChannelBar;
 import net.brilliantw.richpresence.ChatMenu;
+import net.brilliantw.richpresence.ChatReply;
 import net.brilliantw.richpresence.ChatTabs;
 import net.brilliantw.richpresence.ColorCodes;
 import net.brilliantw.richpresence.EmojiPicker;
@@ -88,6 +89,7 @@ public abstract class ChatScreenMixin extends Screen {
 		ChatScreen screen = (ChatScreen) (Object) this;
 		Gfx gfx = new Gfx(graphics);
 		if (!brilliant$typingCommand()) {
+			ChatReply.render(screen, gfx, mouseX, mouseY);
 			ChannelBar.render(screen, graphics, mouseX, mouseY);
 			EmojiPicker.render(screen, gfx, mouseX, mouseY);
 			if (RichPresenceModClient.featuresActive()) {
@@ -121,6 +123,7 @@ public abstract class ChatScreenMixin extends Screen {
 				|| EmojiPicker.mouseClicked(screen, event.x(), event.y(), event.button())
 				|| QuickMessages.mouseClicked(screen, input.getValue(), event.x(), event.y(), event.button())
 				|| ChannelBar.mouseClicked(screen, event.x(), event.y(), event.button())
+				|| ChatReply.mouseClicked(screen, event.x(), event.y(), event.button())
 				|| ChatMenu.mouseClicked(screen, event.x(), event.y(), event.button())) {
 			cir.setReturnValue(true);
 		}
@@ -153,11 +156,12 @@ public abstract class ChatScreenMixin extends Screen {
 	@Inject(method = "removed", at = @At("HEAD"))
 	private void brilliant$resetTabView(CallbackInfo ci) {
 		ChatTabs.close();
+		ChatReply.clear();
 	}
 
 	@ModifyVariable(method = "handleChatInput", at = @At("HEAD"), argsOnly = true)
 	private String brilliant$applyChannelPrefix(String message) {
-		return ChannelBar.applyPrefix(message);
+		return ChatReply.apply(ChannelBar.applyPrefix(message));
 	}
 
 	@Inject(method = "mouseScrolled", at = @At("HEAD"), cancellable = true)

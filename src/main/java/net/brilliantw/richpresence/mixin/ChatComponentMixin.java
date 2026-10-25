@@ -1,6 +1,7 @@
 package net.brilliantw.richpresence.mixin;
 
 import net.brilliantw.richpresence.ChatHistoryScreen;
+import net.brilliantw.richpresence.ChatReply;
 import net.brilliantw.richpresence.ChatTabs;
 import net.brilliantw.richpresence.DiscordImageLinks;
 import net.brilliantw.richpresence.RichPresenceModClient;
@@ -55,6 +56,7 @@ public abstract class ChatComponentMixin {
 		ChatTabs.track(message);
 		ScriptEngine.onChat(message.getString());
 		DiscordImageLinks.scan(message);
+		ChatReply.scan(message);
 		if (PrivateMessages.onChatMessage(message) && PrivateMessages.hideInChat()) {
 			ci.cancel();
 		}
