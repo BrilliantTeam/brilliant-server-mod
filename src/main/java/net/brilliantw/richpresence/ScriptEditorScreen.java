@@ -1416,6 +1416,9 @@ public final class ScriptEditorScreen extends Screen {
 		editor.visible = true;
 		setFocused(editor);
 		slotSuggestions = null;
+		if (slot.slot().kind() == ScriptBlocks.SlotKind.TEXT && ScriptBlocks.MATCHING.contains(slot.block().op)) {
+			setStatus("可以填名稱（鑽石）、ID（minecraft:diamond）或 #標籤（#minecraft:logs）；想知道有哪些標籤，用「手上物品的標籤」查");
+		}
 		if (slot.block().op.equals("command")) {
 			slotSuggestions = new CommandSuggestionBox(this, editor);
 		}

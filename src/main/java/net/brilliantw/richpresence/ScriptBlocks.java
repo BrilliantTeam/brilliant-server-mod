@@ -82,6 +82,12 @@ public final class ScriptBlocks {
 	public static final List<String> COLORS = List.of("白", "紅", "橙", "黃", "綠", "藍", "紫", "灰");
 	public static final List<String> EQUIPMENT = List.of("頭盔", "胸甲", "護腿", "靴子");
 
+	public static final java.util.Set<String> MATCHING = java.util.Set.of("ev_pickup", "ev_item_count", "ev_entity_near", "s_count", "s_hotbar_find", "s_gui_find",
+			"s_entity_count", "s_effect", "s_held_has", "s_inv_has", "s_gui_count", "s_block_near", "s_block_count", "s_block_nearest", "s_drop_count", "s_enchanted",
+			"s_enchant_level", "s_cooldown", "s_entity_pos", "act_hotbar_find", "act_select_item", "act_drop_item", "act_face_block", "act_face_entity", "act_eat",
+			"act_walk_drop", "act_walk_block", "act_hotbar_put", "act_offhand", "act_equip", "gui_take", "gui_click_name", "gui_move_all", "s_offhand_has",
+			"s_equipment_is", "s_slot_is", "s_target_block_is", "s_block_below_is", "s_target_entity_is");
+
 	private static final Map<String, Def> DEFS = new LinkedHashMap<>();
 
 	static {
@@ -344,6 +350,18 @@ public final class ScriptBlocks {
 		def("s_moon", c, Shape.REPORTER, "月相");
 		def("s_can_sleep", c, Shape.BOOLEAN, "現在可以睡覺?");
 		def("s_score", c, Shape.REPORTER, "記分板 % 的分數", text("金錢"));
+		def("s_offhand_has", c, Shape.BOOLEAN, "副手拿著 % ?", text("盾牌"));
+		def("s_equipment_is", c, Shape.BOOLEAN, "身上的 % 是 % ?", dropdown(EQUIPMENT), text("minecraft:elytra"));
+		def("s_slot_is", c, Shape.BOOLEAN, "介面第 % 格是 % ?", number("1"), text("#minecraft:wool"));
+		def("s_slot_id", c, Shape.REPORTER, "介面第 % 格的物品 ID", number("1"));
+		def("s_target_block_is", c, Shape.BOOLEAN, "看著的方塊是 % ?", text("#minecraft:logs"));
+		def("s_target_block_id", c, Shape.REPORTER, "看著的方塊 ID");
+		def("s_block_below_is", c, Shape.BOOLEAN, "腳下的方塊是 % ?", text("minecraft:grass_block"));
+		def("s_block_below_id", c, Shape.REPORTER, "腳下的方塊 ID");
+		def("s_target_entity_is", c, Shape.BOOLEAN, "看著的生物是 % ?", text("minecraft:zombie"));
+		def("s_target_entity_id", c, Shape.REPORTER, "看著的生物 ID");
+		def("s_held_tags", c, Shape.REPORTER, "手上物品的標籤");
+		def("s_target_block_tags", c, Shape.REPORTER, "看著的方塊的標籤");
 		def("s_timer", c, Shape.REPORTER, "計時器");
 		def("timer_reset", c, Shape.STACK, "重設計時器");
 

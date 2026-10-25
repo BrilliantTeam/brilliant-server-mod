@@ -1699,7 +1699,7 @@ public final class ScriptEngine {
 				if (screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> container) {
 					String needle = eval(run, block.args.get(0)).strip().toLowerCase(Locale.ROOT);
 					var found = needle.isEmpty() ? null : container.getMenu().slots.stream()
-							.filter(slot -> slot.isActive() && slot.hasItem() && slot.getItem().getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle)).findFirst().orElse(null);
+							.filter(slot -> slot.isActive() && ScriptExtras.matches(slot.getItem(), needle)).findFirst().orElse(null);
 					if (found == null) {
 						fail(block, "介面裡找不到名稱含有「" + needle + "」的物品");
 					} else {
@@ -2106,7 +2106,7 @@ public final class ScriptEngine {
 				LocalPlayer self = player();
 				String wanted = arg(run, block, 0).strip().toLowerCase(Locale.ROOT);
 				yield bool(self != null && !wanted.isEmpty() && self.getActiveEffects().stream()
-						.anyMatch(effect -> effect.showIcon() && effect.getEffect().value().getDisplayName().getString().toLowerCase(Locale.ROOT).contains(wanted)));
+						.anyMatch(effect -> effect.showIcon() && ScriptExtras.matches(effect.getEffect(), wanted)));
 			}
 			case "s_block_below" -> {
 				LocalPlayer self = player();
@@ -2178,7 +2178,7 @@ public final class ScriptEngine {
 				var slots = container.getMenu().slots;
 				int found = 0;
 				for (int i = 0; i < slots.size(); i++) {
-					if (slots.get(i).isActive() && slots.get(i).hasItem() && slots.get(i).getItem().getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle)) {
+					if (slots.get(i).isActive() && ScriptExtras.matches(slots.get(i).getItem(), needle)) {
 						found = i + 1;
 						break;
 					}
@@ -2437,6 +2437,30 @@ public final class ScriptEngine {
 						&& (self.level().isThundering() || time % 24000 >= 12542 && time % 24000 <= 23459));
 			}
 			case "s_score" -> ScreenText.sidebarScore(arg(run, block, 0));
+			case "s_offhand_has" -> bool(player() != null && ScriptExtras.matches(player().getOffhandItem(), arg(run, block, 0)));
+			case "s_equipment_is" -> bool(ScriptExtras.matches(ScriptExtras.equipment(player(), block.text(0)), arg(run, block, 1)));
+			case "s_slot_is", "s_slot_id" -> {
+				net.minecraft.client.gui.screens.Screen screen = gameScreen();
+				net.minecraft.world.inventory.Slot slot = screen == null ? null : slot(block, screen, number(arg(run, block, 0)), true);
+				var stack = slot == null || !slot.isActive() ? null : slot.getItem();
+				yield block.op.equals("s_slot_is") ? bool(ScriptExtras.matches(stack, arg(run, block, 1))) : ScriptExtras.itemId(stack);
+			}
+			case "s_target_block_is", "s_target_block_id", "s_target_block_tags", "s_block_below_is", "s_block_below_id" -> {
+				LocalPlayer self = player();
+				net.minecraft.core.BlockPos pos = self == null ? null : block.op.startsWith("s_block_below") ? self.blockPosition().below() : lookedBlock(Minecraft.getInstance());
+				var state = pos == null ? null : ScriptExtras.confirmedState(self, pos);
+				yield switch (block.op) {
+					case "s_target_block_is", "s_block_below_is" -> bool(state != null && ScriptExtras.matches(state, arg(run, block, 0)));
+					case "s_target_block_tags" -> state == null ? "" : ScriptExtras.tags(state.getBlock().builtInRegistryHolder());
+					default -> state == null || state.isAir() ? "" : ScriptExtras.blockId(state);
+				};
+			}
+			case "s_target_entity_is" -> {
+				var entity = lookedEntity(Minecraft.getInstance());
+				yield bool(entity != null && ScriptExtras.matches(entity, arg(run, block, 0)));
+			}
+			case "s_target_entity_id" -> ScriptExtras.entityId(lookedEntity(Minecraft.getInstance()));
+			case "s_held_tags" -> player() == null || player().getMainHandItem().isEmpty() ? "" : ScriptExtras.tags(player().getMainHandItem().getItem().builtInRegistryHolder());
 			case "op_chance" -> bool(ThreadLocalRandom.current().nextDouble() * 100 < Math.clamp(number(arg(run, block, 0)), 0, 100));
 			case "op_template" -> {
 				List<String> names = Scripts.variablesOf(run.group);
@@ -3173,7 +3197,7 @@ public final class ScriptEngine {
 		for (int i = 0; i < slots.size(); i++) {
 			var slot = slots.get(i);
 			if (slot.container instanceof net.minecraft.world.entity.player.Inventory && slot.isActive() && slot.hasItem() && !run.movedSlots.contains(i)
-					&& (needle.isEmpty() || slot.getItem().getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle))) {
+					&& (needle.isEmpty() || ScriptExtras.matches(slot.getItem(), needle))) {
 				run.movedSlots.add(i);
 				click(screen, slot, 0, "QUICK_MOVE");
 				return ++run.moveStage >= 64;

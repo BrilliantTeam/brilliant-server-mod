@@ -21,7 +21,15 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -196,13 +204,11 @@ public final class ScriptExtras {
 	}
 
 	public static int hotbarFind(LocalPlayer player, String name) {
-		String needle = name.strip().toLowerCase(Locale.ROOT);
-		if (player == null || needle.isEmpty()) {
+		if (player == null || name.isBlank()) {
 			return 0;
 		}
 		for (int i = 0; i < 9; i++) {
-			var stack = player.getInventory().getItem(i);
-			if (!stack.isEmpty() && stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle)) {
+			if (matches(player.getInventory().getItem(i), name)) {
 				return i + 1;
 			}
 		}
@@ -236,13 +242,70 @@ public final class ScriptExtras {
 		return -1;
 	}
 
-	private static boolean named(String name, String id, String wanted) {
+	static boolean named(String name, String id, String wanted) {
 		String needle = wanted.strip().toLowerCase(Locale.ROOT);
-		return !needle.isEmpty() && (name.toLowerCase(Locale.ROOT).contains(needle) || id.contains(needle));
+		if (needle.isEmpty() || needle.startsWith("#")) {
+			return false;
+		}
+		if (needle.contains(":")) {
+			return id.equals(needle);
+		}
+		return name.toLowerCase(Locale.ROOT).contains(needle) || id.contains(needle);
+	}
+
+	public static void main(String[] args) {
+		check(named("鑽石劍", "minecraft:diamond_sword", "鑽石") && named("Diamond Sword", "minecraft:diamond_sword", "diamond"), "name and id path contain");
+		check(named("石頭", "minecraft:stone", "minecraft:stone") && !named("石磚", "minecraft:stone_bricks", "minecraft:stone"), "namespaced id must match exactly");
+		check(named("石頭", "minecraft:stone", " Minecraft:Stone ") && !named("石頭", "minecraft:stone", "") && !named("石頭", "minecraft:stone", "#minecraft:stone"), "case, blank and tag input");
+		check("minecraft:logs".equals(String.valueOf(tagId("#logs"))) && "c:ores".equals(String.valueOf(tagId("# c:ores"))) && tagId("logs") == null && tagId("#Bad Tag!") == null, "tag ids parse with default namespace");
+		System.out.println("ScriptExtras OK");
+	}
+
+	private static void check(boolean ok, String what) {
+		if (!ok) {
+			throw new AssertionError(what);
+		}
+	}
+
+	static Identifier tagId(String wanted) {
+		String text = wanted.strip().toLowerCase(Locale.ROOT);
+		return text.startsWith("#") ? Identifier.tryParse(text.substring(1).strip()) : null;
+	}
+
+	private static <T> boolean matches(Holder<T> holder, ResourceKey<? extends Registry<T>> registry, String name, String id, String wanted) {
+		if (!wanted.strip().startsWith("#")) {
+			return named(name, id, wanted);
+		}
+		Identifier tag = tagId(wanted);
+		return tag != null && holder.is(TagKey.create(registry, tag));
 	}
 
 	public static boolean matches(ItemStack stack, String wanted) {
-		return stack != null && !stack.isEmpty() && named(stack.getHoverName().getString(), itemId(stack), wanted);
+		return stack != null && !stack.isEmpty() && matches(stack.getItem().builtInRegistryHolder(), Registries.ITEM, stack.getHoverName().getString(), itemId(stack), wanted);
+	}
+
+	public static boolean matches(BlockState state, String wanted) {
+		return !state.isAir() && matches(state.getBlock().builtInRegistryHolder(), Registries.BLOCK, state.getBlock().getName().getString(), blockId(state), wanted);
+	}
+
+	public static boolean matches(Entity entity, String wanted) {
+		return matches(entity.getType().builtInRegistryHolder(), Registries.ENTITY_TYPE, entity.getName().getString(), entityId(entity), wanted);
+	}
+
+	public static boolean matches(Holder<MobEffect> effect, String wanted) {
+		return matches(effect, Registries.MOB_EFFECT, effect.value().getDisplayName().getString(), effect.getRegisteredName(), wanted);
+	}
+
+	public static String blockId(BlockState state) {
+		return BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString();
+	}
+
+	public static String entityId(Entity entity) {
+		return entity == null ? "" : EntityType.getKey(entity.getType()).toString();
+	}
+
+	public static <T> String tags(Holder<T> holder) {
+		return String.join(", ", holder.tags().map(tag -> "#" + tag.location()).sorted().toList());
 	}
 
 	public static String itemName(ItemStack stack) {
@@ -277,7 +340,7 @@ public final class ScriptExtras {
 		int best = 0;
 		for (ItemEnchantments enchantments : List.of(stack.getEnchantments(), stack.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY))) {
 			for (var entry : enchantments.entrySet()) {
-				if (named(entry.getKey().value().description().getString(), entry.getKey().getRegisteredName(), name)) {
+				if (matches(entry.getKey(), Registries.ENCHANTMENT, entry.getKey().value().description().getString(), entry.getKey().getRegisteredName(), name)) {
 					best = Math.max(best, entry.getIntValue());
 				}
 			}
@@ -404,8 +467,7 @@ public final class ScriptExtras {
 		List<BlockPos> found = new ArrayList<>();
 		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-r, -r, -r), center.offset(r, r, r))) {
 			BlockState state = confirmedState(player, pos);
-			if (!state.isAir() && eye.distanceTo(Vec3.atCenterOf(pos)) <= r + 0.5
-					&& named(state.getBlock().getName().getString(), BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString(), name)) {
+			if (eye.distanceTo(Vec3.atCenterOf(pos)) <= r + 0.5 && matches(state, name)) {
 				found.add(pos.immutable());
 			}
 		}
@@ -448,8 +510,7 @@ public final class ScriptExtras {
 	}
 
 	public static int entityCount(LocalPlayer player, double range, String name) {
-		String needle = name.strip().toLowerCase(Locale.ROOT);
-		return (int) creatures(player, range).stream().filter(entity -> needle.isEmpty() || entity.getName().getString().toLowerCase(Locale.ROOT).contains(needle)).count();
+		return (int) creatures(player, range).stream().filter(entity -> name.isBlank() || matches(entity, name)).count();
 	}
 
 	public static Entity nearestCreature(LocalPlayer player) {
@@ -457,8 +518,7 @@ public final class ScriptExtras {
 	}
 
 	public static Entity nearestCreature(LocalPlayer player, String name) {
-		String needle = name.strip().toLowerCase(Locale.ROOT);
-		return creatures(player, 64).stream().filter(entity -> needle.isEmpty() || entity.getName().getString().toLowerCase(Locale.ROOT).contains(needle))
+		return creatures(player, 64).stream().filter(entity -> name.isBlank() || matches(entity, name))
 				.min(Comparator.comparingDouble(entity -> entity.distanceTo(player))).orElse(null);
 	}
 
