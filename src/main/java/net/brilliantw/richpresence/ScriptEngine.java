@@ -1802,8 +1802,13 @@ public final class ScriptEngine {
 					valuesDirty = true;
 				}
 			}
-			case "monitor_show" -> Scripts.data().monitor = true;
-			case "monitor_hide" -> Scripts.data().monitor = false;
+			case "monitor_show", "monitor_hide" -> {
+				boolean show = block.op.equals("monitor_show");
+				if (Scripts.data().monitor != show) {
+					Scripts.data().monitor = show;
+					Scripts.save();
+				}
+			}
 			case "timer_reset" -> timerStart = System.currentTimeMillis();
 			case "msg" -> {
 				String target = eval(run, block.args.get(0)).strip();

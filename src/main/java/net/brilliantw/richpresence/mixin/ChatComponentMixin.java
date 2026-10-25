@@ -4,6 +4,7 @@ import net.brilliantw.richpresence.ChatHistoryScreen;
 import net.brilliantw.richpresence.ChatReply;
 import net.brilliantw.richpresence.ChatTabs;
 import net.brilliantw.richpresence.DiscordImageLinks;
+import net.brilliantw.richpresence.ModSettings;
 import net.brilliantw.richpresence.RichPresenceModClient;
 import net.brilliantw.richpresence.PrivateMessages;
 import net.brilliantw.richpresence.ScriptEngine;
@@ -57,7 +58,7 @@ public abstract class ChatComponentMixin {
 		ScriptEngine.onChat(message.getString());
 		DiscordImageLinks.scan(message);
 		ChatReply.scan(message);
-		if (PrivateMessages.onChatMessage(message) && PrivateMessages.hideInChat()) {
+		if (PrivateMessages.onChatMessage(message) && PrivateMessages.hideInChat() && ModSettings.get().privateWindow) {
 			ci.cancel();
 		}
 	}

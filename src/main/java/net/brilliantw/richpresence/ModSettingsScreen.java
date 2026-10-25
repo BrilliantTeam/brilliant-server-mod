@@ -98,6 +98,7 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(Row.choice("連線", "微軟帳號", "啟動器沒登入時，點擊用瀏覽器登入一次；登入後輝煌啟動器也會一起登入", Reauth::label, () -> Reauth.startLogin(this)));
 		rows.add(new Row("聊天", "頻道分頁", "聊天欄上方依頻道篩選訊息的分頁", () -> s.channelTabs, v -> s.channelTabs = v));
 		rows.add(new Row("聊天", "私訊視窗", "用獨立視窗顯示與管理私訊對話", () -> s.privateWindow, v -> s.privateWindow = v));
+		rows.add(new Row("聊天", "私訊只顯示在視窗", "私訊不出現在聊天欄；關閉私訊視窗時一律顯示在聊天欄。也可在私訊視窗切換", PrivateMessages::hideInChat, PrivateMessages::setHideInChat));
 		rows.add(new Row("聊天", "表情符號選單", "聊天欄右下角的表情符號按鈕", () -> s.emoji, v -> s.emoji = v));
 		rows.add(new Row("聊天", "高清看圖", "點擊 Discord 圖片連結時在遊戲內開啟", () -> s.imageLinks, v -> s.imageLinks = v));
 		rows.add(new Row("聊天", "指令別名", "使用自訂的指令別名與對應的 TAB 補全", () -> s.aliases, v -> s.aliases = v));
