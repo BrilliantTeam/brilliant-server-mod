@@ -74,6 +74,9 @@ public final class ScriptEngine {
 		long walkStart;
 		double walkBest;
 		long walkProgressAt;
+		Scripts.Block mineBlock;
+		net.minecraft.core.BlockPos minePos;
+		long mineStart;
 		java.util.Set<Integer> movedSlots = new java.util.HashSet<>();
 		Scripts.Group group;
 
@@ -874,7 +877,7 @@ public final class ScriptEngine {
 					frame.index++;
 					return;
 				}
-				case "key_press", "key_combo" -> {
+				case "key_press", "key_combo", "act_select_item" -> {
 					act(run, block);
 					frame.index++;
 					run.waitUntil = now + INPUT_GAP_MS;
@@ -891,7 +894,7 @@ public final class ScriptEngine {
 					run.waitUntil = now + INPUT_GAP_MS;
 					return;
 				}
-				case "act_face", "act_turn", "act_face_pos", "act_face_player" -> {
+				case "act_face", "act_turn", "act_face_pos", "act_face_player", "act_face_block", "act_face_entity" -> {
 					LocalPlayer player = player();
 					if (player == null || !playerControl(block)) {
 						run.turnBlock = null;
@@ -919,12 +922,21 @@ public final class ScriptEngine {
 								frame.index++;
 								continue;
 							}
-							net.minecraft.world.phys.Vec3 target = block.op.equals("act_face_pos")
-									? new net.minecraft.world.phys.Vec3(number(eval(run, block.args.get(0))) + 0.5, number(eval(run, block.args.get(1))) + 0.5, number(eval(run, block.args.get(2))) + 0.5)
-									: ScriptExtras.visiblePlayers(player, ScriptExtras.ENTITY_SIGHT).stream().findFirst()
-											.map(net.minecraft.world.entity.Entity::getEyePosition).orElse(null);
+							net.minecraft.world.phys.Vec3 target = switch (block.op) {
+								case "act_face_pos" -> new net.minecraft.world.phys.Vec3(number(eval(run, block.args.get(0))) + 0.5, number(eval(run, block.args.get(1))) + 0.5, number(eval(run, block.args.get(2))) + 0.5);
+								case "act_face_block" -> ScriptExtras.blocksNear(player, number(eval(run, block.args.get(0))), eval(run, block.args.get(1)), 1).stream().findFirst()
+										.map(net.minecraft.world.phys.Vec3::atCenterOf).orElse(null);
+								case "act_face_entity" -> java.util.Optional.ofNullable(ScriptExtras.nearestCreature(player, eval(run, block.args.getFirst())))
+										.map(net.minecraft.world.entity.Entity::getEyePosition).orElse(null);
+								default -> ScriptExtras.visiblePlayers(player, ScriptExtras.ENTITY_SIGHT).stream().findFirst()
+										.map(net.minecraft.world.entity.Entity::getEyePosition).orElse(null);
+							};
 							if (target == null) {
-								fail(block, "附近沒有看得到的其他玩家");
+								fail(block, switch (block.op) {
+									case "act_face_block" -> "附近看不到「" + eval(run, block.args.get(1)).strip() + "」方塊";
+									case "act_face_entity" -> "附近看不到「" + eval(run, block.args.getFirst()).strip() + "」";
+									default -> "附近沒有看得到的其他玩家";
+								});
 								run.turnBlock = null;
 								frame.index++;
 								continue;
@@ -1106,6 +1118,23 @@ public final class ScriptEngine {
 					run.waitUntil = now + 1;
 					return;
 				}
+				case "act_mine" -> {
+					if (mineStep(run, block, now)) {
+						run.mineBlock = null;
+						frame.index++;
+					}
+					run.waitUntil = now + 1;
+					return;
+				}
+				case "act_drop_item" -> {
+					if (dropStep(run, block)) {
+						run.moveStage = 0;
+						run.movedSlots.clear();
+						frame.index++;
+					}
+					run.waitUntil = now + INPUT_GAP_MS;
+					return;
+				}
 				case "repeat" -> {
 					int times = (int) Math.min(100000, Math.round(number(eval(run, block.args.getFirst()))));
 					if (times <= 0) {
@@ -1164,7 +1193,7 @@ public final class ScriptEngine {
 	private static final java.util.Set<String> CLIENT_ACTIONS = java.util.Set.of("insert", "local", "local_color", "actionbar", "sound", "copy", "title",
 			"act_tap", "act_press", "act_release", "act_release_all", "act_hotbar", "act_face", "act_turn",
 			"key_press", "key_combo", "gui_click_slot", "gui_move", "gui_click_text", "gui_click_xy", "gui_close", "gui_click_name",
-			"act_hotbar_find", "note", "notify");
+			"act_hotbar_find", "note", "notify", "act_select_item");
 
 	static net.minecraft.client.gui.screens.Screen screen() {
 		Minecraft client = Minecraft.getInstance();
@@ -1550,6 +1579,21 @@ public final class ScriptEngine {
 					}
 				}
 			}
+			case "act_select_item" -> {
+				LocalPlayer player = client.player;
+				String name = eval(run, block.args.getFirst()).strip();
+				if (player == null || client.gameMode == null || !playerControl(block)) {
+					break;
+				}
+				int slot = ScriptExtras.inventoryFind(player, name);
+				if (slot < 0) {
+					fail(block, "背包裡沒有名稱含有「" + name + "」的物品");
+				} else if (slot < 9) {
+					player.getInventory().setSelectedSlot(slot);
+				} else {
+					inventoryClick(client, player, slot, player.getInventory().getSelectedSlot(), "SWAP");
+				}
+			}
 			case "gui_click_name" -> {
 				net.minecraft.client.gui.screens.Screen screen = targetScreen(block, true);
 				if (screen instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> container) {
@@ -1896,20 +1940,7 @@ public final class ScriptEngine {
 			case "s_food" -> player == null ? "0" : Integer.toString(player.getFoodData().getFoodLevel());
 			case "s_level" -> player == null ? "0" : Integer.toString(player.experienceLevel);
 			case "s_held" -> player == null || player.getMainHandItem().isEmpty() ? "" : player.getMainHandItem().getHoverName().getString();
-			case "s_count" -> {
-				if (player == null) {
-					yield "0";
-				}
-				String needle = arg(run, block, 0).strip().toLowerCase(Locale.ROOT);
-				int total = 0;
-				for (int i = 0; i < Math.min(36, player.getInventory().getContainerSize()); i++) {
-					var stack = player.getInventory().getItem(i);
-					if (!stack.isEmpty() && (needle.isEmpty() || stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle))) {
-						total += stack.getCount();
-					}
-				}
-				yield Integer.toString(total);
-			}
+			case "s_count" -> Integer.toString(ScriptExtras.inventoryCount(player, arg(run, block, 0)));
 			case "s_armor" -> player == null ? "0" : Integer.toString(player.getArmorValue());
 			case "s_sneak" -> bool(player != null && player.isShiftKeyDown());
 			case "s_ping" -> {
@@ -2181,6 +2212,57 @@ public final class ScriptEngine {
 				yield bool(ScriptBlocks.MODIFIERS.contains(name) ? (KeyCombos.held() & combo) == combo : CommandKeys.keyDown(Minecraft.getInstance(), keyCode(name)));
 			}
 			case "s_timer" -> format(Math.round((System.currentTimeMillis() - timerStart) / 100.0) / 10.0);
+			case "s_held_has" -> bool(player() != null && ScriptExtras.matches(player().getMainHandItem(), arg(run, block, 0)));
+			case "s_inv_has" -> bool(ScriptExtras.inventoryFind(player(), arg(run, block, 0)) >= 0);
+			case "s_held_id" -> player() == null ? "" : ScriptExtras.itemId(player().getMainHandItem());
+			case "s_held_lore" -> player() == null ? "" : ScriptExtras.lore(player().getMainHandItem());
+			case "s_durability_pct" -> {
+				var stack = player() == null ? null : player().getMainHandItem();
+				yield stack == null || !stack.isDamageableItem() ? "0" : Integer.toString(Math.round(100f * (stack.getMaxDamage() - stack.getDamageValue()) / stack.getMaxDamage()));
+			}
+			case "s_offhand" -> player() == null ? "" : ScriptExtras.itemName(player().getOffhandItem());
+			case "s_hotbar_item" -> player() == null ? "" : ScriptExtras.itemName(player().getInventory().getItem((int) Math.clamp(Math.round(number(arg(run, block, 0))) - 1, 0, 8)));
+			case "s_equipment" -> ScriptExtras.itemName(ScriptExtras.equipment(player(), block.text(0)));
+			case "s_slot_count", "s_slot_lore" -> {
+				net.minecraft.client.gui.screens.Screen screen = gameScreen();
+				net.minecraft.world.inventory.Slot slot = screen == null ? null : slot(block, screen, number(arg(run, block, 0)), true);
+				boolean empty = slot == null || !slot.isActive() || !slot.hasItem();
+				yield block.op.equals("s_slot_count") ? (empty ? "0" : Integer.toString(slot.getItem().getCount())) : (empty ? "" : ScriptExtras.lore(slot.getItem()));
+			}
+			case "s_gui_count" -> {
+				int total = 0;
+				if (gameScreen() instanceof net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<?> container) {
+					for (var slot : container.getMenu().slots) {
+						if (!(slot.container instanceof net.minecraft.world.entity.player.Inventory) && slot.isActive() && ScriptExtras.matches(slot.getItem(), arg(run, block, 0))) {
+							total += slot.getItem().getCount();
+						}
+					}
+				}
+				yield Integer.toString(total);
+			}
+			case "s_block_rel" -> {
+				LocalPlayer self = player();
+				int x = (int) Math.clamp(Math.round(number(arg(run, block, 0))), -ScriptExtras.BLOCK_SCAN, ScriptExtras.BLOCK_SCAN);
+				int y = (int) Math.clamp(Math.round(number(arg(run, block, 1))), -ScriptExtras.BLOCK_SCAN, ScriptExtras.BLOCK_SCAN);
+				int z = (int) Math.clamp(Math.round(number(arg(run, block, 2))), -ScriptExtras.BLOCK_SCAN, ScriptExtras.BLOCK_SCAN);
+				yield self == null ? "" : ScriptExtras.seenBlock(self, self.blockPosition().offset(x, y, z));
+			}
+			case "s_block_near" -> bool(!ScriptExtras.blocksNear(player(), number(arg(run, block, 0)), arg(run, block, 1), 1).isEmpty());
+			case "s_block_count" -> Integer.toString(ScriptExtras.blocksNear(player(), number(arg(run, block, 0)), arg(run, block, 1), Integer.MAX_VALUE).size());
+			case "s_block_nearest" -> ScriptExtras.coordsHidden(player()) ? ""
+					: ScriptExtras.axis(ScriptExtras.blocksNear(player(), number(arg(run, block, 0)), arg(run, block, 1), 1).stream().findFirst().orElse(null), block.text(2));
+			case "s_target_pos", "s_target_grown" -> {
+				Minecraft client = Minecraft.getInstance();
+				LocalPlayer self = player();
+				net.minecraft.core.BlockPos pos = self != null && client.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit && hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
+						? hit.getBlockPos() : null;
+				if (block.op.equals("s_target_grown")) {
+					yield bool(pos != null && ScriptExtras.grown(ScriptExtras.confirmedState(self, pos)));
+				}
+				yield ScriptExtras.coordsHidden(self) ? "" : ScriptExtras.axis(pos, block.text(0));
+			}
+			case "s_drop_count" -> Integer.toString(ScriptExtras.drops(player(), number(arg(run, block, 0)), arg(run, block, 1)).stream().mapToInt(item -> item.getItem().getCount()).sum());
+			case "s_nearest_drop" -> ScriptExtras.drops(player(), ScriptExtras.ENTITY_SIGHT, "").stream().findFirst().map(item -> ScriptExtras.itemName(item.getItem())).orElse("");
 			case "op_math" -> {
 				double value = number(arg(run, block, 1));
 				yield format(switch (block.text(0)) {
@@ -2362,6 +2444,77 @@ public final class ScriptEngine {
 		player.setYRot(yaw);
 		player.setYHeadRot(yaw);
 		hold(run, forward, now + 200, false);
+		return false;
+	}
+
+	private static void inventoryClick(Minecraft client, LocalPlayer player, int slot, int button, String kind) {
+		//? if >=26.1 {
+		client.gameMode.handleContainerInput(player.inventoryMenu.containerId, slot, button, net.minecraft.world.inventory.ContainerInput.valueOf(kind), player);
+		//?} else {
+		/*client.gameMode.handleInventoryMouseClick(player.inventoryMenu.containerId, slot, button, net.minecraft.world.inventory.ClickType.valueOf(kind), player);
+		*///?}
+	}
+
+	private static boolean dropStep(Run run, Scripts.Block block) {
+		Minecraft client = Minecraft.getInstance();
+		LocalPlayer player = player();
+		if (player == null || client.gameMode == null || !playerControl(block)) {
+			return true;
+		}
+		String name = eval(run, block.args.getFirst()).strip();
+		if (name.isEmpty()) {
+			fail(block, "請填入要丟掉的物品名稱（不會一次丟掉整個背包）");
+			return true;
+		}
+		for (int i = 0; i < Math.min(36, player.getInventory().getContainerSize()); i++) {
+			if (!run.movedSlots.contains(i) && ScriptExtras.matches(player.getInventory().getItem(i), name)) {
+				run.movedSlots.add(i);
+				inventoryClick(client, player, i < 9 ? i + 36 : i, 1, "THROW");
+				return ++run.moveStage >= 36;
+			}
+		}
+		if (run.moveStage == 0) {
+			fail(block, "背包裡沒有名稱含有「" + name + "」的物品");
+		}
+		return true;
+	}
+
+	private static boolean mineStep(Run run, Scripts.Block block, long now) {
+		Minecraft client = Minecraft.getInstance();
+		LocalPlayer player = player();
+		KeyMapping attack = mapping("攻擊／挖掘");
+		if (player == null || !playerControl(block)) {
+			release(attack);
+			return true;
+		}
+		net.minecraft.core.BlockPos looking = client.hitResult instanceof net.minecraft.world.phys.BlockHitResult hit && hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
+				? hit.getBlockPos() : null;
+		boolean first = run.mineBlock != block;
+		if (first) {
+			if (looking == null) {
+				fail(block, "沒有看著任何方塊");
+				return true;
+			}
+			run.mineBlock = block;
+			run.minePos = looking;
+			run.mineStart = now;
+		}
+		if (ScriptExtras.confirmedState(player, run.minePos).isAir()) {
+			release(attack);
+			return true;
+		}
+		if (!run.minePos.equals(looking)) {
+			release(attack);
+			fail(block, "視角離開了要挖的方塊，已停止挖掘");
+			return true;
+		}
+		double seconds = Math.clamp(number(eval(run, block.args.getFirst())), 0, MAX_HOLD_SECONDS);
+		if (now - run.mineStart > seconds * 1000) {
+			release(attack);
+			fail(block, "挖了 " + format(seconds) + " 秒還沒挖掉，已停止");
+			return true;
+		}
+		hold(run, attack, now + 200, first);
 		return false;
 	}
 

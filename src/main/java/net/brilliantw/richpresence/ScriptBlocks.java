@@ -80,6 +80,7 @@ public final class ScriptBlocks {
 	public static final List<String> CASES = List.of("大寫", "小寫");
 	public static final List<String> INSTRUMENTS = List.of("鋼琴", "貝斯", "鐘", "長笛", "吉他", "鐵琴", "風鈴", "牛鈴", "班鳩琴", "電子琴", "大鼓", "小鼓", "敲擊");
 	public static final List<String> COLORS = List.of("白", "紅", "橙", "黃", "綠", "藍", "紫", "灰");
+	public static final List<String> EQUIPMENT = List.of("頭盔", "胸甲", "護腿", "靴子");
 
 	private static final Map<String, Def> DEFS = new LinkedHashMap<>();
 
@@ -201,6 +202,11 @@ public final class ScriptBlocks {
 		def("act_face_pos", c, Shape.STACK, "面向座標 x % y % z %", number("0"), number("64"), number("0"));
 		def("act_face_player", c, Shape.STACK, "面向最近的玩家");
 		def("act_walk_to", c, Shape.STACK, "走向座標 x % z %", number("0"), number("0"));
+		def("act_select_item", c, Shape.STACK, "拿出背包中的 %", text("鑽石劍"));
+		def("act_drop_item", c, Shape.STACK, "丟掉背包中所有的 %", text("腐肉"));
+		def("act_face_block", c, Shape.STACK, "面向附近 % 格內最近的 % 方塊", number("6"), text("箱子"));
+		def("act_face_entity", c, Shape.STACK, "面向最近的 % 生物", text("殭屍"));
+		def("act_mine", c, Shape.STACK, "挖掉看著的方塊 最多 % 秒", number("10"));
 
 		c = Category.SENSE;
 		def("s_message", c, Shape.REPORTER, "訊息內容");
@@ -282,6 +288,25 @@ public final class ScriptBlocks {
 		def("s_timestamp", c, Shape.REPORTER, "現在時間戳");
 		def("s_key", c, Shape.BOOLEAN, "腳本鍵 % 被按住?", dropdown(KEYS));
 		def("s_hotkey", c, Shape.BOOLEAN, "鍵盤 % 被按住?", dropdown(HELD_KEYS));
+		def("s_held_has", c, Shape.BOOLEAN, "手上拿著 % ?", text("劍"));
+		def("s_inv_has", c, Shape.BOOLEAN, "背包有 % ?", text("鑽石"));
+		def("s_held_id", c, Shape.REPORTER, "手上物品 ID");
+		def("s_held_lore", c, Shape.REPORTER, "手上物品的說明文字");
+		def("s_durability_pct", c, Shape.REPORTER, "手上物品耐久百分比");
+		def("s_offhand", c, Shape.REPORTER, "副手物品名稱");
+		def("s_hotbar_item", c, Shape.REPORTER, "快捷欄第 % 格的物品", number("1"));
+		def("s_equipment", c, Shape.REPORTER, "身上的 %", dropdown(EQUIPMENT));
+		def("s_slot_count", c, Shape.REPORTER, "介面第 % 格的物品數量", number("1"));
+		def("s_slot_lore", c, Shape.REPORTER, "介面第 % 格的說明文字", number("1"));
+		def("s_gui_count", c, Shape.REPORTER, "介面中（不含背包）% 的總數量", text("鑽石"));
+		def("s_block_rel", c, Shape.REPORTER, "相對我 x % y % z % 的方塊", number("0"), number("-1"), number("0"));
+		def("s_block_near", c, Shape.BOOLEAN, "附近 % 格內看得到 % 方塊?", number("6"), text("鑽石礦"));
+		def("s_block_count", c, Shape.REPORTER, "附近 % 格內看得到的 % 方塊數", number("6"), text("原木"));
+		def("s_block_nearest", c, Shape.REPORTER, "附近 % 格內最近的 % 方塊座標 %", number("6"), text("箱子"), dropdown(AXES));
+		def("s_target_pos", c, Shape.REPORTER, "看著的方塊座標 %", dropdown(AXES));
+		def("s_target_grown", c, Shape.BOOLEAN, "看著的作物成熟了?");
+		def("s_drop_count", c, Shape.REPORTER, "附近 % 格內地上 % 的數量", number("16"), text(""));
+		def("s_nearest_drop", c, Shape.REPORTER, "最近的掉落物");
 		def("s_timer", c, Shape.REPORTER, "計時器");
 		def("timer_reset", c, Shape.STACK, "重設計時器");
 

@@ -1608,7 +1608,7 @@ public final class ScriptEditorScreen extends Screen {
 		}
 		if (p.nodes().size() == 1 && p.nodes().getFirst().def.isReporter()) {
 			String op = p.nodes().getFirst().block.op;
-			if (op.startsWith("s_gui") || op.equals("s_slot_item") || op.equals("s_hover_slot")) {
+			if (op.startsWith("s_gui") || op.startsWith("s_slot") || op.equals("s_hover_slot")) {
 				setStatus("介面相關的積木要在遊戲中開著介面時才有值；編輯器開著時一律當作沒有介面。在背包或箱子裡按住 Alt 可以看格子編號");
 			}
 			bubble = ScriptEngine.evaluate(p.nodes().getFirst().block);

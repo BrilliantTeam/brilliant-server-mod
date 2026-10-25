@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -20,9 +21,17 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.brilliantw.richpresence.mixin.BlockStatePredictionHandlerAccessor;
 import net.brilliantw.richpresence.mixin.ClientLevelAccessor;
 import net.brilliantw.richpresence.mixin.ServerVerifiedStateAccessor;
@@ -199,19 +208,84 @@ public final class ScriptExtras {
 		if (player == null) {
 			return 0;
 		}
-		String needle = name.strip().toLowerCase(Locale.ROOT);
+		boolean any = name.isBlank();
 		int total = 0;
 		for (int i = 0; i < Math.min(36, player.getInventory().getContainerSize()); i++) {
 			var stack = player.getInventory().getItem(i);
-			if (!stack.isEmpty() && (needle.isEmpty() || stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle))) {
+			if (!stack.isEmpty() && (any || matches(stack, name))) {
 				total += stack.getCount();
 			}
 		}
 		return total;
 	}
 
+	public static int inventoryFind(LocalPlayer player, String name) {
+		if (player == null || name.isBlank()) {
+			return -1;
+		}
+		for (int i = 0; i < Math.min(36, player.getInventory().getContainerSize()); i++) {
+			if (matches(player.getInventory().getItem(i), name)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	private static boolean named(String name, String id, String wanted) {
+		String needle = wanted.strip().toLowerCase(Locale.ROOT);
+		return !needle.isEmpty() && (name.toLowerCase(Locale.ROOT).contains(needle) || id.contains(needle));
+	}
+
+	public static boolean matches(ItemStack stack, String wanted) {
+		return stack != null && !stack.isEmpty() && named(stack.getHoverName().getString(), itemId(stack), wanted);
+	}
+
+	public static String itemName(ItemStack stack) {
+		return stack == null || stack.isEmpty() ? "" : stack.getHoverName().getString();
+	}
+
+	public static String itemId(ItemStack stack) {
+		return stack == null || stack.isEmpty() ? "" : BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+	}
+
+	public static String lore(ItemStack stack) {
+		ItemLore lore = stack == null ? null : stack.get(DataComponents.LORE);
+		return lore == null ? "" : String.join(" ", lore.lines().stream().map(line -> line.getString().strip()).filter(line -> !line.isEmpty()).toList());
+	}
+
+	public static ItemStack equipment(LocalPlayer player, String part) {
+		if (player == null) {
+			return ItemStack.EMPTY;
+		}
+		return player.getItemBySlot(switch (part) {
+			case "胸甲" -> EquipmentSlot.CHEST;
+			case "護腿" -> EquipmentSlot.LEGS;
+			case "靴子" -> EquipmentSlot.FEET;
+			default -> EquipmentSlot.HEAD;
+		});
+	}
+
+	public static String axis(BlockPos pos, String axis) {
+		return pos == null ? "" : Integer.toString(switch (axis) {
+			case "Y" -> pos.getY();
+			case "Z" -> pos.getZ();
+			default -> pos.getX();
+		});
+	}
+
+	public static boolean grown(BlockState state) {
+		for (Property<?> property : state.getProperties()) {
+			if (property.getName().equals("age") && property instanceof IntegerProperty age) {
+				return state.getValue(age) >= Collections.max(age.getPossibleValues());
+			}
+		}
+		return false;
+	}
+
 	public static final double ENTITY_SIGHT = 64;
 	public static final double BLOCK_SIGHT = 128;
+	public static final int BLOCK_SCAN = 8;
+	private static final int MAX_RAYS = 512;
 
 	public static boolean coordsHidden(LocalPlayer player) {
 		return player == null || player.isReducedDebugInfo();
@@ -243,7 +317,11 @@ public final class ScriptExtras {
 	}
 
 	public static String visibleBlock(LocalPlayer player, BlockPos pos) {
-		if (coordsHidden(player) || !player.level().isLoaded(pos)) {
+		return coordsHidden(player) ? "" : seenBlock(player, pos);
+	}
+
+	public static String seenBlock(LocalPlayer player, BlockPos pos) {
+		if (player == null || !player.level().isLoaded(pos)) {
 			return "";
 		}
 		Vec3 center = Vec3.atCenterOf(pos);
@@ -251,6 +329,41 @@ public final class ScriptExtras {
 			return "";
 		}
 		return blockName(player, pos);
+	}
+
+	public static List<BlockPos> blocksNear(LocalPlayer player, double range, String name, int limit) {
+		if (player == null || name.isBlank()) {
+			return List.of();
+		}
+		int r = (int) Math.clamp(Math.round(range), 0, BLOCK_SCAN);
+		Vec3 eye = player.getEyePosition();
+		BlockPos center = player.blockPosition();
+		List<BlockPos> found = new ArrayList<>();
+		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-r, -r, -r), center.offset(r, r, r))) {
+			BlockState state = confirmedState(player, pos);
+			if (!state.isAir() && eye.distanceTo(Vec3.atCenterOf(pos)) <= r + 0.5
+					&& named(state.getBlock().getName().getString(), BuiltInRegistries.BLOCK.getKey(state.getBlock()).toString(), name)) {
+				found.add(pos.immutable());
+			}
+		}
+		found.sort(Comparator.comparingDouble(pos -> eye.distanceToSqr(Vec3.atCenterOf(pos))));
+		List<BlockPos> seen = new ArrayList<>();
+		for (int i = 0; i < Math.min(found.size(), MAX_RAYS) && seen.size() < limit; i++) {
+			if (clear(player, Vec3.atCenterOf(found.get(i)), found.get(i))) {
+				seen.add(found.get(i));
+			}
+		}
+		return seen;
+	}
+
+	public static List<ItemEntity> drops(LocalPlayer player, double range, String name) {
+		if (player == null) {
+			return List.of();
+		}
+		double r = Math.clamp(range, 0, ENTITY_SIGHT);
+		return player.level().getEntities(player, new AABB(player.blockPosition()).inflate(r),
+				entity -> entity instanceof ItemEntity item && entity.distanceTo(player) <= r && (name.isBlank() || matches(item.getItem(), name)) && sees(player, entity))
+				.stream().map(entity -> (ItemEntity) entity).sorted(Comparator.comparingDouble(entity -> entity.distanceTo(player))).toList();
 	}
 
 	public static List<Player> visiblePlayers(LocalPlayer player, double range) {
@@ -277,7 +390,13 @@ public final class ScriptExtras {
 	}
 
 	public static Entity nearestCreature(LocalPlayer player) {
-		return creatures(player, 64).stream().min(Comparator.comparingDouble(entity -> entity.distanceTo(player))).orElse(null);
+		return nearestCreature(player, "");
+	}
+
+	public static Entity nearestCreature(LocalPlayer player, String name) {
+		String needle = name.strip().toLowerCase(Locale.ROOT);
+		return creatures(player, 64).stream().filter(entity -> needle.isEmpty() || entity.getName().getString().toLowerCase(Locale.ROOT).contains(needle))
+				.min(Comparator.comparingDouble(entity -> entity.distanceTo(player))).orElse(null);
 	}
 
 	public static String safeLogName(String name) {
