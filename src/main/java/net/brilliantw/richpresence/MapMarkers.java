@@ -29,6 +29,8 @@ public final class MapMarkers {
 	private static final int MAX_BYTES = 8 * 1024 * 1024;
 	private static final Pattern OWNER = Pattern.compile("擁有者：\\s*<span[^>]*>([^<]{1,40})</span>");
 	private static final Pattern TAGS = Pattern.compile("<[^>]+>");
+	private static final Pattern ENTITY = Pattern.compile("&(#x[0-9a-fA-F]{1,6}|#[0-9]{1,7}|amp|lt|gt|quot|apos|nbsp);");
+	private static final Pattern COLOR = Pattern.compile("[&§][0-9a-fk-orA-FK-OR]");
 	private static final Pattern HOME = Pattern.compile("^/(phome [A-Za-z0-9_]{1,16}\\.[^\\p{Cntrl}§]{1,64})$");
 	static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NORMAL).build();
 
@@ -233,7 +235,7 @@ public final class MapMarkers {
 	public static String homeName(Poi poi) {
 		String text = poi.label().strip().replaceFirst("^/phome\\s+", "");
 		int dot = text.indexOf('.');
-		return dot > 0 ? text.substring(dot + 1) : text;
+		return COLOR.matcher(dot > 0 ? text.substring(dot + 1) : text).replaceAll("");
 	}
 
 	public static String homeCommand(Poi poi) {
@@ -306,7 +308,22 @@ public final class MapMarkers {
 	}
 
 	private static String clean(String html) {
-		return TAGS.matcher(html.replace("<br />", " ").replace("<br>", " ")).replaceAll("").replace("&nbsp;", " ").strip();
+		return unescape(TAGS.matcher(html.replace("<br />", " ").replace("<br>", " ")).replaceAll("")).strip();
+	}
+
+	static String unescape(String text) {
+		return ENTITY.matcher(text).replaceAll(m -> Matcher.quoteReplacement(switch (m.group(1)) {
+			case "amp" -> "&";
+			case "lt" -> "<";
+			case "gt" -> ">";
+			case "quot" -> "\"";
+			case "apos" -> "'";
+			case "nbsp" -> " ";
+			default -> {
+				int cp = m.group(1).startsWith("#x") ? Integer.parseInt(m.group(1).substring(2), 16) : Integer.parseInt(m.group(1).substring(1));
+				yield Character.isValidCodePoint(cp) ? Character.toString(cp) : "";
+			}
+		}));
 	}
 
 	private static int color(JsonObject marker, String key, int fallback) {
@@ -316,5 +333,21 @@ public final class MapMarkers {
 		JsonObject c = marker.getAsJsonObject(key);
 		int a = (int) Math.round(Math.clamp(c.has("a") ? c.get("a").getAsDouble() : 1, 0, 1) * 255);
 		return a << 24 | (c.get("r").getAsInt() & 0xFF) << 16 | (c.get("g").getAsInt() & 0xFF) << 8 | c.get("b").getAsInt() & 0xFF;
+	}
+
+	public static void main(String[] args) {
+		String json = "{\"homes\":{\"markers\":{\"a\":{\"type\":\"poi\",\"label\":\"/phome SKYOD1003.1服_&amp;e煌新聞&amp;6基地\",\"detail\":\"\",\"position\":{\"x\":1,\"z\":2}}}}}";
+		Poi poi = parse(json).pois().getFirst();
+		check("phome SKYOD1003.1服_&e煌新聞&6基地".equals(homeCommand(poi)), "command keeps the real name");
+		check("1服_煌新聞基地".equals(homeName(poi)) && "SKYOD1003".equals(homeOwner(poi)), "display name drops color codes");
+		check(unescape("&amp;lt;&#65;&#x42;&nbsp;").equals("&lt;AB "), "entities decode once");
+		check(homeCommand(new Poi(clean("/phome a.b&#10;/op x"), "", 0, 0)) == null, "decoded line breaks never reach a command");
+		System.out.println("ok");
+	}
+
+	private static void check(boolean ok, String name) {
+		if (!ok) {
+			throw new AssertionError(name);
+		}
 	}
 }
