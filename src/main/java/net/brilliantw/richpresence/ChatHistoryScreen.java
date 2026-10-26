@@ -55,7 +55,7 @@ public final class ChatHistoryScreen extends Screen {
 	}
 
 	public static void record(Component message) {
-		String plain = message.getString();
+		String plain = ChatTabs.plain(message);
 		if (plain.isBlank()) {
 			return;
 		}

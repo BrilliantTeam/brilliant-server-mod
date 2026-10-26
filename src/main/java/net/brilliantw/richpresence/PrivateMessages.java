@@ -179,7 +179,7 @@ public final class PrivateMessages {
 
 	public static boolean onChatMessage(Component message) {
 		learnNames(message);
-		String raw = ChatFormatting.stripFormatting(message.getString());
+		String raw = ChatFormatting.stripFormatting(ChatTabs.plain(message));
 		String[] header = pendingHeader;
 		pendingHeader = null;
 		Matcher matcher = HEADER.matcher(raw);
@@ -228,7 +228,7 @@ public final class PrivateMessages {
 					return account;
 				}
 				Component tab = info.getTabListDisplayName();
-				if (tab != null && ChatFormatting.stripFormatting(tab.getString()).contains(display)) {
+				if (tab != null && ChatFormatting.stripFormatting(ChatTabs.plain(tab)).contains(display)) {
 					if (match != null && !match.equals(account)) {
 						match = null;
 						break;

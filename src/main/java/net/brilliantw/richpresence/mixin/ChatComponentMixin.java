@@ -55,7 +55,7 @@ public abstract class ChatComponentMixin {
 		}
 		ChatHistoryScreen.record(message);
 		ChatTabs.track(message);
-		ScriptEngine.onChat(message.getString());
+		ScriptEngine.onChat(ChatTabs.plain(message));
 		DiscordImageLinks.scan(message);
 		ChatReply.scan(message);
 		if (PrivateMessages.onChatMessage(message) && PrivateMessages.hideInChat() && ModSettings.get().privateWindow) {

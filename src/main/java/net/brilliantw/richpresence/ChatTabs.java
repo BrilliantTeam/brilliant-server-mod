@@ -8,6 +8,7 @@ import java.util.EnumSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.ChatComponent;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.ObjectContents;
 
 public final class ChatTabs {
 	enum Tab {
@@ -86,7 +88,7 @@ public final class ChatTabs {
 	}
 
 	public static void track(Component content) {
-		Tab channel = classify(content.getString());
+		Tab channel = classify(plain(content));
 		if (channel != null) {
 			channels.put(content, channel);
 			order.addLast(content);
@@ -100,7 +102,7 @@ public final class ChatTabs {
 		if (!viewing || selected.isEmpty()) {
 			return true;
 		}
-		Tab channel = channels.containsKey(content) ? channels.get(content) : channelOf(content.getString());
+		Tab channel = channels.containsKey(content) ? channels.get(content) : channelOf(plain(content));
 		return channel != null && selected.contains(channel);
 	}
 
@@ -193,5 +195,33 @@ public final class ChatTabs {
 			}
 		}
 		return false;
+	}
+
+	public static String plain(Component component) {
+		StringBuilder out = new StringBuilder();
+		append(component, out);
+		return out.toString();
+	}
+
+	private static void append(Component component, StringBuilder out) {
+		if (!(component.getContents() instanceof ObjectContents)) {
+			component.getContents().visit(text -> {
+				out.append(text);
+				return Optional.empty();
+			});
+		}
+		for (Component sibling : component.getSiblings()) {
+			append(sibling, out);
+		}
+	}
+
+	public static void main(String[] args) {
+		Component head = Component.object(new net.minecraft.network.chat.contents.objects.AtlasSprite(
+				net.minecraft.resources.Identifier.withDefaultNamespace("blocks"), net.minecraft.resources.Identifier.withDefaultNamespace("block/stone")));
+		Component line = Component.literal("書碼服｜").append(head).append(Component.literal("0487")).append(Component.literal("：服主在嗎"));
+		if (!line.getString().contains("[") || !plain(line).equals("書碼服｜0487：服主在嗎")) {
+			throw new AssertionError(plain(line));
+		}
+		System.out.println("ok");
 	}
 }
