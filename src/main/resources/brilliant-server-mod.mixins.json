@@ -28,6 +28,8 @@
 		"NightVisionScaleMixin",
 		"StringDecomposerMixin",
 		"MouseHandlerMixin",
+		"CameraMixin",
+		"KeyboardInputMixin",
 		"BakedSheetGlyphAccessor",
 		"BitmapProviderMixin",
 		"BitmapGlyphMixin"

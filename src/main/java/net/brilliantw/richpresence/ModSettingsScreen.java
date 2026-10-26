@@ -118,6 +118,13 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("遊戲", "格子編號", "按住 Alt 時在介面格子上顯示編號", () -> s.slotNumbers, v -> s.slotNumbers = v));
 		rows.add(new Row("遊戲", "記分板位置", "套用自訂的記分板位置與縮放", () -> s.scoreboardLayout, v -> s.scoreboardLayout = v));
 		rows.add(new Row("遊戲", "鐵砧完整花費", "超限附魔超過 40 級時顯示實際花費，取代「太貴了！」", () -> s.anvilCost, v -> s.anvilCost = v));
+		rows.add(Row.choice("自由視角", "移動速度", "鏡頭每秒移動幾格；開啟自由視角時也可以用滾輪微調。自由視角的開關鍵在「快捷鍵」分頁設定", () -> Freecam.formatSpeed(s.freecamSpeed), () -> s.freecamSpeed = Freecam.nextSpeed(s.freecamSpeed)));
+		rows.add(Row.choice("自由視角", "衝刺倍率", "按住衝刺鍵時速度乘上幾倍", () -> s.freecamBoost + " 倍", () -> s.freecamBoost = Freecam.nextBoost(s.freecamBoost)));
+		rows.add(Row.choice("自由視角", "慣性", "放開按鍵後鏡頭滑行停下的程度；越高越像電影運鏡", () -> Freecam.SMOOTH_LABELS[Math.clamp(s.freecamSmooth, 0, Freecam.SMOOTH_LABELS.length - 1)], () -> s.freecamSmooth = (s.freecamSmooth + 1) % Freecam.SMOOTH_LABELS.length));
+		rows.add(new Row("自由視角", "水平移動", "前進後退只在水平面移動，跳躍與潛行控制升降；關閉時往視線方向飛", () -> s.freecamFlat, v -> s.freecamFlat = v));
+		rows.add(new Row("自由視角", "穿過方塊", "鏡頭可以穿過牆壁與地面；關閉時會被方塊擋住", () -> s.freecamNoclip, v -> s.freecamNoclip = v));
+		rows.add(new Row("自由視角", "隱藏介面", "開啟自由視角時自動隱藏 HUD，關閉時恢復", () -> s.freecamHideHud, v -> s.freecamHideHud = v));
+		rows.add(new Row("自由視角", "滾輪調整速度", "自由視角時滾動滑鼠滾輪調整移動速度，不會切換快捷欄", () -> s.freecamScroll, v -> s.freecamScroll = v));
 		rows.add(Row.choice("介面", "強調色", "模組介面的按鈕、選取與標題顏色；點擊切換", () -> Theme.preset(Theme.ACCENTS, s.accent).name() + (s.accent.equals("custom") ? " " + Theme.hex(s.customAccent) : ""),
 				() -> s.accent = nextPreset(Theme.ACCENTS, s.accent)));
 		rows.add(Row.choice("介面", "自訂強調色", "輸入色碼，例如 #FF9AC8；點擊編輯後會自動切換成自訂", () -> Theme.hex(s.customAccent), this::editAccent));
@@ -181,6 +188,7 @@ public final class ModSettingsScreen extends Screen {
 		return switch (section) {
 			case "連線" -> "一般";
 			case "小地圖文字" -> "小地圖";
+			case "自由視角" -> "遊戲";
 			default -> section;
 		};
 	}

@@ -27,6 +27,13 @@ public final class ModSettings {
 		public boolean scoreboardLayout = true;
 		public boolean anvilCost = true;
 		public boolean nightVision;
+		public float freecamSpeed = 10;
+		public int freecamBoost = 3;
+		public int freecamSmooth = 1;
+		public boolean freecamFlat;
+		public boolean freecamNoclip = true;
+		public boolean freecamHideHud;
+		public boolean freecamScroll = true;
 		public boolean autoReconnect = true;
 		public boolean autoReauth = true;
 		public int reconnectAttempts;
