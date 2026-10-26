@@ -28,14 +28,17 @@ import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.chunk.DataLayer;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
+import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
 
 public final class FakeChunks {
-	public static final List<Integer> RANGES = List.of(0, 12, 16, 24, 32, 48);
-	public static final List<Integer> DISK_MB = List.of(256, 512, 1024, 2048, 5120);
-	public static final List<Integer> DAYS = List.of(0, 30, 90, 180);
-	public static final List<Integer> RATES = List.of(1, 2, 4, 8);
+	public static final int MAX_RANGE = 64;
+	private static final int PLACEHOLDERS_PER_STEP = 64;
 	private static final long CLEANUP_MS = 10 * 60 * 1000;
 	private static final ExecutorService IO = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable, "brilliant-fake-chunks");
@@ -65,7 +68,7 @@ public final class FakeChunks {
 	}
 
 	private static int clientRadius() {
-		int range = ModSettings.get().keepChunksRange;
+		int range = Math.min(MAX_RANGE, ModSettings.get().keepChunksRange);
 		return range > 0 ? range : Minecraft.getInstance().options.renderDistance().get();
 	}
 
@@ -141,6 +144,9 @@ public final class FakeChunks {
 			return;
 		}
 		byte[] raw;
+		if (allAir(chunk)) {
+			return;
+		}
 		ByteBuf buffer = Unpooled.buffer();
 		try {
 			ClientboundLevelChunkWithLightPacket packet = new ClientboundLevelChunkWithLightPacket(chunk, minecraft.level.getLightEngine(), null, null);
@@ -192,32 +198,101 @@ public final class FakeChunks {
 			minecraft.level.getChunkSource().updateViewRadius(serverRadius);
 		}
 		apply(minecraft);
-		if (!saving() || minecraft.level == null || minecraft.player == null || ++ticks % 10 != 0) {
+		if (!enabled() || minecraft.level == null || minecraft.player == null || serverRadius < 0 || ++ticks % 10 != 0) {
 			return;
 		}
-		if (System.currentTimeMillis() - cleanedAt > CLEANUP_MS) {
-			cleanedAt = System.currentTimeMillis();
-			IO.execute(FakeChunks::cleanup);
+		if (saving()) {
+			if (System.currentTimeMillis() - cleanedAt > CLEANUP_MS) {
+				cleanedAt = System.currentTimeMillis();
+				IO.execute(FakeChunks::cleanup);
+			}
+			loadFromDisk(minecraft);
 		}
+		fillGaps(minecraft);
+	}
+
+	static long[] ring(int cx, int cz, int r) {
+		long[] out = new long[r * 8];
+		int n = 0;
+		for (int i = -r; i < r; i++) {
+			out[n++] = pack(cx + i, cz - r);
+			out[n++] = pack(cx + r, cz + i);
+			out[n++] = pack(cx - i, cz + r);
+			out[n++] = pack(cx - r, cz - i);
+		}
+		return out;
+	}
+
+	private static boolean allAir(LevelChunk chunk) {
+		for (LevelChunkSection section : chunk.getSections()) {
+			if (!section.hasOnlyAir()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean missing(ClientLevel level, long pos) {
+		LevelChunk chunk = level.getChunkSource().getChunk(ChunkPos.getX(pos), ChunkPos.getZ(pos), ChunkStatus.FULL, false);
+		return chunk == null || allAir(chunk);
+	}
+
+	private static void loadFromDisk(Minecraft minecraft) {
 		String world = world();
 		if (world == null) {
 			return;
 		}
 		Set<Long> saved = index(world);
 		ChunkPos center = minecraft.player.chunkPosition();
+		int budget = Math.max(1, ModSettings.get().keepChunksRate);
+		int radius = clientRadius();
+		for (int r = serverRadius + 1; r <= radius && budget > 0; r++) {
+			for (long pos : ring(center.getMinBlockX() >> 4, center.getMinBlockZ() >> 4, r)) {
+				if (budget > 0 && saved.contains(pos) && !PENDING.contains(world + pos) && missing(minecraft.level, pos)) {
+					budget--;
+					read(world, pos);
+				}
+			}
+		}
+	}
+
+	private static void fillGaps(Minecraft minecraft) {
+		ClientLevel level = minecraft.level;
+		ClientPacketListener connection = minecraft.getConnection();
+		if (connection == null) {
+			return;
+		}
+		ChunkPos center = minecraft.player.chunkPosition();
 		int cx = center.getMinBlockX() >> 4;
 		int cz = center.getMinBlockZ() >> 4;
-		int budget = ModSettings.get().keepChunksRate;
-		int radius = clientRadius();
-		for (int ring = serverRadius + 1; ring <= radius && budget > 0; ring++) {
-			for (int i = -ring; i <= ring && budget > 0; i++) {
-				for (long pos : new long[] { pack(cx + i, cz - ring), pack(cx + i, cz + ring), pack(cx - ring, cz + i), pack(cx + ring, cz + i) }) {
-					if (budget > 0 && saved.contains(pos) && !PENDING.contains(world + pos)
-							&& minecraft.level.getChunkSource().getChunk(ChunkPos.getX(pos), ChunkPos.getZ(pos), ChunkStatus.FULL, false) == null) {
-						budget--;
-						read(world, pos);
-					}
+		int far = 0;
+		for (int r = clientRadius(); r > serverRadius + 1 && far == 0; r--) {
+			for (long pos : ring(cx, cz, r)) {
+				if (!missing(level, pos)) {
+					far = r;
+					break;
 				}
+			}
+		}
+		int budget = PLACEHOLDERS_PER_STEP;
+		for (int r = serverRadius + 1; r < far && budget > 0; r++) {
+			for (long pos : ring(cx, cz, r)) {
+				if (budget > 0 && level.getChunkSource().getChunk(ChunkPos.getX(pos), ChunkPos.getZ(pos), ChunkStatus.FULL, false) == null) {
+					budget--;
+					placeholder(level, connection, ChunkPos.getX(pos), ChunkPos.getZ(pos));
+				}
+			}
+		}
+	}
+
+	private static void placeholder(ClientLevel level, ClientPacketListener connection, int x, int z) {
+		LevelChunk empty = new LevelChunk(level, new ChunkPos(x, z));
+		connection.handleLevelChunkWithLight(new ClientboundLevelChunkWithLightPacket(empty, level.getLightEngine(), null, null));
+		if (level.dimensionType().hasSkyLight()) {
+			LevelLightEngine light = level.getLightEngine();
+			for (int y = light.getMinLightSection(); y < light.getMinLightSection() + light.getLightSectionCount(); y++) {
+				light.queueSectionData(LightLayer.SKY, SectionPos.of(x, y, z), new DataLayer(15));
+				level.setSectionDirtyWithNeighbors(x, y, z);
 			}
 		}
 	}
@@ -254,7 +329,7 @@ public final class FakeChunks {
 			ClientPacketListener connection = minecraft.getConnection();
 			ClientLevel level = minecraft.level;
 			if (!saving() || connection == null || level == null || !loaded.world().equals(world()) || minecraft.player == null
-					|| level.getChunkSource().getChunk(ChunkPos.getX(loaded.pos()), ChunkPos.getZ(loaded.pos()), ChunkStatus.FULL, false) != null
+					|| !missing(level, loaded.pos())
 					|| minecraft.player.chunkPosition().getChessboardDistance(new ChunkPos(ChunkPos.getX(loaded.pos()), ChunkPos.getZ(loaded.pos()))) <= serverRadius) {
 				continue;
 			}
@@ -308,7 +383,7 @@ public final class FakeChunks {
 	private static void cleanup() {
 		ModSettings.Data s = ModSettings.get();
 		long maxAge = s.keepChunksDays > 0 ? s.keepChunksDays * 86_400_000L : Long.MAX_VALUE;
-		long limit = s.keepChunksDiskMb * 1024L * 1024L;
+		long limit = Math.max(64, s.keepChunksDiskMb) * 1024L * 1024L;
 		List<Entry> entries = new ArrayList<>();
 		try (var files = Files.walk(root())) {
 			files.filter(path -> path.getFileName().toString().endsWith(".bin")).forEach(path -> {
@@ -368,7 +443,11 @@ public final class FakeChunks {
 	}
 
 	public static String rangeLabel(int range) {
-		return range > 0 ? range + " 區塊" + (range > 32 ? "（較吃效能）" : "") : "跟隨顯示距離";
+		return range > 0 ? Math.min(MAX_RANGE, range) + " 區塊" + (range > 32 ? "（較吃效能）" : "") : "跟隨顯示距離";
+	}
+
+	public static String diskLimitLabel(int mb) {
+		return mb >= 1024 ? String.format("%.1f GB", mb / 1024.0) : mb + " MB";
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -385,6 +464,9 @@ public final class FakeChunks {
 			rejected = true;
 		}
 		check(rejected, "truncated file is rejected");
+		long[] around = ring(0, 0, 2);
+		check(around.length == 16 && java.util.Arrays.stream(around).distinct().count() == 16
+				&& java.util.Arrays.stream(around).allMatch(p -> Math.max(Math.abs(ChunkPos.getX(p)), Math.abs(ChunkPos.getZ(p))) == 2), "ring covers each border chunk once");
 		check(ChunkPos.getX(pack(-5, 7)) == -5 && ChunkPos.getZ(pack(-5, 7)) == 7 && pack(new ChunkPos(-5, 7)) == pack(-5, 7), "chunk key matches vanilla");
 		System.out.println("ok");
 	}

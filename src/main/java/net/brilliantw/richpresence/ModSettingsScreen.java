@@ -56,6 +56,23 @@ public final class ModSettingsScreen extends Screen {
 		}));
 	}
 
+	private void editNumber(String title, String hint, int current, int min, int max, java.util.function.IntConsumer set) {
+		CommandMenuScreen.setScreen(new EditDialog(this, title, List.of(new EditDialog.Field("數值", hint, String.valueOf(current), 7)), null, 0, (values, group) -> {
+			int value;
+			try {
+				value = Integer.parseInt(values.getFirst().strip());
+			} catch (NumberFormatException e) {
+				return "請輸入 " + min + "～" + max + " 的整數";
+			}
+			if (value < min || value > max) {
+				return "請輸入 " + min + "～" + max + " 的整數";
+			}
+			set.accept(value);
+			ModSettings.save();
+			return null;
+		}));
+	}
+
 	private static int cycle(List<Integer> options, int current) {
 		int index = options.indexOf(current);
 		return options.get((index + 1) % options.size());
@@ -126,11 +143,15 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("自由視角", "穿過方塊", "鏡頭可以穿過牆壁與地面；關閉時會被方塊擋住", () -> s.freecamNoclip, v -> s.freecamNoclip = v));
 		rows.add(new Row("自由視角", "隱藏介面", "開啟自由視角時自動隱藏 HUD，關閉時恢復", () -> s.freecamHideHud, v -> s.freecamHideHud = v));
 		rows.add(new Row("遠處區塊", "保留遠處區塊", "伺服器卸載的區塊會繼續顯示在畫面上，看得比伺服器的視野更遠；遠處畫面停在你最後看到的樣子，不會即時更新", () -> s.keepChunks, v -> s.keepChunks = v));
-		rows.add(Row.choice("遠處區塊", "保留距離", "要看多遠；「跟隨顯示距離」會使用原版視訊設定的顯示距離，超過 32 會明顯吃效能", () -> FakeChunks.rangeLabel(s.keepChunksRange), () -> s.keepChunksRange = cycle(FakeChunks.RANGES, s.keepChunksRange)));
+		rows.add(Row.choice("遠處區塊", "保留距離", "要看多遠，點擊輸入區塊數；0 會跟隨原版視訊設定的顯示距離，超過 32 會明顯吃效能", () -> FakeChunks.rangeLabel(s.keepChunksRange),
+				() -> editNumber("保留距離", "單位為區塊；0 = 跟隨顯示距離", s.keepChunksRange, 0, FakeChunks.MAX_RANGE, v -> s.keepChunksRange = v)));
 		rows.add(new Row("遠處區塊", "永久儲存", "把看過的區塊存到硬碟，下次回到附近時先顯示上次看到的樣子；關閉時走遠或離線就會丟掉", () -> s.keepChunksSave, v -> s.keepChunksSave = v));
-		rows.add(Row.choice("遠處區塊", "儲存空間上限", "超過時先刪除最久沒去的區塊", () -> s.keepChunksDiskMb >= 1024 ? s.keepChunksDiskMb / 1024 + " GB" : s.keepChunksDiskMb + " MB", () -> s.keepChunksDiskMb = cycle(FakeChunks.DISK_MB, s.keepChunksDiskMb)));
-		rows.add(Row.choice("遠處區塊", "自動清除", "多久沒回去的區塊會被刪除", () -> s.keepChunksDays > 0 ? s.keepChunksDays + " 天沒去" : "不自動清除", () -> s.keepChunksDays = cycle(FakeChunks.DAYS, s.keepChunksDays)));
-		rows.add(Row.choice("遠處區塊", "讀取速度", "每半秒從硬碟讀回幾個區塊；越快越早看到全貌，但移動時可能稍微卡頓", () -> s.keepChunksRate + " 個", () -> s.keepChunksRate = cycle(FakeChunks.RATES, s.keepChunksRate)));
+		rows.add(Row.choice("遠處區塊", "儲存空間上限", "點擊輸入容量（MB）；超過時先刪除最久沒去的區塊", () -> FakeChunks.diskLimitLabel(s.keepChunksDiskMb),
+				() -> editNumber("儲存空間上限", "單位為 MB；例如 2048 = 2 GB", s.keepChunksDiskMb, 64, 1024 * 1024, v -> s.keepChunksDiskMb = v)));
+		rows.add(Row.choice("遠處區塊", "自動清除", "點擊輸入天數；多久沒回去的區塊會被刪除，0 為不自動清除", () -> s.keepChunksDays > 0 ? s.keepChunksDays + " 天沒去" : "不自動清除",
+				() -> editNumber("自動清除", "幾天沒去就刪除；0 = 不自動清除", s.keepChunksDays, 0, 3650, v -> s.keepChunksDays = v)));
+		rows.add(Row.choice("遠處區塊", "讀取速度", "點擊輸入數量；每半秒從硬碟讀回幾個區塊，越快越早看到全貌，但移動時可能稍微卡頓", () -> s.keepChunksRate + " 個",
+				() -> editNumber("讀取速度", "每半秒讀回幾個區塊", s.keepChunksRate, 1, 64, v -> s.keepChunksRate = v)));
 		rows.add(Row.choice("遠處區塊", "清除已儲存區塊", "刪除所有存在硬碟的區塊，連點兩下確認", () -> chunkClearArmedAt > 0 && System.currentTimeMillis() - chunkClearArmedAt < 3000 ? "再點一次刪除" : "已用 " + FakeChunks.diskLabel(), () -> {
 			if (chunkClearArmedAt > 0 && System.currentTimeMillis() - chunkClearArmedAt < 3000) {
 				chunkClearArmedAt = 0;
