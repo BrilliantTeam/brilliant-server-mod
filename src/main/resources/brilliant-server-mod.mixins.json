@@ -8,6 +8,8 @@
 		"ScreenMixin",
 		"ChatComponentMixin",
 		"ClientPacketListenerMixin",
+		"ClientChunkCacheMixin",
+		"OptionsMixin",
 		"ChatScreenMixin",
 		"RecipeDisplayEntryMixin",
 		"StackedItemContentsMixin",

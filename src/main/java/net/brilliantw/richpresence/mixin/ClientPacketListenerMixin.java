@@ -53,6 +53,24 @@ public abstract class ClientPacketListenerMixin {
 		}
 	}
 
+	@Inject(method = "handleForgetLevelChunk", at = @At("HEAD"), cancellable = true)
+	private void brilliant$keepChunk(net.minecraft.network.protocol.game.ClientboundForgetLevelChunkPacket packet, CallbackInfo ci) {
+		if (!net.minecraft.client.Minecraft.getInstance().isSameThread()) {
+			return;
+		}
+		net.brilliantw.richpresence.FakeChunks.onForget(packet.pos());
+		if (net.brilliantw.richpresence.FakeChunks.keep(packet.pos())) {
+			ci.cancel();
+		}
+	}
+
+	@Inject(method = "handleRespawn", at = @At("HEAD"))
+	private void brilliant$saveBeforeRespawn(net.minecraft.network.protocol.game.ClientboundRespawnPacket packet, CallbackInfo ci) {
+		if (net.minecraft.client.Minecraft.getInstance().isSameThread()) {
+			net.brilliantw.richpresence.FakeChunks.saveAround(net.minecraft.client.Minecraft.getInstance());
+		}
+	}
+
 	@Inject(method = "handleCommands", at = @At("TAIL"))
 	private void brilliant$installAliases(ClientboundCommandsPacket packet, CallbackInfo ci) {
 		CommandAliases.install();

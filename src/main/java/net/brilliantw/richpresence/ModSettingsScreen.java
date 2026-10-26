@@ -62,6 +62,7 @@ public final class ModSettingsScreen extends Screen {
 	}
 
 	private long clearArmedAt;
+	private long chunkClearArmedAt;
 	private KeyMapping listening;
 	private record Hit(Rect rect, Runnable action) {}
 
@@ -124,6 +125,20 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("自由視角", "水平移動", "前進後退只在水平面移動，跳躍與潛行控制升降；關閉時往視線方向飛", () -> s.freecamFlat, v -> s.freecamFlat = v));
 		rows.add(new Row("自由視角", "穿過方塊", "鏡頭可以穿過牆壁與地面；關閉時會被方塊擋住", () -> s.freecamNoclip, v -> s.freecamNoclip = v));
 		rows.add(new Row("自由視角", "隱藏介面", "開啟自由視角時自動隱藏 HUD，關閉時恢復", () -> s.freecamHideHud, v -> s.freecamHideHud = v));
+		rows.add(new Row("遠處區塊", "保留遠處區塊", "伺服器卸載的區塊會繼續顯示在畫面上，看得比伺服器的視野更遠；遠處畫面停在你最後看到的樣子，不會即時更新", () -> s.keepChunks, v -> s.keepChunks = v));
+		rows.add(Row.choice("遠處區塊", "保留距離", "要看多遠；「跟隨顯示距離」會使用原版視訊設定的顯示距離，超過 32 會明顯吃效能", () -> FakeChunks.rangeLabel(s.keepChunksRange), () -> s.keepChunksRange = cycle(FakeChunks.RANGES, s.keepChunksRange)));
+		rows.add(new Row("遠處區塊", "永久儲存", "把看過的區塊存到硬碟，下次回到附近時先顯示上次看到的樣子；關閉時走遠或離線就會丟掉", () -> s.keepChunksSave, v -> s.keepChunksSave = v));
+		rows.add(Row.choice("遠處區塊", "儲存空間上限", "超過時先刪除最久沒去的區塊", () -> s.keepChunksDiskMb >= 1024 ? s.keepChunksDiskMb / 1024 + " GB" : s.keepChunksDiskMb + " MB", () -> s.keepChunksDiskMb = cycle(FakeChunks.DISK_MB, s.keepChunksDiskMb)));
+		rows.add(Row.choice("遠處區塊", "自動清除", "多久沒回去的區塊會被刪除", () -> s.keepChunksDays > 0 ? s.keepChunksDays + " 天沒去" : "不自動清除", () -> s.keepChunksDays = cycle(FakeChunks.DAYS, s.keepChunksDays)));
+		rows.add(Row.choice("遠處區塊", "讀取速度", "每半秒從硬碟讀回幾個區塊；越快越早看到全貌，但移動時可能稍微卡頓", () -> s.keepChunksRate + " 個", () -> s.keepChunksRate = cycle(FakeChunks.RATES, s.keepChunksRate)));
+		rows.add(Row.choice("遠處區塊", "清除已儲存區塊", "刪除所有存在硬碟的區塊，連點兩下確認", () -> chunkClearArmedAt > 0 && System.currentTimeMillis() - chunkClearArmedAt < 3000 ? "再點一次刪除" : "已用 " + FakeChunks.diskLabel(), () -> {
+			if (chunkClearArmedAt > 0 && System.currentTimeMillis() - chunkClearArmedAt < 3000) {
+				chunkClearArmedAt = 0;
+				FakeChunks.clear();
+			} else {
+				chunkClearArmedAt = System.currentTimeMillis();
+			}
+		}));
 		rows.add(new Row("自由視角", "滾輪調整速度", "自由視角時滾動滑鼠滾輪調整移動速度，不會切換快捷欄", () -> s.freecamScroll, v -> s.freecamScroll = v));
 		rows.add(Row.choice("介面", "強調色", "模組介面的按鈕、選取與標題顏色；點擊切換", () -> Theme.preset(Theme.ACCENTS, s.accent).name() + (s.accent.equals("custom") ? " " + Theme.hex(s.customAccent) : ""),
 				() -> s.accent = nextPreset(Theme.ACCENTS, s.accent)));
@@ -188,7 +203,7 @@ public final class ModSettingsScreen extends Screen {
 		return switch (section) {
 			case "連線" -> "一般";
 			case "小地圖文字" -> "小地圖";
-			case "自由視角" -> "遊戲";
+			case "自由視角", "遠處區塊" -> "遊戲";
 			default -> section;
 		};
 	}

@@ -27,6 +27,12 @@ public final class ModSettings {
 		public boolean scoreboardLayout = true;
 		public boolean anvilCost = true;
 		public boolean nightVision;
+		public boolean keepChunks;
+		public int keepChunksRange;
+		public boolean keepChunksSave;
+		public int keepChunksDiskMb = 1024;
+		public int keepChunksDays = 90;
+		public int keepChunksRate = 4;
 		public float freecamSpeed = 10;
 		public int freecamBoost = 3;
 		public int freecamSmooth = 1;

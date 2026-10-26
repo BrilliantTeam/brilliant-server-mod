@@ -71,12 +71,14 @@ public final class RichPresenceModClient implements ClientModInitializer {
 		});
 
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+			FakeChunks.saveAround(client);
 			if (!handler.getConnection().isConnected()) {
 				endSession();
 			}
 		});
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			ScriptEngine.tick(client);
+			FakeChunks.tick(client);
 			if (host != null && ++updateTicks >= ModUpdate.CHECK_TICKS) {
 				updateTicks = 0;
 				if (ModSettings.get().updateCheck) {
