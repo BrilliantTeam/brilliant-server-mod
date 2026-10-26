@@ -34,6 +34,7 @@ public final class Waypoints {
 	public static final int DEATH_COLOR = 0xFFB0B6BD;
 	public static final int MAX_PER_WORLD = 200;
 	public static final int MAX_NAME = 24;
+	private static final String DISMISSED = "#dismissed-death:";
 
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static Map<String, List<Point>> data;
@@ -93,7 +94,15 @@ public final class Waypoints {
 
 	public static void remove(String world, Point point) {
 		list(world).remove(point);
+		if (point.death && world != null) {
+			data().put(DISMISSED + world, new ArrayList<>(List.of(point)));
+		}
 		save();
+	}
+
+	private static boolean dismissed(String world, int x, int y, int z) {
+		List<Point> gone = data().get(DISMISSED + world);
+		return gone != null && !gone.isEmpty() && gone.getFirst().x == x && gone.getFirst().y == y && gone.getFirst().z == z;
 	}
 
 	public static void setDeath(String world, int x, int y, int z) {
@@ -103,6 +112,10 @@ public final class Waypoints {
 			return;
 		}
 		if (point == null) {
+			if (dismissed(world, x, y, z)) {
+				return;
+			}
+			data().remove(DISMISSED + world);
 			point = new Point();
 			point.death = true;
 			point.name = "上次死亡點";
@@ -122,6 +135,27 @@ public final class Waypoints {
 			Files.move(temp, file(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 		} catch (Exception e) {
 			System.err.println("[brilliant-server-mod] Failed to save waypoints: " + e.getMessage());
+		}
+	}
+
+	public static void main(String[] args) {
+		data = new LinkedHashMap<>();
+		setDeath("w", 1, 2, 3);
+		Point death = list("w").getFirst();
+		check(death.death && death.x == 1, "death marked");
+		remove("w", death);
+		setDeath("w", 1, 2, 3);
+		check(list("w").isEmpty(), "removed death stays removed");
+		setDeath("w", 4, 5, 6);
+		check(list("w").size() == 1 && list("w").getFirst().x == 4, "a new death is marked again");
+		setDeath("w", 1, 2, 3);
+		check(list("w").getFirst().x == 1, "the marker follows the latest death");
+		System.out.println("ok");
+	}
+
+	private static void check(boolean ok, String name) {
+		if (!ok) {
+			throw new AssertionError(name);
 		}
 	}
 }
