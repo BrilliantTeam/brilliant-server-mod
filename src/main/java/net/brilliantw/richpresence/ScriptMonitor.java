@@ -74,6 +74,9 @@ public final class ScriptMonitor {
 	private static int logged;
 	private static int seenLog;
 	public static boolean onTop = true;
+	private static String pendingTab;
+	private static double pressX;
+	private static double pressY;
 
 	private ScriptMonitor() {}
 
@@ -668,11 +671,12 @@ public final class ScriptMonitor {
 		}
 		for (Tab tab : tabs(frame, true)) {
 			if (tabVisible(frame, tab, true) && tab.rect().contains(mouseX, mouseY) && tabView.contains(mouseX, mouseY)) {
-				tabGroup = tab.group().name;
-				picked = null;
-				scroll = 0;
-				LINE_SCROLL.reset();
-				TAB_SCROLL.reveal(tab.rect().x() - tabView.x() + TAB_SCROLL.offset(), tab.rect().w());
+				pendingTab = tab.group().name;
+				pressX = mouseX;
+				pressY = mouseY;
+				dragging = true;
+				dragX = mouseX - frame.x();
+				dragY = mouseY - frame.y();
 				return true;
 			}
 		}
@@ -801,6 +805,12 @@ public final class ScriptMonitor {
 		if (!dragging) {
 			return false;
 		}
+		if (pendingTab != null) {
+			if (Math.abs(mouseX - pressX) < 3 && Math.abs(mouseY - pressY) < 3) {
+				return true;
+			}
+			pendingTab = null;
+		}
 		Scripts.data().monitorX = (int) (mouseX - dragX);
 		Scripts.data().monitorY = (int) (mouseY - dragY);
 		return true;
@@ -812,6 +822,13 @@ public final class ScriptMonitor {
 		}
 		if (!dragging && !resizing) {
 			return false;
+		}
+		if (pendingTab != null) {
+			tabGroup = pendingTab;
+			pendingTab = null;
+			picked = null;
+			scroll = 0;
+			LINE_SCROLL.reset();
 		}
 		dragging = false;
 		resizing = false;

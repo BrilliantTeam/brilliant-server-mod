@@ -196,19 +196,54 @@ public final class ScriptEditorScreen extends Screen {
 		}
 	}
 
+	private final Scroller groupScroll = new Scroller();
+	private int revealedGroup = -1;
+
+	private int groupViewX() {
+		return areaX() + 4;
+	}
+
+	private int groupViewW() {
+		return Math.max(1, width - 4 - groupViewX());
+	}
+
+	private boolean inGroupScrollbar(double mx, double my) {
+		return groupScroll.overflow() && mx >= groupViewX() && mx < groupViewX() + groupViewW() && my >= areaY() - 4 && my < areaY();
+	}
+
 	private List<Tab> groupTabs() {
 		List<Tab> tabs = new ArrayList<>();
-		int x = areaX() + 4;
+		int x = 0;
 		List<Scripts.Group> groups = Scripts.data().groups;
+		int selectedX = 0;
+		int selectedW = 0;
 		for (int i = 0; i < groups.size(); i++) {
 			int w = font.width(groupLabel(groups.get(i))) + 12;
+			if (i == Scripts.data().selected) {
+				selectedX = x;
+				selectedW = w;
+			}
 			tabs.add(new Tab(i, x, w));
 			x += w + 2;
 		}
 		if (groups.size() < Scripts.MAX_GROUPS) {
-			tabs.add(new Tab(-1, x, font.width("＋ 新增分組") + 12));
+			int w = font.width("＋ 新增分組") + 12;
+			tabs.add(new Tab(-1, x, w));
+			x += w + 2;
 		}
-		return tabs;
+		groupScroll.measure(Math.max(0, x - 2), groupViewW());
+		if (revealedGroup != Scripts.data().selected) {
+			revealedGroup = Scripts.data().selected;
+			groupScroll.reveal(selectedX, selectedW);
+		}
+		List<Tab> shifted = new ArrayList<>();
+		for (Tab tab : tabs) {
+			int tx = groupViewX() + tab.x() - groupScroll.offset();
+			if (tx + tab.w() > groupViewX() && tx < groupViewX() + groupViewW()) {
+				shifted.add(new Tab(tab.index(), tx, tab.w()));
+			}
+		}
+		return shifted;
 	}
 
 	private String groupLabel(Scripts.Group group) {
@@ -250,8 +285,13 @@ public final class ScriptEditorScreen extends Screen {
 	}
 
 	private boolean clickGroupBar(double mx, double my, int button) {
+		groupTabs();
+		if (button == InputConstants.MOUSE_BUTTON_LEFT && inGroupScrollbar(mx, my)) {
+			groupScroll.press(mx, groupViewX(), groupViewW());
+			return true;
+		}
 		for (Tab tab : groupTabs()) {
-			if (!tab.contains(mx, my)) {
+			if (!tab.contains(mx, my) || mx < groupViewX() || mx >= groupViewX() + groupViewW()) {
 				continue;
 			}
 			if (tab.index() < 0) {
@@ -961,7 +1001,9 @@ public final class ScriptEditorScreen extends Screen {
 		gfx.endScissor();
 
 		gfx.fill(areaX(), HEADER, width, areaY(), 0xFF1A2026);
-		for (Tab tab : groupTabs()) {
+		List<Tab> visibleTabs = groupTabs();
+		gfx.scissor(groupViewX(), HEADER, groupViewX() + groupViewW(), areaY());
+		for (Tab tab : visibleTabs) {
 			boolean selected = tab.index() == Scripts.data().selected;
 			boolean hovered = tab.contains(mouseX, mouseY);
 			gfx.fill(tab.x(), HEADER + 2, tab.x() + tab.w(), areaY() - 2, selected ? Theme.SELECTED : hovered ? Theme.CHIP_HOVER : Theme.CHIP);
@@ -971,6 +1013,14 @@ public final class ScriptEditorScreen extends Screen {
 			String label = tab.index() < 0 ? "＋ 新增分組" : groupLabel(Scripts.data().groups.get(tab.index()));
 			boolean disabled = tab.index() >= 0 && !Scripts.data().groups.get(tab.index()).enabled;
 			gfx.centered(font, label, tab.x(), HEADER + 2, tab.w(), GROUP_BAR - 4, disabled ? Theme.TEXT_DIM : Theme.TEXT);
+		}
+		gfx.endScissor();
+		if (groupScroll.overflow()) {
+			int track = groupViewW();
+			int start = groupViewX() + groupScroll.thumbStart(track);
+			gfx.fill(groupViewX(), areaY() - 2, groupViewX() + track, areaY(), 0x40FFFFFF);
+			gfx.fill(start, areaY() - 2, start + groupScroll.thumbLength(track), areaY(),
+					groupScroll.dragging() || inGroupScrollbar(mouseX, mouseY) ? Theme.ACCENT : 0xC0FFAB19);
 		}
 
 		gfx.fill(0, 0, width, HEADER, Theme.HEADER);
@@ -1933,6 +1983,9 @@ public final class ScriptEditorScreen extends Screen {
 	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
 		double mx = event.x();
 		double my = event.y();
+		if (groupScroll.drag(mx, groupViewX(), groupViewW())) {
+			return true;
+		}
 		if (resizingPalette) {
 			Scripts.data().paletteWidth = Math.clamp((int) mx - CATS, MIN_FLYOUT, Math.max(MIN_FLYOUT, width / 2 - CATS));
 			return true;
@@ -1998,6 +2051,9 @@ public final class ScriptEditorScreen extends Screen {
 	private boolean release(MouseButtonEvent event) {
 		double mx = event.x();
 		double my = event.y();
+		if (groupScroll.release()) {
+			return true;
+		}
 		panning = false;
 		if (resizingPalette) {
 			resizingPalette = false;
@@ -2055,7 +2111,10 @@ public final class ScriptEditorScreen extends Screen {
 		if (slotSuggestions != null && slotSuggestions.mouseScrolled(scrollY)) {
 			return true;
 		}
-		if (mouseX < palette()) {
+		if (mouseX >= areaX() && mouseY >= HEADER && mouseY < areaY()) {
+			groupTabs();
+			groupScroll.scrollBy((int) Math.round(-(scrollY != 0 ? scrollY : scrollX) * 24));
+		} else if (mouseX < palette()) {
 			paletteScroll = Math.clamp(paletteScroll - scrollY * 24, 0, Math.max(0, paletteHeight - (height - paletteTop())));
 		} else if (minecraft.hasShiftDown()) {
 			panX -= scrollY * 24 / zoom;

@@ -37,6 +37,9 @@ public final class PrivateWindow {
 	private static final int HEADER = 14;
 	private static final Scroller TAB_SCROLL = new Scroller();
 	private static PrivateMessages.Conversation revealed;
+	private static PrivateMessages.Conversation pendingTab;
+	private static double pressX;
+	private static double pressY;
 	private static final int FOOTER = 20;
 	private static final int PAD = 4;
 	private static final int LINE = 10;
@@ -513,8 +516,10 @@ public final class PrivateWindow {
 		}
 		for (Tab tab : tabs(frame, true)) {
 			if (tab.rect().contains(mouseX, mouseY) && tabView(frame, true).contains(mouseX, mouseY)) {
-				PrivateMessages.select(tab.conversation().name);
-				scroll = 0;
+				pendingTab = tab.conversation();
+				pressX = mouseX;
+				pressY = mouseY;
+				startDrag(frame, mouseX, mouseY);
 				return true;
 			}
 		}
@@ -568,6 +573,12 @@ public final class PrivateWindow {
 		if (!dragging) {
 			return false;
 		}
+		if (pendingTab != null) {
+			if (Math.abs(mouseX - pressX) < 3 && Math.abs(mouseY - pressY) < 3) {
+				return true;
+			}
+			pendingTab = null;
+		}
 		PrivateMessages.moveWindow((int) (mouseX - dragX), (int) (mouseY - dragY));
 		return true;
 	}
@@ -585,6 +596,12 @@ public final class PrivateWindow {
 			return false;
 		}
 		dragging = false;
+		if (pendingTab != null) {
+			PrivateMessages.select(pendingTab.name);
+			pendingTab = null;
+			scroll = 0;
+			return true;
+		}
 		Rect frame = frame(screen.width, screen.height, true);
 		PrivateMessages.moveWindow(frame.x(), frame.y());
 		if (PrivateMessages.collapsed() && Math.abs(mouseX - frame.x() - dragX) < 2 && Math.abs(mouseY - frame.y() - dragY) < 2) {
