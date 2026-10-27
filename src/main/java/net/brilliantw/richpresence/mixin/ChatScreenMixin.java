@@ -68,8 +68,13 @@ public abstract class ChatScreenMixin extends Screen {
 	private void brilliant$renderPrivateWindow(GuiGraphics graphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci) {
 	*///?}
 		Gfx gfx = new Gfx(graphics);
-		PrivateWindow.render(gfx, width, height, mouseX, mouseY, true);
-		ScriptMonitor.render(gfx, width, height, mouseX, mouseY, true);
+		if (ScriptMonitor.onTop) {
+			PrivateWindow.render(gfx, width, height, mouseX, mouseY, true);
+			ScriptMonitor.render(gfx, width, height, mouseX, mouseY, true);
+		} else {
+			ScriptMonitor.render(gfx, width, height, mouseX, mouseY, true);
+			PrivateWindow.render(gfx, width, height, mouseX, mouseY, true);
+		}
 		boolean emojiOrphaned = EmojiPicker.orphanedSearch(getFocused());
 		if (emojiOrphaned || !ChatMenu.isOpen() && getFocused() == ChatMenu.search()) {
 			setFocused(input);
@@ -112,7 +117,18 @@ public abstract class ChatScreenMixin extends Screen {
 	@Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
 	private void brilliant$clickEmojiPicker(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
 		ChatScreen screen = (ChatScreen) (Object) this;
-		if (PrivateWindow.mouseClicked(screen, event, doubleClick) || ScriptMonitor.mouseClicked(screen, event.x(), event.y(), event.button())) {
+		boolean monitorFirst = ScriptMonitor.onTop;
+		if (monitorFirst && ScriptMonitor.mouseClicked(screen, event.x(), event.y(), event.button())) {
+			cir.setReturnValue(true);
+			return;
+		}
+		if (PrivateWindow.mouseClicked(screen, event, doubleClick)) {
+			ScriptMonitor.onTop = false;
+			cir.setReturnValue(true);
+			return;
+		}
+		if (!monitorFirst && ScriptMonitor.mouseClicked(screen, event.x(), event.y(), event.button())) {
+			ScriptMonitor.onTop = true;
 			cir.setReturnValue(true);
 			return;
 		}
@@ -167,7 +183,10 @@ public abstract class ChatScreenMixin extends Screen {
 	@Inject(method = "mouseScrolled", at = @At("HEAD"), cancellable = true)
 	private void brilliant$scrollEmojiPicker(double mouseX, double mouseY, double scrollX, double scrollY, CallbackInfoReturnable<Boolean> cir) {
 		ChatScreen screen = (ChatScreen) (Object) this;
-		if (PrivateWindow.mouseScrolled(screen, mouseX, mouseY, scrollY)) {
+		boolean scrolled = ScriptMonitor.onTop
+				? ScriptMonitor.mouseScrolled(screen, mouseX, mouseY, scrollY) || PrivateWindow.mouseScrolled(screen, mouseX, mouseY, scrollY)
+				: PrivateWindow.mouseScrolled(screen, mouseX, mouseY, scrollY) || ScriptMonitor.mouseScrolled(screen, mouseX, mouseY, scrollY);
+		if (scrolled) {
 			cir.setReturnValue(true);
 			return;
 		}

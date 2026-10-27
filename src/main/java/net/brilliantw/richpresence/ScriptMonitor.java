@@ -25,7 +25,15 @@ public final class ScriptMonitor {
 
 	private record Tab(Rect rect, Scripts.Group group, boolean running) {}
 
-	private record Layout(Rect frame, Scripts.Stack stack, Preview preview, List<String> lines, int controlsY, int previewY, int linesY) {}
+	private record Layout(Rect frame, Scripts.Stack stack, Preview preview, List<String> lines, int controlsY, int previewY, int linesY) {
+		int contentY() {
+			return linesY + SUB_TABS;
+		}
+
+		Rect content() {
+			return new Rect(frame.x(), contentY(), frame.w(), Math.max(0, frame.y() + frame.h() - 2 - contentY()));
+		}
+	}
 
 	private static final int HEADER = 13;
 	private static final int CONTROLS = 16;
@@ -34,8 +42,9 @@ public final class ScriptMonitor {
 	private static final int GRIP = 7;
 	private static final int MIN_WIDTH = 160;
 	private static final int MIN_BODY = 60;
-	private static final int MAX_LOG = 12;
-	private static final int MAX_VARIABLES = 6;
+	private static final int SUB_TABS = 12;
+	private static final int BAR = 3;
+	private static final String[] SUB_LABELS = { "變數", "紀錄" };
 	private static final long ALERT_MS = 4000;
 	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss");
 	private static final Deque<String> LOG = new ArrayDeque<>();
@@ -59,12 +68,19 @@ public final class ScriptMonitor {
 	private static double resizeY;
 	private static int resizeWidth;
 	private static int resizeHeight;
+	private static final Scroller TAB_SCROLL = new Scroller();
+	private static final Scroller LINE_SCROLL = new Scroller();
+	private static int bottomTab;
+	private static int logged;
+	private static int seenLog;
+	public static boolean onTop = true;
 
 	private ScriptMonitor() {}
 
 	public static void log(String text) {
 		String line = TIME.format(LocalTime.now()) + " " + text.replace('\n', ' ');
 		LOG.addFirst(line.length() > 200 ? line.substring(0, 200) : line);
+		logged++;
 		while (LOG.size() > 30) {
 			LOG.removeLast();
 		}
@@ -128,27 +144,53 @@ public final class ScriptMonitor {
 		if (paused) {
 			lines.add("\u0004" + ScriptEngine.debugKeyName(0) + " 下一步、" + ScriptEngine.debugKeyName(1) + " 繼續（開著介面時也能用）");
 		}
-		List<String> variables = Scripts.variablesOf(group);
-		for (int i = 0; i < Math.min(paused ? variables.size() : MAX_VARIABLES, variables.size()); i++) {
-			lines.add("§" + variables.get(i) + " = " + ScriptEngine.variable(group, variables.get(i)));
-		}
-		FIELDS.forEach((name, value) -> lines.add("\u0003" + name + "：" + value));
-		BARS.forEach((name, value) -> lines.add("\u0001" + name + "\u0002" + value));
-		for (String name : Scripts.listsOf(group)) {
-			List<String> items = ScriptEngine.listValue(group, name);
-			lines.add("§清單 " + name + "（" + items.size() + " 項）" + (items.isEmpty() ? "" : "：" + String.join(", ", items)));
-		}
-		int count = 0;
-		for (String entry : LOG) {
-			if (count++ >= MAX_LOG) {
-				break;
+		int header = lines.size();
+		if (bottomTab == 0) {
+			for (String name : Scripts.usedNames(group, ScriptBlocks.SlotKind.VARIABLE)) {
+				lines.add("§" + name + " = " + ScriptEngine.variable(group, name));
 			}
-			lines.add(entry);
-		}
-		if (lines.isEmpty()) {
-			lines.add("尚無紀錄");
+			FIELDS.forEach((name, value) -> lines.add("\u0003" + name + "：" + value));
+			BARS.forEach((name, value) -> lines.add("\u0001" + name + "\u0002" + value));
+			for (String name : Scripts.usedNames(group, ScriptBlocks.SlotKind.LIST)) {
+				List<String> items = ScriptEngine.listValue(group, name);
+				lines.add("§清單 " + name + "（" + items.size() + " 項）" + (items.isEmpty() ? "" : "：" + String.join(", ", items)));
+			}
+			if (lines.size() == header) {
+				lines.add("這個腳本沒有使用變數");
+			}
+		} else {
+			lines.addAll(LOG);
+			if (lines.size() == header) {
+				lines.add("尚無紀錄");
+			}
 		}
 		return lines;
+	}
+
+	private static int variableCount(Scripts.Group group) {
+		return Scripts.usedNames(group, ScriptBlocks.SlotKind.VARIABLE).size() + FIELDS.size() + BARS.size() + Scripts.usedNames(group, ScriptBlocks.SlotKind.LIST).size();
+	}
+
+	private static Rect subTab(Layout layout, int index) {
+		Font font = font();
+		int x = layout.frame().x() + 3;
+		for (int i = 0; i < index; i++) {
+			x += font.width(subLabel(i)) + 10;
+		}
+		return new Rect(x, layout.linesY() + 1, font.width(subLabel(index)) + 8, SUB_TABS - 2);
+	}
+
+	private static String subLabel(int index) {
+		if (index == 0) {
+			int count = variableCount(currentGroup());
+			return SUB_LABELS[0] + (count > 0 ? " " + count : "");
+		}
+		return SUB_LABELS[1] + (logged > seenLog && bottomTab != 1 ? " •" : LOG.isEmpty() ? "" : " " + LOG.size());
+	}
+
+	private static Rect lineBar(Layout layout) {
+		Rect content = layout.content();
+		return new Rect(content.x() + content.w() - BAR - 1, content.y(), BAR + 1, content.h());
 	}
 
 	private static List<Scripts.Stack> runnable(Scripts.Group group) {
@@ -201,22 +243,34 @@ public final class ScriptMonitor {
 		return group == null ? List.of() : runnable(group);
 	}
 
+	private static Rect tabView(Rect frame, boolean interactive) {
+		return new Rect(frame.x() + 2, frame.y(), frame.w() - (interactive ? 30 : 4), HEADER);
+	}
+
 	private static List<Tab> tabs(Rect frame, boolean interactive) {
 		List<Tab> tabs = new ArrayList<>();
 		Font font = font();
-		int x = frame.x() + 2;
-		int limit = frame.x() + frame.w() - (interactive ? 30 : 4);
+		Rect view = tabView(frame, interactive);
+		int x = 0;
 		for (Scripts.Group group : groups()) {
 			boolean active = running(group);
 			String label = font.plainSubstrByWidth(group.name, 60);
 			int w = font.width(label) + 8 + (active ? 6 : 0);
-			if (x + w > limit) {
-				break;
-			}
 			tabs.add(new Tab(new Rect(x, frame.y() + 1, w, HEADER - 2), group, active));
 			x += w + 2;
 		}
-		return tabs;
+		TAB_SCROLL.measure(Math.max(0, x - 2), view.w());
+		List<Tab> shifted = new ArrayList<>();
+		for (Tab tab : tabs) {
+			Rect r = tab.rect();
+			shifted.add(new Tab(new Rect(view.x() + r.x() - TAB_SCROLL.offset(), r.y(), r.w(), r.h()), tab.group(), tab.running()));
+		}
+		return shifted;
+	}
+
+	private static boolean tabVisible(Rect frame, Tab tab, boolean interactive) {
+		Rect view = tabView(frame, interactive);
+		return tab.rect().x() + tab.rect().w() > view.x() && tab.rect().x() < view.x() + view.w();
 	}
 
 	private static Scripts.Stack shown(boolean interactive) {
@@ -272,7 +326,7 @@ public final class ScriptMonitor {
 			ScriptView.Laid laid = view().layoutList(stack.blocks, 0, 0);
 			float scale = Math.min(1f, (w - 12) / (float) Math.max(1, laid.width()));
 			int needed = (int) Math.ceil((laid.height() + ScriptView.NOTCH_H) * scale) + 8;
-			int linesWanted = Math.min(lines.size() * LINE + 4, available / 2);
+			int linesWanted = Math.min(lines.size() * LINE + 4 + SUB_TABS, available / 2);
 			previewH = Math.max(0, Math.min(needed, available - linesWanted));
 			preview = new Preview(stack, laid, scale, previewH);
 		}
@@ -381,6 +435,8 @@ public final class ScriptMonitor {
 		if (tabs.isEmpty()) {
 			gfx.label(font, "腳本", frame.x() + 4, frame.y(), HEADER, Theme.TEXT_SECONDARY);
 		}
+		Rect tabView = tabView(frame, interactive);
+		gfx.scissor(tabView.x(), tabView.y(), tabView.x() + tabView.w(), tabView.y() + tabView.h());
 		for (Tab tab : tabs) {
 			Rect r = tab.rect();
 			boolean selected = tab.group() == current;
@@ -397,6 +453,14 @@ public final class ScriptMonitor {
 				tx += 6;
 			}
 			gfx.label(font, font.plainSubstrByWidth(tab.group().name, 60), tx, r.y(), r.h(), selected ? Theme.TEXT : Theme.TEXT_SECONDARY);
+		}
+		gfx.endScissor();
+		if (TAB_SCROLL.overflow()) {
+			int track = tabView.w();
+			int start = tabView.x() + TAB_SCROLL.thumbStart(track);
+			gfx.fill(tabView.x(), frame.y() + HEADER - 3, tabView.x() + track, frame.y() + HEADER - 1, 0x40FFFFFF);
+			gfx.fill(start, frame.y() + HEADER - 3, start + TAB_SCROLL.thumbLength(track), frame.y() + HEADER - 1,
+					TAB_SCROLL.dragging() || interactive && new Rect(tabView.x(), frame.y() + HEADER - 4, track, 4).contains(mouseX, mouseY) ? Theme.ACCENT : 0xC0FFAB19);
 		}
 		if (interactive) {
 			for (int slot = 0; slot < 2; slot++) {
@@ -415,10 +479,30 @@ public final class ScriptMonitor {
 			drawPreview(gfx, layout.preview(), frame.x(), frame.w(), layout.previewY());
 			gfx.fill(frame.x() + 4, layout.linesY(), frame.x() + frame.w() - 4, layout.linesY() + 1, 0x40FFFFFF);
 		}
-		int y = layout.linesY() + 2;
-		int bottom = frame.y() + frame.h() - 2;
+		gfx.fill(frame.x(), layout.linesY(), frame.x() + frame.w(), layout.contentY(), 0x30000000);
+		for (int i = 0; i < SUB_LABELS.length; i++) {
+			Rect r = subTab(layout, i);
+			boolean selected = bottomTab == i;
+			gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? 0xFF2E3740 : interactive && r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : 0x40303840);
+			if (selected) {
+				gfx.fill(r.x(), r.y() + r.h() - 1, r.x() + r.w(), r.y() + r.h(), 0xFFFFAB19);
+			}
+			gfx.label(font, subLabel(i), r.x() + 4, r.y(), r.h(), selected ? Theme.TEXT : Theme.TEXT_SECONDARY);
+		}
+		if (bottomTab == 1 && interactive) {
+			seenLog = logged;
+		}
+		Rect content = layout.content();
+		LINE_SCROLL.measure(layout.lines().size() * LINE + 2, content.h());
+		gfx.scissor(content.x(), content.y(), content.x() + content.w(), content.y() + content.h());
+		int y = content.y() + 1 - LINE_SCROLL.offset();
+		int bottom = content.y() + content.h();
 		for (String line : layout.lines()) {
-			if (y + LINE > bottom) {
+			if (y + LINE <= content.y()) {
+				y += LINE;
+				continue;
+			}
+			if (y > bottom) {
 				break;
 			}
 			if (line.startsWith("\u0001")) {
@@ -447,8 +531,16 @@ public final class ScriptMonitor {
 			boolean variable = line.startsWith("§");
 			boolean warning = line.length() > 9 && line.charAt(9) == '⚠';
 			String text = variable ? line.substring(1) : line;
-			gfx.text(font, font.plainSubstrByWidth(text, frame.w() - 8), frame.x() + 4, y + 1, variable ? 0xFFFF8C1A : warning ? 0xFFFF7A7A : Theme.TEXT);
+			gfx.text(font, font.plainSubstrByWidth(text, frame.w() - 8 - BAR), frame.x() + 4, y + 1, variable ? 0xFFFF8C1A : warning ? 0xFFFF7A7A : Theme.TEXT);
 			y += LINE;
+		}
+		gfx.endScissor();
+		if (LINE_SCROLL.overflow()) {
+			Rect bar = lineBar(layout);
+			int start = bar.y() + LINE_SCROLL.thumbStart(bar.h());
+			gfx.fill(bar.x() + 1, bar.y(), bar.x() + bar.w(), bar.y() + bar.h(), 0x30FFFFFF);
+			gfx.fill(bar.x() + 1, start, bar.x() + bar.w(), start + LINE_SCROLL.thumbLength(bar.h()),
+					LINE_SCROLL.dragging() || interactive && bar.contains(mouseX, mouseY) ? Theme.ACCENT : 0xA0FFFFFF);
 		}
 		if (interactive) {
 			Rect g = grip(frame);
@@ -569,11 +661,18 @@ public final class ScriptMonitor {
 			Scripts.save();
 			return true;
 		}
+		Rect tabView = tabView(frame, true);
+		if (TAB_SCROLL.overflow() && new Rect(tabView.x(), frame.y() + HEADER - 4, tabView.w(), 4).contains(mouseX, mouseY)) {
+			TAB_SCROLL.press(mouseX, tabView.x(), tabView.w());
+			return true;
+		}
 		for (Tab tab : tabs(frame, true)) {
-			if (tab.rect().contains(mouseX, mouseY)) {
+			if (tabVisible(frame, tab, true) && tab.rect().contains(mouseX, mouseY) && tabView.contains(mouseX, mouseY)) {
 				tabGroup = tab.group().name;
 				picked = null;
 				scroll = 0;
+				LINE_SCROLL.reset();
+				TAB_SCROLL.reveal(tab.rect().x() - tabView.x() + TAB_SCROLL.offset(), tab.rect().w());
 				return true;
 			}
 		}
@@ -589,6 +688,18 @@ public final class ScriptMonitor {
 			resizeY = mouseY;
 			resizeWidth = frame.w();
 			resizeHeight = frame.h() - HEADER;
+			return true;
+		}
+		for (int i = 0; i < SUB_LABELS.length; i++) {
+			if (subTab(layout, i).contains(mouseX, mouseY)) {
+				bottomTab = i;
+				LINE_SCROLL.reset();
+				return true;
+			}
+		}
+		if (LINE_SCROLL.overflow() && lineBar(layout).contains(mouseX, mouseY)) {
+			Rect bar = lineBar(layout);
+			LINE_SCROLL.press(mouseY, bar.y(), bar.h());
 			return true;
 		}
 		Scripts.Stack stack = layout.stack();
@@ -654,7 +765,31 @@ public final class ScriptMonitor {
 		}
 	}
 
+	public static boolean mouseScrolled(ChatScreen screen, double mouseX, double mouseY, double amount) {
+		if (!visible() || Scripts.data().monitorCollapsed) {
+			return false;
+		}
+		Layout layout = layout(screen.width, screen.height, true);
+		Rect frame = layout.frame();
+		if (!frame.contains(mouseX, mouseY)) {
+			return false;
+		}
+		if (mouseY < frame.y() + HEADER) {
+			TAB_SCROLL.scrollBy((int) Math.round(-amount * 24));
+		} else if (mouseY >= layout.contentY()) {
+			LINE_SCROLL.scrollBy((int) Math.round(-amount * LINE * 2));
+		}
+		return true;
+	}
+
 	public static boolean mouseDragged(double mouseX, double mouseY) {
+		Minecraft minecraft = Minecraft.getInstance();
+		Layout current = layout(minecraft.getWindow().getGuiScaledWidth(), minecraft.getWindow().getGuiScaledHeight(), true);
+		Rect view = tabView(current.frame(), true);
+		Rect bar = lineBar(current);
+		if (TAB_SCROLL.drag(mouseX, view.x(), view.w()) || LINE_SCROLL.drag(mouseY, bar.y(), bar.h())) {
+			return true;
+		}
 		if (resizing) {
 			Minecraft client = Minecraft.getInstance();
 			int screenWidth = client.getWindow().getGuiScaledWidth();
@@ -672,6 +807,9 @@ public final class ScriptMonitor {
 	}
 
 	public static boolean mouseReleased() {
+		if (TAB_SCROLL.release() | LINE_SCROLL.release()) {
+			return true;
+		}
 		if (!dragging && !resizing) {
 			return false;
 		}

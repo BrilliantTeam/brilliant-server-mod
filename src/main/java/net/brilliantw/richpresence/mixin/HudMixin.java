@@ -64,7 +64,12 @@ public abstract class HudMixin {
 		//?}
 		Gfx gfx = new Gfx(graphics);
 		Minimap.renderHud(gfx);
-		PrivateWindow.renderHud(gfx);
-		ScriptMonitor.renderHud(gfx);
+		if (ScriptMonitor.onTop) {
+			PrivateWindow.renderHud(gfx);
+			ScriptMonitor.renderHud(gfx);
+		} else {
+			ScriptMonitor.renderHud(gfx);
+			PrivateWindow.renderHud(gfx);
+		}
 	}
 }

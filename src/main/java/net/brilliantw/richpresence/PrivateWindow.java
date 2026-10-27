@@ -35,6 +35,8 @@ public final class PrivateWindow {
 	private static final int FACE = 8;
 	private static final int GRIP = 7;
 	private static final int HEADER = 14;
+	private static final Scroller TAB_SCROLL = new Scroller();
+	private static PrivateMessages.Conversation revealed;
 	private static final int FOOTER = 20;
 	private static final int PAD = 4;
 	private static final int LINE = 10;
@@ -170,19 +172,47 @@ public final class PrivateWindow {
 		return new Rect(frame.x() + frame.w() - 13 * (slot + 1), frame.y() + 1, 12, HEADER - 2);
 	}
 
+	private static Rect tabView(Rect frame, boolean interactive) {
+		return new Rect(frame.x() + PAD, frame.y(), frame.w() - PAD - (interactive ? 42 : 16), HEADER);
+	}
+
+	private static Rect tabBar(Rect frame, boolean interactive) {
+		Rect view = tabView(frame, interactive);
+		return new Rect(view.x(), frame.y() + HEADER - 4, view.w(), 4);
+	}
+
 	private static List<Tab> tabs(Rect frame, boolean interactive) {
 		List<Tab> tabs = new ArrayList<>();
-		int x = frame.x() + PAD;
-		int limit = frame.x() + frame.w() - (interactive ? 42 : 16);
+		Rect view = tabView(frame, interactive);
+		PrivateMessages.Conversation selected = PrivateMessages.selected();
+		int x = 0;
+		int selectedX = -1;
+		int selectedW = 0;
 		for (PrivateMessages.Conversation conversation : PrivateMessages.conversations()) {
 			int w = font().width(tabLabel(conversation)) + 8 + FACE + 3;
-			if (x + w > limit) {
-				break;
+			if (conversation == selected) {
+				selectedX = x;
+				selectedW = w;
 			}
 			tabs.add(new Tab(new Rect(x, frame.y() + 1, w, HEADER - 2), conversation));
 			x += w + 2;
 		}
-		return tabs;
+		TAB_SCROLL.measure(Math.max(0, x - 2), view.w());
+		if (selected != revealed) {
+			revealed = selected;
+			if (selectedX >= 0) {
+				TAB_SCROLL.reveal(selectedX, selectedW);
+			}
+		}
+		List<Tab> shifted = new ArrayList<>();
+		for (Tab tab : tabs) {
+			Rect r = tab.rect();
+			Rect moved = new Rect(view.x() + r.x() - TAB_SCROLL.offset(), r.y(), r.w(), r.h());
+			if (moved.x() + moved.w() > view.x() && moved.x() < view.x() + view.w()) {
+				shifted.add(new Tab(moved, tab.conversation()));
+			}
+		}
+		return shifted;
 	}
 
 	private static String tabLabel(PrivateMessages.Conversation conversation) {
@@ -284,13 +314,24 @@ public final class PrivateWindow {
 		gfx.fill(frame.x(), frame.y(), frame.x() + frame.w(), frame.y() + HEADER, Theme.HEADER);
 		gfx.fill(frame.x(), frame.y() + HEADER - 1, frame.x() + frame.w(), frame.y() + HEADER, Theme.ACCENT_DIM);
 		PrivateMessages.Conversation selected = PrivateMessages.selected();
-		for (Tab tab : tabs(frame, interactive)) {
+		Rect view = tabView(frame, interactive);
+		List<Tab> tabs = tabs(frame, interactive);
+		gfx.scissor(view.x(), view.y(), view.x() + view.w(), view.y() + view.h());
+		for (Tab tab : tabs) {
 			boolean isSelected = tab.conversation() == selected;
 			int color = tab.conversation().unread > 0 ? Theme.WARNING : isSelected ? Theme.TEXT : Theme.TEXT_SECONDARY;
 			Rect r = tab.rect();
 			chip(gfx, r, "", color, interactive && r.contains(mouseX, mouseY), isSelected);
 			face(gfx, tab.conversation().name, r.x() + 4, r.y() + (r.h() - FACE) / 2);
 			gfx.label(font, tabLabel(tab.conversation()), r.x() + 4 + FACE + 3, r.y(), r.h(), color);
+		}
+		gfx.endScissor();
+		if (TAB_SCROLL.overflow()) {
+			Rect bar = tabBar(frame, interactive);
+			int start = bar.x() + TAB_SCROLL.thumbStart(bar.w());
+			gfx.fill(bar.x(), bar.y() + 1, bar.x() + bar.w(), bar.y() + 3, 0x40FFFFFF);
+			gfx.fill(start, bar.y() + 1, start + TAB_SCROLL.thumbLength(bar.w()), bar.y() + 3,
+					TAB_SCROLL.dragging() || interactive && bar.contains(mouseX, mouseY) ? Theme.ACCENT : Theme.ACCENT_DIM);
 		}
 		iconChip(gfx, headerButton(frame, 0), Icons.MINUS, Theme.TEXT, interactive && headerButton(frame, 0).contains(mouseX, mouseY));
 		if (interactive) {
@@ -465,8 +506,13 @@ public final class PrivateWindow {
 			PrivateMessages.close(selected);
 			return true;
 		}
+		if (TAB_SCROLL.overflow() && tabBar(frame, true).contains(mouseX, mouseY)) {
+			Rect bar = tabBar(frame, true);
+			TAB_SCROLL.press(mouseX, bar.x(), bar.w());
+			return true;
+		}
 		for (Tab tab : tabs(frame, true)) {
-			if (tab.rect().contains(mouseX, mouseY)) {
+			if (tab.rect().contains(mouseX, mouseY) && tabView(frame, true).contains(mouseX, mouseY)) {
 				PrivateMessages.select(tab.conversation().name);
 				scroll = 0;
 				return true;
@@ -509,6 +555,10 @@ public final class PrivateWindow {
 	}
 
 	public static boolean mouseDragged(ChatScreen screen, double mouseX, double mouseY) {
+		Rect bar = tabBar(frame(screen.width, screen.height, true), true);
+		if (TAB_SCROLL.drag(mouseX, bar.x(), bar.w())) {
+			return true;
+		}
 		if (resizing) {
 			int width = Math.clamp(resizeWidth + (int) (mouseX - resizeX), MIN_WIDTH, Math.max(MIN_WIDTH, screen.width - 8));
 			int body = Math.clamp(resizeBody + (int) (mouseY - resizeY), MIN_BODY, Math.max(MIN_BODY, screen.height - HEADER - FOOTER - 8));
@@ -523,6 +573,9 @@ public final class PrivateWindow {
 	}
 
 	public static boolean mouseReleased(ChatScreen screen, double mouseX, double mouseY) {
+		if (TAB_SCROLL.release()) {
+			return true;
+		}
 		if (resizing) {
 			resizing = false;
 			PrivateMessages.saveSettings();
@@ -553,6 +606,10 @@ public final class PrivateWindow {
 		}
 		if (!frame.contains(mouseX, mouseY)) {
 			return false;
+		}
+		if (mouseY < frame.y() + HEADER) {
+			TAB_SCROLL.scrollBy((int) Math.round(-amount * 24));
+			return true;
 		}
 		scroll += Math.signum(amount) * 2;
 		return true;

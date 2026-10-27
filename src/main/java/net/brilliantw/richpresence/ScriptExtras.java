@@ -258,6 +258,25 @@ public final class ScriptExtras {
 		check(named("石頭", "minecraft:stone", "minecraft:stone") && !named("石磚", "minecraft:stone_bricks", "minecraft:stone"), "namespaced id must match exactly");
 		check(named("石頭", "minecraft:stone", " Minecraft:Stone ") && !named("石頭", "minecraft:stone", "") && !named("石頭", "minecraft:stone", "#minecraft:stone"), "case, blank and tag input");
 		check("minecraft:logs".equals(String.valueOf(tagId("#logs"))) && "c:ores".equals(String.valueOf(tagId("# c:ores"))) && tagId("logs") == null && tagId("#Bad Tag!") == null, "tag ids parse with default namespace");
+		Scripts.Group group = new Scripts.Group("測試");
+		group.variables.addAll(List.of("金錢", "沒用到", "清單內"));
+		group.lists.addAll(List.of("背包", "空清單"));
+		Scripts.Block set = new Scripts.Block();
+		set.op = "var_set";
+		set.args.add(new Scripts.Arg("金錢"));
+		Scripts.Arg value = new Scripts.Arg("");
+		value.block = new Scripts.Block();
+		value.block.op = "var_get";
+		value.block.args.add(new Scripts.Arg("清單內"));
+		set.args.add(value);
+		Scripts.Block each = new Scripts.Block();
+		each.op = "for_each";
+		each.args.add(new Scripts.Arg("背包"));
+		each.args.add(new Scripts.Arg("金錢"));
+		each.body.add(set);
+		group.stacks.add(new Scripts.Stack(0, 0, new java.util.ArrayList<>(List.of(each))));
+		check(Scripts.usedNames(group, ScriptBlocks.SlotKind.VARIABLE).equals(List.of("金錢", "清單內")), "only used variables, including nested and inside C blocks");
+		check(Scripts.usedNames(group, ScriptBlocks.SlotKind.LIST).equals(List.of("背包")), "only used lists");
 		System.out.println("ScriptExtras OK");
 	}
 

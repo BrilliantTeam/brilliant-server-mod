@@ -8,10 +8,12 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.zip.DataFormatException;
 import net.fabricmc.loader.api.FabricLoader;
@@ -164,6 +166,34 @@ public final class Scripts {
 		}
 		names.addAll(data().lists);
 		return new ArrayList<>(names);
+	}
+
+	public static List<String> usedNames(Group group, ScriptBlocks.SlotKind kind) {
+		Set<String> used = new HashSet<>();
+		if (group != null) {
+			for (Stack stack : group.stacks) {
+				collectNames(stack.blocks, kind, used);
+			}
+		}
+		List<String> known = names(kind, group);
+		return known == null ? List.of() : known.stream().filter(used::contains).toList();
+	}
+
+	private static void collectNames(List<Block> blocks, ScriptBlocks.SlotKind kind, Set<String> into) {
+		for (Block block : blocks) {
+			ScriptBlocks.Def def = block.def();
+			List<ScriptBlocks.Slot> slots = def == null ? List.of() : def.slots();
+			for (int i = 0; i < block.args.size(); i++) {
+				Arg arg = block.args.get(i);
+				if (arg.block != null) {
+					collectNames(List.of(arg.block), kind, into);
+				} else if (i < slots.size() && slots.get(i).kind() == kind) {
+					into.add(arg.text);
+				}
+			}
+			collectNames(block.body, kind, into);
+			collectNames(block.elseBody, kind, into);
+		}
 	}
 
 	public static List<String> procsOf(Group group) {
