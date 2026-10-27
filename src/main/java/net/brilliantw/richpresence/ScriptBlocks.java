@@ -13,6 +13,7 @@ public final class ScriptBlocks {
 		CONTROL("控制", 0xFFFFAB19),
 		CHAT("聊天", 0xFF4C97FF),
 		LOOKS("通知", 0xFF9966FF),
+		DISCORD("Discord", 0xFF5865F2),
 		ACTION("操作", 0xFF0FBD8C),
 		SENSE("偵測", 0xFF5CB1D6),
 		OPERATOR("運算", 0xFF59C059),
@@ -170,6 +171,20 @@ public final class ScriptBlocks {
 		def("say_channel", c, Shape.STACK, "在 % 頻道說 %", dropdown(CHANNELS), text("大家好！"));
 		def("reply", c, Shape.STACK, "回覆私訊 %", text("我現在不在，晚點回你"));
 		def("copy", c, Shape.STACK, "複製 % 到剪貼簿", text("/home"));
+
+		c = Category.DISCORD;
+		def("wh_send", c, Shape.STACK, "傳送到 Discord Webhook % 內容 %", text(DiscordWebhooks.PLACEHOLDER), text("哈囉！"));
+		def("wh_message", c, Shape.REPORTER, "訊息 文字 % 名稱 % 頭像網址 % Embed %", text(""), text(""), text(""), text(""));
+		def("wh_embed", c, Shape.REPORTER, "Embed 標題 % 內文 % 顏色 % 欄位 % 圖片 % 縮圖 % 頁尾 %", text("標題"), text("內文"), text("#5865F2"), text(""), text(""), text(""), text(""));
+		def("wh_field", c, Shape.REPORTER, "欄位 % 的值 % 同一行 %", text("名稱"), text("值"), dropdown(List.of("否", "是")));
+		def("wh_v2", c, Shape.REPORTER, "V2 訊息 名稱 % 頭像網址 % 元件 %", text(""), text(""), text(""));
+		def("wh_text", c, Shape.REPORTER, "文字元件 %", text("**粗體** 一般文字"));
+		def("wh_container", c, Shape.REPORTER, "容器 顏色 % 內含 %", text("#5865F2"), text(""));
+		def("wh_section", c, Shape.REPORTER, "段落 % 右側縮圖 %", text("文字"), text(""));
+		def("wh_gallery", c, Shape.REPORTER, "圖片元件 %", text("https://"));
+		def("wh_separator", c, Shape.REPORTER, "分隔線");
+		def("wh_link", c, Shape.REPORTER, "連結按鈕 % 網址 %", text("輝煌官網"), text("https://www.brilliantw.net"));
+		def("wh_and", c, Shape.REPORTER, "% 接著 %", text(""), text(""));
 
 		c = Category.LOOKS;
 		def("local", c, Shape.STACK, "在聊天欄顯示 %", text("提醒！"));

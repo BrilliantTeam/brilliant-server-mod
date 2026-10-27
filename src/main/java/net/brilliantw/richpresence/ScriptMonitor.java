@@ -43,6 +43,7 @@ public final class ScriptMonitor {
 	private static final int MIN_WIDTH = 160;
 	private static final int MIN_BODY = 60;
 	private static final int SUB_TABS = 12;
+	private static final int TAB_BAR = 4;
 	private static final int BAR = 3;
 	private static final String[] SUB_LABELS = { "變數", "紀錄" };
 	private static final long ALERT_MS = 4000;
@@ -271,6 +272,11 @@ public final class ScriptMonitor {
 		return shifted;
 	}
 
+	private static Rect tabBar(Rect frame, boolean interactive) {
+		Rect view = tabView(frame, interactive);
+		return new Rect(view.x(), frame.y() + HEADER, view.w(), TAB_BAR);
+	}
+
 	private static boolean tabVisible(Rect frame, Tab tab, boolean interactive) {
 		Rect view = tabView(frame, interactive);
 		return tab.rect().x() + tab.rect().w() > view.x() && tab.rect().x() < view.x() + view.w();
@@ -320,7 +326,8 @@ public final class ScriptMonitor {
 		}
 		Scripts.Stack stack = shown(interactive);
 		List<String> lines = lines();
-		int controlsY = y + HEADER;
+		tabs(frame, interactive);
+		int controlsY = y + HEADER + (TAB_SCROLL.overflow() ? TAB_BAR : 0);
 		int top = interactive ? controlsY + CONTROLS + DEBUG_BAR : controlsY;
 		int available = y + h - top;
 		Preview preview = null;
@@ -458,12 +465,13 @@ public final class ScriptMonitor {
 			gfx.label(font, font.plainSubstrByWidth(tab.group().name, 60), tx, r.y(), r.h(), selected ? Theme.TEXT : Theme.TEXT_SECONDARY);
 		}
 		gfx.endScissor();
-		if (TAB_SCROLL.overflow()) {
-			int track = tabView.w();
-			int start = tabView.x() + TAB_SCROLL.thumbStart(track);
-			gfx.fill(tabView.x(), frame.y() + HEADER - 3, tabView.x() + track, frame.y() + HEADER - 1, 0x40FFFFFF);
-			gfx.fill(start, frame.y() + HEADER - 3, start + TAB_SCROLL.thumbLength(track), frame.y() + HEADER - 1,
-					TAB_SCROLL.dragging() || interactive && new Rect(tabView.x(), frame.y() + HEADER - 4, track, 4).contains(mouseX, mouseY) ? Theme.ACCENT : 0xC0FFAB19);
+		if (TAB_SCROLL.overflow() && !Scripts.data().monitorCollapsed) {
+			Rect bar = tabBar(frame, interactive);
+			int start = bar.x() + TAB_SCROLL.thumbStart(bar.w());
+			gfx.fill(frame.x(), bar.y(), frame.x() + frame.w(), bar.y() + bar.h(), 0x60000000);
+			gfx.fill(bar.x(), bar.y() + 1, bar.x() + bar.w(), bar.y() + 3, 0x30FFFFFF);
+			gfx.fill(start, bar.y() + 1, start + TAB_SCROLL.thumbLength(bar.w()), bar.y() + 3,
+					TAB_SCROLL.dragging() || interactive && bar.contains(mouseX, mouseY) ? Theme.ACCENT : 0xC0FFAB19);
 		}
 		if (interactive) {
 			for (int slot = 0; slot < 2; slot++) {
@@ -665,8 +673,9 @@ public final class ScriptMonitor {
 			return true;
 		}
 		Rect tabView = tabView(frame, true);
-		if (TAB_SCROLL.overflow() && new Rect(tabView.x(), frame.y() + HEADER - 4, tabView.w(), 4).contains(mouseX, mouseY)) {
-			TAB_SCROLL.press(mouseX, tabView.x(), tabView.w());
+		Rect tabBar = tabBar(frame, true);
+		if (TAB_SCROLL.overflow() && !Scripts.data().monitorCollapsed && tabBar.contains(mouseX, mouseY)) {
+			TAB_SCROLL.press(mouseX, tabBar.x(), tabBar.w());
 			return true;
 		}
 		for (Tab tab : tabs(frame, true)) {

@@ -293,6 +293,17 @@ public final class ScriptLint {
 			issues.put(block, "規則太長，最多 " + ScriptExtras.MAX_REGEX + " 個字");
 			return;
 		}
+		if (block.op.equals("wh_send")) {
+			Scripts.Arg url = block.args.isEmpty() ? null : block.args.getFirst();
+			if (url != null && url.block != null) {
+				issues.put(block, "Webhook 網址要直接填在積木上，不能用其他積木組成");
+				return;
+			}
+			if (url == null || !DiscordWebhooks.validUrl(url.text)) {
+				issues.put(block, "請填入完整的 Discord Webhook 網址（伺服器設定 → 整合 → Webhook → 複製網址）；匯入或分享的腳本會清空網址");
+				return;
+			}
+		}
 		if (block.op.equals("proc_arg") && !"proc_def".equals(context.hat())) {
 			issues.put(block, "「帶入的值」只能用在「定義積木」底下的積木裡，這裡會是空的");
 			return;

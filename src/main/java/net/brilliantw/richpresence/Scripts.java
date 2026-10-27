@@ -556,7 +556,37 @@ public final class Scripts {
 		shared.variables = new ArrayList<>(variables);
 		shared.lists = new ArrayList<>(lists);
 		shared.groups = new ArrayList<>(List.of(group));
-		return EXPORT_PREFIX + CommandStore.deflate(COMPACT.toJson(shared));
+		Data copy = COMPACT.fromJson(COMPACT.toJson(shared), Data.class);
+		stripWebhooks(copy);
+		return EXPORT_PREFIX + CommandStore.deflate(COMPACT.toJson(copy));
+	}
+
+	static int stripWebhooks(Data data) {
+		int stripped = 0;
+		for (Group group : data.groups) {
+			for (Stack stack : group.stacks) {
+				stripped += stripWebhooks(stack.blocks);
+			}
+		}
+		return stripped;
+	}
+
+	private static int stripWebhooks(List<Block> blocks) {
+		int stripped = 0;
+		for (Block block : blocks) {
+			if (block.op.equals("wh_send") && !block.args.isEmpty() && block.args.getFirst().block == null && !block.args.getFirst().text.equals(DiscordWebhooks.PLACEHOLDER)) {
+				block.args.getFirst().text = DiscordWebhooks.PLACEHOLDER;
+				stripped++;
+			}
+			for (Arg arg : block.args) {
+				if (arg.block != null) {
+					stripped += stripWebhooks(List.of(arg.block));
+				}
+			}
+			stripped += stripWebhooks(block.body);
+			stripped += stripWebhooks(block.elseBody);
+		}
+		return stripped;
 	}
 
 	public static String snapshot() {
@@ -585,6 +615,7 @@ public final class Scripts {
 		try {
 			Data parsed = COMPACT.fromJson(CommandStore.inflate(Base64.getDecoder().decode(trimmed.substring(EXPORT_PREFIX.length()).replaceAll("\\s", ""))), Data.class);
 			Data clean = sanitize(parsed == null ? new Data() : parsed);
+			stripWebhooks(clean);
 			if (clean.groups.stream().allMatch(group -> group.stacks.isEmpty())) {
 				throw new IllegalArgumentException("這份代碼裡沒有任何積木");
 			}

@@ -277,6 +277,19 @@ public final class ScriptExtras {
 		group.stacks.add(new Scripts.Stack(0, 0, new java.util.ArrayList<>(List.of(each))));
 		check(Scripts.usedNames(group, ScriptBlocks.SlotKind.VARIABLE).equals(List.of("金錢", "清單內")), "only used variables, including nested and inside C blocks");
 		check(Scripts.usedNames(group, ScriptBlocks.SlotKind.LIST).equals(List.of("背包")), "only used lists");
+		Scripts.Block hook = new Scripts.Block();
+		hook.op = "wh_send";
+		hook.args.add(new Scripts.Arg("https://discord.com/api/webhooks/123456789012345678/secret-token-secret-token"));
+		hook.args.add(new Scripts.Arg("hi"));
+		Scripts.Block wrapper = new Scripts.Block();
+		wrapper.op = "forever";
+		wrapper.body.add(hook);
+		Scripts.Group shared = new Scripts.Group("分享");
+		shared.stacks.add(new Scripts.Stack(0, 0, new java.util.ArrayList<>(List.of(wrapper))));
+		String code = Scripts.export(shared, List.of(), List.of());
+		check(!code.contains("secret") && hook.args.getFirst().text.contains("secret"), "export hides the webhook url without touching the live script");
+		Scripts.Block imported = Scripts.parse(code).groups.getFirst().stacks.getFirst().blocks.getFirst().body.getFirst();
+		check(imported.args.getFirst().text.equals(DiscordWebhooks.PLACEHOLDER), "imported scripts never carry a webhook url");
 		System.out.println("ScriptExtras OK");
 	}
 

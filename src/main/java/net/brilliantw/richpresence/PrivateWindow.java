@@ -181,7 +181,7 @@ public final class PrivateWindow {
 
 	private static Rect tabBar(Rect frame, boolean interactive) {
 		Rect view = tabView(frame, interactive);
-		return new Rect(view.x(), frame.y() + HEADER - 4, view.w(), 4);
+		return new Rect(view.x(), frame.y() + HEADER, view.w(), 3);
 	}
 
 	private static List<Tab> tabs(Rect frame, boolean interactive) {
@@ -332,8 +332,8 @@ public final class PrivateWindow {
 		if (TAB_SCROLL.overflow()) {
 			Rect bar = tabBar(frame, interactive);
 			int start = bar.x() + TAB_SCROLL.thumbStart(bar.w());
-			gfx.fill(bar.x(), bar.y() + 1, bar.x() + bar.w(), bar.y() + 3, 0x40FFFFFF);
-			gfx.fill(start, bar.y() + 1, start + TAB_SCROLL.thumbLength(bar.w()), bar.y() + 3,
+			gfx.fill(bar.x(), bar.y(), bar.x() + bar.w(), bar.y() + 2, 0x30FFFFFF);
+			gfx.fill(start, bar.y(), start + TAB_SCROLL.thumbLength(bar.w()), bar.y() + 2,
 					TAB_SCROLL.dragging() || interactive && bar.contains(mouseX, mouseY) ? Theme.ACCENT : Theme.ACCENT_DIM);
 		}
 		iconChip(gfx, headerButton(frame, 0), Icons.MINUS, Theme.TEXT, interactive && headerButton(frame, 0).contains(mouseX, mouseY));

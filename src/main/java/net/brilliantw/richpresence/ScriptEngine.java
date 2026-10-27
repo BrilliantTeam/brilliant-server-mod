@@ -1610,6 +1610,23 @@ public final class ScriptEngine {
 				}
 			}
 			case "command" -> queue(block, true, stripSlash(eval(run, block.args.getFirst())));
+			case "wh_send" -> {
+				Scripts.Arg url = block.args.getFirst();
+				if (url.block != null) {
+					fail(block, "Webhook 網址要直接填在積木上，不能用其他積木組成");
+				} else {
+					String error = DiscordWebhooks.send(url.text, eval(run, block.args.get(1)), result -> Minecraft.getInstance().execute(() -> {
+						if (result.startsWith("⚠ ")) {
+							ScriptMonitor.alert(result.substring(2));
+						} else {
+							ScriptMonitor.log(result);
+						}
+					}));
+					if (error != null) {
+						fail(block, "「Discord Webhook」失敗：" + error);
+					}
+				}
+			}
 			case "say_channel" -> {
 				String text = eval(run, block.args.get(1)).strip();
 				if (chatSafe(text).isEmpty()) {
@@ -2016,6 +2033,17 @@ public final class ScriptEngine {
 			case "s_message" -> run.context.getOrDefault("message", "");
 			case "s_sender" -> run.context.getOrDefault("sender", "");
 			case "s_channel" -> run.context.getOrDefault("channel", "");
+			case "wh_message" -> DiscordWebhooks.message(arg(run, block, 0), arg(run, block, 1), arg(run, block, 2), arg(run, block, 3));
+			case "wh_embed" -> DiscordWebhooks.embedJson(arg(run, block, 0), arg(run, block, 1), arg(run, block, 2), arg(run, block, 3), arg(run, block, 4), arg(run, block, 5), arg(run, block, 6));
+			case "wh_field" -> DiscordWebhooks.fieldJson(arg(run, block, 0), arg(run, block, 1), arg(run, block, 2).equals("是"));
+			case "wh_v2" -> DiscordWebhooks.v2(arg(run, block, 0), arg(run, block, 1), arg(run, block, 2));
+			case "wh_text" -> DiscordWebhooks.text(arg(run, block, 0));
+			case "wh_container" -> DiscordWebhooks.container(arg(run, block, 0), arg(run, block, 1));
+			case "wh_section" -> DiscordWebhooks.section(arg(run, block, 0), arg(run, block, 1));
+			case "wh_gallery" -> DiscordWebhooks.gallery(arg(run, block, 0));
+			case "wh_separator" -> DiscordWebhooks.separator();
+			case "wh_link" -> DiscordWebhooks.link(arg(run, block, 0), arg(run, block, 1));
+			case "wh_and" -> DiscordWebhooks.and(arg(run, block, 0), arg(run, block, 1));
 			case "s_contains" -> bool(run.context.getOrDefault("message", "").toLowerCase(Locale.ROOT).contains(arg(run, block, 0).toLowerCase(Locale.ROOT)));
 			case "s_me" -> Minecraft.getInstance() == null ? "" : Minecraft.getInstance().getUser().getName();
 			case "s_server" -> RichPresenceModClient.serverName();
