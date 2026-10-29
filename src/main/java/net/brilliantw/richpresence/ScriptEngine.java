@@ -110,6 +110,7 @@ public final class ScriptEngine {
 	public static final int MAX_HOLD_SECONDS = 600;
 	public static final long GUI_WAIT_MS = 2000;
 	public static final long INPUT_GAP_MS = 100;
+	static final long TAP_GAP_MS = 60;
 	public static final float TURN_SPEED = 30f;
 	private record Hold(Run owner, long until) {}
 	private static final Map<KeyMapping, Hold> HELD = new IdentityHashMap<>();
@@ -988,8 +989,15 @@ public final class ScriptEngine {
 				case "act_tap" -> {
 					if (playerControl(block)) {
 						KeyMapping key = mapping(block.text(0));
-						if (key != null && ((KeyMappingAccessor) key).brilliant$getClickCount() == 0) {
-							hold(run, key, now + 120, true);
+						Hold previous = key == null ? null : HELD.get(key);
+						if (previous != null && previous.owner() == run) {
+							release(key);
+							run.waitUntil = now + TAP_GAP_MS;
+							return;
+						}
+						boolean clicks = countsClicks(key);
+						if (key != null && (!clicks || ((KeyMappingAccessor) key).brilliant$getClickCount() == 0)) {
+							hold(run, key, now + 120, clicks);
 						}
 					}
 					frame.index++;
@@ -1552,6 +1560,15 @@ public final class ScriptEngine {
 			case "副手交換" -> options.keySwapOffhand;
 			default -> options.keyAttack;
 		};
+	}
+
+	static boolean countsClicks(KeyMapping key) {
+		Minecraft client = Minecraft.getInstance();
+		if (client == null || key == null) {
+			return false;
+		}
+		var options = client.options;
+		return key == options.keyAttack || key == options.keyUse || key == options.keyDrop || key == options.keySwapOffhand;
 	}
 
 	private static void hold(Run run, KeyMapping key, long until, boolean click) {
