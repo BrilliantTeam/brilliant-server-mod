@@ -42,7 +42,7 @@ public final class ShulkerPreview implements TooltipComponent, ClientTooltipComp
 	private static Optional<ShulkerPreview> last = Optional.empty();
 	private static KeyMapping pinKey;
 	private static Object pinnedScreen;
-	private static ItemStack pinned = ItemStack.EMPTY;
+	private static ItemStack pinned;
 	private static int pinX;
 	private static int pinY;
 	private static int mouseX;
@@ -119,13 +119,13 @@ public final class ShulkerPreview implements TooltipComponent, ClientTooltipComp
 		mouseX = x;
 		mouseY = y;
 		if (!pinHeld()) {
-			pinned = ItemStack.EMPTY;
+			pinned = null;
 			pinnedScreen = null;
 			return null;
 		}
-		if (pinned.isEmpty() || pinnedScreen != screen) {
+		if (pinned == null || pinnedScreen != screen) {
 			if (hovered.isEmpty() || of(hovered).isEmpty()) {
-				pinned = ItemStack.EMPTY;
+				pinned = null;
 				return null;
 			}
 			pinned = hovered.copy();
@@ -137,7 +137,7 @@ public final class ShulkerPreview implements TooltipComponent, ClientTooltipComp
 	}
 
 	public static boolean isPinned(Object screen) {
-		return !pinned.isEmpty() && pinnedScreen == screen && pinHeld();
+		return pinned != null && pinnedScreen == screen && pinHeld();
 	}
 
 	public static int pinX() {
@@ -183,7 +183,7 @@ public final class ShulkerPreview implements TooltipComponent, ClientTooltipComp
 		gfx.region(TEXTURE, x, y + BORDER + rows * SLOT, PANEL_W, BORDER, 0, 159, PANEL_W, BORDER, 256, 256);
 		int gridX = x + BORDER + 1;
 		int gridY = y + BORDER + 1;
-		boolean interactive = !nested && !pinned.isEmpty() && of(pinned).orElse(null) == this;
+		boolean interactive = !nested && pinned != null && of(pinned).orElse(null) == this;
 		int hovered = -1;
 		if (interactive && mouseX >= gridX - 1 && mouseY >= gridY - 1) {
 			int col = (mouseX - gridX + 1) / SLOT;
