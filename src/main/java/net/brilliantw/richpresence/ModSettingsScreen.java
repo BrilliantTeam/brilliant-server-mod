@@ -133,6 +133,7 @@ public final class ModSettingsScreen extends Screen {
 		}));
 		rows.add(new Row("遊戲", "夜視", "不需要藥水也能看清楚暗處；只改變你自己畫面的亮度。可在按鍵設定綁定快速切換鍵", () -> s.nightVision, v -> s.nightVision = v));
 		rows.add(new Row("遊戲", "配方書修正", "讓配方書正確辨識伺服器的自訂材料", () -> s.recipeFix, v -> s.recipeFix = v));
+		rows.add(new Row("遊戲", "界伏盒預覽", "滑過界伏盒時以格子顯示盒內物品，並取代伺服器的文字清單；按住固定鍵（預設 Shift，可在「快捷鍵」分頁更改）可固定視窗，再把滑鼠移進去查看每個物品", () -> s.shulkerPreview, v -> s.shulkerPreview = v));
 		rows.add(new Row("遊戲", "格子編號", "按住 Alt 時在介面格子上顯示編號", () -> s.slotNumbers, v -> s.slotNumbers = v));
 		rows.add(new Row("遊戲", "記分板位置", "套用自訂的記分板位置與縮放", () -> s.scoreboardLayout, v -> s.scoreboardLayout = v));
 		rows.add(new Row("遊戲", "鐵砧完整花費", "超限附魔超過 40 級時顯示實際花費，取代「太貴了！」", () -> s.anvilCost, v -> s.anvilCost = v));
@@ -205,7 +206,7 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("地圖", "大地圖區塊格線", "放大後顯示 16 格區塊線，黃線為 512 格區域", () -> s.mapGrid, v -> s.mapGrid = v));
 		rows.add(new Row("地圖", "大地圖史萊姆區塊", "依官網公開種子標示主世界的史萊姆區塊", () -> s.mapSlime, v -> s.mapSlime = v));
 		for (KeyMapping key : KeyCombos.mine()) {
-			rows.add(Row.choice("快捷鍵", Component.translatable(key.getName()).getString(), "點擊後按下想要的按鍵，可同時按住 Ctrl／Alt／Shift；Esc 取消、Backspace 清除",
+			rows.add(Row.choice("快捷鍵", Component.translatable(key.getName()).getString(), "點擊後按下想要的按鍵，可同時按住 Ctrl／Alt／Shift，只按一下 Ctrl／Alt／Shift 則單獨綁定；Esc 取消、Backspace 清除",
 					() -> listening == key ? "請按下按鍵⋯" : KeyCombos.describe(key), () -> listening = key));
 		}
 	}
@@ -410,6 +411,15 @@ public final class ModSettingsScreen extends Screen {
 			bindListening(clear ? InputConstants.UNKNOWN : InputConstants.getKey(event));
 		}
 		return true;
+	}
+
+	@Override
+	public boolean keyReleased(KeyEvent event) {
+		if (listening != null && KeyCombos.isModifier(event.key()) && KeyCombos.held() == 0) {
+			bindListening(InputConstants.getKey(event));
+			return true;
+		}
+		return super.keyReleased(event);
 	}
 
 	private void bindListening(InputConstants.Key input) {

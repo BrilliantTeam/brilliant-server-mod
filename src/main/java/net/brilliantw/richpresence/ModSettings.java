@@ -23,6 +23,7 @@ public final class ModSettings {
 		public boolean imageLinks = true;
 		public boolean aliases = true;
 		public boolean recipeFix = true;
+		public boolean shulkerPreview = true;
 		public boolean slotNumbers = true;
 		public boolean scoreboardLayout = true;
 		public boolean anvilCost = true;

@@ -34,7 +34,10 @@
 		"KeyboardInputMixin",
 		"BakedSheetGlyphAccessor",
 		"BitmapProviderMixin",
-		"BitmapGlyphMixin"
+		"BitmapGlyphMixin",
+		"ItemContainerContentsMixin",
+		"ItemTooltipImageMixin",
+		"ShulkerPinMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

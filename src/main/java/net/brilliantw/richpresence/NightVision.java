@@ -30,6 +30,7 @@ public final class NightVision {
 		/*toggle = KeyBindingHelper.registerKeyBinding(key);
 		*///?}
 		Freecam.register(category);
+		ShulkerPreview.registerKey(category);
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (toggle.consumeClick()) {
 				if (client.player == null || !RichPresenceModClient.featuresActive() || !KeyCombos.matches(toggle)) {

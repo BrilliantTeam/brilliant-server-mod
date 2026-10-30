@@ -1,6 +1,8 @@
 package net.brilliantw.richpresence;
 
+import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.components.AbstractWidget;
 //? if >=26.1 {
@@ -8,7 +10,11 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 //?} else {
 /*import net.minecraft.client.gui.GuiGraphics;
 *///?}
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+import net.minecraft.client.gui.screens.inventory.tooltip.DefaultTooltipPositioner;
 import net.minecraft.client.renderer.RenderPipelines;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
@@ -127,6 +133,28 @@ public final class Gfx {
 		graphics.fakeItem(stack, x, y);
 		//?} else {
 		/*graphics.renderFakeItem(stack, x, y);
+		*///?}
+	}
+
+	public void itemWithCount(Font font, ItemStack stack, int x, int y) {
+		item(stack, x, y);
+		//? if >=26.1 {
+		graphics.itemDecorations(font, stack, x, y);
+		//?} else {
+		/*graphics.renderItemDecorations(font, stack, x, y);
+		*///?}
+	}
+
+	public void itemTooltip(Font font, ItemStack stack, int x, int y) {
+		List<ClientTooltipComponent> parts = new ArrayList<>(Screen.getTooltipFromItem(Minecraft.getInstance(), stack).stream()
+				.map(line -> ClientTooltipComponent.create(line.getVisualOrderText())).toList());
+		stack.getTooltipImage().ifPresent(image -> parts.add(Math.min(1, parts.size()), ClientTooltipComponent.create(image)));
+		//? if >=26.3 {
+		/*graphics.tooltip(font, parts, x, y, DefaultTooltipPositioner.INSTANCE, stack.get(DataComponents.TOOLTIP_STYLE), false);
+		*///?} else if >=26.1 {
+		graphics.tooltip(font, parts, x, y, DefaultTooltipPositioner.INSTANCE, stack.get(DataComponents.TOOLTIP_STYLE));
+		//?} else {
+		/*graphics.renderTooltip(font, parts, x, y, DefaultTooltipPositioner.INSTANCE, stack.get(DataComponents.TOOLTIP_STYLE));
 		*///?}
 	}
 
