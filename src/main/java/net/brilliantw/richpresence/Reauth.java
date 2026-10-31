@@ -54,6 +54,8 @@ public final class Reauth {
 	private static final long RENEW_BEFORE_MS = 15 * 60_000L;
 	private static final long CHECK_MS = 60_000L;
 	private static final long RETRY_MS = 10 * 60_000L;
+	private static final long RATE_LIMIT_MS = 60 * 60_000L;
+	private static final long RENEWING_MS = 90_000L;
 	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
 	private static final Gson GSON = new Gson();
 	private static final SecureRandom RANDOM = new SecureRandom();
@@ -134,10 +136,10 @@ public final class Reauth {
 		UUID uuid = client.getUser().getProfileId();
 		JsonObject linked = launcherAccount(uuid);
 		if (linked != null) {
-			String token = text(linked, "accessToken");
+			String token = open(text(linked, "accessToken"));
 			long exp = expiresAt(token);
 			if (exp - System.currentTimeMillis() > RENEW_BEFORE_MS && exp > expiresAt(client.getUser().getAccessToken())) {
-				apply(client, new Session(text(linked, "name"), uuid, token, text(linked, "refreshToken"), text(linked, "xuid")));
+				apply(client, new Session(text(linked, "name"), uuid, token, open(text(linked, "refreshToken")), text(linked, "xuid")));
 				return;
 			}
 		}
@@ -150,6 +152,17 @@ public final class Reauth {
 			nextCheck = System.currentTimeMillis() + RETRY_MS;
 			return;
 		}
+		long now = System.currentTimeMillis();
+		long cooldown = sharedCooldown();
+		if (cooldown > now) {
+			nextCheck = cooldown;
+			return;
+		}
+		if (now - lastModified(authDir().resolve("auth-renewing")) < RENEWING_MS) {
+			nextCheck = now + CHECK_MS;
+			return;
+		}
+		touch(authDir().resolve("auth-renewing"));
 		busy = true;
 		CompletableFuture.supplyAsync(() -> {
 			RuntimeException last = null;
@@ -158,12 +171,21 @@ public final class Reauth {
 					return finish(post(TOKEN_URL, form(Map.of("grant_type", "refresh_token", "client_id", CLIENT_ID, "refresh_token", token, "scope", SCOPE))));
 				} catch (RuntimeException e) {
 					last = e;
+					if (rateLimited(e)) {
+						break;
+					}
 				}
 			}
 			throw last;
 		}).whenComplete((session, error) -> client.execute(() -> {
 			busy = false;
-			if (error != null) {
+			if (error != null && rateLimited(error)) {
+				long until = System.currentTimeMillis() + RATE_LIMIT_MS;
+				writeCooldown(until);
+				nextCheck = until;
+				LOGGER.warn("自動續驗證被 Mojang 限流，60 分鐘內不再重試", error);
+				toast(client, "正版驗證暫時被限制", "Mojang 限制了這個網路的登入次數，約 60 分鐘後會自動再試");
+			} else if (error != null) {
 				needLogin = true;
 				nextCheck = System.currentTimeMillis() + RETRY_MS;
 				LOGGER.warn("自動續驗證失敗", error);
@@ -369,7 +391,7 @@ public final class Reauth {
 		nextCheck = 0;
 		if (!session.refreshToken().isEmpty()) {
 			Map<String, String> stored = stored();
-			stored.put(session.uuid().toString(), session.refreshToken());
+			stored.put(session.uuid().toString(), seal(session.refreshToken()));
 			try {
 				Files.createDirectories(storeFile().getParent());
 				Files.writeString(storeFile(), GSON.toJson(stored));
@@ -392,9 +414,82 @@ public final class Reauth {
 	}
 
 	private static List<String> refreshTokens(UUID uuid, JsonObject linked) {
-		String own = stored().get(uuid.toString());
-		String launcher = linked == null ? null : text(linked, "refreshToken");
+		String own = open(stored().get(uuid.toString()));
+		String launcher = linked == null ? null : open(text(linked, "refreshToken"));
 		return java.util.stream.Stream.of(launcher, own).filter(token -> token != null && !token.isEmpty()).distinct().toList();
+	}
+
+	static boolean rateLimited(Throwable error) {
+		for (Throwable e = error; e != null; e = e.getCause()) {
+			if (e.getMessage() != null && e.getMessage().contains("HTTP 429")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static Path authDir() {
+		Path home = launcherHome();
+		return Files.isDirectory(home) ? home : storeFile().getParent();
+	}
+
+	static long sharedCooldown() {
+		try {
+			return Long.parseLong(Files.readString(authDir().resolve("auth-cooldown")).trim()) * 1000L;
+		} catch (java.io.IOException | RuntimeException e) {
+			return 0;
+		}
+	}
+
+	private static void writeCooldown(long untilMs) {
+		try {
+			Files.createDirectories(authDir());
+			Files.writeString(authDir().resolve("auth-cooldown"), Long.toString(untilMs / 1000L));
+		} catch (java.io.IOException e) {
+			LOGGER.warn("無法記錄驗證冷卻時間", e);
+		}
+	}
+
+	private static long lastModified(Path file) {
+		try {
+			return Files.getLastModifiedTime(file).toMillis();
+		} catch (java.io.IOException e) {
+			return 0;
+		}
+	}
+
+	private static void touch(Path file) {
+		try {
+			Files.createDirectories(file.getParent());
+			Files.writeString(file, Long.toString(System.currentTimeMillis()));
+		} catch (java.io.IOException e) {
+			LOGGER.warn("無法標記正在續驗證", e);
+		}
+	}
+
+	private static final String SEALED = "dpapi:";
+
+	static String seal(String text) {
+		if (text == null || text.isEmpty() || text.startsWith(SEALED) || !System.getProperty("os.name", "").startsWith("Windows")) {
+			return text;
+		}
+		try {
+			return SEALED + Base64.getEncoder().encodeToString(com.sun.jna.platform.win32.Crypt32Util.cryptProtectData(text.getBytes(StandardCharsets.UTF_8)));
+		} catch (Throwable e) {
+			LOGGER.warn("無法加密登入資料，改用未加密的方式保存", e);
+			return text;
+		}
+	}
+
+	static String open(String text) {
+		if (text == null || !text.startsWith(SEALED)) {
+			return text;
+		}
+		try {
+			return new String(com.sun.jna.platform.win32.Crypt32Util.cryptUnprotectData(Base64.getDecoder().decode(text.substring(SEALED.length()))), StandardCharsets.UTF_8);
+		} catch (Throwable e) {
+			return "";
+		}
 	}
 
 	private static Path storeFile() {
@@ -447,8 +542,8 @@ public final class Reauth {
 		account.addProperty("kind", "msa");
 		account.addProperty("name", session.name());
 		account.addProperty("uuid", session.uuid().toString());
-		account.addProperty("accessToken", session.accessToken());
-		account.addProperty("refreshToken", session.refreshToken());
+		account.addProperty("accessToken", seal(session.accessToken()));
+		account.addProperty("refreshToken", seal(session.refreshToken()));
 		if (!session.xuid().isEmpty()) {
 			account.addProperty("xuid", session.xuid());
 		}

@@ -28,13 +28,33 @@ class ReauthTest {
 		Reauth.upsertLauncherAccount(accounts, new Reauth.Session("Rice", uuid, "at", "rt", ""), 42);
 		assertEquals(2, accounts.size());
 		com.google.gson.JsonObject msa = accounts.get(1).getAsJsonObject();
-		assertEquals("rt", msa.get("refreshToken").getAsString());
+		assertEquals("rt", Reauth.open(msa.get("refreshToken").getAsString()));
+		assertEquals("at", Reauth.open(msa.get("accessToken").getAsString()));
 		assertEquals("9", msa.get("xuid").getAsString());
 		assertEquals("", msa.get("sessionError").getAsString());
 		assertEquals(1, msa.get("extra").getAsInt());
 		assertEquals(42, msa.get("expiresAt").getAsLong());
 		Reauth.upsertLauncherAccount(accounts, new Reauth.Session("New", java.util.UUID.randomUUID(), "a", "r", "x"), 1);
 		assertEquals(3, accounts.size());
+	}
+
+	@Test
+	void sealedTokensRoundTripAndPlainTextStillReads() {
+		String sealed = Reauth.seal("M.refresh-token");
+		if (System.getProperty("os.name", "").startsWith("Windows")) {
+			org.junit.jupiter.api.Assertions.assertTrue(sealed.startsWith("dpapi:") && !sealed.contains("M.refresh-token"));
+		}
+		assertEquals("M.refresh-token", Reauth.open(sealed));
+		assertEquals(sealed, Reauth.seal(sealed));
+		assertEquals("M.plain", Reauth.open("M.plain"));
+		assertEquals("", Reauth.open("dpapi:AAAA"));
+		assertEquals(null, Reauth.open(null));
+	}
+
+	@Test
+	void recognizesRateLimitAnywhereInCauseChain() {
+		org.junit.jupiter.api.Assertions.assertTrue(Reauth.rateLimited(new java.util.concurrent.CompletionException(new IllegalStateException("HTTP 429：{}"))));
+		org.junit.jupiter.api.Assertions.assertFalse(Reauth.rateLimited(new IllegalStateException("HTTP 400：bad")));
 	}
 
 	@Test
