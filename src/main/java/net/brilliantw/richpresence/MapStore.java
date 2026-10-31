@@ -60,6 +60,7 @@ public final class MapStore {
 		final short[] height = new short[SIZE * SIZE];
 		boolean dirty;
 		boolean textureStale = true;
+		long usedAt;
 		Identifier texture;
 		DynamicTexture dynamic;
 
@@ -69,13 +70,13 @@ public final class MapStore {
 		}
 	}
 
-	private static final Map<String, Region> REGIONS = new LinkedHashMap<>(64, 0.75f, true) {
+	static final Map<String, Region> REGIONS = new LinkedHashMap<>(64, 0.75f, true) {
 		@Override
 		protected boolean removeEldestEntry(Map.Entry<String, Region> eldest) {
-			if (size() <= MAX_REGIONS) {
+			Region region = eldest.getValue();
+			if (size() <= MAX_REGIONS || inUse(region.usedAt)) {
 				return false;
 			}
-			Region region = eldest.getValue();
 			if (region.dirty) {
 				save(region);
 			}
@@ -85,13 +86,14 @@ public final class MapStore {
 	};
 	private static final class Overview {
 		volatile int[] pixels;
+		long usedAt;
 		Identifier texture;
 	}
 
 	private static final Map<String, Overview> OVERVIEWS = new LinkedHashMap<>(256, 0.75f, true) {
 		@Override
 		protected boolean removeEldestEntry(Map.Entry<String, Overview> eldest) {
-			if (size() <= MAX_OVERVIEWS) {
+			if (size() <= MAX_OVERVIEWS || inUse(eldest.getValue().usedAt)) {
 				return false;
 			}
 			release(eldest.getValue().texture);
@@ -107,6 +109,10 @@ public final class MapStore {
 
 	private MapStore() {}
 
+	private static boolean inUse(long usedAt) {
+		return System.currentTimeMillis() - usedAt < 1000;
+	}
+
 	static Path root() {
 		return FabricLoader.getInstance().getConfigDir().resolve("brilliant-server-mod").resolve("map-cache").resolve("local");
 	}
@@ -119,6 +125,7 @@ public final class MapStore {
 		String key = world + "/" + layer + "/" + rx + "/" + rz;
 		Region region = REGIONS.get(key);
 		if (region != null) {
+			region.usedAt = System.currentTimeMillis();
 			return region;
 		}
 		Long absentAt = ABSENT.get(key);
@@ -136,6 +143,7 @@ public final class MapStore {
 		}
 		ABSENT.remove(key);
 		region = new Region(key, file);
+		region.usedAt = System.currentTimeMillis();
 		if (exists) {
 			read(region);
 		}
@@ -186,11 +194,13 @@ public final class MapStore {
 		String key = world + "/" + layer + "/" + rx + "/" + rz;
 		Region region = REGIONS.get(key);
 		if (region != null) {
+			region.usedAt = System.currentTimeMillis();
 			return texture(region);
 		}
 		Overview overview = OVERVIEWS.get(key);
 		if (overview == null) {
 			Overview created = new Overview();
+			created.usedAt = System.currentTimeMillis();
 			OVERVIEWS.put(key, created);
 			Path file = file(world, layer, rx, rz);
 			IO.execute(() -> {
@@ -205,6 +215,7 @@ public final class MapStore {
 			});
 			return null;
 		}
+		overview.usedAt = System.currentTimeMillis();
 		int[] pixels = overview.pixels;
 		if (overview.texture == null && pixels != null) {
 			DynamicTexture dynamic = new DynamicTexture(() -> "brilliant-server-mod map overview", OVERVIEW, OVERVIEW, false);
@@ -213,6 +224,7 @@ public final class MapStore {
 				image.setPixel(i % OVERVIEW, i / OVERVIEW, pixels[i]);
 			}
 			dynamic.upload();
+			overview.pixels = null;
 			overview.texture = Identifier.fromNamespaceAndPath("brilliant-server-mod", "map/overview_" + counter++);
 			Minecraft.getInstance().getTextureManager().register(overview.texture, dynamic);
 		}
