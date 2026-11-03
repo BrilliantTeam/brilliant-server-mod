@@ -55,6 +55,7 @@ class ReauthTest {
 	void recognizesRateLimitAnywhereInCauseChain() {
 		org.junit.jupiter.api.Assertions.assertTrue(Reauth.rateLimited(new java.util.concurrent.CompletionException(new IllegalStateException("HTTP 429：{}"))));
 		org.junit.jupiter.api.Assertions.assertFalse(Reauth.rateLimited(new IllegalStateException("HTTP 400：bad")));
+		org.junit.jupiter.api.Assertions.assertFalse(Reauth.rateLimited(new IllegalStateException("HTTP 400：upstream said HTTP 429：x")));
 	}
 
 	@Test

@@ -197,6 +197,11 @@ public final class Reauth {
 	}
 
 	public static void startLogin(Screen parent) {
+		String blocked = cooldownMessage();
+		if (blocked != null) {
+			toast(Minecraft.getInstance(), "正版驗證暫時被限制", blocked);
+			return;
+		}
 		stopLoopback();
 		java.net.ServerSocket server;
 		try {
@@ -336,6 +341,10 @@ public final class Reauth {
 		if (!query.containsKey("code")) {
 			return "登入失敗：" + query.getOrDefault("error_description", query.getOrDefault("error", "缺少授權碼"));
 		}
+		String blocked = cooldownMessage();
+		if (blocked != null) {
+			return blocked;
+		}
 		Minecraft client = Minecraft.getInstance();
 		String code = query.get("code");
 		String codeVerifier = verifier;
@@ -345,7 +354,11 @@ public final class Reauth {
 				"code", code, "redirect_uri", redirect, "code_verifier", codeVerifier, "scope", SCOPE)))))
 				.whenComplete((session, error) -> client.execute(() -> {
 					busy = false;
-					if (error != null) {
+					if (error != null && rateLimited(error)) {
+						writeCooldown(System.currentTimeMillis() + RATE_LIMIT_MS);
+						LOGGER.warn("微軟登入被 Mojang 限流", error);
+						toast(client, "正版驗證暫時被限制", cooldownMessage());
+					} else if (error != null) {
 						LOGGER.warn("微軟登入失敗", error);
 						toast(client, "微軟登入失敗", message(error));
 					} else {
@@ -421,11 +434,16 @@ public final class Reauth {
 
 	static boolean rateLimited(Throwable error) {
 		for (Throwable e = error; e != null; e = e.getCause()) {
-			if (e.getMessage() != null && e.getMessage().contains("HTTP 429")) {
+			if (e.getMessage() != null && e.getMessage().startsWith("HTTP 429：")) {
 				return true;
 			}
 		}
 		return false;
+	}
+
+	private static String cooldownMessage() {
+		long left = sharedCooldown() - System.currentTimeMillis();
+		return left > 0 ? "Mojang 限制了登入次數，約 " + (left + 59_999L) / 60_000L + " 分鐘後才能再登入" : null;
 	}
 
 	private static Path authDir() {
