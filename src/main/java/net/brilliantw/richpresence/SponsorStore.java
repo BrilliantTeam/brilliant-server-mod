@@ -261,6 +261,7 @@ public final class SponsorStore {
 			page.addProperty("message", message);
 			page.addProperty("barcodeImage", barcode);
 			page.addProperty("method", Integer.toString(methodId));
+			page.addProperty("signature", json.has("orderSignature") && !json.get("orderSignature").isJsonNull() ? json.get("orderSignature").getAsString() : "");
 			HttpRequest pageRequest = HttpRequest.newBuilder(URI.create(RPConfig.WEBSITE_URL + "/api/order")).timeout(Duration.ofSeconds(15))
 					.header("User-Agent", RPConfig.USER_AGENT).header("Content-Type", "application/json")
 					.POST(HttpRequest.BodyPublishers.ofString(page.toString())).build();
