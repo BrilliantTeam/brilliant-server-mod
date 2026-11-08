@@ -3,6 +3,9 @@ package net.brilliantw.richpresence;
 import com.mojang.blaze3d.platform.InputConstants;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -26,7 +29,7 @@ public final class PrivateWindow {
 
 	private record Tab(Rect rect, PrivateMessages.Conversation conversation) {}
 
-	private record Line(FormattedCharSequence text, String face) {}
+	private record Line(FormattedCharSequence text, String face, String time) {}
 
 	private enum Popup { NONE, EMOJI, SHOWCASE }
 
@@ -44,6 +47,7 @@ public final class PrivateWindow {
 	private static final int PAD = 4;
 	private static final int LINE = 10;
 	private static final int BACKGROUND = 0xC0101418;
+	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
 	private static final List<String[]> SHOWCASE = List.of(new String[] { "手上物品", "[i]" }, new String[] { "背包", "[inv]" }, new String[] { "終界箱", "[ender]" });
 
 	private static EditBox input;
@@ -421,13 +425,15 @@ public final class PrivateWindow {
 		}
 		List<Line> lines = new ArrayList<>();
 		String me = Minecraft.getInstance().getUser().getName();
+		int timeWidth = (font().width("00:00:00") + 1) / 2 + 3;
 		for (PrivateMessages.Message message : selected.messages) {
 			String name = message.mine() ? "我" : selected.display;
 			Component who = Component.literal((message.server().isEmpty() ? name : message.server() + "｜" + name) + "：")
 					.withStyle(Style.EMPTY.withColor(TextColor.fromRgb((message.mine() ? Theme.ACCENT : Theme.WARNING) & 0xFFFFFF)));
-			List<FormattedCharSequence> wrapped = font().split(who.copy().append(Component.literal(message.text()).withStyle(ChatFormatting.WHITE)), body.w() - FACE - 3);
+			List<FormattedCharSequence> wrapped = font().split(who.copy().append(Component.literal(message.text()).withStyle(ChatFormatting.WHITE)), body.w() - FACE - 3 - timeWidth);
+			String time = TIME.format(Instant.ofEpochMilli(message.time()));
 			for (int i = 0; i < wrapped.size(); i++) {
-				lines.add(new Line(wrapped.get(i), i == 0 ? (message.mine() ? me : selected.name) : null));
+				lines.add(i == 0 ? new Line(wrapped.get(i), message.mine() ? me : selected.name, time) : new Line(wrapped.get(i), null, null));
 			}
 		}
 		int visible = body.h() / LINE;
@@ -443,6 +449,11 @@ public final class PrivateWindow {
 				face(gfx, line.face(), body.x(), y);
 			}
 			gfx.text(font(), line.text(), body.x() + FACE + 3, y, 0xFFFFFFFF);
+			if (line.time() != null) {
+				gfx.push(body.x() + body.w() - font().width(line.time()) / 2f, y + 2, 0.5f);
+				gfx.text(font(), line.time(), 0, 0, Theme.TEXT_DIM);
+				gfx.pop();
+			}
 			y += LINE;
 		}
 		if (interactive && maxScroll > 0) {
