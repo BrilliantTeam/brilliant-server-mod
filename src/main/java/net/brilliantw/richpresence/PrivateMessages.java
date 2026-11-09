@@ -244,6 +244,7 @@ public final class PrivateMessages {
 	}
 
 	private static void recordPrivate(String server, String from, String to, String text) {
+		text = EmojiPicker.stickerCode(text);
 		if (from.equals(SELF) && !to.equals(SELF)) {
 			record(to, new Message(true, server, text, System.currentTimeMillis()));
 		} else if (to.equals(SELF) && !from.equals(SELF)) {

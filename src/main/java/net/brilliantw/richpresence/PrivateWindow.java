@@ -46,6 +46,7 @@ public final class PrivateWindow {
 	private static final int FOOTER = 20;
 	private static final int PAD = 4;
 	private static final int LINE = 10;
+	private static final int STICKER_LINES = 4;
 	private static final int BACKGROUND = 0xC0101418;
 	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
 	private static final List<String[]> SHOWCASE = List.of(new String[] { "手上物品", "[i]" }, new String[] { "背包", "[inv]" }, new String[] { "終界箱", "[ender]" });
@@ -430,10 +431,18 @@ public final class PrivateWindow {
 			String name = message.mine() ? "我" : selected.display;
 			Component who = Component.literal((message.server().isEmpty() ? name : message.server() + "｜" + name) + "：")
 					.withStyle(Style.EMPTY.withColor(TextColor.fromRgb((message.mine() ? Theme.ACCENT : Theme.WARNING) & 0xFFFFFF)));
-			List<FormattedCharSequence> wrapped = font().split(who.copy().append(Component.literal(message.text()).withStyle(ChatFormatting.WHITE)), body.w() - FACE - 3 - timeWidth);
+			String sticker = EmojiPicker.sticker(message.text());
+			String text = sticker == null ? message.text() : EmojiPicker.withoutStickers(message.text());
+			List<FormattedCharSequence> wrapped = font().split(who.copy().append(EmojiPicker.withSprites(text).withStyle(ChatFormatting.WHITE)), body.w() - FACE - 3 - timeWidth);
 			String time = TIME.format(Instant.ofEpochMilli(message.time()));
 			for (int i = 0; i < wrapped.size(); i++) {
 				lines.add(i == 0 ? new Line(wrapped.get(i), message.mine() ? me : selected.name, time) : new Line(wrapped.get(i), null, null));
+			}
+			if (sticker != null) {
+				for (int i = 0; i < STICKER_LINES - 1; i++) {
+					lines.add(new Line(FormattedCharSequence.EMPTY, null, null));
+				}
+				lines.add(new Line(Component.literal(sticker).withStyle(ChatFormatting.WHITE).getVisualOrderText(), null, null));
 			}
 		}
 		int visible = body.h() / LINE;
@@ -443,6 +452,7 @@ public final class PrivateWindow {
 		int start = Math.max(0, lines.size() - visible - offset);
 		int end = Math.min(lines.size(), start + visible);
 		int y = body.y() + body.h() - (end - start) * LINE;
+		gfx.scissor(body.x(), body.y(), body.x() + body.w(), body.y() + body.h());
 		for (int i = start; i < end; i++) {
 			Line line = lines.get(i);
 			if (line.face() != null) {
@@ -456,6 +466,7 @@ public final class PrivateWindow {
 			}
 			y += LINE;
 		}
+		gfx.endScissor();
 		if (interactive && maxScroll > 0) {
 			int barHeight = Math.max(8, body.h() * visible / lines.size());
 			int barY = body.y() + (int) ((body.h() - barHeight) * (1 - scroll / maxScroll));

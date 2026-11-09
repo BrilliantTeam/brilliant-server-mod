@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -21,7 +24,9 @@ import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.objects.AtlasSprite;
+import net.minecraft.network.chat.contents.objects.ObjectInfo;
 import net.minecraft.resources.Identifier;
 
 public final class EmojiPicker {
@@ -45,6 +50,8 @@ public final class EmojiPicker {
 	private static final Map<Character, Integer> SEQUENCE_LENGTHS = new HashMap<>();
 	private static final Map<String, Emoji> BY_INSERT = new HashMap<>();
 	private static final Map<String, Component> SPRITES = new HashMap<>();
+	private static final Map<Identifier, String> SPRITE_CODES = new HashMap<>();
+	private static final Pattern SPRITE_CODE = Pattern.compile(":[A-Za-z0-9_]+:");
 	private static final ThreadLocal<Boolean> PLAIN = ThreadLocal.withInitial(() -> false);
 	private static final List<Section> SECTIONS = load();
 	private static final List<Emoji> STICKERS = lines("/stickers.txt").map(line -> line.split("\t", -1)).filter(parts -> parts.length >= 3)
@@ -95,7 +102,9 @@ public final class EmojiPicker {
 				.filter(parts -> parts.length == 2 && parts[1].matches("[a-z0-9_.-]+"))
 				.map(parts -> {
 					String code = ":" + parts[0] + ":";
-					SPRITES.put(code, Component.object(new AtlasSprite(AtlasSprite.DEFAULT_ATLAS, Identifier.fromNamespaceAndPath("brilliant", "block/emoji/" + parts[1]))));
+					Identifier sprite = Identifier.fromNamespaceAndPath("brilliant", "block/emoji/" + parts[1]);
+					SPRITES.put(code, Component.object(new AtlasSprite(AtlasSprite.DEFAULT_ATLAS, sprite)));
+					SPRITE_CODES.put(sprite, code);
 					return new Emoji(code, code, "", code, List.of());
 				})
 				.toList();
@@ -175,6 +184,47 @@ public final class EmojiPicker {
 			i += length;
 		}
 		return out == null ? text : out.toString();
+	}
+
+	public static MutableComponent withSprites(String text) {
+		MutableComponent out = Component.empty();
+		Matcher matcher = SPRITE_CODE.matcher(text);
+		int last = 0;
+		while (matcher.find()) {
+			Component sprite = SPRITES.get(matcher.group());
+			if (sprite == null) {
+				continue;
+			}
+			out.append(text.substring(last, matcher.start())).append(sprite);
+			last = matcher.end();
+		}
+		return out.append(text.substring(last));
+	}
+
+	public static String sticker(String text) {
+		return STICKERS.stream().filter(sticker -> text.contains(sticker.insert()))
+				.min(Comparator.comparingInt(sticker -> text.indexOf(sticker.insert()))).map(Emoji::symbol).orElse(null);
+	}
+
+	public static String spriteCode(ObjectInfo info) {
+		return info instanceof AtlasSprite atlas ? SPRITE_CODES.get(atlas.sprite()) : null;
+	}
+
+	public static String stickerCode(String text) {
+		for (Emoji sticker : STICKERS) {
+			if (text.contains(sticker.symbol())) {
+				String rest = text.replace(sticker.symbol(), "").replaceAll("\\s*\\n\\s*[｜|]", "").replaceFirst("^\\s*[｜|]", "").strip();
+				return (rest + " " + sticker.insert()).strip();
+			}
+		}
+		return text;
+	}
+
+	public static String withoutStickers(String text) {
+		for (Emoji sticker : STICKERS) {
+			text = text.replace(sticker.insert(), "");
+		}
+		return text.strip();
 	}
 
 	public static <T> T plain(Supplier<T> action) {

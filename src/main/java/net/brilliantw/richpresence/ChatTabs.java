@@ -204,7 +204,12 @@ public final class ChatTabs {
 	}
 
 	private static void append(Component component, StringBuilder out) {
-		if (!(component.getContents() instanceof ObjectContents)) {
+		if (component.getContents() instanceof ObjectContents object) {
+			String code = EmojiPicker.spriteCode(object.contents());
+			if (code != null) {
+				out.append(code);
+			}
+		} else {
 			component.getContents().visit(text -> {
 				out.append(text);
 				return Optional.empty();
