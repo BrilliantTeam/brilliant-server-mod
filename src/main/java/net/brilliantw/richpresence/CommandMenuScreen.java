@@ -278,7 +278,7 @@ public final class CommandMenuScreen extends Screen {
 
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		Rect p = panel();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT_DIM);
@@ -365,7 +365,7 @@ public final class CommandMenuScreen extends Screen {
 	}
 
 	private void drawChip(Gfx gfx, Rect chip, String label, int color, int mouseX, int mouseY) {
-		gfx.fill(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chip.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chip.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 		gfx.label(font, label, chip.x() + 5, chip.y(), chip.h(), color);
 	}
 

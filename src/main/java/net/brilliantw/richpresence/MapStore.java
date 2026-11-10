@@ -504,7 +504,7 @@ public final class MapStore {
 	}
 
 	private static void read(Region region) {
-		try (DataInputStream in = new DataInputStream(new GZIPInputStream(Files.newInputStream(region.file)))) {
+		try (DataInputStream in = new DataInputStream(new java.io.BufferedInputStream(new GZIPInputStream(Files.newInputStream(region.file)), 1 << 16))) {
 			if (in.readInt() != MAGIC) {
 				return;
 			}

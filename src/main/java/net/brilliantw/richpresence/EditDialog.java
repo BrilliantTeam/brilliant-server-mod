@@ -173,7 +173,7 @@ public final class EditDialog extends Screen {
 	private void draw(Gfx gfx) {
 		int x = left();
 		int y = top();
-		gfx.fill(x, y, x + WIDTH, y + dialogHeight(), Theme.PANEL);
+		Theme.panel(gfx, x, y, x + WIDTH, y + dialogHeight());
 		gfx.fill(x, y, x + WIDTH, y + 22, Theme.HEADER);
 		gfx.fill(x, y + 21, x + WIDTH, y + 22, Theme.ACCENT_DIM);
 		gfx.text(font, title.getString(), x + 10, y + 7, Theme.ACCENT);

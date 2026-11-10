@@ -32,7 +32,7 @@ public final class MapMarkers {
 	private static final Pattern ENTITY = Pattern.compile("&(#x[0-9a-fA-F]{1,6}|#[0-9]{1,7}|amp|lt|gt|quot|apos|nbsp);");
 	private static final Pattern COLOR = Pattern.compile("[&§][0-9a-fk-orA-FK-OR]");
 	private static final Pattern HOME = Pattern.compile("^/(phome [A-Za-z0-9_]{1,16}\\.[^\\p{Cntrl}§]{1,64})$");
-	static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NORMAL).build();
+	static final HttpClient HTTP = RPConfig.HTTP_REDIRECT;
 
 	public enum AreaKind { RESIDENCE, BORDER, OTHER }
 

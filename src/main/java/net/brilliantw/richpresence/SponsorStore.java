@@ -116,7 +116,7 @@ public final class SponsorStore {
 
 	public record SubmitResult(Order order, String error) {}
 
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 	private static final Gson GSON = new Gson();
 	private static final long STALE_MS = 10 * 60 * 1000;
 	private static final String PROXY = "https://api.brilliantw.net/api/v1/proxy";

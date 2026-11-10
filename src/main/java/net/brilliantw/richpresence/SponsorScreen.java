@@ -301,7 +301,7 @@ public final class SponsorScreen extends Screen {
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		hits.clear();
 		Rect p = panel();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, GOLD);
@@ -319,7 +319,7 @@ public final class SponsorScreen extends Screen {
 		for (int i = 0; i < TAB_LABELS.length; i++) {
 			Rect r = tabRect(i);
 			boolean selected = i == tab;
-			gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? Theme.SELECTED : r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+			gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? Theme.SELECTED : r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 			if (selected) {
 				gfx.fill(r.x(), r.y() + r.h() - 2, r.x() + r.w(), r.y() + r.h(), GOLD);
 			}
@@ -379,12 +379,12 @@ public final class SponsorScreen extends Screen {
 	}
 
 	private void chip(Gfx gfx, Rect r, String label, boolean hovered, int color) {
-		gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), hovered ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), hovered ? Theme.CHIP_HOVER : Theme.CHIP);
 		gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), color);
 	}
 
 	private void goldButton(Gfx gfx, Rect r, String label, int mouseX, int mouseY, Runnable action) {
-		gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), action == null ? Theme.CHIP : r.contains(mouseX, mouseY) ? GOLD_HOVER : GOLD);
+		gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), action == null ? Theme.CHIP : r.contains(mouseX, mouseY) ? GOLD_HOVER : GOLD);
 		gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), action == null ? Theme.TEXT_SECONDARY : DARK);
 		if (action != null) {
 			hits.add(new Hit(r, action));
@@ -463,7 +463,7 @@ public final class SponsorScreen extends Screen {
 			if (draw) {
 				Rect r = new Rect(x, y, w, 14);
 				boolean selected = i == rewardColumn;
-				gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? 0x60FFBB06 : r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : column.single ? Theme.SIDEBAR : Theme.CHIP);
+				gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? 0x60FFBB06 : r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : column.single ? Theme.SIDEBAR : Theme.CHIP);
 				gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), selected ? GOLD : column.single ? Theme.TEXT_SECONDARY : Theme.TEXT);
 				int index = i;
 				hits.add(new Hit(r, () -> rewardColumn = index));
@@ -716,7 +716,7 @@ public final class SponsorScreen extends Screen {
 			if (draw) {
 				Rect r = new Rect(mx, my, w, 16);
 				boolean selected = method.id == methodId;
-				gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? 0x60FFBB06 : r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+				gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? 0x60FFBB06 : r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 				gfx.centered(font, method.name, r.x(), r.y(), r.w(), r.h(), selected ? GOLD : Theme.TEXT);
 				hits.add(new Hit(r, () -> methodId = method.id));
 			}

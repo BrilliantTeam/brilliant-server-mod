@@ -43,7 +43,7 @@ public final class ImageViewerScreen extends Screen {
 	private static final int MAX_SIZE = 2048;
 	private static final int MAX_BYTES = 25 * 1024 * 1024;
 	private static final double MAX_ZOOM = 8;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NORMAL).build();
+	private static final HttpClient HTTP = RPConfig.HTTP_REDIRECT;
 	private static int counter;
 	private static Identifier shown;
 
@@ -221,7 +221,7 @@ public final class ImageViewerScreen extends Screen {
 	*///?}
 
 	private void drawChip(Gfx gfx, Rect chip, String label, int mouseX, int mouseY) {
-		gfx.fill(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chip.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chip.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 		gfx.text(font, label, chip.x() + 6, chip.y() + 3, Theme.TEXT);
 	}
 

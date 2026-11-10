@@ -222,7 +222,7 @@ public final class ImportScreen extends Screen {
 		int x = left();
 		int y = top();
 		int w = panelWidth();
-		gfx.fill(x, y, x + w, y + panelHeight(), Theme.PANEL);
+		Theme.panel(gfx, x, y, x + w, y + panelHeight());
 		gfx.fill(x, y, x + w, y + HEADER, Theme.HEADER);
 		gfx.fill(x, y + HEADER - 1, x + w, y + HEADER, Theme.ACCENT_DIM);
 		gfx.text(font, title.getString(), x + 10, y + 7, Theme.ACCENT);

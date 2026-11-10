@@ -80,7 +80,7 @@ public final class UpdateScreen extends Screen {
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		int x = left();
 		int y = top();
-		gfx.fill(x, y, x + WIDTH, y + HEIGHT, Theme.PANEL);
+		Theme.panel(gfx, x, y, x + WIDTH, y + HEIGHT);
 		gfx.fill(x, y, x + WIDTH, y + HEADER, Theme.HEADER);
 		gfx.fill(x, y + HEADER - 1, x + WIDTH, y + HEADER, Theme.ACCENT_DIM);
 		gfx.text(font, title.getString(), Theme.titleX(font, x), y + 9, Theme.ACCENT);

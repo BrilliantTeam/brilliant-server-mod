@@ -60,6 +60,7 @@ public final class Theme {
 	private static final int WATERMARK_TEXTURE = 192;
 	private static final int WATERMARK_MAX = 96;
 	private static final int WATERMARK_TINT = 0x18FFFFFF;
+	private static final int[] SHADOW = { 0x48000000, 0x28000000, 0x10000000 };
 
 	private Theme() {}
 
@@ -114,6 +115,18 @@ public final class Theme {
 		SELECTED = defaultAccent && k == 0 ? BASE_SELECTED : mix(CARD, accent, 0.18);
 	}
 
+	public static void frame(Gfx gfx, int x1, int y1, int x2, int y2, int fill) {
+		for (int i = 0; i < SHADOW.length; i++) {
+			gfx.outline(x1 - 2 - i, y1 - 2 - i, x2 + 2 + i, y2 + 2 + i, SHADOW[i]);
+		}
+		gfx.outline(x1 - 1, y1 - 1, x2 + 1, y2 + 1, CHIP);
+		gfx.fill(x1, y1, x2, y2, fill);
+	}
+
+	public static void panel(Gfx gfx, int x1, int y1, int x2, int y2) {
+		frame(gfx, x1, y1, x2, y2, PANEL);
+	}
+
 	public static void watermark(Gfx gfx, int panelX, int panelY, int panelW, int panelH) {
 		int size = Math.min(WATERMARK_MAX, Math.min(panelW, panelH - 60) / 2);
 		if (size < 32) {
@@ -143,7 +156,7 @@ public final class Theme {
 
 	public static void drawBack(Gfx gfx, Font font, int panelX, int panelY, int mouseX, int mouseY) {
 		boolean hovered = backHit(font, panelX, panelY, mouseX, mouseY);
-		gfx.fill(panelX + 6, panelY + 6, panelX + 6 + backWidth(font), panelY + 20, hovered ? CHIP_HOVER : CHIP);
+		gfx.round(panelX + 6, panelY + 6, panelX + 6 + backWidth(font), panelY + 20, hovered ? CHIP_HOVER : CHIP);
 		gfx.iconLabel(font, Icons.BACK, BACK, panelX + 6, panelY + 6, backWidth(font), 14, TEXT);
 	}
 }

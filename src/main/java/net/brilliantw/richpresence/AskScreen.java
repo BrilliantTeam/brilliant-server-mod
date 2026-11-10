@@ -106,7 +106,7 @@ public final class AskScreen extends Screen {
 		int x = left();
 		int y = top();
 		gfx.fill(x - 1, y - 1, x + WIDTH + 1, y + panelHeight() + 1, 0xFFFFAB19);
-		gfx.fill(x, y, x + WIDTH, y + panelHeight(), Theme.PANEL);
+		Theme.panel(gfx, x, y, x + WIDTH, y + panelHeight());
 		gfx.fill(x, y, x + WIDTH, y + 20, Theme.HEADER);
 		gfx.label(font, options == null ? "腳本想問你" : "腳本請你選一個", x + 8, y, 20, Theme.ACCENT);
 		gfx.text(font, font.plainSubstrByWidth(question, WIDTH - 16), x + 8, y + 26, Theme.TEXT);

@@ -3,7 +3,6 @@ package net.brilliantw.richpresence;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.Minecraft;
@@ -13,15 +12,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public final class ScreenshotMeta {
 	private static final Gson GSON = new GsonBuilder().create();
 	private static final int KEEP = 3000;
-	private static long lastSeen = System.currentTimeMillis();
+	private static Set<String> known;
 	private static int ticks;
 
 	private ScreenshotMeta() {}
@@ -34,20 +34,20 @@ public final class ScreenshotMeta {
 		if (++ticks % 10 != 0 || client.level == null || client.player == null) {
 			return;
 		}
-		File[] files = new File(client.gameDirectory, "screenshots").listFiles((dir, name) -> name.endsWith(".png"));
-		if (files == null) {
+		String[] names = new File(client.gameDirectory, "screenshots").list((dir, name) -> name.endsWith(".png"));
+		if (names == null) {
 			return;
 		}
-		long newest = lastSeen;
+		if (known == null) {
+			known = new HashSet<>(List.of(names));
+			return;
+		}
 		JsonObject added = new JsonObject();
-		for (File file : files) {
-			long modified = file.lastModified();
-			if (modified > lastSeen) {
-				newest = Math.max(newest, modified);
-				added.add(file.getName(), describe(client, client.level, client.player));
+		for (String name : names) {
+			if (known.add(name)) {
+				added.add(name, describe(client, client.level, client.player));
 			}
 		}
-		lastSeen = newest;
 		if (added.size() > 0) {
 			save(added);
 		}
@@ -81,13 +81,12 @@ public final class ScreenshotMeta {
 	private static void save(JsonObject added) {
 		Path file = FabricLoader.getInstance().getConfigDir().resolve("brilliant-server-mod/screenshots.json");
 		try {
-			JsonObject root = Files.exists(file) ? JsonParser.parseString(Files.readString(file, StandardCharsets.UTF_8)).getAsJsonObject() : new JsonObject();
+			JsonObject root = PerfSampler.readObject(file);
 			added.entrySet().forEach(e -> root.add(e.getKey(), e.getValue()));
 			while (root.size() > KEEP) {
 				root.remove(root.keySet().iterator().next());
 			}
-			Files.createDirectories(file.getParent());
-			Files.writeString(file, GSON.toJson(root), StandardCharsets.UTF_8);
+			ModSettings.write(file, GSON.toJson(root));
 		} catch (Exception ignored) {
 		}
 	}

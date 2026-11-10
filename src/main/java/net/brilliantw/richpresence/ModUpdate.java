@@ -44,7 +44,7 @@ public final class ModUpdate {
 	private static final long MAX_BYTES = 32L * 1024 * 1024;
 	private static final Pattern BUILD = Pattern.compile("^\\d+\\.\\d+\\.(\\d+)");
 	private static final Pattern FILE = Pattern.compile("^brilliant-server-mod-[0-9.]+\\+[0-9.]+\\.jar$");
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NORMAL).build();
+	private static final HttpClient HTTP = RPConfig.HTTP_REDIRECT;
 	private static final Gson GSON = new Gson();
 
 	public static final int CHECK_TICKS = 5 * 60 * 20;

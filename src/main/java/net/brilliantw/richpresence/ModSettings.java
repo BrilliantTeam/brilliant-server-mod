@@ -153,12 +153,16 @@ public final class ModSettings {
 	public static void save() {
 		Theme.apply(get());
 		try {
-			Path file = file();
-			Path temp = file.resolveSibling(file.getFileName() + ".tmp");
-			Files.writeString(temp, GSON.toJson(get()), StandardCharsets.UTF_8);
-			Files.move(temp, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+			write(file(), GSON.toJson(get()));
 		} catch (Exception ignored) {
 		}
+	}
+
+	static void write(Path file, String text) throws java.io.IOException {
+		Files.createDirectories(file.toAbsolutePath().getParent());
+		Path temp = file.resolveSibling(file.getFileName() + ".tmp");
+		Files.writeString(temp, text, StandardCharsets.UTF_8);
+		Files.move(temp, file, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 	}
 
 	public static void acceptAnyServer() {

@@ -134,7 +134,7 @@ public final class SponsorOrderScreen extends Screen {
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		hits.clear();
 		Rect p = panel();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.SUCCESS);
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
@@ -173,7 +173,7 @@ public final class SponsorOrderScreen extends Screen {
 		if (draw) {
 			Rect r = new Rect(x, y, w, 18);
 			boolean hover = r.contains(mouseX, mouseY);
-			gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), primary ? hover ? 0xFFFFCB3A : GOLD : hover ? Theme.CHIP_HOVER : Theme.CHIP);
+			gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), primary ? hover ? 0xFFFFCB3A : GOLD : hover ? Theme.CHIP_HOVER : Theme.CHIP);
 			gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), primary ? 0xFF1A1A1A : Theme.TEXT);
 			hits.add(new Hit(r, action));
 		}
@@ -206,7 +206,7 @@ public final class SponsorOrderScreen extends Screen {
 				}
 				if (important) {
 					Rect r = new Rect(c.x() + c.w() - copyW - 8, field.code() ? y + 1 : y - 2, copyW, 13);
-					gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+					gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 					gfx.centered(font, "複製", r.x(), r.y(), r.w(), r.h(), Theme.ACCENT);
 					hits.add(new Hit(r, () -> copy(field.name(), field.value())));
 				}

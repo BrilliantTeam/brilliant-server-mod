@@ -437,7 +437,7 @@ public final class ScriptMonitor {
 		Font font = font();
 		Layout layout = layout(screenWidth, screenHeight, interactive);
 		Rect frame = layout.frame();
-		gfx.fill(frame.x(), frame.y(), frame.x() + frame.w(), frame.y() + frame.h(), 0xC0101418);
+		Theme.frame(gfx, frame.x(), frame.y(), frame.x() + frame.w(), frame.y() + frame.h(), 0xC0101418);
 		gfx.fill(frame.x(), frame.y(), frame.x() + frame.w(), frame.y() + HEADER, Theme.HEADER);
 		gfx.fill(frame.x(), frame.y() + HEADER - 1, frame.x() + frame.w(), frame.y() + HEADER, 0xFFFFAB19);
 		List<Tab> tabs = tabs(frame, interactive);
@@ -476,7 +476,7 @@ public final class ScriptMonitor {
 		if (interactive) {
 			for (int slot = 0; slot < 2; slot++) {
 				Rect b = button(frame, slot);
-				gfx.fill(b.x(), b.y(), b.x() + b.w(), b.y() + b.h(), b.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+				gfx.round(b.x(), b.y(), b.x() + b.w(), b.y() + b.h(), b.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 				(slot == 0 ? Icons.CLOSE : Icons.MINUS).drawCentered(gfx, b.x(), b.y(), b.w(), b.h(), Theme.TEXT);
 			}
 		}
@@ -565,7 +565,7 @@ public final class ScriptMonitor {
 	}
 
 	private static void chip(Gfx gfx, Rect r, boolean hovered, boolean enabled) {
-		gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), !enabled ? 0x60303840 : hovered ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), !enabled ? 0x60303840 : hovered ? Theme.CHIP_HOVER : Theme.CHIP);
 	}
 
 	private static void triangle(Gfx gfx, Rect r, boolean right, int color) {

@@ -94,7 +94,7 @@ public final class AnyServerConsentScreen extends Screen {
 	private void button(Gfx gfx, Rect r, String label, boolean enabled, boolean danger, int mouseX, int mouseY, Runnable action) {
 		boolean hover = enabled && r.contains(mouseX, mouseY);
 		int color = !enabled ? Theme.CHIP : danger ? (hover ? 0xFFFF9A9A : Theme.DANGER) : hover ? Theme.CHIP_HOVER : Theme.CHIP;
-		gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), color);
+		gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), color);
 		gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), !enabled ? Theme.TEXT_DIM : danger ? 0xFF1A1A1A : Theme.TEXT);
 		if (enabled) {
 			clickRects.add(r);
@@ -107,7 +107,7 @@ public final class AnyServerConsentScreen extends Screen {
 		clickRects.clear();
 		gfx.fill(0, 0, width, height, 0xA0000000);
 		Rect p = panel();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.DANGER);
 		gfx.text(font, "⚠ " + title.getString(), p.x() + 10, p.y() + 9, Theme.DANGER);

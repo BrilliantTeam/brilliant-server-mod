@@ -632,7 +632,7 @@ public final class ScriptEditorScreen extends Screen {
 		if (running) {
 			for (int i = 0; i < 3; i++) {
 				Chip chip = debugButton(i);
-				gfx.fill(chip.x(), y + 16, chip.x() + chip.w(), y + 30, debugButtonHit(chip, mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+				gfx.round(chip.x(), y + 16, chip.x() + chip.w(), y + 30, debugButtonHit(chip, mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 				gfx.centered(font, chip.label(), chip.x(), y + 16, chip.w(), 14, i == 0 ? Theme.SUCCESS : i == 2 ? Theme.DANGER : Theme.TEXT);
 			}
 		}
@@ -986,7 +986,7 @@ public final class ScriptEditorScreen extends Screen {
 					default -> "製作新積木";
 				};
 				boolean hovered = mouseX >= CATS + 8 && mouseX < CATS + 98 && mouseY >= item.y() && mouseY < item.y() + item.h() && mouseY >= paletteTop();
-				gfx.fill(CATS + 8, item.y(), CATS + 98, item.y() + item.h(), hovered ? Theme.CHIP_HOVER : Theme.CHIP);
+				gfx.round(CATS + 8, item.y(), CATS + 98, item.y() + item.h(), hovered ? Theme.CHIP_HOVER : Theme.CHIP);
 				gfx.centered(font, label, CATS + 8, item.y(), 90, item.h(), Theme.TEXT);
 			} else if (item.node() != null) {
 				view.drawNode(gfx, item.node());
@@ -1006,7 +1006,7 @@ public final class ScriptEditorScreen extends Screen {
 		for (Tab tab : visibleTabs) {
 			boolean selected = tab.index() == Scripts.data().selected;
 			boolean hovered = tab.contains(mouseX, mouseY);
-			gfx.fill(tab.x(), HEADER + 2, tab.x() + tab.w(), areaY() - 2, selected ? Theme.SELECTED : hovered ? Theme.CHIP_HOVER : Theme.CHIP);
+			gfx.round(tab.x(), HEADER + 2, tab.x() + tab.w(), areaY() - 2, selected ? Theme.SELECTED : hovered ? Theme.CHIP_HOVER : Theme.CHIP);
 			if (selected) {
 				gfx.fill(tab.x(), areaY() - 3, tab.x() + tab.w(), areaY() - 2, 0xFFFFAB19);
 			}
@@ -1032,7 +1032,7 @@ public final class ScriptEditorScreen extends Screen {
 		for (Chip chip : chips()) {
 			boolean enabledChip = chip.label().startsWith("已");
 			int bg = chip.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP;
-			gfx.fill(chip.x(), 6, chip.x() + chip.w(), 20, bg);
+			gfx.round(chip.x(), 6, chip.x() + chip.w(), 20, bg);
 			int color = chip.label().startsWith("▶") ? Theme.SUCCESS : enabledChip ? (Scripts.data().enabled ? Theme.SUCCESS : Theme.DANGER) : Theme.TEXT;
 			gfx.centered(font, chip.label(), chip.x(), 6, chip.w(), 14, color);
 		}
@@ -1079,7 +1079,7 @@ public final class ScriptEditorScreen extends Screen {
 			int h = popup.rows() * 12 + 4;
 			int w = popup.cols() * popup.w();
 			gfx.fill(popup.x() - 1, popup.y() - 1, popup.x() + w + 1, popup.y() + h + 1, Theme.ACCENT_DIM);
-			gfx.fill(popup.x(), popup.y(), popup.x() + w, popup.y() + h, Theme.PANEL);
+			Theme.panel(gfx, popup.x(), popup.y(), popup.x() + w, popup.y() + h);
 			int hover = popup.at(mouseX, mouseY);
 			for (int i = 0; i < popup.options().size(); i++) {
 				int ox = popup.x() + i / popup.rows() * popup.w();
@@ -1096,7 +1096,7 @@ public final class ScriptEditorScreen extends Screen {
 			int x = menuLeft();
 			int y = menuTop();
 			gfx.fill(x - 1, y - 1, x + w + 1, y + h + 1, Theme.ACCENT_DIM);
-			gfx.fill(x, y, x + w, y + h, Theme.PANEL);
+			Theme.panel(gfx, x, y, x + w, y + h);
 			for (int i = 0; i < menu.size(); i++) {
 				int oy = y + 2 + i * 14;
 				if (mouseX >= x && mouseX < x + w && mouseY >= oy && mouseY < oy + 14) {
@@ -1166,7 +1166,7 @@ public final class ScriptEditorScreen extends Screen {
 		int x = (width - w) / 2;
 		int y = (height - h) / 2;
 		gfx.fill(x - 1, y - 1, x + w + 1, y + h + 1, 0xFFFFAB19);
-		gfx.fill(x, y, x + w, y + h, Theme.PANEL);
+		Theme.panel(gfx, x, y, x + w, y + h);
 		gfx.fill(x, y, x + w, y + 20, Theme.HEADER);
 		gfx.label(font, "使用教學 · " + ScriptTutorial.TITLES[helpPage], x + 8, y, 20, Theme.ACCENT);
 		String count = (helpPage + 1) + " / " + ScriptTutorial.TITLES.length;
@@ -1192,7 +1192,7 @@ public final class ScriptEditorScreen extends Screen {
 				continue;
 			}
 			int by = y + h - 22;
-			gfx.fill(chip.x(), by, chip.x() + chip.w(), by + 16, helpButtonHit(chip, mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+			gfx.round(chip.x(), by, chip.x() + chip.w(), by + 16, helpButtonHit(chip, mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 			gfx.centered(font, chip.label(), chip.x(), by, chip.w(), 16, i == 1 ? Theme.SUCCESS : Theme.TEXT);
 		}
 	}

@@ -1,10 +1,16 @@
 package net.brilliantw.richpresence;
 
+import java.net.http.HttpClient;
+import java.time.Duration;
 import java.util.Map;
 import net.fabricmc.loader.api.FabricLoader;
 
 public final class RPConfig {
 	private RPConfig() {}
+
+	public static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+
+	public static final HttpClient HTTP_REDIRECT = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NORMAL).build();
 
 	public static final long CLIENT_ID = 1014145002496065577L;
 

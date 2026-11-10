@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 
 public final class OnlineStats {
 	private static final long REFRESH_MS = 30_000;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 	private static volatile int total;
 	private record Server(String key, String label, int count) {}
 

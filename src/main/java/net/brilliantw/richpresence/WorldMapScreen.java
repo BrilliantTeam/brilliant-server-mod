@@ -722,7 +722,7 @@ public final class WorldMapScreen extends Screen {
 				Rect none = new Rect(x + 10 + bw, listTop, bw, 14);
 				for (Rect r : List.of(all, none)) {
 					boolean hot = r.contains(mouseX, mouseY);
-					gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), hot ? Theme.CHIP_HOVER : Theme.CHIP);
+					gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), hot ? Theme.CHIP_HOVER : Theme.CHIP);
 					gfx.centered(font, r == all ? "全選" : "全不選", r.x(), r.y(), r.w(), r.h(), Theme.TEXT);
 				}
 				hits.add(new Hit(all, () -> setAllGroups(world, true)));
@@ -781,7 +781,7 @@ public final class WorldMapScreen extends Screen {
 					}
 					gfx.text(font, font.plainSubstrByWidth(info.name(), row.w() - fw - 24), row.x() + 19, y + 4, shown ? Theme.TEXT : Theme.TEXT_DIM);
 					boolean chipHot = visible && chip.contains(mouseX, mouseY);
-					gfx.fill(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chipHot ? Theme.CHIP_HOVER : Theme.CHIP);
+					gfx.round(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chipHot ? Theme.CHIP_HOVER : Theme.CHIP);
 					gfx.centered(font, find, chip.x(), chip.y(), chip.w(), chip.h(), searching ? Theme.TEXT_DIM : Theme.TEXT);
 					if (visible) {
 						hits.add(new Hit(chip, () -> findStructure(group)));
@@ -874,7 +874,7 @@ public final class WorldMapScreen extends Screen {
 					gfx.text(font, font.plainSubstrByWidth(sub, textW), row.x() + 20, y + 13, Theme.TEXT_SECONDARY);
 					if (command != null) {
 						boolean chipHot = visible && chip.contains(mouseX, mouseY);
-						gfx.fill(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chipHot ? Theme.ACCENT_DIM : Theme.CHIP);
+						gfx.round(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chipHot ? Theme.ACCENT_DIM : Theme.CHIP);
 						gfx.centered(font, go, chip.x(), chip.y(), chip.w(), chip.h(), chipHot ? Theme.ACCENT : Theme.TEXT);
 						if (visible) {
 							hits.add(new Hit(chip, () -> teleport(command)));
@@ -909,7 +909,7 @@ public final class WorldMapScreen extends Screen {
 	private void tab(Gfx gfx, int x, int y, int w, String label, boolean selected, int mouseX, int mouseY, Runnable action) {
 		Rect r = new Rect(x, y, w, 14);
 		boolean hot = r.contains(mouseX, mouseY);
-		gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? Theme.ACCENT_DIM : hot ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? Theme.ACCENT_DIM : hot ? Theme.CHIP_HOVER : Theme.CHIP);
 		gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), selected ? Theme.ACCENT : Theme.TEXT);
 		hits.add(new Hit(r, action));
 	}
@@ -991,7 +991,7 @@ public final class WorldMapScreen extends Screen {
 		int h = list.size() * 26 + 8;
 		layersBox = new Rect(x, y, w, h);
 		gfx.fill(x - 1, y - 1, x + w + 1, y + h + 1, 0xFF0B0E11);
-		gfx.fill(x, y, x + w, y + h, Theme.PANEL);
+		Theme.panel(gfx, x, y, x + w, y + h);
 		for (int i = 0; i < list.size(); i++) {
 			Layer layer = list.get(i);
 			Rect row = new Rect(x + 4, y + 4 + i * 26, w - 8, 24);
@@ -1173,7 +1173,7 @@ public final class WorldMapScreen extends Screen {
 		int w = font.width(label) + 12;
 		Rect r = new Rect(right - w, y, w, 14);
 		boolean hot = r.contains(mouseX, mouseY);
-		gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? Theme.ACCENT_DIM : hot ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), selected ? Theme.ACCENT_DIM : hot ? Theme.CHIP_HOVER : Theme.CHIP);
 		gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), selected ? Theme.ACCENT : Theme.TEXT);
 		if (action != null) {
 			hits.add(new Hit(r, action));
@@ -1312,7 +1312,7 @@ public final class WorldMapScreen extends Screen {
 		int cw = font.width(clearLabel) + 10;
 		Rect clear = new Rect(width - cw - 4, y + 2, cw, FOOTER - 4);
 		boolean clearHot = clear.contains(mouseX, mouseY);
-		gfx.fill(clear.x(), clear.y(), clear.x() + clear.w(), clear.y() + clear.h(), armed ? 0xFF6B2A2A : clearHot ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(clear.x(), clear.y(), clear.x() + clear.w(), clear.y() + clear.h(), armed ? 0xFF6B2A2A : clearHot ? Theme.CHIP_HOVER : Theme.CHIP);
 		gfx.centered(font, clearLabel, clear.x(), clear.y(), clear.w(), clear.h(), armed ? Theme.DANGER : Theme.TEXT_SECONDARY);
 		hits.add(new Hit(clear, () -> {
 			if (clearArmedAt > 0 && System.currentTimeMillis() - clearArmedAt < 3000) {

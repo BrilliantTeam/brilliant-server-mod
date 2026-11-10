@@ -22,7 +22,7 @@ import net.minecraft.network.chat.Component;
 
 public final class RichPresenceModClient implements ClientModInitializer {
 	private static final int POLL_TICKS = 200;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 
 	private final DiscordPresenceManager presence = new DiscordPresenceManager();
 	private static String host;

@@ -141,7 +141,7 @@ public final class ChatHistoryScreen extends Screen {
 		layout();
 		Rect p = panel();
 		Rect l = list();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT_DIM);

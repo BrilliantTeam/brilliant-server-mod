@@ -276,15 +276,15 @@ public final class ModSettingsScreen extends Screen {
 	*///?}
 
 	private void toggleSwitch(Gfx gfx, int x, int y, boolean on, int onColor) {
-		gfx.fill(x, y, x + 26, y + 12, on ? onColor : Theme.CHIP);
+		gfx.round(x, y, x + 26, y + 12, on ? onColor : Theme.CHIP);
 		int knob = on ? x + 15 : x + 1;
-		gfx.fill(knob, y + 1, knob + 10, y + 11, on ? 0xFFFFFFFF : Theme.TEXT_SECONDARY);
+		gfx.round(knob, y + 1, knob + 10, y + 11, on ? 0xFFFFFFFF : Theme.TEXT_SECONDARY);
 	}
 
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		hits.clear();
 		Rect p = panel();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT);
@@ -339,7 +339,7 @@ public final class ModSettingsScreen extends Screen {
 				String value = row.choice().get() + " ▸";
 				int vw = font.width(value) + 12;
 				gfx.text(font, font.plainSubstrByWidth(row.detail(), r.w() - vw - 24), r.x() + 8, r.y() + 16, Theme.TEXT_DIM);
-				gfx.fill(r.x() + r.w() - vw - 8, r.y() + 7, r.x() + r.w() - 8, r.y() + 21, Theme.CHIP);
+				gfx.round(r.x() + r.w() - vw - 8, r.y() + 7, r.x() + r.w() - 8, r.y() + 21, Theme.CHIP);
 				gfx.centered(font, value, r.x() + r.w() - vw - 8, r.y() + 7, vw, 14, Theme.ACCENT);
 				hits.add(new Hit(r, () -> {
 					row.next().run();

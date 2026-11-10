@@ -55,7 +55,7 @@ public final class GuideStore {
 
 	private static final String API = RPConfig.WEBSITE_URL + "/api/guide/";
 	private static final long ARTICLE_TTL = 10 * 60 * 1000;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 	private static final Gson GSON = new Gson();
 	private static final Map<String, Article> ARTICLES = new HashMap<>();
 	private static final Map<String, Long> FETCHED = new HashMap<>();

@@ -275,7 +275,7 @@ public final class PrivateWindow {
 	}
 
 	private static void chip(Gfx gfx, Rect rect, String label, int color, boolean hovered, boolean active) {
-		gfx.fill(rect.x(), rect.y(), rect.x() + rect.w(), rect.y() + rect.h(), active ? Theme.SELECTED : hovered ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(rect.x(), rect.y(), rect.x() + rect.w(), rect.y() + rect.h(), active ? Theme.SELECTED : hovered ? Theme.CHIP_HOVER : Theme.CHIP);
 		if (active) {
 			gfx.fill(rect.x(), rect.y() + rect.h() - 1, rect.x() + rect.w(), rect.y() + rect.h(), Theme.ACCENT);
 		}
@@ -283,7 +283,7 @@ public final class PrivateWindow {
 	}
 
 	private static void iconChip(Gfx gfx, Rect rect, Icons icon, int color, boolean hovered) {
-		gfx.fill(rect.x(), rect.y(), rect.x() + rect.w(), rect.y() + rect.h(), hovered ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(rect.x(), rect.y(), rect.x() + rect.w(), rect.y() + rect.h(), hovered ? Theme.CHIP_HOVER : Theme.CHIP);
 		icon.drawCentered(gfx, rect.x(), rect.y(), rect.w(), rect.h(), color);
 	}
 
@@ -318,7 +318,7 @@ public final class PrivateWindow {
 			return;
 		}
 
-		gfx.fill(frame.x(), frame.y(), frame.x() + frame.w(), frame.y() + frame.h(), BACKGROUND);
+		Theme.frame(gfx, frame.x(), frame.y(), frame.x() + frame.w(), frame.y() + frame.h(), BACKGROUND);
 		gfx.fill(frame.x(), frame.y(), frame.x() + frame.w(), frame.y() + HEADER, Theme.HEADER);
 		gfx.fill(frame.x(), frame.y() + HEADER - 1, frame.x() + frame.w(), frame.y() + HEADER, Theme.ACCENT_DIM);
 		PrivateMessages.Conversation selected = PrivateMessages.selected();

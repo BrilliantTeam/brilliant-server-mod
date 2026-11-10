@@ -389,9 +389,9 @@ public final class ScriptTutorial {
 		gfx.fill(mx, cy, mx + mw, cy + 16, 0x60000000);
 		int playX = mx + mw - 63;
 		int stopX = mx + mw - 32;
-		gfx.fill(playX, cy + 2, playX + 30, cy + 14, t > 0.8 && t < 1.2 ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(playX, cy + 2, playX + 30, cy + 14, t > 0.8 && t < 1.2 ? Theme.CHIP_HOVER : Theme.CHIP);
 		Icons.PLAY.drawCentered(gfx, playX, cy + 2, 30, 12, Theme.SUCCESS);
-		gfx.fill(stopX, cy + 2, stopX + 29, cy + 14, running ? Theme.CHIP : 0x60303840);
+		gfx.round(stopX, cy + 2, stopX + 29, cy + 14, running ? Theme.CHIP : 0x60303840);
 		gfx.fill(stopX + 11, cy + 5, stopX + 17, cy + 11, running ? Theme.DANGER : Theme.TEXT_DIM);
 		gfx.label(font, font.plainSubstrByWidth("當按下執行時", playX - mx - 10), mx + 6, cy, 16, running ? Theme.SUCCESS : Theme.TEXT);
 		int py = cy + 18;

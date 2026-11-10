@@ -41,7 +41,7 @@ public final class StickerAnimator {
 	private static final long FORGET_MS = 60_000;
 	private static final long RETRY_MS = 300_000;
 	private static final float MAX_RATIO = 1.7f;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NORMAL).build();
+	private static final HttpClient HTTP = RPConfig.HTTP_REDIRECT;
 
 	private record Info(String url, int x0, int y0, int x1, int y1) {}
 
@@ -89,7 +89,7 @@ public final class StickerAnimator {
 	private static final BitSet ANIMATED = new BitSet(0x10000);
 	private static final Map<Object, Integer> UNBAKED = Collections.synchronizedMap(new WeakHashMap<>());
 	private static final Map<Integer, Slot> SLOTS = new HashMap<>();
-	private static final Map<Integer, Long> SEEN = new HashMap<>();
+	private static final Map<Integer, Long> SEEN = new java.util.concurrent.ConcurrentHashMap<>();
 
 	static {
 		INFO.keySet().forEach(ANIMATED::set);

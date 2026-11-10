@@ -26,7 +26,7 @@ public final class DiscordWebhooks {
 	private static final int MAX_BODY = 64 * 1024;
 	private static final int MAX_PENDING = 10;
 	private static final long SPACING_MS = 1000;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 	private static final ExecutorService SENDER = Executors.newSingleThreadExecutor(runnable -> {
 		Thread thread = new Thread(runnable, "brilliant-webhooks");
 		thread.setDaemon(true);

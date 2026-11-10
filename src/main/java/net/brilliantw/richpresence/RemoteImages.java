@@ -107,7 +107,7 @@ public final class RemoteImages {
 	private static final int MAX_ENTRIES = 96;
 	private static final long RETRY_MS = 30 * 1000;
 	private static final int MAX_BYTES = 8 * 1024 * 1024;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 	private static final Map<String, Entry> CACHE = new LinkedHashMap<>(16, 0.75f, true) {
 		@Override
 		protected boolean removeEldestEntry(Map.Entry<String, Entry> eldest) {

@@ -56,7 +56,7 @@ public final class Reauth {
 	private static final long RETRY_MS = 10 * 60_000L;
 	private static final long RATE_LIMIT_MS = 60 * 60_000L;
 	private static final long RENEWING_MS = 90_000L;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 	private static final Gson GSON = new Gson();
 	private static final SecureRandom RANDOM = new SecureRandom();
 	private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("brilliant-server-mod");
@@ -406,8 +406,7 @@ public final class Reauth {
 			Map<String, String> stored = stored();
 			stored.put(session.uuid().toString(), seal(session.refreshToken()));
 			try {
-				Files.createDirectories(storeFile().getParent());
-				Files.writeString(storeFile(), GSON.toJson(stored));
+				ModSettings.write(storeFile(), GSON.toJson(stored));
 			} catch (java.io.IOException e) {
 				LOGGER.warn("無法儲存微軟登入資料", e);
 			}

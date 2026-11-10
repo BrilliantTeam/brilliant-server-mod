@@ -128,7 +128,7 @@ public final class WaypointScreen extends Screen {
 		hits.clear();
 		addButton = null;
 		Rect p = panel();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT);
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
@@ -144,7 +144,7 @@ public final class WaypointScreen extends Screen {
 			String add = "＋ 新增目前位置";
 			int w = font.width(add) + 14;
 			Rect r = new Rect(p.x() + p.w() - w - 8, p.y() + 6, w, 14);
-			gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.ACCENT_DIM);
+			gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.ACCENT_DIM);
 			gfx.centered(font, add, r.x(), r.y(), r.w(), r.h(), Theme.ACCENT);
 			addButton = r;
 		}
@@ -203,7 +203,7 @@ public final class WaypointScreen extends Screen {
 		});
 		right = button(gfx, right, row.y() + 7, "編輯", Theme.TEXT, mouseX, mouseY, clip, () -> edit(this, view, point));
 		Rect eye = new Rect(right - 18, row.y() + 7, 18, 14);
-		gfx.fill(eye.x(), eye.y(), eye.x() + eye.w(), eye.y() + eye.h(), inClip && eye.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(eye.x(), eye.y(), eye.x() + eye.w(), eye.y() + eye.h(), inClip && eye.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 		(point.visible ? Icons.EYE : Icons.EYE_OFF).drawCentered(gfx, eye.x(), eye.y(), eye.w(), eye.h(), point.visible ? Theme.TEXT : Theme.TEXT_DIM);
 		hits.add(new Hit(eye, () -> {
 			point.visible = !point.visible;
@@ -214,7 +214,7 @@ public final class WaypointScreen extends Screen {
 	private int button(Gfx gfx, int right, int y, String label, int color, int mouseX, int mouseY, Rect clip, Runnable action) {
 		int w = font.width(label) + 12;
 		Rect r = new Rect(right - w, y, w, 14);
-		gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), clip.contains(mouseX, mouseY) && r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
+		gfx.round(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), clip.contains(mouseX, mouseY) && r.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP);
 		gfx.centered(font, label, r.x(), r.y(), r.w(), r.h(), color);
 		hits.add(new Hit(r, action));
 		return r.x() - 4;

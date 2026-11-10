@@ -65,7 +65,7 @@ public final class ScriptTemplateScreen extends Screen {
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		int x = left();
 		int w = panelWidth();
-		gfx.fill(x, 8, x + w, height - 8, Theme.PANEL);
+		Theme.panel(gfx, x, 8, x + w, height - 8);
 		Theme.watermark(gfx, x, 8, w, height - 16);
 		gfx.fill(x, 8, x + w, 8 + HEADER, Theme.HEADER);
 		gfx.fill(x, 8 + HEADER - 1, x + w, 8 + HEADER, Theme.ACCENT_DIM);

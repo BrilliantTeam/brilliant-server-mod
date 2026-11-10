@@ -39,6 +39,19 @@ public final class Gfx {
 		graphics.fill(x1, y1, x2, y2, color);
 	}
 
+	public void round(int x1, int y1, int x2, int y2, int color) {
+		graphics.fill(x1 + 1, y1, x2 - 1, y2, color);
+		graphics.fill(x1, y1 + 1, x1 + 1, y2 - 1, color);
+		graphics.fill(x2 - 1, y1 + 1, x2, y2 - 1, color);
+	}
+
+	public void outline(int x1, int y1, int x2, int y2, int color) {
+		graphics.fill(x1, y1, x2, y1 + 1, color);
+		graphics.fill(x1, y2 - 1, x2, y2, color);
+		graphics.fill(x1, y1 + 1, x1 + 1, y2 - 1, color);
+		graphics.fill(x2 - 1, y1 + 1, x2, y2 - 1, color);
+	}
+
 	public static int textTop(Font font, int top, int height) {
 		return top + (height - font.lineHeight + 2) / 2;
 	}

@@ -185,7 +185,7 @@ public final class AnnouncementScreen extends Screen {
 
 	private void drawChip(Gfx gfx, Rect chip, String label, int color, boolean active, int mouseX, int mouseY) {
 		int background = active ? Theme.SELECTED : chip.contains(mouseX, mouseY) ? Theme.CHIP_HOVER : Theme.CHIP;
-		gfx.fill(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), background);
+		gfx.round(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), background);
 		if (active) {
 			gfx.fill(chip.x(), chip.y() + chip.h() - 1, chip.x() + chip.w(), chip.y() + chip.h(), Theme.ACCENT);
 		}
@@ -198,7 +198,7 @@ public final class AnnouncementScreen extends Screen {
 		}
 		layout();
 		Rect p = panel();
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + p.h(), Theme.PANEL);
+		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
 		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
 		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT_DIM);

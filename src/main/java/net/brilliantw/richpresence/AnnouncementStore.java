@@ -94,7 +94,7 @@ public final class AnnouncementStore {
 
 	private static final String API = RPConfig.WEBSITE_URL + "/api/announcements/plain";
 	private static final long STALE_MS = 60 * 1000;
-	private static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+	private static final HttpClient HTTP = RPConfig.HTTP;
 	private static final Gson GSON = new Gson();
 	private static final Map<String, BoardState> STATES = new HashMap<>();
 	public static final List<Board> BOARDS = new ArrayList<>();

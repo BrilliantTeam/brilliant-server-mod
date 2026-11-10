@@ -3,6 +3,8 @@ package net.brilliantw.richpresence;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -85,18 +87,12 @@ public final class PerfSampler {
 		session.addProperty("renderDistance", Minecraft.getInstance().options.renderDistance().get());
 		Path file = FabricLoader.getInstance().getConfigDir().resolve("brilliant-server-mod/perf.json");
 		try {
-			JsonArray old = new JsonArray();
-			if (Files.exists(file)) {
-				JsonObject root = JsonParser.parseString(Files.readString(file, StandardCharsets.UTF_8)).getAsJsonObject();
-				if (root.has("sessions")) {
-					old = root.getAsJsonArray("sessions");
-				}
-			}
 			JsonArray sessions = new JsonArray();
-			for (int i = 0; i < old.size(); i++) {
-				JsonObject s = old.get(i).getAsJsonObject();
-				if (!s.has("start") || s.get("start").getAsLong() != started / 1000) {
-					sessions.add(s);
+			if (readObject(file).get("sessions") instanceof JsonArray old) {
+				for (JsonElement element : old) {
+					if (element instanceof JsonObject s && !(s.get("start") instanceof JsonPrimitive start && start.isNumber() && start.getAsLong() == started / 1000)) {
+						sessions.add(s);
+					}
 				}
 			}
 			sessions.add(session);
@@ -105,9 +101,18 @@ public final class PerfSampler {
 			}
 			JsonObject root = new JsonObject();
 			root.add("sessions", sessions);
-			Files.createDirectories(file.getParent());
-			Files.writeString(file, GSON.toJson(root), StandardCharsets.UTF_8);
+			ModSettings.write(file, GSON.toJson(root));
 		} catch (Exception ignored) {
 		}
+	}
+
+	static JsonObject readObject(Path file) throws java.io.IOException {
+		if (Files.exists(file)) {
+			try {
+				return JsonParser.parseString(Files.readString(file, StandardCharsets.UTF_8)).getAsJsonObject();
+			} catch (RuntimeException ignored) {
+			}
+		}
+		return new JsonObject();
 	}
 }
