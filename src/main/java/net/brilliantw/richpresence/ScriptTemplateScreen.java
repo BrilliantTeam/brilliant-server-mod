@@ -11,7 +11,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 
 public final class ScriptTemplateScreen extends Screen {
-	private static final int HEADER = 22;
+	private static final int HEADER = Theme.HEADER_H;
 	private static final int ROW = 30;
 
 	private final Screen parent;
@@ -67,10 +67,9 @@ public final class ScriptTemplateScreen extends Screen {
 		int w = panelWidth();
 		Theme.panel(gfx, x, 8, x + w, height - 8);
 		Theme.watermark(gfx, x, 8, w, height - 16);
-		gfx.fill(x, 8, x + w, 8 + HEADER, Theme.HEADER);
-		gfx.fill(x, 8 + HEADER - 1, x + w, 8 + HEADER, Theme.ACCENT_DIM);
+		Theme.header(gfx, x, 8, w);
 		Theme.drawBack(gfx, font, x, 8, mouseX, mouseY);
-		gfx.text(font, title.getString(), Theme.titleX(font, x), 15, Theme.ACCENT);
+		gfx.text(font, title.getString(), Theme.titleX(font, x), 17, Theme.ACCENT);
 		gfx.text(font, "選一個範本預覽，匯入後會放在新的分組，可以再自由修改", x + 10, 8 + HEADER + 5, Theme.TEXT_DIM);
 		int contentHeight = ScriptTemplates.ALL.size() * ROW;
 		scroll = Math.clamp(scroll, 0, Math.max(0, contentHeight - (listBottom() - listTop())));
@@ -82,7 +81,7 @@ public final class ScriptTemplateScreen extends Screen {
 			gfx.fill(x + 8, y, x + w - 8, y + ROW - 3, i == hovered ? Theme.CHIP_HOVER : Theme.SIDEBAR);
 			gfx.fill(x + 8, y, x + 10, y + ROW - 3, 0xFFFFAB19);
 			gfx.text(font, template.name(), x + 16, y + 4, Theme.TEXT);
-			gfx.text(font, font.plainSubstrByWidth(template.description(), w - 32), x + 16, y + 15, Theme.TEXT_DIM);
+			gfx.fitText(font, template.description(), x + 16, y + 15, w - 32, Theme.TEXT_SECONDARY, i == hovered ? mouseX : -1, mouseY);
 		}
 		gfx.endScissor();
 	}
@@ -90,11 +89,13 @@ public final class ScriptTemplateScreen extends Screen {
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		if (Theme.backHit(font, left(), 8, event.x(), event.y())) {
+			Theme.click();
 			onClose();
 			return true;
 		}
 		int index = rowAt(event.x(), event.y());
 		if (index >= 0) {
+			Theme.click();
 			ScriptTemplates.Template template = ScriptTemplates.ALL.get(index);
 			CommandMenuScreen.setScreen(new ScriptImportScreen(parent, onImported, template.code(), "範本：" + template.name()));
 			return true;

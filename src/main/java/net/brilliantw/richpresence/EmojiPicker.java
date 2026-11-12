@@ -629,11 +629,7 @@ public final class EmojiPicker {
 			}
 			gfx.endScissor();
 
-			if (contentHeight > gh) {
-				int bar = Math.max(12, gh * gh / contentHeight);
-				int barY = gy + (int) ((gh - bar) * scroll / maxScroll(y, h));
-				gfx.fill(x + w - 3, barY, x + w - 1, barY + bar, Theme.CHIP);
-			}
+			Theme.scrollbar(gfx, x + w - Theme.SCROLLBAR_W, gy, gh, contentHeight, scroll, false);
 
 			int footerY = y + h - FOOTER;
 			gfx.fill(x + SIDEBAR, footerY, x + w, y + h, Theme.HEADER);
@@ -642,9 +638,9 @@ public final class EmojiPicker {
 			if (hovered != null) {
 				Emoji emoji = hovered.emoji().toned(tone);
 				drawItem(gfx, font, emoji, x + SIDEBAR + 4, footerY + 2, CELL);
-				gfx.text(font, font.plainSubstrByWidth(emoji.name(), textWidth), textX, footerY + (emoji.code().isEmpty() ? 7 : 3), Theme.TEXT);
+				gfx.text(font, Gfx.fit(font, emoji.name(), textWidth), textX, footerY + (emoji.code().isEmpty() ? 7 : 3), Theme.TEXT);
 				if (!emoji.code().isEmpty()) {
-					gfx.text(font, font.plainSubstrByWidth(emoji.code(), textWidth), textX, footerY + 12, Theme.TEXT_DIM);
+					gfx.text(font, Gfx.fit(font, emoji.code(), textWidth), textX, footerY + 12, Theme.TEXT_DIM);
 				}
 			} else if (!shown.isEmpty()) {
 				gfx.text(font, shown.get(Math.max(0, current)).name(), x + SIDEBAR + PAD, footerY + 7, Theme.TEXT_DIM);
@@ -798,6 +794,7 @@ public final class EmojiPicker {
 			return false;
 		}
 		if (inside(mouseX, mouseY, buttonX(screen), buttonY(screen), BUTTON, BUTTON)) {
+			Theme.click();
 			open = !open;
 			if (open) {
 				CHAT.open(screen);
@@ -810,6 +807,7 @@ public final class EmojiPicker {
 		}
 		Emoji emoji = CHAT.click(screen, panelX(screen), panelY(screen), panelWidth(), panelHeight(screen), mouseX, mouseY);
 		if (emoji != null) {
+			Theme.click();
 			PrivateWindow.insert(screen, emoji.insert());
 		}
 		return true;

@@ -228,7 +228,7 @@ public final class ImageViewerScreen extends Screen {
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
 		gfx.fill(0, 0, width, height, 0xE60C0E10);
 		Rect browser = browserChip();
-		gfx.text(font, font.plainSubstrByWidth(name, browser.x() - 16), 8, 8, Theme.TEXT);
+		gfx.text(font, Gfx.fit(font, name, browser.x() - 16), 8, 8, Theme.TEXT);
 		drawChip(gfx, browser, "在瀏覽器開啟", mouseX, mouseY);
 		drawChip(gfx, closeChip(), "關閉", mouseX, mouseY);
 
@@ -263,10 +263,12 @@ public final class ImageViewerScreen extends Screen {
 			return false;
 		}
 		if (closeChip().contains(event.x(), event.y())) {
+			Theme.click();
 			onClose();
 			return true;
 		}
 		if (browserChip().contains(event.x(), event.y())) {
+			Theme.click();
 			try {
 				ConfirmLinkScreen.confirmLinkNow(this, URI.create(url));
 			} catch (IllegalArgumentException ignored) {

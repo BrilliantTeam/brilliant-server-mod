@@ -250,11 +250,13 @@ public final class ChannelBar {
 		Font font = minecraft.font;
 		for (Button<Integer> chip : chips(font, screen)) {
 			if (chip.contains(mouseX, mouseY)) {
+				Theme.click();
 				selected = chip.value();
 				return true;
 			}
 		}
 		if (menuButton(font, screen).contains(mouseX, mouseY)) {
+			Theme.click();
 			boolean wasOpen = ChatMenu.isOpen();
 			close();
 			EmojiPicker.close();
@@ -272,11 +274,13 @@ public final class ChannelBar {
 			return false;
 		}
 		if (backButton(font, panel).contains(mouseX, mouseY)) {
+			Theme.click();
 			ChatMenu.backToMenu(screen);
 			return true;
 		}
 		for (Button<Action> action : actions(font, panel)) {
 			if (action.contains(mouseX, mouseY) && minecraft.player != null) {
+				Theme.click();
 				minecraft.player.connection.sendCommand(action.value().command());
 			}
 		}

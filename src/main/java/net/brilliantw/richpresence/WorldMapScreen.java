@@ -27,7 +27,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
 
 public final class WorldMapScreen extends Screen {
-	private static final int HEADER = 24;
+	private static final int HEADER = Theme.HEADER_H;
 	private static final int FOOTER = 16;
 	private static final double MIN_SCALE = 1.0 / 32;
 	private static final double MAX_SCALE = 8;
@@ -412,7 +412,7 @@ public final class WorldMapScreen extends Screen {
 			}
 			MapIcons.badge(gfx, sx, sy, hot ? 9 : 7, hot ? 0xFFFFE08A : Minimap.POI, MapIcons.item("ender_pearl"));
 			if (scale >= 2 || hot) {
-				String label = font.plainSubstrByWidth(poi.label().replaceFirst("^/phome\\s+", ""), 120);
+				String label = Gfx.fit(font, poi.label().replaceFirst("^/phome\\s+", ""), 120);
 				int w = font.width(label);
 				gfx.fill(sx - w / 2 - 3, sy + 10, sx + w / 2 + 3, sy + 21, 0xB0101418);
 				gfx.text(font, label, sx - w / 2, sy + 12, Minimap.POI);
@@ -745,7 +745,7 @@ public final class WorldMapScreen extends Screen {
 					int color = SeedPalette.biomeColor(SeedWorld.path(biome));
 					gfx.fill(row.x() + 3, y + 3, row.x() + 13, y + 13, 0xFF0B0E11);
 					gfx.fill(row.x() + 4, y + 4, row.x() + 12, y + 12, color);
-					gfx.text(font, font.plainSubstrByWidth(SeedMaps.biomeName(biome), row.w() - 22), row.x() + 18, y + 4, highlight == i ? Theme.ACCENT : Theme.TEXT);
+					gfx.text(font, Gfx.fit(font, SeedMaps.biomeName(biome), row.w() - 22), row.x() + 18, y + 4, highlight == i ? Theme.ACCENT : Theme.TEXT);
 					int index = i;
 					if (y >= listTop && y + ROW <= listBottom) {
 						hits.add(new Hit(row, () -> {
@@ -779,7 +779,7 @@ public final class WorldMapScreen extends Screen {
 						MapIcons.disc(gfx, row.x() + 8, y + 8, 6.5, 0xFF3A424C);
 						MapIcons.disc(gfx, row.x() + 8, y + 8, 5.4, 0xFF1B2026);
 					}
-					gfx.text(font, font.plainSubstrByWidth(info.name(), row.w() - fw - 24), row.x() + 19, y + 4, shown ? Theme.TEXT : Theme.TEXT_DIM);
+					gfx.text(font, Gfx.fit(font, info.name(), row.w() - fw - 24), row.x() + 19, y + 4, shown ? Theme.TEXT : Theme.TEXT_DIM);
 					boolean chipHot = visible && chip.contains(mouseX, mouseY);
 					gfx.round(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chipHot ? Theme.CHIP_HOVER : Theme.CHIP);
 					gfx.centered(font, find, chip.x(), chip.y(), chip.w(), chip.h(), searching ? Theme.TEXT_DIM : Theme.TEXT);
@@ -795,13 +795,13 @@ public final class WorldMapScreen extends Screen {
 		int sy = bottom - 42;
 		gfx.fill(x + 1, sy - 2, width, sy - 1, 0xFF0B0E11);
 		String status = searching ? "搜尋中⋯" : notice != null ? notice : targetLabel != null ? "已標示最近的" + targetLabel : current == Tab.BIOMES ? "點選生態域可高亮並找最近處" : "點選名稱切換顯示";
-		gfx.text(font, font.plainSubstrByWidth(status, PANEL - 12), x + 6, sy + 2, notice != null ? Theme.WARNING : Theme.TEXT_SECONDARY);
+		gfx.text(font, Gfx.fit(font, status, PANEL - 12), x + 6, sy + 2, notice != null ? Theme.WARNING : Theme.TEXT_SECONDARY);
 		if (scale < 1.0 / 16 && current == Tab.STRUCTURES) {
 			gfx.text(font, "放大地圖以顯示結構", x + 6, sy + 14, Theme.TEXT_DIM);
 		} else {
-			gfx.text(font, font.plainSubstrByWidth("種子 " + SeedMaps.seed(view), PANEL - 12), x + 6, sy + 14, Theme.TEXT_DIM);
+			gfx.text(font, Gfx.fit(font, "種子 " + SeedMaps.seed(view), PANEL - 12), x + 6, sy + 14, Theme.TEXT_DIM);
 		}
-		gfx.text(font, font.plainSubstrByWidth(SeedMaps.SAME_AS_SERVER ? "依官網公開種子推算" : "遊戲版本與伺服器不同，可能有落差", PANEL - 12), x + 6, sy + 26, SeedMaps.SAME_AS_SERVER ? Theme.TEXT_DIM : Theme.WARNING);
+		gfx.text(font, Gfx.fit(font, SeedMaps.SAME_AS_SERVER ? "依官網公開種子推算" : "遊戲版本與伺服器不同，可能有落差", PANEL - 12), x + 6, sy + 26, SeedMaps.SAME_AS_SERVER ? Theme.TEXT_DIM : Theme.WARNING);
 	}
 
 	private void queryPanel(Gfx gfx, int mouseX, int mouseY, int x, int top, int bottom, Tab current) {
@@ -835,9 +835,9 @@ public final class WorldMapScreen extends Screen {
 						gfx.fill(row.x(), row.y(), row.x() + row.w(), row.y() + row.h(), a == selectedArea ? Theme.SELECTED : Theme.CARD_HOVER);
 					}
 					gfx.fill(row.x() + 3, y + 4, row.x() + 6, y + ROW2 - 6, a.line() | 0xFF000000);
-					gfx.text(font, font.plainSubstrByWidth(a.label(), row.w() - 14), row.x() + 10, y + 3, a == selectedArea ? Theme.ACCENT : Theme.TEXT);
+					gfx.fitText(font, a.label(), row.x() + 10, y + 3, row.w() - 14, a == selectedArea ? Theme.ACCENT : Theme.TEXT, visible ? mouseX : -1, mouseY);
 					String sub = (a.owner().isEmpty() ? "" : a.owner()) + (coordsHidden() ? "" : (a.owner().isEmpty() ? "" : " · ") + distanceText((a.minX() + a.maxX()) / 2, (a.minZ() + a.maxZ()) / 2));
-					gfx.text(font, font.plainSubstrByWidth(sub, row.w() - 14), row.x() + 10, y + 13, Theme.TEXT_SECONDARY);
+					gfx.text(font, Gfx.fit(font, sub, row.w() - 14), row.x() + 10, y + 13, Theme.TEXT_SECONDARY);
 					if (visible) {
 						hits.add(new Hit(row, () -> focusArea(a)));
 					}
@@ -869,9 +869,9 @@ public final class WorldMapScreen extends Screen {
 					}
 					MapIcons.badge(gfx, row.x() + 9, y + 11, 7, Minimap.POI, MapIcons.item("ender_pearl"));
 					int textW = row.w() - 22 - (command != null ? gw + 4 : 0);
-					gfx.text(font, font.plainSubstrByWidth(MapMarkers.homeName(poi), textW), row.x() + 20, y + 3, selected ? Theme.ACCENT : Theme.TEXT);
+					gfx.fitText(font, MapMarkers.homeName(poi), row.x() + 20, y + 3, textW, selected ? Theme.ACCENT : Theme.TEXT, visible ? mouseX : -1, mouseY);
 					String sub = MapMarkers.homeOwner(poi) + (coordsHidden() ? "" : " · " + distanceText(poi.x(), poi.z()));
-					gfx.text(font, font.plainSubstrByWidth(sub, textW), row.x() + 20, y + 13, Theme.TEXT_SECONDARY);
+					gfx.text(font, Gfx.fit(font, sub, textW), row.x() + 20, y + 13, Theme.TEXT_SECONDARY);
 					if (command != null) {
 						boolean chipHot = visible && chip.contains(mouseX, mouseY);
 						gfx.round(chip.x(), chip.y(), chip.x() + chip.w(), chip.y() + chip.h(), chipHot ? Theme.ACCENT_DIM : Theme.CHIP);
@@ -1004,7 +1004,7 @@ public final class WorldMapScreen extends Screen {
 			gfx.fill(row.x() + 4, row.y() + 7, row.x() + 14, row.y() + 17, 0xFF0B0E11);
 			gfx.fill(row.x() + 5, row.y() + 8, row.x() + 13, row.y() + 16, box);
 			gfx.text(font, layer.label(), row.x() + 20, row.y() + 3, layer.enabled() ? Theme.TEXT : Theme.TEXT_DIM);
-			gfx.text(font, font.plainSubstrByWidth(layer.detail(), row.w() - 24), row.x() + 20, row.y() + 13, Theme.TEXT_DIM);
+			gfx.fitText(font, layer.detail(), row.x() + 20, row.y() + 13, row.w() - 24, layer.enabled() ? Theme.TEXT_SECONDARY : Theme.TEXT_DIM, mouseX, mouseY);
 			if (layer.enabled()) {
 				hits.add(new Hit(row, () -> {
 					layer.toggle().run();
@@ -1076,7 +1076,7 @@ public final class WorldMapScreen extends Screen {
 			gfx.fill(-r, -r, r, r, 0xFF101317);
 			gfx.fill(-r + 1, -r + 1, r - 1, r - 1, color);
 			gfx.pop();
-			String name = font.plainSubstrByWidth(point.name, 120);
+			String name = Gfx.fit(font, point.name, 120);
 			int w = font.width(name);
 			gfx.fill(sx - w / 2 - 3, sy + 9, sx + w / 2 + 3, sy + 20, 0xB0101418);
 			gfx.text(font, name, sx - w / 2, sy + 11, hot ? Theme.ACCENT : Theme.TEXT);
@@ -1182,23 +1182,22 @@ public final class WorldMapScreen extends Screen {
 	}
 
 	private void header(Gfx gfx, int mouseX, int mouseY) {
-		gfx.fill(0, 0, width, HEADER, Theme.HEADER);
-		gfx.fill(0, HEADER - 1, width, HEADER, Theme.ACCENT);
-		Theme.drawBack(gfx, font, 0, 2, mouseX, mouseY);
-		hits.add(new Hit(new Rect(6, 8, Theme.backWidth(font), 14), this::onClose));
+		Theme.header(gfx, 0, 0, width);
+		Theme.drawBack(gfx, font, 0, 0, mouseX, mouseY);
+		hits.add(new Hit(new Rect(6, 6, Theme.backWidth(font), 14), this::onClose));
 		String title = view == null ? "地圖" : "地圖・" + WorldMaps.shardLabel(view.shard()) + "・" + WorldMaps.dimensionLabel(view.dimension()) + "・" + WorldMaps.layerLabel(view);
-		gfx.text(font, title, Theme.titleX(font, 0), 9, Theme.TEXT);
+		gfx.text(font, title, Theme.titleX(font, 0), 9, Theme.ACCENT);
 		if (view == null) {
 			return;
 		}
 		int right = width - 6;
-		right = chip(gfx, right, 5, "記錄點", false, mouseX, mouseY, () -> CommandMenuScreen.setScreen(new WaypointScreen(this, view)));
-		right = chip(gfx, right, 5, "回到我的位置", false, mouseX, mouseY, this::recenter);
-		right = chip(gfx, right, 5, "圖層 ▾", layersOpen, mouseX, mouseY, () -> layersOpen = !layersOpen);
-		layersAnchor = new Rect(right + 4, 5, 0, 14);
+		right = chip(gfx, right, 6, "記錄點", false, mouseX, mouseY, () -> CommandMenuScreen.setScreen(new WaypointScreen(this, view)));
+		right = chip(gfx, right, 6, "回到我的位置", false, mouseX, mouseY, this::recenter);
+		right = chip(gfx, right, 6, "圖層 ▾", layersOpen, mouseX, mouseY, () -> layersOpen = !layersOpen);
+		layersAnchor = new Rect(right + 4, 6, 0, 14);
 		if (view.markers() != null) {
 			boolean querying = panelOpen() && (currentTab() == Tab.RESIDENCES || currentTab() == Tab.HOMES);
-			right = chip(gfx, right, 5, "查詢", querying, mouseX, mouseY, () -> {
+			right = chip(gfx, right, 6, "查詢", querying, mouseX, mouseY, () -> {
 				if (querying) {
 					queryOpen = false;
 					tab = Tab.STRUCTURES;
@@ -1210,7 +1209,7 @@ public final class WorldMapScreen extends Screen {
 			});
 		}
 		if (SeedMaps.seed(view) != null) {
-			right = chip(gfx, right, 5, "種子地圖", seedMode, mouseX, mouseY, () -> {
+			right = chip(gfx, right, 6, "種子地圖", seedMode, mouseX, mouseY, () -> {
 				seedMode = !seedMode;
 				if (seedMode) {
 					tab = Tab.STRUCTURES;
@@ -1224,7 +1223,7 @@ public final class WorldMapScreen extends Screen {
 		List<String> caves = MapStore.layers(surface.local()).stream().filter(WorldMaps::isCave).sorted(java.util.Comparator.comparingInt(WorldMaps::bandOf).reversed()).toList();
 		if (!caves.isEmpty()) {
 			String label = view.cave() ? WorldMaps.layerLabel(view) : "地表";
-			right = chip(gfx, right, 5, label + " ▾", view.cave(), mouseX, mouseY, () -> {
+			right = chip(gfx, right, 6, label + " ▾", view.cave(), mouseX, mouseY, () -> {
 				List<String> all = new ArrayList<>();
 				all.add(WorldMaps.SURFACE);
 				all.addAll(caves);
@@ -1240,7 +1239,7 @@ public final class WorldMapScreen extends Screen {
 			if (!available && !dimension.equals(view.dimension())) {
 				continue;
 			}
-			right = chip(gfx, right, 5, WorldMaps.dimensionLabel(dimension), dimension.equals(view.dimension()), mouseX, mouseY, () -> switchTo(view.shard(), dimension));
+			right = chip(gfx, right, 6, WorldMaps.dimensionLabel(dimension), dimension.equals(view.dimension()), mouseX, mouseY, () -> switchTo(view.shard(), dimension));
 		}
 		if (SHARDS.contains(view.shard())) {
 			right -= 6;
@@ -1249,7 +1248,7 @@ public final class WorldMapScreen extends Screen {
 				if (MapStore.layers(WorldMaps.view(shard, view.dimension(), WorldMaps.SURFACE).local()).isEmpty() && !shard.equals(view.shard())) {
 					continue;
 				}
-				right = chip(gfx, right, 5, WorldMaps.shardLabel(shard), shard.equals(view.shard()), mouseX, mouseY, () -> switchTo(shard, view.dimension()));
+				right = chip(gfx, right, 6, WorldMaps.shardLabel(shard), shard.equals(view.shard()), mouseX, mouseY, () -> switchTo(shard, view.dimension()));
 			}
 		}
 	}
@@ -1323,7 +1322,7 @@ public final class WorldMapScreen extends Screen {
 			}
 		}));
 		String hint = "拖曳移動 · 滾輪縮放 · 右鍵新增記錄點 · 空白鍵回到自己" + (seedActive() ? " · 種子地圖依原版生成規則推算" : view.markers() != null ? " · 領地與傳送點來自伺服器網頁地圖" : "");
-		hint = font.plainSubstrByWidth(hint, Math.max(0, clear.x() - font.width(left) - 24));
+		hint = Gfx.fit(font, hint, Math.max(0, clear.x() - font.width(left) - 24));
 		gfx.text(font, hint, clear.x() - font.width(hint) - 8, y + 4, Theme.TEXT_DIM);
 	}
 
@@ -1352,6 +1351,7 @@ public final class WorldMapScreen extends Screen {
 		}
 		for (Hit hit : List.copyOf(hits)) {
 			if (hit.rect().contains(event.x(), event.y())) {
+				Theme.click();
 				hit.action().run();
 				return true;
 			}

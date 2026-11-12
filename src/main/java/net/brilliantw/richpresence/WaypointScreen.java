@@ -22,8 +22,8 @@ public final class WaypointScreen extends Screen {
 
 	private record Hit(Rect rect, Runnable action) {}
 
-	private static final int HEADER = 26;
-	private static final int FOOTER = 14;
+	private static final int HEADER = Theme.HEADER_H;
+	private static final int FOOTER = Theme.FOOTER_H;
 	private static final int ROW = 30;
 
 	private final Screen parent;
@@ -129,11 +129,10 @@ public final class WaypointScreen extends Screen {
 		addButton = null;
 		Rect p = panel();
 		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
-		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT);
+		Theme.header(gfx, p.x(), p.y(), p.w());
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
 		String where = view == null ? "" : "・" + WorldMaps.shardLabel(view.shard()) + "・" + WorldMaps.dimensionLabel(view.dimension());
-		gfx.text(font, "記錄點" + where, Theme.titleX(font, p.x()), p.y() + 9, Theme.TEXT);
+		gfx.text(font, "記錄點" + where, Theme.titleX(font, p.x()), p.y() + 9, Theme.ACCENT);
 		if (view == null) {
 			gfx.centered(font, "進入伺服器後才能管理記錄點", p.x(), p.y() + p.h() / 2 - 5, p.w(), 10, Theme.TEXT_SECONDARY);
 			return;
@@ -167,8 +166,7 @@ public final class WaypointScreen extends Screen {
 			y += ROW;
 		}
 		gfx.endScissor();
-		gfx.fill(p.x(), p.y() + p.h() - FOOTER, p.x() + p.w(), p.y() + p.h() - FOOTER + 1, Theme.HEADER);
-		gfx.text(font, "記錄點只是標記，不能傳送 · 點眼睛切換在地圖上顯示", p.x() + 8, p.y() + p.h() - FOOTER + 4, Theme.TEXT_DIM);
+		Theme.footer(gfx, font, p.x(), p.y() + p.h(), p.w(), "記錄點只是標記，不能傳送 · 點眼睛切換在地圖上顯示", Theme.TEXT_DIM);
 	}
 
 	private void drawRow(Gfx gfx, Rect row, Waypoints.Point point, LocalPlayer player, boolean hidden, boolean here, int mouseX, int mouseY, Rect clip) {
@@ -180,7 +178,7 @@ public final class WaypointScreen extends Screen {
 		gfx.fill(-5, -5, 5, 5, 0xFF101317);
 		gfx.fill(-4, -4, 4, 4, point.visible ? color : MapMath.alpha(color, 0.35));
 		gfx.pop();
-		gfx.text(font, font.plainSubstrByWidth(point.name, row.w() - 170), row.x() + 28, row.y() + 5, point.visible ? Theme.TEXT : Theme.TEXT_DIM);
+		gfx.fitText(font, point.name, row.x() + 28, row.y() + 5, row.w() - 170, point.visible ? Theme.TEXT : Theme.TEXT_DIM, inClip ? mouseX : -1, mouseY);
 		String detail;
 		if (hidden) {
 			detail = "伺服器隱藏了座標資訊";
@@ -227,10 +225,12 @@ public final class WaypointScreen extends Screen {
 		}
 		Rect p = panel();
 		if (Theme.backHit(font, p.x(), p.y(), event.x(), event.y())) {
+			Theme.click();
 			onClose();
 			return true;
 		}
 		if (addButton != null && addButton.contains(event.x(), event.y())) {
+			Theme.click();
 			openAdd(this);
 			return true;
 		}
@@ -238,6 +238,7 @@ public final class WaypointScreen extends Screen {
 		if (c.contains(event.x(), event.y())) {
 			for (Hit hit : List.copyOf(hits)) {
 				if (hit.rect().contains(event.x(), event.y())) {
+					Theme.click();
 					hit.action().run();
 					return true;
 				}
@@ -249,7 +250,7 @@ public final class WaypointScreen extends Screen {
 
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-		scroll -= scrollY * 24;
+		scroll -= scrollY * ROW;
 		return true;
 	}
 

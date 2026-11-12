@@ -195,7 +195,7 @@ public final class QuickMessages {
 			Rect delete = delete(row);
 			boolean hovered = row.contains(mouseX, mouseY);
 			gfx.fill(row.x(), row.y(), row.x() + row.w(), row.y() + row.h(), hovered ? 0x60FFFFFF : 0x30FFFFFF);
-			String label = font.width(text) > row.w() - 8 ? font.plainSubstrByWidth(text, row.w() - 8 - font.width("…")) + "…" : text;
+			String label = Gfx.fit(font, text, row.w() - 8);
 			gfx.label(font, label, row.x() + 4, row.y(), row.h(), text.startsWith("/") ? 0xFFCFFFC0 : 0xFFFFFFFF);
 			boolean deleteHovered = delete.contains(mouseX, mouseY);
 			gfx.fill(delete.x(), delete.y(), delete.x() + delete.w(), delete.y() + delete.h(), deleteHovered ? 0x80FF5050 : 0x30FFFFFF);
@@ -221,10 +221,12 @@ public final class QuickMessages {
 			return false;
 		}
 		if (backButton(panel).contains(mouseX, mouseY)) {
+			Theme.click();
 			ChatMenu.backToMenu(screen);
 			return true;
 		}
 		if (saveButton(panel).contains(mouseX, mouseY)) {
+			Theme.click();
 			add(input);
 			return true;
 		}
@@ -233,11 +235,13 @@ public final class QuickMessages {
 		for (int slot = 0; slot < rows && scroll + slot < list.size(); slot++) {
 			Rect row = row(panel, slot);
 			if (delete(row).contains(mouseX, mouseY)) {
+				Theme.click();
 				remove(scroll + slot);
 				return true;
 			}
 			if (row.contains(mouseX, mouseY)) {
 				String text = list.get(scroll + slot);
+				Theme.click();
 				if (Minecraft.getInstance().hasShiftDown()) {
 					PrivateWindow.insert(screen, text);
 				} else {

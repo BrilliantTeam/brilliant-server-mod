@@ -47,9 +47,9 @@ public final class SponsorScreen extends Screen {
 		}
 	}
 
-	private static final int HEADER = 26;
+	private static final int HEADER = Theme.HEADER_H;
 	private static final int TABS = 20;
-	private static final int FOOTER = 14;
+	private static final int FOOTER = Theme.FOOTER_H;
 	private static final int LINE = 10;
 	private static final int GOLD = 0xFFFFBB06;
 	private static final int GOLD_HOVER = 0xFFFFCB3A;
@@ -69,7 +69,8 @@ public final class SponsorScreen extends Screen {
 	private final Remote nameCheck = new Remote();
 	private final Remote discordCheck = new Remote();
 	private int tab;
-	private double scroll;
+	private final Scroller scroller = new Scroller();
+	private Rect track;
 	private int contentHeight;
 	private int rewardColumn = -1;
 	private int methodDetail = -1;
@@ -225,7 +226,7 @@ public final class SponsorScreen extends Screen {
 
 	private void selectTab(int index) {
 		tab = index;
-		scroll = 0;
+		scroller.reset();
 		if (index != 1) {
 			formBoxes().forEach(box -> box.visible = false);
 			if (formBoxes().contains(getFocused())) {
@@ -303,14 +304,13 @@ public final class SponsorScreen extends Screen {
 		Rect p = panel();
 		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
-		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, GOLD);
+		Theme.header(gfx, p.x(), p.y(), p.w(), GOLD);
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
 		gfx.text(font, title.getString(), Theme.titleX(font, p.x()), p.y() + 9, GOLD);
 		SponsorStore.Data data = SponsorStore.data();
 		if (data != null && !data.excerpt.isBlank()) {
 			int x = Theme.titleX(font, p.x()) + font.width(title) + 10;
-			gfx.text(font, font.plainSubstrByWidth(data.excerpt, siteChip().x() - x - 6), x, p.y() + 9, Theme.TEXT_DIM);
+			gfx.text(font, Gfx.fit(font, data.excerpt, siteChip().x() - x - 6), x, p.y() + 9, Theme.TEXT_DIM);
 		}
 		Rect site = siteChip();
 		chip(gfx, site, "官網贊助頁", site.contains(mouseX, mouseY), GOLD);
@@ -343,8 +343,8 @@ public final class SponsorScreen extends Screen {
 			int before = hits.size();
 			contentHeight = section(null, data, c, 0, -1, -1, false);
 			hits.subList(before, hits.size()).clear();
-			scroll = Math.clamp(scroll, 0, Math.max(0, contentHeight - c.h()));
-			int top = c.y() + 2 - (int) scroll;
+			scroller.measure(contentHeight, c.h());
+			int top = c.y() + 2 - scroller.offset();
 			boolean inside = c.contains(mouseX, mouseY);
 			gfx.scissor(c.x(), c.y(), c.x() + c.w(), c.y() + c.h());
 			section(gfx, data, c, top, inside ? mouseX : -1, inside ? mouseY : -1, true);
@@ -359,14 +359,10 @@ public final class SponsorScreen extends Screen {
 					hits.set(i, new Hit(new Rect(r.x(), y1, r.w(), y2 - y1), hits.get(i).action()));
 				}
 			}
-			if (contentHeight > c.h()) {
-				int bar = Math.max(16, c.h() * c.h() / contentHeight);
-				int barY = c.y() + (int) ((c.h() - bar) * (scroll / (contentHeight - c.h())));
-				gfx.fill(c.x() + c.w() + 3, barY, c.x() + c.w() + 5, barY + bar, Theme.CHIP_HOVER);
-			}
+			track = new Rect(c.x() + c.w(), c.y(), 8, c.h());
+			Theme.scrollbar(gfx, c.x() + c.w() + 2, c.y(), c.h(), scroller, track.contains(mouseX, mouseY));
 		}
-		gfx.fill(p.x(), p.y() + p.h() - FOOTER, p.x() + p.w(), p.y() + p.h() - FOOTER + 1, Theme.HEADER);
-		gfx.text(font, "Patreon、轉帳與海外付款需在官網完成 · 資料來源：輝煌官網 · Esc 返回", p.x() + 8, p.y() + p.h() - FOOTER + 4, Theme.TEXT_DIM);
+		Theme.footer(gfx, font, p.x(), p.y() + p.h(), p.w(), "Patreon、轉帳與海外付款需在官網完成 · 資料來源：輝煌官網 · Esc 返回", Theme.TEXT_DIM);
 	}
 
 	private int section(Gfx gfx, SponsorStore.Data data, Rect c, int top, int mouseX, int mouseY, boolean draw) {
@@ -498,7 +494,7 @@ public final class SponsorScreen extends Screen {
 				if ((i / columns) % 2 == 0) {
 					gfx.fill(cx - 2, cy - 2, cx + cellW, cy + 11, 0x18FFFFFF);
 				}
-				gfx.text(font, font.plainSubstrByWidth(row.name, cellW - valueW - 12), cx, cy, Theme.TEXT_SECONDARY);
+				gfx.text(font, Gfx.fit(font, row.name, cellW - valueW - 12), cx, cy, Theme.TEXT_SECONDARY);
 				gfx.text(font, shown, cx + cellW - valueW - 4, cy, improved ? GOLD : shown.equals("✓") ? Theme.SUCCESS : Theme.TEXT);
 			}
 		}
@@ -611,7 +607,7 @@ public final class SponsorScreen extends Screen {
 	private int commandLine(Gfx gfx, SponsorStore.Command command, int x, int y, int width, boolean draw) {
 		int commandWidth = Math.min(font.width(command.command), width / 2);
 		if (draw) {
-			gfx.text(font, font.plainSubstrByWidth(command.command, commandWidth + 1), x, y, COMMAND);
+			gfx.text(font, Gfx.fit(font, command.command, commandWidth + 1), x, y, COMMAND);
 		}
 		int effectX = x + commandWidth + 8;
 		return paragraph(gfx, command.effect, effectX, y, x + width - effectX, Theme.TEXT_SECONDARY, draw);
@@ -653,7 +649,7 @@ public final class SponsorScreen extends Screen {
 			box.setWidth(w);
 			box.visible = y + 11 >= c.y() && y + 27 <= c.y() + c.h();
 			if (!status.text().isEmpty()) {
-				gfx.text(font, font.plainSubstrByWidth(status.text(), w), x, y + 30, status.color());
+				gfx.text(font, Gfx.fit(font, status.text(), w), x, y + 30, status.color());
 			}
 		}
 		return y + 43;
@@ -917,7 +913,7 @@ public final class SponsorScreen extends Screen {
 				gfx.centered(font, method.tag, r.x() + r.w() - tagW - 6, r.y() + 3, tagW, 12, tagColor);
 				int ly = r.y() + 18;
 				for (String line : method.desc) {
-					gfx.text(font, font.plainSubstrByWidth(line, r.w() - 14), r.x() + 8, ly, Theme.TEXT_DIM);
+					gfx.text(font, Gfx.fit(font, line, r.w() - 14), r.x() + 8, ly, Theme.TEXT_DIM);
 					ly += LINE;
 				}
 				int index = i;
@@ -1000,12 +996,17 @@ public final class SponsorScreen extends Screen {
 		}
 		Rect p = panel();
 		if (Theme.backHit(font, p.x(), p.y(), event.x(), event.y())) {
+			Theme.click();
 			onClose();
+			return true;
+		}
+		if (track != null && track.contains(event.x(), event.y()) && scroller.press(event.y(), track.y(), track.h())) {
 			return true;
 		}
 		setFocused(null);
 		for (Hit hit : List.copyOf(hits)) {
 			if (hit.rect().contains(event.x(), event.y())) {
+				Theme.click();
 				hit.action().run();
 				return true;
 			}
@@ -1014,8 +1015,18 @@ public final class SponsorScreen extends Screen {
 	}
 
 	@Override
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		return track != null && scroller.drag(event.y(), track.y(), track.h()) || super.mouseDragged(event, dragX, dragY);
+	}
+
+	@Override
+	public boolean mouseReleased(MouseButtonEvent event) {
+		return scroller.release() || super.mouseReleased(event);
+	}
+
+	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-		scroll -= scrollY * 24;
+		scroller.scrollBy((int) Math.round(-scrollY * 30));
 		return true;
 	}
 

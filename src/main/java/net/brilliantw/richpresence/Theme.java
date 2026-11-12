@@ -3,7 +3,16 @@ package net.brilliantw.richpresence;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+//? if >=26.1 {
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+//?} else {
+/*import net.minecraft.client.gui.GuiGraphics;
+*///?}
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import java.util.List;
@@ -32,7 +41,7 @@ public final class Theme {
 	private static final int BASE_HEADER = 0xFF1A2026;
 	private static final int BASE_SIDEBAR = 0xFF161B20;
 	private static final int BASE_CARD = 0xFF1E252C;
-	private static final int BASE_CARD_HOVER = 0xFF2A333C;
+	private static final int BASE_CARD_HOVER = 0xFF323C46;
 	private static final int BASE_SELECTED = 0xFF253543;
 	private static final int BASE_CHIP = 0xFF35404B;
 	private static final int BASE_CHIP_HOVER = 0xFF4A5966;
@@ -49,12 +58,18 @@ public final class Theme {
 	public static int ACCENT = 0xFF7AD3FF;
 	public static int ACCENT_DIM = BASE_ACCENT_DIM;
 	public static final int TEXT = 0xFFE8EEF2;
-	public static final int TEXT_SECONDARY = 0xFF8C98A4;
-	public static final int TEXT_DIM = 0xFF5C6773;
+	public static final int TEXT_SECONDARY = 0xFFB0BAC4;
+	public static final int TEXT_DIM = 0xFF838E9A;
 	public static final int SUCCESS = 0xFF8FE3A0;
 	public static final int WARNING = 0xFFF6E0A4;
-	public static final int DANGER = 0xFFFF7A7A;
+	public static final int DANGER = 0xFFFF8C8C;
+	public static final int KNOB_ON = 0xFF121619;
+	public static final int SCROLLBAR = 0xFF6B7B8A;
+	public static final int SCROLLBAR_HOVER = 0xFF95A3B0;
 
+	public static final int HEADER_H = 26;
+	public static final int FOOTER_H = 16;
+	public static final int SCROLLBAR_W = 4;
 	public static final String BACK = "返回";
 	private static final Identifier WATERMARK = Identifier.fromNamespaceAndPath("brilliant-server-mod", "textures/gui/watermark.png");
 	private static final int WATERMARK_TEXTURE = 192;
@@ -69,6 +84,29 @@ public final class Theme {
 		int g = (int) Math.round((a >> 8 & 255) * (1 - t) + (b >> 8 & 255) * t);
 		int bl = (int) Math.round((a & 255) * (1 - t) + (b & 255) * t);
 		return a & 0xFF000000 | r << 16 | g << 8 | bl;
+	}
+
+	static double luminance(int color) {
+		double r = channel(color >> 16 & 255), g = channel(color >> 8 & 255), b = channel(color & 255);
+		return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+	}
+
+	private static double channel(int value) {
+		double v = value / 255.0;
+		return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+	}
+
+	static double contrast(int a, int b) {
+		double la = luminance(a), lb = luminance(b);
+		return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+	}
+
+	static int readable(int color, int background) {
+		int result = color;
+		for (int i = 1; i <= 20 && contrast(result, background) < 4.5; i++) {
+			result = mix(color, 0xFFFFFFFF, i * 0.05);
+		}
+		return result;
 	}
 
 	public static Preset preset(List<Preset> list, String id) {
@@ -109,6 +147,7 @@ public final class Theme {
 		CARD_HOVER = k == 0 ? BASE_CARD_HOVER : mix(BASE_CARD_HOVER, t, k);
 		CHIP = k == 0 ? BASE_CHIP : mix(BASE_CHIP, t, k * 0.8);
 		CHIP_HOVER = k == 0 ? BASE_CHIP_HOVER : mix(BASE_CHIP_HOVER, t, k * 0.8);
+		accent = readable(accent, CARD_HOVER);
 		ACCENT = accent;
 		boolean defaultAccent = accent == 0xFF7AD3FF;
 		ACCENT_DIM = defaultAccent ? BASE_ACCENT_DIM : mix(accent, 0xFF0E1114, 0.62);
@@ -127,6 +166,93 @@ public final class Theme {
 		frame(gfx, x1, y1, x2, y2, PANEL);
 	}
 
+	public static void header(Gfx gfx, int x, int y, int w) {
+		header(gfx, x, y, w, ACCENT_DIM);
+	}
+
+	public static void header(Gfx gfx, int x, int y, int w, int line) {
+		gfx.fill(x, y, x + w, y + HEADER_H, HEADER);
+		gfx.fill(x, y + HEADER_H - 1, x + w, y + HEADER_H, line);
+	}
+
+	public static void footer(Gfx gfx, Font font, int x, int bottom, int w, String text, int color) {
+		gfx.fill(x, bottom - FOOTER_H, x + w, bottom - FOOTER_H + 1, HEADER);
+		gfx.text(font, Gfx.fit(font, text, w - 16), x + 8, bottom - FOOTER_H + 4, color);
+	}
+
+	public static void scrollbar(Gfx gfx, int x, int y, int h, Scroller scroller, boolean hot) {
+		if (!scroller.overflow()) {
+			return;
+		}
+		int start = y + scroller.thumbStart(h);
+		gfx.round(x, start, x + SCROLLBAR_W, start + scroller.thumbLength(h), hot || scroller.dragging() ? SCROLLBAR_HOVER : SCROLLBAR);
+	}
+
+	public static void scrollbar(Gfx gfx, int x, int y, int h, int content, double offset, boolean hot) {
+		if (content <= h) {
+			return;
+		}
+		int length = Math.max(16, h * h / content);
+		int start = y + (int) ((h - length) * Math.clamp(offset / (content - h), 0, 1));
+		gfx.round(x, start, x + SCROLLBAR_W, start + length, hot ? SCROLLBAR_HOVER : SCROLLBAR);
+	}
+
+	public static ButtonWidget button(Component message, Button.OnPress onPress, int x, int y, int w, int h) {
+		return new ButtonWidget(x, y, w, h, message, onPress);
+	}
+
+	public static final class ButtonWidget extends Button {
+		private boolean primary;
+
+		private ButtonWidget(int x, int y, int w, int h, Component message, OnPress onPress) {
+			super(x, y, w, h, message, onPress, DEFAULT_NARRATION);
+		}
+
+		public ButtonWidget primary() {
+			primary = true;
+			return this;
+		}
+
+		public ButtonWidget tip(String text) {
+			setTooltip(Tooltip.create(Component.literal(text)));
+			return this;
+		}
+
+		//? if >=26.1 {
+		@Override
+		protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+			draw(new Gfx(graphics));
+		}
+		//?} else {
+		/*@Override
+		protected void renderContents(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+			draw(new Gfx(graphics));
+		}
+		*///?}
+
+		private void draw(Gfx gfx) {
+			int x = getX(), y = getY(), w = getWidth(), h = getHeight();
+			boolean hot = active && isHoveredOrFocused();
+			int fill = !active ? CARD : primary ? (hot ? mix(ACCENT_DIM, ACCENT, 0.25) : ACCENT_DIM) : hot ? CHIP_HOVER : CHIP;
+			gfx.round(x, y, x + w, y + h, fill);
+			if (active && isFocused()) {
+				gfx.outline(x, y, x + w, y + h, ACCENT);
+			}
+			Font font = Minecraft.getInstance().font;
+			int color = active ? TEXT : TEXT_DIM;
+			Component message = getMessage();
+			if (font.width(message) <= w - 8) {
+				gfx.text(font, message, x + (w - font.width(message)) / 2, Gfx.textTop(font, y, h), color);
+			} else {
+				gfx.text(font, Gfx.fit(font, message.getString(), w - 8), x + 4, Gfx.textTop(font, y, h), color);
+			}
+		}
+	}
+
+	public static void click() {
+		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+	}
+
 	public static void watermark(Gfx gfx, int panelX, int panelY, int panelW, int panelH) {
 		int size = Math.min(WATERMARK_MAX, Math.min(panelW, panelH - 60) / 2);
 		if (size < 32) {
@@ -138,8 +264,7 @@ public final class Theme {
 	public static void hint(EditBox box, String text) {
 		Font font = Minecraft.getInstance().font;
 		int width = Math.max(0, box.getInnerWidth());
-		String shown = font.width(text) <= width ? text : font.plainSubstrByWidth(text, Math.max(0, width - font.width("…"))) + "…";
-		box.setHint(Component.literal(shown).withStyle(ChatFormatting.DARK_GRAY));
+		box.setHint(Component.literal(Gfx.fit(font, text, width)).withStyle(ChatFormatting.DARK_GRAY));
 	}
 
 	public static int backWidth(Font font) {

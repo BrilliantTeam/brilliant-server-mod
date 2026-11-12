@@ -18,7 +18,7 @@ import net.minecraft.util.FormattedCharSequence;
 public final class UpdateScreen extends Screen {
 	private static final int WIDTH = 300;
 	private static final int HEIGHT = 170;
-	private static final int HEADER = 26;
+	private static final int HEADER = Theme.HEADER_H;
 
 	private final Screen parent;
 	private Button install;
@@ -39,19 +39,19 @@ public final class UpdateScreen extends Screen {
 	@Override
 	protected void init() {
 		int y = top() + HEIGHT - 28;
-		install = addRenderableWidget(Button.builder(Component.literal("下載並安裝"), b -> {
+		install = addRenderableWidget(Theme.button(Component.literal("下載並安裝"), b -> {
 			if (ModUpdate.status() == ModUpdate.Status.READY) {
 				minecraft.stop();
 			} else {
 				ModUpdate.download();
 			}
-		}).bounds(left() + 10, y, 136, 20).build());
-		addRenderableWidget(Button.builder(Component.literal("在瀏覽器開啟"), b -> {
+		}, left() + 10, y, 136, 20).primary());
+		addRenderableWidget(Theme.button(Component.literal("在瀏覽器開啟"), b -> {
 			ModUpdate.Latest latest = ModUpdate.available();
 			if (latest != null) {
 				ConfirmLinkScreen.confirmLinkNow(this, URI.create(latest.page));
 			}
-		}).bounds(left() + WIDTH - 146, y, 136, 20).build());
+		}, left() + WIDTH - 146, y, 136, 20));
 	}
 
 	//? if >=26.1 {
@@ -81,8 +81,7 @@ public final class UpdateScreen extends Screen {
 		int x = left();
 		int y = top();
 		Theme.panel(gfx, x, y, x + WIDTH, y + HEIGHT);
-		gfx.fill(x, y, x + WIDTH, y + HEADER, Theme.HEADER);
-		gfx.fill(x, y + HEADER - 1, x + WIDTH, y + HEADER, Theme.ACCENT_DIM);
+		Theme.header(gfx, x, y, WIDTH);
 		gfx.text(font, title.getString(), Theme.titleX(font, x), y + 9, Theme.ACCENT);
 		Theme.drawBack(gfx, font, x, y, mouseX, mouseY);
 
@@ -113,6 +112,7 @@ public final class UpdateScreen extends Screen {
 			return true;
 		}
 		if (event.button() == InputConstants.MOUSE_BUTTON_LEFT && Theme.backHit(font, left(), top(), event.x(), event.y())) {
+			Theme.click();
 			onClose();
 			return true;
 		}

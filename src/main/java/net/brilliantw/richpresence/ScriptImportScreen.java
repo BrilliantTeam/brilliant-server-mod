@@ -13,12 +13,11 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 *///?}
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public final class ScriptImportScreen extends Screen {
-	private static final int HEADER = 22;
+	private static final int HEADER = Theme.HEADER_H;
 	private static final float SCALE = 0.75f;
 
 	private final Screen parent;
@@ -121,17 +120,13 @@ public final class ScriptImportScreen extends Screen {
 			code = value;
 			update();
 		});
-		addRenderableWidget(Button.builder(Component.literal("貼上剪貼簿"), b -> setCode(minecraft.keyboardHandler.getClipboard()))
-				.bounds(x + w - pasteWidth - fileWidth - 4, top() + HEADER + 15, pasteWidth, 20).build());
-		addRenderableWidget(Button.builder(Component.literal("選擇檔案"), b -> FilePicker.openTextFile("選擇腳本 .txt 檔", this::loadFile))
-				.bounds(x + w - fileWidth, top() + HEADER + 15, fileWidth, 20)
-				.tooltip(Tooltip.create(Component.literal("從 .txt 檔匯入，例如 Discord 自動轉成的 message.txt\n也可以直接把檔案拖進遊戲視窗")))
-				.build());
+		addRenderableWidget(Theme.button(Component.literal("貼上剪貼簿"), b -> setCode(minecraft.keyboardHandler.getClipboard()), x + w - pasteWidth - fileWidth - 4, top() + HEADER + 15, pasteWidth, 20));
+		addRenderableWidget(Theme.button(Component.literal("選擇檔案"), b -> FilePicker.openTextFile("選擇腳本 .txt 檔", this::loadFile), x + w - fileWidth, top() + HEADER + 15, fileWidth, 20).tip("從 .txt 檔匯入，例如 Discord 自動轉成的 message.txt\n也可以直接把檔案拖進遊戲視窗"));
 
 		int buttonY = top() + panelHeight() - 26;
 		int buttonWidth = (w - 6) / 2;
-		addRenderableWidget(Button.builder(Component.literal("取消"), b -> onClose()).bounds(x, buttonY, buttonWidth, 20).build());
-		importButton = addRenderableWidget(Button.builder(importLabel(), b -> confirm()).bounds(x + buttonWidth + 6, buttonY, buttonWidth, 20).build());
+		addRenderableWidget(Theme.button(Component.literal("取消"), b -> onClose(), x, buttonY, buttonWidth, 20));
+		importButton = addRenderableWidget(Theme.button(importLabel(), b -> confirm(), x + buttonWidth + 6, buttonY, buttonWidth, 20).primary());
 		importButton.active = canImport();
 		setInitialFocus(input);
 	}
@@ -192,9 +187,8 @@ public final class ScriptImportScreen extends Screen {
 		int w = panelWidth();
 		Theme.panel(gfx, x, y, x + w, y + panelHeight());
 		Theme.watermark(gfx, x, y, w, panelHeight());
-		gfx.fill(x, y, x + w, y + HEADER, Theme.HEADER);
-		gfx.fill(x, y + HEADER - 1, x + w, y + HEADER, Theme.ACCENT_DIM);
-		gfx.text(font, title.getString(), x + 10, y + 7, Theme.ACCENT);
+		Theme.header(gfx, x, y, w);
+		gfx.text(font, title.getString(), x + 10, y + 9, Theme.ACCENT);
 
 		gfx.text(font, "腳本代碼", x + 10, y + HEADER + 5, Theme.TEXT_SECONDARY);
 		String dropHint = "也可以把 .txt 檔拖進視窗";
@@ -202,11 +196,11 @@ public final class ScriptImportScreen extends Screen {
 
 		int summaryY = previewTop() - 14;
 		if (!error.isEmpty()) {
-			gfx.text(font, font.plainSubstrByWidth(error, w - 20), x + 10, summaryY, Theme.DANGER);
+			gfx.text(font, Gfx.fit(font, error, w - 20), x + 10, summaryY, Theme.DANGER);
 		} else if (parsed == null) {
 			gfx.text(font, "貼上代碼或選擇檔案後，會在這裡預覽積木", x + 10, summaryY, Theme.TEXT_DIM);
 		} else {
-			gfx.text(font, font.plainSubstrByWidth(summary(), w - 20), x + 10, summaryY, canImport() ? Theme.TEXT : Theme.DANGER);
+			gfx.text(font, Gfx.fit(font, summary(), w - 20), x + 10, summaryY, canImport() ? Theme.TEXT : Theme.DANGER);
 		}
 
 		int top = previewTop();
@@ -248,7 +242,7 @@ public final class ScriptImportScreen extends Screen {
 		}
 		if (!parsed.variables.isEmpty()) {
 			if (draw) {
-				gfx.text(font, font.plainSubstrByWidth("變數：" + String.join("、", parsed.variables), panelWidth() - 32), x + 16, ly, 0xFFFF8C1A);
+				gfx.text(font, Gfx.fit(font, "變數：" + String.join("、", parsed.variables), panelWidth() - 32), x + 16, ly, 0xFFFF8C1A);
 			}
 			ly += 12;
 		}

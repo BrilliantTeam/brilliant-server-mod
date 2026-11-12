@@ -393,7 +393,7 @@ public final class ScriptTutorial {
 		Icons.PLAY.drawCentered(gfx, playX, cy + 2, 30, 12, Theme.SUCCESS);
 		gfx.round(stopX, cy + 2, stopX + 29, cy + 14, running ? Theme.CHIP : 0x60303840);
 		gfx.fill(stopX + 11, cy + 5, stopX + 17, cy + 11, running ? Theme.DANGER : Theme.TEXT_DIM);
-		gfx.label(font, font.plainSubstrByWidth("當按下執行時", playX - mx - 10), mx + 6, cy, 16, running ? Theme.SUCCESS : Theme.TEXT);
+		gfx.label(font, Gfx.fit(font, "當按下執行時", playX - mx - 10), mx + 6, cy, 16, running ? Theme.SUCCESS : Theme.TEXT);
 		int py = cy + 18;
 		gfx.scissor(mx + 2, py, mx + mw - 2, my + mh - 14);
 		gfx.push(mx + 6, py + 2, 0.75f);
@@ -408,7 +408,7 @@ public final class ScriptTutorial {
 		gfx.pop();
 		gfx.endScissor();
 		if (t >= 1.6) {
-			gfx.text(font, font.plainSubstrByWidth("12:00:01 已送出：嗨", mw - 8), mx + 4, my + mh - 11, Theme.TEXT);
+			gfx.text(font, Gfx.fit(font, "12:00:01 已送出：嗨", mw - 8), mx + 4, my + mh - 11, Theme.TEXT);
 		}
 		int gx = mx + mw - 7;
 		int gy = my + mh - 7;

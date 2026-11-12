@@ -184,22 +184,24 @@ public final class Freecam {
 		return (speed >= 10 ? Integer.toString(Math.round(speed)) : String.format("%.1f", speed)) + " 格/秒";
 	}
 
-	public static float nextSpeed(float speed) {
-		for (float option : SPEEDS) {
-			if (option > speed + 0.01F) {
+	public static float nextSpeed(float speed, int dir) {
+		for (int i = 0; i < SPEEDS.length; i++) {
+			float option = SPEEDS[dir > 0 ? i : SPEEDS.length - 1 - i];
+			if (dir > 0 ? option > speed + 0.01F : option < speed - 0.01F) {
 				return option;
 			}
 		}
-		return SPEEDS[0];
+		return SPEEDS[dir > 0 ? 0 : SPEEDS.length - 1];
 	}
 
-	public static int nextBoost(int boost) {
-		for (int option : BOOSTS) {
-			if (option > boost) {
+	public static int nextBoost(int boost, int dir) {
+		for (int i = 0; i < BOOSTS.length; i++) {
+			int option = BOOSTS[dir > 0 ? i : BOOSTS.length - 1 - i];
+			if (dir > 0 ? option > boost : option < boost) {
 				return option;
 			}
 		}
-		return BOOSTS[0];
+		return BOOSTS[dir > 0 ? 0 : BOOSTS.length - 1];
 	}
 
 	public static void frame() {
@@ -267,8 +269,9 @@ public final class Freecam {
 		check(Math.abs(yaw - 90) < 1e-4, "turn yaw");
 		turn(0, 10000);
 		check(pitch == 90, "pitch clamp");
-		check(nextSpeed(10) == 20 && nextSpeed(80) == 1 && nextSpeed(3) == 5, "speed cycle");
-		check(nextBoost(3) == 5 && nextBoost(10) == 2, "boost cycle");
+		check(nextSpeed(10, 1) == 20 && nextSpeed(80, 1) == 1 && nextSpeed(3, 1) == 5, "speed cycle");
+		check(nextSpeed(10, -1) == 5 && nextSpeed(1, -1) == 80 && nextSpeed(3, -1) == 2, "speed cycle back");
+		check(nextBoost(3, 1) == 5 && nextBoost(10, 1) == 2 && nextBoost(3, -1) == 2 && nextBoost(2, -1) == 10, "boost cycle");
 		check(formatSpeed(2.5F).equals(String.format("%.1f", 2.5F) + " 格/秒") && formatSpeed(40).equals("40 格/秒"), "format");
 		System.out.println("ok");
 	}

@@ -334,9 +334,9 @@ public final class ChatMenu {
 				gfx.label(font, tag, r.x() + 5, r.y(), r.h(), Theme.TEXT_DIM);
 				int lx = r.x() + 5 + font.width("伺服器") + 6;
 				int detailWidth = Math.min(font.width(item.detail()), r.w() / 3);
-				String label = font.plainSubstrByWidth(item.label(), r.x() + r.w() - lx - detailWidth - 10);
+				String label = Gfx.fit(font, item.label(), r.x() + r.w() - lx - detailWidth - 10);
 				gfx.label(font, label, lx, r.y(), r.h(), item.color());
-				String detail = font.plainSubstrByWidth(item.detail(), detailWidth);
+				String detail = Gfx.fit(font, item.detail(), detailWidth);
 				gfx.label(font, detail, r.x() + r.w() - 4 - font.width(detail), r.y(), r.h(), Theme.TEXT_DIM);
 				if (hovered && (font.width(item.label()) > font.width(label) || font.width(item.detail()) > detailWidth)) {
 					tooltip.add(Component.literal(item.label()));
@@ -376,6 +376,7 @@ public final class ChatMenu {
 		List<Placed> placed = query().isEmpty() ? gridLayout(font, panel.x(), contentTop(panel)) : resultLayout(panel, results());
 		for (Placed p : placed) {
 			if (p.rect().contains(mouseX, mouseY)) {
+				Theme.click();
 				run(screen, p.item());
 				return true;
 			}

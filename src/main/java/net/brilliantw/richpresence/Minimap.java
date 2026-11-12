@@ -393,7 +393,7 @@ public final class Minimap {
 		int lineHeight = lineHeight();
 		int maxWidth = (int) Math.floor(Math.max(size, 120) / scale);
 		for (int i = 0; i < lines.size(); i++) {
-			String text = font.plainSubstrByWidth(lines.get(i), maxWidth);
+			String text = Gfx.fit(font, lines.get(i), maxWidth);
 			int w = (int) Math.ceil(font.width(text) * scale);
 			int left = x + (size - w) / 2;
 			int top = y + i * lineHeight;

@@ -12,13 +12,12 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 *///?}
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public final class ImportScreen extends Screen {
-	private static final int HEADER = 22;
+	private static final int HEADER = Theme.HEADER_H;
 	private static final int LINE = 11;
 
 	private final Screen parent;
@@ -118,28 +117,18 @@ public final class ImportScreen extends Screen {
 			code = value;
 			update();
 		});
-		addRenderableWidget(Button.builder(Component.literal("貼上剪貼簿"), b -> setCode(minecraft.keyboardHandler.getClipboard()))
-				.bounds(x + w - pasteWidth - fileWidth - 4, top() + HEADER + 15, pasteWidth, 20).build());
-		addRenderableWidget(Button.builder(Component.literal("選擇檔案"), b -> FilePicker.openTextFile("選擇指令集 .txt 檔", this::loadFile))
-				.bounds(x + w - fileWidth, top() + HEADER + 15, fileWidth, 20)
-				.tooltip(Tooltip.create(Component.literal("從 .txt 檔匯入，例如 Discord 自動轉成的 message.txt\n也可以直接把檔案拖進遊戲視窗")))
-				.build());
+		addRenderableWidget(Theme.button(Component.literal("貼上剪貼簿"), b -> setCode(minecraft.keyboardHandler.getClipboard()), x + w - pasteWidth - fileWidth - 4, top() + HEADER + 15, pasteWidth, 20));
+		addRenderableWidget(Theme.button(Component.literal("選擇檔案"), b -> FilePicker.openTextFile("選擇指令集 .txt 檔", this::loadFile), x + w - fileWidth, top() + HEADER + 15, fileWidth, 20).tip("從 .txt 檔匯入，例如 Discord 自動轉成的 message.txt\n也可以直接把檔案拖進遊戲視窗"));
 
 		int modeY = top() + HEADER + 40;
 		int modeWidth = 60;
-		addRenderableWidget(Button.builder(modeLabel(false), b -> setReplace(false))
-				.bounds(x + 34, modeY, modeWidth, 20)
-				.tooltip(Tooltip.create(Component.literal("保留現有指令\n同名分組會合併，重複的指令會略過")))
-				.build());
-		addRenderableWidget(Button.builder(modeLabel(true), b -> setReplace(true))
-				.bounds(x + 34 + modeWidth + 4, modeY, modeWidth, 20)
-				.tooltip(Tooltip.create(Component.literal("刪除現有的全部指令，換成匯入的內容\n覆蓋前會自動備份舊資料")))
-				.build());
+		addRenderableWidget(Theme.button(modeLabel(false), b -> setReplace(false), x + 34, modeY, modeWidth, 20).tip("保留現有指令\n同名分組會合併，重複的指令會略過"));
+		addRenderableWidget(Theme.button(modeLabel(true), b -> setReplace(true), x + 34 + modeWidth + 4, modeY, modeWidth, 20).tip("刪除現有的全部指令，換成匯入的內容\n覆蓋前會自動備份舊資料"));
 
 		int buttonY = top() + panelHeight() - 26;
 		int buttonWidth = (w - 6) / 2;
-		addRenderableWidget(Button.builder(Component.literal("取消"), b -> onClose()).bounds(x, buttonY, buttonWidth, 20).build());
-		importButton = addRenderableWidget(Button.builder(importLabel(), b -> confirm()).bounds(x + buttonWidth + 6, buttonY, buttonWidth, 20).build());
+		addRenderableWidget(Theme.button(Component.literal("取消"), b -> onClose(), x, buttonY, buttonWidth, 20));
+		importButton = addRenderableWidget(Theme.button(importLabel(), b -> confirm(), x + buttonWidth + 6, buttonY, buttonWidth, 20).primary());
 		importButton.active = addedCount() > 0;
 		setInitialFocus(input);
 	}
@@ -223,9 +212,8 @@ public final class ImportScreen extends Screen {
 		int y = top();
 		int w = panelWidth();
 		Theme.panel(gfx, x, y, x + w, y + panelHeight());
-		gfx.fill(x, y, x + w, y + HEADER, Theme.HEADER);
-		gfx.fill(x, y + HEADER - 1, x + w, y + HEADER, Theme.ACCENT_DIM);
-		gfx.text(font, title.getString(), x + 10, y + 7, Theme.ACCENT);
+		Theme.header(gfx, x, y, w);
+		gfx.text(font, title.getString(), x + 10, y + 9, Theme.ACCENT);
 
 		gfx.text(font, "指令集代碼", x + 10, y + HEADER + 5, Theme.TEXT_SECONDARY);
 		String dropHint = "也可以把 .txt 檔拖進視窗";
@@ -238,7 +226,7 @@ public final class ImportScreen extends Screen {
 		} else if (preview.isEmpty()) {
 			gfx.text(font, "貼上代碼後會在這裡預覽內容", x + 10, summaryY, Theme.TEXT_DIM);
 		} else {
-			gfx.text(font, font.plainSubstrByWidth(summary(), w - 20), x + 10, summaryY, replace ? Theme.DANGER : Theme.TEXT);
+			gfx.text(font, Gfx.fit(font, summary(), w - 20), x + 10, summaryY, replace ? Theme.DANGER : Theme.TEXT);
 		}
 
 		int top = previewTop();
@@ -265,11 +253,11 @@ public final class ImportScreen extends Screen {
 			String command = "/" + line.entry().command;
 			int textX = x + 24;
 			int maxWidth = w - 48;
-			gfx.text(font, mark + font.plainSubstrByWidth(command, maxWidth / 2), textX, ly, added ? Theme.SUCCESS : Theme.TEXT_DIM);
+			gfx.text(font, mark + Gfx.fit(font, command, maxWidth / 2), textX, ly, added ? Theme.SUCCESS : Theme.TEXT_DIM);
 			int noteX = textX + font.width(mark) + Math.min(font.width(command), maxWidth / 2) + 8;
 			String suffix = added ? line.entry().note : "已存在，略過";
 			if (!suffix.isEmpty()) {
-				gfx.text(font, font.plainSubstrByWidth(suffix, x + w - 16 - noteX), noteX, ly, Theme.TEXT_DIM);
+				gfx.text(font, Gfx.fit(font, suffix, x + w - 16 - noteX), noteX, ly, Theme.TEXT_DIM);
 			}
 			ly += LINE;
 		}

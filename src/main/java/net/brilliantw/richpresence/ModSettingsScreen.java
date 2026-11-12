@@ -4,9 +4,11 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 import java.util.function.Supplier;
 //? if >=26.1 {
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -27,19 +29,23 @@ public final class ModSettingsScreen extends Screen {
 		}
 	}
 
-	private record Row(String section, String label, String detail, BooleanSupplier value, Consumer<Boolean> set, Supplier<String> choice, Runnable next) {
+	private record Row(String section, String label, String detail, BooleanSupplier value, Consumer<Boolean> set, Supplier<String> choice, IntConsumer step, boolean cycles) {
 		Row(String section, String label, String detail, BooleanSupplier value, Consumer<Boolean> set) {
-			this(section, label, detail, value, set, null, null);
+			this(section, label, detail, value, set, null, null, false);
 		}
 
 		static Row choice(String section, String label, String detail, Supplier<String> choice, Runnable next) {
-			return new Row(section, label, detail, null, null, choice, next);
+			return new Row(section, label, detail, null, null, choice, dir -> next.run(), false);
+		}
+
+		static Row cycle(String section, String label, String detail, Supplier<String> choice, IntConsumer step) {
+			return new Row(section, label, detail, null, null, choice, step, true);
 		}
 	}
 
-	private static String nextPreset(List<Theme.Preset> presets, String current) {
+	private static String nextPreset(List<Theme.Preset> presets, String current, int dir) {
 		int index = presets.indexOf(Theme.preset(presets, current));
-		return presets.get((index + 1) % presets.size()).id();
+		return presets.get(Math.floorMod(index + dir, presets.size())).id();
 	}
 
 	private void editAccent() {
@@ -73,18 +79,18 @@ public final class ModSettingsScreen extends Screen {
 		}));
 	}
 
-	private static int cycle(List<Integer> options, int current) {
+	private static int cycle(List<Integer> options, int current, int dir) {
 		int index = options.indexOf(current);
-		return options.get((index + 1) % options.size());
+		return options.get(Math.floorMod(index < 0 && dir < 0 ? 0 : index + dir, options.size()));
 	}
 
 	private long clearArmedAt;
 	private long chunkClearArmedAt;
 	private KeyMapping listening;
-	private record Hit(Rect rect, Runnable action) {}
+	private record Hit(Rect rect, Runnable action, String speech, boolean cycles) {}
 
-	private static final int HEADER = 26;
-	private static final int FOOTER = 14;
+	private static final int HEADER = Theme.HEADER_H;
+	private static final int FOOTER = Theme.FOOTER_H;
 	private static final int ROW = 30;
 	private static final int SECTION = 18;
 	private static final int TABS_W = 92;
@@ -96,7 +102,9 @@ public final class ModSettingsScreen extends Screen {
 	private final Screen parent;
 	private final List<Row> rows = new ArrayList<>();
 	private final List<Hit> hits = new ArrayList<>();
-	private double scroll;
+	private final Scroller scroller = new Scroller();
+	private boolean backwards;
+	private int focus = -1;
 	private String status = "";
 	private long statusUntil;
 
@@ -108,10 +116,10 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("一般", "新公告通知", "進入伺服器時提示有幾則未讀公告", () -> s.announcements, v -> s.announcements = v));
 		rows.add(new Row("一般", "自動檢查更新", "有新版本時通知，並可在遊戲內一鍵更新", () -> s.updateCheck, v -> s.updateCheck = v));
 		rows.add(new Row("連線", "斷線自動重連", "被伺服器斷線時自動重新連入；在其他地方登入時不會重連", () -> s.autoReconnect, v -> s.autoReconnect = v));
-		rows.add(Row.choice("連線", "失敗幾次後停止", "連續重連失敗達到次數就停止；點擊切換", () -> AutoReconnect.attemptsLabel(s.reconnectAttempts),
-				() -> s.reconnectAttempts = cycle(AutoReconnect.ATTEMPTS, s.reconnectAttempts)));
-		rows.add(Row.choice("連線", "重連頻率", "斷線後等多久再重連；點擊切換", () -> AutoReconnect.delayLabel(s.reconnectDelay),
-				() -> s.reconnectDelay = cycle(AutoReconnect.DELAYS, s.reconnectDelay)));
+		rows.add(Row.cycle("連線", "失敗幾次後停止", "連續重連失敗達到次數就停止", () -> AutoReconnect.attemptsLabel(s.reconnectAttempts),
+				dir -> s.reconnectAttempts = cycle(AutoReconnect.ATTEMPTS, s.reconnectAttempts, dir)));
+		rows.add(Row.cycle("連線", "重連頻率", "斷線後等多久再重連", () -> AutoReconnect.delayLabel(s.reconnectDelay),
+				dir -> s.reconnectDelay = cycle(AutoReconnect.DELAYS, s.reconnectDelay, dir)));
 		rows.add(new Row("連線", "自動續驗證", "正版驗證快過期時在背景自動續期，不必重開遊戲；與輝煌啟動器的登入互相同步", () -> s.autoReauth, v -> s.autoReauth = v));
 		rows.add(Row.choice("連線", "微軟帳號", "啟動器沒登入時，點擊用瀏覽器登入一次；登入後輝煌啟動器也會一起登入", Reauth::label, () -> Reauth.startLogin(this)));
 		rows.add(new Row("聊天", "頻道分頁", "聊天欄上方依頻道篩選訊息的分頁", () -> s.channelTabs, v -> s.channelTabs = v));
@@ -137,9 +145,9 @@ public final class ModSettingsScreen extends Screen {
 		rows.add(new Row("遊戲", "格子編號", "按住 Alt 時在介面格子上顯示編號", () -> s.slotNumbers, v -> s.slotNumbers = v));
 		rows.add(new Row("遊戲", "記分板位置", "套用自訂的記分板位置與縮放", () -> s.scoreboardLayout, v -> s.scoreboardLayout = v));
 		rows.add(new Row("遊戲", "鐵砧完整花費", "超限附魔超過 40 級時顯示實際花費，取代「太貴了！」", () -> s.anvilCost, v -> s.anvilCost = v));
-		rows.add(Row.choice("自由視角", "移動速度", "鏡頭每秒移動幾格；開啟自由視角時也可以用滾輪微調。自由視角的開關鍵在「快捷鍵」分頁設定", () -> Freecam.formatSpeed(s.freecamSpeed), () -> s.freecamSpeed = Freecam.nextSpeed(s.freecamSpeed)));
-		rows.add(Row.choice("自由視角", "衝刺倍率", "按住衝刺鍵時速度乘上幾倍", () -> s.freecamBoost + " 倍", () -> s.freecamBoost = Freecam.nextBoost(s.freecamBoost)));
-		rows.add(Row.choice("自由視角", "慣性", "放開按鍵後鏡頭滑行停下的程度；越高越像電影運鏡", () -> Freecam.SMOOTH_LABELS[Math.clamp(s.freecamSmooth, 0, Freecam.SMOOTH_LABELS.length - 1)], () -> s.freecamSmooth = (s.freecamSmooth + 1) % Freecam.SMOOTH_LABELS.length));
+		rows.add(Row.cycle("自由視角", "移動速度", "鏡頭每秒移動幾格；開啟自由視角時也可以用滾輪微調。自由視角的開關鍵在「快捷鍵」分頁設定", () -> Freecam.formatSpeed(s.freecamSpeed), dir -> s.freecamSpeed = Freecam.nextSpeed(s.freecamSpeed, dir)));
+		rows.add(Row.cycle("自由視角", "衝刺倍率", "按住衝刺鍵時速度乘上幾倍", () -> s.freecamBoost + " 倍", dir -> s.freecamBoost = Freecam.nextBoost(s.freecamBoost, dir)));
+		rows.add(Row.cycle("自由視角", "慣性", "放開按鍵後鏡頭滑行停下的程度；越高越像電影運鏡", () -> Freecam.SMOOTH_LABELS[Math.clamp(s.freecamSmooth, 0, Freecam.SMOOTH_LABELS.length - 1)], dir -> s.freecamSmooth = Math.floorMod(s.freecamSmooth + dir, Freecam.SMOOTH_LABELS.length)));
 		rows.add(new Row("自由視角", "水平移動", "前進後退只在水平面移動，跳躍與潛行控制升降；關閉時往視線方向飛", () -> s.freecamFlat, v -> s.freecamFlat = v));
 		rows.add(new Row("自由視角", "穿過方塊", "鏡頭可以穿過牆壁與地面；關閉時會被方塊擋住", () -> s.freecamNoclip, v -> s.freecamNoclip = v));
 		rows.add(new Row("自由視角", "隱藏介面", "開啟自由視角時自動隱藏 HUD，關閉時恢復", () -> s.freecamHideHud, v -> s.freecamHideHud = v));
@@ -162,27 +170,28 @@ public final class ModSettingsScreen extends Screen {
 			}
 		}));
 		rows.add(new Row("自由視角", "滾輪調整速度", "自由視角時滾動滑鼠滾輪調整移動速度，不會切換快捷欄", () -> s.freecamScroll, v -> s.freecamScroll = v));
-		rows.add(Row.choice("介面", "強調色", "模組介面的按鈕、選取與標題顏色；點擊切換", () -> Theme.preset(Theme.ACCENTS, s.accent).name() + (s.accent.equals("custom") ? " " + Theme.hex(s.customAccent) : ""),
-				() -> s.accent = nextPreset(Theme.ACCENTS, s.accent)));
+		rows.add(Row.cycle("介面", "強調色", "模組介面的按鈕、選取與標題顏色", () -> Theme.preset(Theme.ACCENTS, s.accent).name() + (s.accent.equals("custom") ? " " + Theme.hex(s.customAccent) : ""),
+				dir -> s.accent = nextPreset(Theme.ACCENTS, s.accent, dir)));
 		rows.add(Row.choice("介面", "自訂強調色", "輸入色碼，例如 #FF9AC8；點擊編輯後會自動切換成自訂", () -> Theme.hex(s.customAccent), this::editAccent));
-		rows.add(Row.choice("介面", "背景色調", "模組介面面板與卡片的底色；點擊切換", () -> Theme.preset(Theme.TONES, s.tone).name(),
-				() -> s.tone = nextPreset(Theme.TONES, s.tone)));
+		rows.add(Row.cycle("介面", "背景色調", "模組介面面板與卡片的底色", () -> Theme.preset(Theme.TONES, s.tone).name(),
+				dir -> s.tone = nextPreset(Theme.TONES, s.tone, dir)));
 		rows.add(new Row("小地圖", "懸浮小地圖", "畫面上的小地圖；按 N 切換、按 M 開大地圖、按 B 新增記錄點", () -> s.minimap, v -> s.minimap = v));
-		rows.add(Row.choice("小地圖", "大小", "小地圖的邊長；也可以在「小地圖位置」用滾輪調整", () -> s.minimapPixels + " 像素", () -> s.minimapPixels = cycle(Minimap.SIZES, Minimap.nextSize(s.minimapPixels, 0))));
-		rows.add(Row.choice("小地圖", "縮放", "每個像素代表幾格；數字越大看得越遠", () -> "1:" + Minimap.formatZoom(Minimap.ZOOMS[s.minimapZoom]), () -> s.minimapZoom = (s.minimapZoom + 1) % Minimap.ZOOMS.length));
-		rows.add(Row.choice("小地圖", "透明度", "小地圖本身的不透明度", () -> s.minimapOpacity + "%", () -> s.minimapOpacity = cycle(List.of(100, 90, 80, 70, 60, 50, 40), s.minimapOpacity)));
+		rows.add(Row.cycle("小地圖", "大小", "小地圖的邊長；也可以在「小地圖位置」用滾輪調整", () -> s.minimapPixels + " 像素", dir -> s.minimapPixels = cycle(Minimap.SIZES, Minimap.nextSize(s.minimapPixels, 0), dir)));
+		rows.add(Row.cycle("小地圖", "縮放", "每個像素代表幾格；數字越大看得越遠", () -> "1:" + Minimap.formatZoom(Minimap.ZOOMS[s.minimapZoom]), dir -> s.minimapZoom = Math.floorMod(s.minimapZoom + dir, Minimap.ZOOMS.length)));
+		rows.add(Row.choice("小地圖", "透明度", "小地圖本身的不透明度，點擊輸入 20～100", () -> s.minimapOpacity + "%",
+				() -> editNumber("透明度", "百分比；100 = 完全不透明", s.minimapOpacity, 20, 100, v -> s.minimapOpacity = v)));
 		rows.add(new Row("小地圖", "隨視角旋轉", "小地圖跟著面向旋轉；關閉時北方固定朝上", () -> s.minimapRotate, v -> s.minimapRotate = v));
 		rows.add(new Row("小地圖", "圓形小地圖", "關閉時改為方形", () -> s.minimapCircle, v -> s.minimapCircle = v));
 		rows.add(new Row("小地圖", "框線", "小地圖外圍的邊框", () -> s.minimapFrame, v -> s.minimapFrame = v));
 		rows.add(new Row("小地圖", "方位", "在小地圖邊緣標示東西南北", () -> s.minimapCompass, v -> s.minimapCompass = v));
 		rows.add(new Row("小地圖", "依晝夜調暗", "夜晚時小地圖跟著變暗，和天色一致", () -> s.minimapDayNight, v -> s.minimapDayNight = v));
-		rows.add(Row.choice("小地圖", "圖示大小", "生物、玩家與記錄點圖示的大小", () -> Minimap.STEP_LABELS[s.minimapIcons], () -> s.minimapIcons = (s.minimapIcons + 1) % 3));
+		rows.add(Row.cycle("小地圖", "圖示大小", "生物、玩家與記錄點圖示的大小", () -> Minimap.STEP_LABELS[s.minimapIcons], dir -> s.minimapIcons = Math.floorMod(s.minimapIcons + dir, 3)));
 		rows.add(new Row("小地圖", "顯示生物", "只顯示你看得到的；紅框為敵對生物、綠框為其他生物", () -> s.minimapMobs, v -> s.minimapMobs = v));
 		rows.add(new Row("小地圖", "生物圖示", "以生物的頭像顯示種類；關閉時改用色點", () -> s.minimapMobIcons, v -> s.minimapMobIcons = v));
 		rows.add(new Row("小地圖", "顯示玩家", "標示附近你看得到的玩家", () -> s.minimapPlayers, v -> s.minimapPlayers = v));
 		rows.add(new Row("小地圖", "玩家頭像", "以頭像顯示玩家；關閉時改用白點", () -> s.minimapPlayerHeads, v -> s.minimapPlayerHeads = v));
 		rows.add(new Row("小地圖", "顯示記錄點", "在小地圖上標示記錄點，超出範圍時貼在邊緣指示方向", () -> s.minimapWaypoints, v -> s.minimapWaypoints = v));
-		rows.add(Row.choice("小地圖文字", "文字大小", "小地圖下方資訊的字體大小", () -> Minimap.STEP_LABELS[s.minimapText], () -> s.minimapText = (s.minimapText + 1) % 3));
+		rows.add(Row.cycle("小地圖文字", "文字大小", "小地圖下方資訊的字體大小", () -> Minimap.STEP_LABELS[s.minimapText], dir -> s.minimapText = Math.floorMod(s.minimapText + dir, 3)));
 		rows.add(new Row("小地圖文字", "文字背景", "在資訊文字後方加上半透明底色，亮處也看得清楚", () -> s.minimapTextBg, v -> s.minimapTextBg = v));
 		rows.add(new Row("小地圖文字", "座標", "目前的 X Y Z 座標", () -> s.minimapCoords, v -> s.minimapCoords = v));
 		rows.add(new Row("小地圖文字", "區塊座標", "所在區塊與區塊內位置；有公開種子的主世界會標示史萊姆區塊", () -> s.minimapChunk, v -> s.minimapChunk = v));
@@ -216,6 +225,10 @@ public final class ModSettingsScreen extends Screen {
 		return new Rect((width - w) / 2, 8, w, height - 16);
 	}
 
+	private static Rect track(Rect c) {
+		return new Rect(c.x() + c.w(), c.y(), 8, c.h());
+	}
+
 	private Rect content() {
 		Rect p = panel();
 		return new Rect(p.x() + TABS_W + 10, p.y() + HEADER + 6, p.w() - TABS_W - 20, p.h() - HEADER - FOOTER - 10);
@@ -247,18 +260,59 @@ public final class ModSettingsScreen extends Screen {
 				gfx.fill(r.x(), r.y(), r.x() + 2, r.y() + r.h(), Theme.ACCENT);
 			}
 			gfx.text(font, name, r.x() + 9, r.y() + 7, selected ? Theme.ACCENT : Theme.TEXT);
-			String count = Long.toString(rows.stream().filter(row -> tabOf(row.section()).equals(name)).count());
-			gfx.text(font, count, r.x() + r.w() - font.width(count) - 6, r.y() + 7, Theme.TEXT_DIM);
 			hits.add(new Hit(r, () -> {
 				tab = name;
-				scroll = 0;
-			}));
+				scroller.reset();
+				narrate("已切換到「" + name + "」分頁");
+			}, "分頁：" + name + (selected ? "，目前所在" : ""), false));
 		}
 	}
 
 	private void setStatus(String text) {
 		status = text;
 		statusUntil = System.currentTimeMillis() + 3000;
+		narrate(text);
+	}
+
+	private void narrate(String text) {
+		if (minecraft != null) {
+			minecraft.getNarrator().saySystemNow(Component.literal(text));
+		}
+	}
+
+	private List<Hit> order() {
+		int contentX = content().x();
+		return hits.stream().sorted(Comparator.comparingInt((Hit hit) -> hit.rect().x() >= contentX ? 1 : 0).thenComparingInt(hit -> hit.rect().y())).toList();
+	}
+
+	private void moveFocus(List<Hit> order, int dir, boolean wrap) {
+		if (order.isEmpty()) {
+			return;
+		}
+		int size = order.size();
+		focus = focus < 0 || focus >= size ? (dir > 0 ? 0 : size - 1) : wrap ? Math.floorMod(focus + dir, size) : Math.clamp(focus + dir, 0, size - 1);
+		Hit hit = order.get(focus);
+		Rect c = content();
+		if (hit.rect().x() >= c.x()) {
+			scroller.reveal(hit.rect().y() - c.y() + scroller.offset() - 2, hit.rect().h() + 4);
+		}
+		narrate(hit.speech());
+	}
+
+	private void drawFocus(Gfx gfx, Rect c) {
+		List<Hit> order = order();
+		if (focus < 0 || focus >= order.size()) {
+			return;
+		}
+		Rect r = order.get(focus).rect();
+		boolean inContent = r.x() >= c.x();
+		if (inContent) {
+			gfx.scissor(c.x(), c.y(), c.x() + c.w(), c.y() + c.h());
+		}
+		gfx.outline(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), Theme.ACCENT);
+		if (inContent) {
+			gfx.endScissor();
+		}
 	}
 
 	//? if >=26.1 {
@@ -278,7 +332,7 @@ public final class ModSettingsScreen extends Screen {
 	private void toggleSwitch(Gfx gfx, int x, int y, boolean on, int onColor) {
 		gfx.round(x, y, x + 26, y + 12, on ? onColor : Theme.CHIP);
 		int knob = on ? x + 15 : x + 1;
-		gfx.round(knob, y + 1, knob + 10, y + 11, on ? 0xFFFFFFFF : Theme.TEXT_SECONDARY);
+		gfx.round(knob, y + 1, knob + 10, y + 11, on ? Theme.KNOB_ON : Theme.TEXT_SECONDARY);
 	}
 
 	private void draw(Gfx gfx, int mouseX, int mouseY) {
@@ -286,30 +340,24 @@ public final class ModSettingsScreen extends Screen {
 		Rect p = panel();
 		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
-		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT);
+		Theme.header(gfx, p.x(), p.y(), p.w());
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
-		gfx.text(font, title.getString(), Theme.titleX(font, p.x()), p.y() + 9, Theme.TEXT);
+		gfx.text(font, title.getString(), Theme.titleX(font, p.x()), p.y() + 9, Theme.ACCENT);
 		String version = "v" + RPConfig.MOD_VERSION;
 		gfx.text(font, version, p.x() + p.w() - font.width(version) - 8, p.y() + 9, Theme.TEXT_DIM);
 
 		Rect c = content();
 		int height = layout(null, c, 0, -1, -1, false);
-		scroll = Math.clamp(scroll, 0, Math.max(0, height - c.h()));
+		scroller.measure(height, c.h());
 		boolean inside = c.contains(mouseX, mouseY);
 		gfx.scissor(c.x(), c.y(), c.x() + c.w(), c.y() + c.h());
-		layout(gfx, c, c.y() - (int) scroll, inside ? mouseX : -1, inside ? mouseY : -1, true);
+		layout(gfx, c, c.y() - scroller.offset(), inside ? mouseX : -1, inside ? mouseY : -1, true);
 		gfx.endScissor();
-		hits.removeIf(hit -> hit.rect().y() + hit.rect().h() <= c.y() || hit.rect().y() >= c.y() + c.h());
-		if (height > c.h()) {
-			int bar = Math.max(16, c.h() * c.h() / height);
-			int barY = c.y() + (int) ((c.h() - bar) * (scroll / (height - c.h())));
-			gfx.fill(c.x() + c.w() + 3, barY, c.x() + c.w() + 5, barY + bar, Theme.CHIP_HOVER);
-		}
+		Theme.scrollbar(gfx, c.x() + c.w() + 2, c.y(), c.h(), scroller, track(c).contains(mouseX, mouseY));
 		tabs(gfx, p, mouseX, mouseY);
-		gfx.fill(p.x(), p.y() + p.h() - FOOTER, p.x() + p.w(), p.y() + p.h() - FOOTER + 1, Theme.HEADER);
-		String footer = System.currentTimeMillis() < statusUntil ? status : "設定會自動儲存 · Esc 返回";
-		gfx.text(font, footer, p.x() + 8, p.y() + p.h() - FOOTER + 4, Theme.TEXT_DIM);
+		drawFocus(gfx, c);
+		String footer = System.currentTimeMillis() < statusUntil ? status : "設定會自動儲存 · 右鍵或 Shift＋點擊選項可往回切換 · Tab 用鍵盤操作 · Esc 返回";
+		Theme.footer(gfx, font, p.x(), p.y() + p.h(), p.w(), footer, Theme.TEXT_DIM);
 	}
 
 	private int layout(Gfx gfx, Rect c, int top, int mouseX, int mouseY, boolean draw) {
@@ -332,34 +380,36 @@ public final class ModSettingsScreen extends Screen {
 				}
 				y += SECTION;
 			}
-			if (draw && row.choice() != null) {
-				Rect r = new Rect(c.x(), y, c.w() - 4, ROW - 2);
+			int rw = c.w() - 4;
+			String value = row.choice() == null ? "" : (row.cycles() ? "◂ " : "") + row.choice().get() + " ▸";
+			int vw = font.width(value) + 12;
+			List<net.minecraft.util.FormattedCharSequence> detail = font.split(Component.literal(row.detail()), row.choice() != null ? rw - vw - 24 : rw - 50);
+			Rect r = new Rect(c.x(), y, rw, ROW - 12 + detail.size() * 10);
+			if (draw) {
 				gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CARD_HOVER : Theme.CARD);
 				gfx.text(font, row.label(), r.x() + 8, r.y() + 5, Theme.TEXT);
-				String value = row.choice().get() + " ▸";
-				int vw = font.width(value) + 12;
-				gfx.text(font, font.plainSubstrByWidth(row.detail(), r.w() - vw - 24), r.x() + 8, r.y() + 16, Theme.TEXT_DIM);
+				for (int i = 0; i < detail.size(); i++) {
+					gfx.text(font, detail.get(i), r.x() + 8, r.y() + 16 + i * 10, Theme.TEXT_SECONDARY);
+				}
+			}
+			if (draw && row.choice() != null) {
 				gfx.round(r.x() + r.w() - vw - 8, r.y() + 7, r.x() + r.w() - 8, r.y() + 21, Theme.CHIP);
 				gfx.centered(font, value, r.x() + r.w() - vw - 8, r.y() + 7, vw, 14, Theme.ACCENT);
 				hits.add(new Hit(r, () -> {
-					row.next().run();
+					row.step().accept(backwards ? -1 : 1);
 					ModSettings.save();
 					setStatus("「" + row.label() + "」改為 " + row.choice().get());
-				}));
+				}, row.label() + "，" + row.choice().get() + (row.cycles() ? "，左右鍵切換" : "，按 Enter 變更") + "。" + row.detail(), row.cycles()));
 			} else if (draw) {
-				Rect r = new Rect(c.x(), y, c.w() - 4, ROW - 2);
 				boolean on = row.value().getAsBoolean();
-				gfx.fill(r.x(), r.y(), r.x() + r.w(), r.y() + r.h(), r.contains(mouseX, mouseY) ? Theme.CARD_HOVER : Theme.CARD);
-				gfx.text(font, row.label(), r.x() + 8, r.y() + 5, Theme.TEXT);
-				gfx.text(font, font.plainSubstrByWidth(row.detail(), r.w() - 50), r.x() + 8, r.y() + 16, Theme.TEXT_DIM);
 				toggleSwitch(gfx, r.x() + r.w() - 34, r.y() + 8, on, Theme.SUCCESS);
 				hits.add(new Hit(r, () -> {
 					row.set().accept(!on);
 					ModSettings.save();
 					setStatus((on ? "已關閉「" : "已開啟「") + row.label() + "」");
-				}));
+				}, row.label() + "，開關，" + (on ? "開啟" : "關閉") + "。" + row.detail(), false));
 			}
-			y += ROW;
+			y += r.h() + 2;
 		}
 		if (!tab.equals("一般")) {
 			return y - top + 6;
@@ -393,7 +443,7 @@ public final class ModSettingsScreen extends Screen {
 				} else {
 					CommandMenuScreen.setScreen(new AnyServerConsentScreen(this));
 				}
-			}));
+			}, "危險設定：模組功能不再限於輝煌伺服器，開關，" + (s.anyServer ? "開啟" : "關閉") + "。" + detail, false));
 		}
 		y += boxH + 6;
 		return y - top;
@@ -402,6 +452,25 @@ public final class ModSettingsScreen extends Screen {
 	@Override
 	public boolean keyPressed(KeyEvent event) {
 		if (listening == null) {
+			List<Hit> order = order();
+			if (event.isCycleFocus()) {
+				moveFocus(order, event.hasShiftDown() ? -1 : 1, true);
+				return true;
+			}
+			if (event.isUp() || event.isDown()) {
+				moveFocus(order, event.isDown() ? 1 : -1, false);
+				return true;
+			}
+			if (focus >= 0 && focus < order.size()) {
+				Hit hit = order.get(focus);
+				boolean step = hit.cycles() && (event.isLeft() || event.isRight());
+				if (step || event.isSelection()) {
+					backwards = step && event.isLeft();
+					Theme.click();
+					hit.action().run();
+					return true;
+				}
+			}
 			return super.keyPressed(event);
 		}
 		if (event.isEscape()) {
@@ -443,11 +512,19 @@ public final class ModSettingsScreen extends Screen {
 		}
 		Rect p = panel();
 		if (Theme.backHit(font, p.x(), p.y(), event.x(), event.y())) {
+			Theme.click();
 			onClose();
 			return true;
 		}
+		Rect c = content();
+		if (track(c).contains(event.x(), event.y()) && scroller.press(event.y(), c.y(), c.h())) {
+			return true;
+		}
+		focus = -1;
+		backwards = event.button() == InputConstants.MOUSE_BUTTON_RIGHT || event.hasShiftDown();
 		for (Hit hit : List.copyOf(hits)) {
-			if (hit.rect().contains(event.x(), event.y())) {
+			if (hit.rect().contains(event.x(), event.y()) && (hit.rect().x() < c.x() || c.contains(event.x(), event.y()))) {
+				Theme.click();
 				hit.action().run();
 				return true;
 			}
@@ -456,8 +533,19 @@ public final class ModSettingsScreen extends Screen {
 	}
 
 	@Override
+	public boolean mouseDragged(MouseButtonEvent event, double dragX, double dragY) {
+		Rect c = content();
+		return scroller.drag(event.y(), c.y(), c.h()) || super.mouseDragged(event, dragX, dragY);
+	}
+
+	@Override
+	public boolean mouseReleased(MouseButtonEvent event) {
+		return scroller.release() || super.mouseReleased(event);
+	}
+
+	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
-		scroll -= scrollY * 24;
+		scroller.scrollBy((int) Math.round(-scrollY * ROW));
 		return true;
 	}
 

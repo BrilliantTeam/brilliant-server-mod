@@ -374,7 +374,7 @@ public final class ScriptEditorScreen extends Screen {
 		String noun = noun(kind);
 		boolean list = kind == ScriptBlocks.SlotKind.LIST;
 		String where = scope == null ? "（所有分組共用）" : "（只有這個分組）";
-		String reset = list ? "清空內容（目前 " + ScriptEngine.listValue(group, name).size() + " 項）" : "重設為 0（目前：" + font.plainSubstrByWidth(ScriptEngine.variable(group, name), 80) + "）";
+		String reset = list ? "清空內容（目前 " + ScriptEngine.listValue(group, name).size() + " 項）" : "重設為 0（目前：" + Gfx.fit(font, ScriptEngine.variable(group, name), 80) + "）";
 		menuX = (int) mx;
 		menuY = (int) my;
 		menu = List.of(
@@ -640,7 +640,7 @@ public final class ScriptEditorScreen extends Screen {
 		for (int i = 0; i < Math.min(14, lines.size()); i++) {
 			String line = lines.get(i);
 			boolean strong = line.startsWith("§");
-			gfx.text(font, font.plainSubstrByWidth(strong ? line.substring(1) : line, DEBUG_W - 12), x + 6, ly, strong ? ScriptView.CURRENT : Theme.TEXT);
+			gfx.text(font, Gfx.fit(font, strong ? line.substring(1) : line, DEBUG_W - 12), x + 6, ly, strong ? ScriptView.CURRENT : Theme.TEXT);
 			ly += 10;
 		}
 	}
@@ -978,7 +978,7 @@ public final class ScriptEditorScreen extends Screen {
 		Scripts.Group group = Scripts.current();
 		for (PaletteItem item : palette) {
 			if (item.header() != null) {
-				gfx.label(font, font.plainSubstrByWidth(item.header(), flyout() - 16), CATS + 8, item.y(), item.h(), item.dim() ? Theme.TEXT_DIM : Theme.TEXT);
+				gfx.label(font, Gfx.fit(font, item.header(), flyout() - 16), CATS + 8, item.y(), item.h(), item.dim() ? Theme.TEXT_DIM : Theme.TEXT);
 			} else if (item.button() != null) {
 				String label = switch (item.button()) {
 					case "var" -> "建立變數";
@@ -1023,8 +1023,7 @@ public final class ScriptEditorScreen extends Screen {
 					groupScroll.dragging() || inGroupScrollbar(mouseX, mouseY) ? Theme.ACCENT : 0xC0FFAB19);
 		}
 
-		gfx.fill(0, 0, width, HEADER, Theme.HEADER);
-		gfx.fill(0, HEADER - 1, width, HEADER, Theme.ACCENT_DIM);
+		Theme.header(gfx, 0, 0, width);
 		Theme.drawBack(gfx, font, 0, 0, mouseX, mouseY);
 		gfx.text(font, title.getString(), Theme.titleX(font, 0), 9, Theme.ACCENT);
 		String counter = Scripts.count() + " / " + Scripts.MAX_BLOCKS + " 塊 · " + Math.round(zoom * 100) + "%" + (selected.isEmpty() ? "" : " · 已選取 " + selected.size() + " 組");
@@ -1055,7 +1054,7 @@ public final class ScriptEditorScreen extends Screen {
 		} else {
 			hint = "點積木執行 · 拖回左邊刪除 · 左鍵拖曳空白處框選 · 右鍵／中鍵拖曳移動畫面 · 滾輪縮放 · Ctrl+1 顯示全部 · F1 說明";
 		}
-		gfx.text(font, font.plainSubstrByWidth(hint, width - areaX() - 12), areaX() + 6, height - 12, Theme.TEXT_DIM);
+		gfx.text(font, Gfx.fit(font, hint, width - areaX() - 12), areaX() + 6, height - 12, Theme.TEXT_DIM);
 
 		if (editing != null && editor != null) {
 			gfx.fill(editor.getX() - 2, editor.getY() - 2, editor.getX() + editor.getWidth() + 2, editor.getY() + SLOT_H, 0xFFFFFFFF);
@@ -1125,7 +1124,7 @@ public final class ScriptEditorScreen extends Screen {
 		}
 		if (bubble != null && System.currentTimeMillis() < bubbleUntil) {
 			int w = Math.min(220, font.width(bubble) + 12);
-			String shown = font.plainSubstrByWidth(bubble, w - 12);
+			String shown = Gfx.fit(font, bubble, w - 12);
 			gfx.fill(bubbleX - 1, bubbleY - 19, bubbleX + w + 1, bubbleY - 1, 0xFFB0B8C0);
 			gfx.fill(bubbleX, bubbleY - 18, bubbleX + w, bubbleY - 2, 0xFFFFFFFF);
 			gfx.label(font, shown, bubbleX + 6, bubbleY - 18, 16, 0xFF202020);
@@ -1810,6 +1809,7 @@ public final class ScriptEditorScreen extends Screen {
 			List<MenuEntry> entries = menu;
 			menu = null;
 			if (mx >= x && mx < x + w && index >= 0 && index < entries.size() && my >= y + 2) {
+				Theme.click();
 				entries.get(index).action().run();
 			}
 			return true;
@@ -1819,6 +1819,7 @@ public final class ScriptEditorScreen extends Screen {
 			popup = null;
 			int index = open.at(mx, my);
 			if (index >= 0) {
+				Theme.click();
 				open.block().args.get(open.index()).text = open.options().get(index);
 			}
 			return true;
@@ -1826,6 +1827,7 @@ public final class ScriptEditorScreen extends Screen {
 		if (my < HEADER) {
 			if (event.button() == InputConstants.MOUSE_BUTTON_LEFT) {
 				if (Theme.backHit(font, 0, 0, mx, my)) {
+					Theme.click();
 					onClose();
 				} else {
 					clickChip(mx, my);

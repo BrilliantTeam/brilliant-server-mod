@@ -32,8 +32,8 @@ public final class ChatHistoryScreen extends Screen {
 	}
 
 	private static final int MAX = 1000;
-	private static final int HEADER = 26;
-	private static final int FOOTER = 16;
+	private static final int HEADER = Theme.HEADER_H;
+	private static final int FOOTER = Theme.FOOTER_H;
 	private static final int LINE = 10;
 	private static final DateTimeFormatter TIME = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
 	private static final Deque<Message> HISTORY = new ArrayDeque<>();
@@ -143,8 +143,7 @@ public final class ChatHistoryScreen extends Screen {
 		Rect l = list();
 		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
-		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT_DIM);
+		Theme.header(gfx, p.x(), p.y(), p.w());
 		gfx.text(font, title.getString(), Theme.titleX(font, p.x()), p.y() + 9, Theme.ACCENT);
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
 
@@ -170,16 +169,11 @@ public final class ChatHistoryScreen extends Screen {
 		gfx.endScissor();
 
 		int content = contentHeight();
-		if (content > l.h()) {
-			int barHeight = Math.max(16, l.h() * l.h() / content);
-			int barY = l.y() + (int) ((l.h() - barHeight) * (scroll / (content - l.h())));
-			gfx.fill(l.x() + l.w() - 2, barY, l.x() + l.w(), barY + barHeight, Theme.CHIP_HOVER);
-		}
+		Theme.scrollbar(gfx, l.x() + l.w() - Theme.SCROLLBAR_W, l.y(), l.h(), content, scroll, draggingBar || l.contains(mouseX, mouseY) && mouseX >= l.x() + l.w() - 6);
 
-		gfx.fill(p.x(), p.y() + p.h() - FOOTER, p.x() + p.w(), p.y() + p.h() - FOOTER + 1, Theme.HEADER);
 		boolean showStatus = System.currentTimeMillis() < statusUntil;
 		String footer = showStatus ? status : "點擊訊息即可複製 · 最多保留 " + MAX + " 則，關閉遊戲後清除 · Esc 返回";
-		gfx.text(font, font.plainSubstrByWidth(footer, p.w() - 16), p.x() + 8, p.y() + p.h() - FOOTER + 4, showStatus ? Theme.SUCCESS : Theme.TEXT_DIM);
+		Theme.footer(gfx, font, p.x(), p.y() + p.h(), p.w(), footer, showStatus ? Theme.SUCCESS : Theme.TEXT_DIM);
 	}
 
 	private void dragScrollBar(double mouseY) {
@@ -206,6 +200,7 @@ public final class ChatHistoryScreen extends Screen {
 			return true;
 		}
 		if (Theme.backHit(font, panel().x(), panel().y(), mouseX, mouseY)) {
+			Theme.click();
 			onClose();
 			return true;
 		}

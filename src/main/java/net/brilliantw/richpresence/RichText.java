@@ -451,12 +451,12 @@ public final class RichText {
 		} else {
 			gfx.fill(x, y, x + w, y + h, Theme.CHIP);
 			String text = entry.state == RemoteImages.State.LOADING ? "載入中…" : "無法載入，點擊在瀏覽器開啟";
-			gfx.text(font, font.plainSubstrByWidth(text, w - 8), x + Math.max(4, (w - font.width(text)) / 2), y + (h - 8) / 2, Theme.TEXT_DIM);
+			gfx.text(font, Gfx.fit(font, text, w - 8), x + Math.max(4, (w - font.width(text)) / 2), y + (h - 8) / 2, Theme.TEXT_SECONDARY);
 		}
 		if (hidden) {
 			gfx.fill(x, y, x + w, y + h, 0xF01A1E22);
 			String text = "暴雷內容・點擊顯示";
-			gfx.text(font, font.plainSubstrByWidth(text, w - 8), x + Math.max(4, (w - font.width(text)) / 2), y + (h - 8) / 2, Theme.TEXT);
+			gfx.text(font, Gfx.fit(font, text, w - 8), x + Math.max(4, (w - font.width(text)) / 2), y + (h - 8) / 2, Theme.TEXT);
 		} else if (line.v == 1 && entry.state == RemoteImages.State.READY) {
 			int bw = 22;
 			int bh = 16;
@@ -466,7 +466,7 @@ public final class RichText {
 			Icons.PLAY.drawCentered(gfx, bx + 1, by, bw, bh, 0xFFFFFFFF);
 		}
 		if (!hidden && line.l != null && !line.l.isEmpty() && entry.state == RemoteImages.State.READY) {
-			String label = font.plainSubstrByWidth(line.l, w - 8);
+			String label = Gfx.fit(font, line.l, w - 8);
 			gfx.fill(x, y + h - 11, x + font.width(label) + 6, y + h, 0xB0000000);
 			gfx.text(font, label, x + 3, y + h - 9, 0xFFFFFFFF);
 		}

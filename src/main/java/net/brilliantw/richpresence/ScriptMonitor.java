@@ -258,7 +258,7 @@ public final class ScriptMonitor {
 		int x = 0;
 		for (Scripts.Group group : groups()) {
 			boolean active = running(group);
-			String label = font.plainSubstrByWidth(group.name, 60);
+			String label = Gfx.fit(font, group.name, 60);
 			int w = font.width(label) + 8 + (active ? 6 : 0);
 			tabs.add(new Tab(new Rect(x, frame.y() + 1, w, HEADER - 2), group, active));
 			x += w + 2;
@@ -462,7 +462,7 @@ public final class ScriptMonitor {
 				gfx.fill(tx, r.y() + r.h() / 2 - 2, tx + 4, r.y() + r.h() / 2 + 2, dot);
 				tx += 6;
 			}
-			gfx.label(font, font.plainSubstrByWidth(tab.group().name, 60), tx, r.y(), r.h(), selected ? Theme.TEXT : Theme.TEXT_SECONDARY);
+			gfx.label(font, Gfx.fit(font, tab.group().name, 60), tx, r.y(), r.h(), selected ? Theme.TEXT : Theme.TEXT_SECONDARY);
 		}
 		gfx.endScissor();
 		if (TAB_SCROLL.overflow() && !Scripts.data().monitorCollapsed) {
@@ -519,7 +519,7 @@ public final class ScriptMonitor {
 			if (line.startsWith("\u0001")) {
 				String[] bar = line.substring(1).split("\u0002", 2);
 				double percent = ScriptEngine.number(bar[1]);
-				String label = font.plainSubstrByWidth(bar[0], frame.w() / 3);
+				String label = Gfx.fit(font, bar[0], frame.w() / 3);
 				gfx.text(font, label, frame.x() + 4, y + 1, Theme.TEXT);
 				int bx = frame.x() + 8 + font.width(label);
 				int bw = frame.x() + frame.w() - 34 - bx;
@@ -530,19 +530,19 @@ public final class ScriptMonitor {
 				continue;
 			}
 			if (line.startsWith("\u0003")) {
-				gfx.text(font, font.plainSubstrByWidth(line.substring(1), frame.w() - 8), frame.x() + 4, y + 1, 0xFF4C97FF);
+				gfx.text(font, Gfx.fit(font, line.substring(1), frame.w() - 8), frame.x() + 4, y + 1, 0xFF4C97FF);
 				y += LINE;
 				continue;
 			}
 			if (line.startsWith("\u0004")) {
-				gfx.text(font, font.plainSubstrByWidth(line.substring(1), frame.w() - 8), frame.x() + 4, y + 1, 0xFFFFD43B);
+				gfx.text(font, Gfx.fit(font, line.substring(1), frame.w() - 8), frame.x() + 4, y + 1, 0xFFFFD43B);
 				y += LINE;
 				continue;
 			}
 			boolean variable = line.startsWith("§");
 			boolean warning = line.length() > 9 && line.charAt(9) == '⚠';
 			String text = variable ? line.substring(1) : line;
-			gfx.text(font, font.plainSubstrByWidth(text, frame.w() - 8 - BAR), frame.x() + 4, y + 1, variable ? 0xFFFF8C1A : warning ? 0xFFFF7A7A : Theme.TEXT);
+			gfx.text(font, Gfx.fit(font, text, frame.w() - 8 - BAR), frame.x() + 4, y + 1, variable ? 0xFFFF8C1A : warning ? 0xFFFF7A7A : Theme.TEXT);
 			y += LINE;
 		}
 		gfx.endScissor();
@@ -600,7 +600,7 @@ public final class ScriptMonitor {
 		int nameW = run.x() - nameX - 4;
 		boolean showNotice = notice != null && System.currentTimeMillis() - noticeAt < 2500;
 		String name = showNotice ? notice : stack == null ? "沒有可執行的腳本" : describe(stack.blocks.getFirst());
-		gfx.label(font, font.plainSubstrByWidth(name, nameW), nameX, layout.controlsY(), CONTROLS, showNotice ? 0xFFFF7A7A : running ? Theme.SUCCESS : Theme.TEXT);
+		gfx.label(font, Gfx.fit(font, name, nameW), nameX, layout.controlsY(), CONTROLS, showNotice ? 0xFFFF7A7A : running ? Theme.SUCCESS : Theme.TEXT);
 		int barY = layout.controlsY() + CONTROLS;
 		gfx.fill(frame.x(), barY, frame.x() + frame.w(), barY + DEBUG_BAR, 0x40000000);
 		int end = frame.x() + 3;
@@ -663,11 +663,13 @@ public final class ScriptMonitor {
 			return false;
 		}
 		if (button(frame, 0).contains(mouseX, mouseY)) {
+			Theme.click();
 			Scripts.data().monitor = false;
 			Scripts.save();
 			return true;
 		}
 		if (button(frame, 1).contains(mouseX, mouseY)) {
+			Theme.click();
 			Scripts.data().monitorCollapsed = !Scripts.data().monitorCollapsed;
 			Scripts.save();
 			return true;
@@ -705,6 +707,7 @@ public final class ScriptMonitor {
 		}
 		for (int i = 0; i < SUB_LABELS.length; i++) {
 			if (subTab(layout, i).contains(mouseX, mouseY)) {
+				Theme.click();
 				bottomTab = i;
 				LINE_SCROLL.reset();
 				return true;
@@ -721,6 +724,7 @@ public final class ScriptMonitor {
 				continue;
 			}
 			if (chip.enabled()) {
+				Theme.click();
 				debugAction(chip.action(), stack);
 			}
 			return true;
@@ -738,10 +742,13 @@ public final class ScriptMonitor {
 			return true;
 		}
 		if (control(layout, 0).contains(mouseX, mouseY)) {
+			Theme.click();
 			cycle(-1);
 		} else if (control(layout, 1).contains(mouseX, mouseY)) {
+			Theme.click();
 			cycle(1);
 		} else if (control(layout, 2).contains(mouseX, mouseY) && stack != null) {
+			Theme.click();
 			picked = stack;
 			if (!ScriptEngine.active()) {
 				say(Scripts.data().enabled ? "要在輝煌伺服器上才能執行" : "腳本已停用");
@@ -749,6 +756,7 @@ public final class ScriptMonitor {
 				scroll = 0;
 			}
 		} else if (control(layout, 3).contains(mouseX, mouseY) && stack != null && ScriptEngine.isRunning(stack)) {
+			Theme.click();
 			ScriptEngine.stop(stack);
 			log("已停止：" + describe(stack.blocks.getFirst()));
 		}

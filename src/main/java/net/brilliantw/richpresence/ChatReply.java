@@ -96,7 +96,7 @@ public final class ChatReply {
 		String label = "回覆 ";
 		gfx.label(font, label, left + 5, top, HEIGHT, Theme.ACCENT);
 		int x = left + 5 + font.width(label);
-		gfx.label(font, font.plainSubstrByWidth(quote, Math.max(0, closeX(screen) - x - 4)), x, top, HEIGHT, Theme.TEXT_SECONDARY);
+		gfx.label(font, Gfx.fit(font, quote, Math.max(0, closeX(screen) - x - 4)), x, top, HEIGHT, Theme.TEXT_SECONDARY);
 		boolean hovered = mouseX >= closeX(screen) && mouseX < closeX(screen) + HEIGHT && mouseY >= top && mouseY < top + HEIGHT;
 		Icons.CLOSE.drawCentered(gfx, closeX(screen), top, HEIGHT, HEIGHT, hovered ? 0xFFFFFFFF : Theme.TEXT_SECONDARY);
 	}
@@ -107,6 +107,7 @@ public final class ChatReply {
 		}
 		int top = ChannelBar.barY(screen);
 		if (mouseX >= closeX(screen) && mouseX < closeX(screen) + HEIGHT && mouseY >= top && mouseY < top + HEIGHT) {
+			Theme.click();
 			clear();
 			return true;
 		}

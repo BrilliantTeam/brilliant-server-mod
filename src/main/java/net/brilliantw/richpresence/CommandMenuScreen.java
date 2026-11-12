@@ -12,9 +12,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 //?} else {
 /*import net.minecraft.client.gui.GuiGraphics;
 *///?}
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.ConfirmScreen;
 import net.minecraft.client.gui.screens.Screen;
@@ -62,8 +60,8 @@ public final class CommandMenuScreen extends Screen {
 		}
 	}
 
-	private static final int HEADER = 26;
-	private static final int FOOTER = 16;
+	private static final int HEADER = Theme.HEADER_H;
+	private static final int FOOTER = Theme.FOOTER_H;
 	private static final int SIDEBAR = 132;
 	private static final int GROUP_ROW = 18;
 	private static final int INDENT = 8;
@@ -251,14 +249,8 @@ public final class CommandMenuScreen extends Screen {
 			search = value;
 			listScroll = 0;
 		});
-		addRenderableWidget(Button.builder(Component.literal("匯入"), b -> setScreen(new ImportScreen(this, message -> setStatus(message, Theme.SUCCESS))))
-				.bounds(p.x() + p.w() - 8 - buttonWidth * 2 - 4, p.y() + 3, buttonWidth, 20)
-				.tooltip(Tooltip.create(Component.literal("貼上其他玩家分享的指令集代碼\n可預覽內容，選擇合併或覆蓋")))
-				.build());
-		addRenderableWidget(Button.builder(Component.literal("匯出"), b -> exportAll())
-				.bounds(p.x() + p.w() - 8 - buttonWidth, p.y() + 3, buttonWidth, 20)
-				.tooltip(Tooltip.create(Component.literal("把全部分組複製到剪貼簿\n貼給其他玩家即可匯入")))
-				.build());
+		addRenderableWidget(Theme.button(Component.literal("匯入"), b -> setScreen(new ImportScreen(this, message -> setStatus(message, Theme.SUCCESS))), p.x() + p.w() - 8 - buttonWidth * 2 - 4, p.y() + 3, buttonWidth, 20).tip("貼上其他玩家分享的指令集代碼\n可預覽內容，選擇合併或覆蓋"));
+		addRenderableWidget(Theme.button(Component.literal("匯出"), b -> exportAll(), p.x() + p.w() - 8 - buttonWidth, p.y() + 3, buttonWidth, 20).tip("把全部分組複製到剪貼簿\n貼給其他玩家即可匯入"));
 		setInitialFocus(searchBox);
 	}
 
@@ -280,8 +272,7 @@ public final class CommandMenuScreen extends Screen {
 		Rect p = panel();
 		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
-		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT_DIM);
+		Theme.header(gfx, p.x(), p.y(), p.w());
 		gfx.text(font, title.getString(), Theme.titleX(font, p.x()), p.y() + 9, Theme.ACCENT);
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
 
@@ -333,7 +324,7 @@ public final class CommandMenuScreen extends Screen {
 			List<GroupIcon> icons = node == null ? List.of() : icons(node);
 			boolean showIcons = hovered && node != null;
 			int reserved = showIcons ? icons.size() * 13 + 2 : font.width(count) + 6;
-			gfx.text(font, font.plainSubstrByWidth(name, row.x() + row.w() - reserved - nameX), nameX, row.y() + 5, isSelected ? Theme.TEXT : Theme.TEXT_SECONDARY);
+			gfx.text(font, Gfx.fit(font, name, row.x() + row.w() - reserved - nameX), nameX, row.y() + 5, isSelected ? Theme.TEXT : Theme.TEXT_SECONDARY);
 			if (showIcons) {
 				for (int slot = 0; slot < icons.size(); slot++) {
 					GroupIcon icon = icons.get(slot);
@@ -377,7 +368,7 @@ public final class CommandMenuScreen extends Screen {
 		Rect add = addCommandChip();
 		String countText = rows.size() + " 個";
 		int headingWidth = add.x() - m.x() - 14 - font.width(countText);
-		String shownHeading = font.plainSubstrByWidth(heading, headingWidth);
+		String shownHeading = Gfx.fit(font, heading, headingWidth);
 		gfx.text(font, shownHeading, m.x() + 2, m.y() + 4, Theme.TEXT);
 		gfx.text(font, countText, m.x() + 8 + font.width(shownHeading), m.y() + 4, Theme.TEXT_DIM);
 		drawChip(gfx, add, ADD_COMMAND, Theme.ACCENT, mouseX, mouseY);
@@ -409,7 +400,7 @@ public final class CommandMenuScreen extends Screen {
 			String tag = (row.entry() == listening ? "[請按下按鍵⋯] " : keyLabel.isEmpty() ? "" : "[" + keyLabel + "] ") + groupTag(row);
 			if (!hovered && !tag.isEmpty()) {
 				int tagWidth = Math.min(font.width(tag), card.w() / 3);
-				gfx.text(font, font.plainSubstrByWidth(tag, tagWidth), textRight - tagWidth, card.y() + 4, Theme.TEXT_DIM);
+				gfx.text(font, Gfx.fit(font, tag, tagWidth), textRight - tagWidth, card.y() + 4, Theme.TEXT_DIM);
 				textRight -= tagWidth + 8;
 			}
 			int textWidth = textRight - card.x() - 8;
@@ -418,9 +409,9 @@ public final class CommandMenuScreen extends Screen {
 				gfx.text(font, aliasTag, card.x() + 8, card.y() + 4, Theme.ACCENT);
 			}
 			int aliasWidth = font.width(aliasTag);
-			gfx.text(font, font.plainSubstrByWidth("/" + row.entry().command, Math.max(0, textWidth - aliasWidth)), card.x() + 8 + aliasWidth, card.y() + 4, Theme.TEXT);
+			gfx.text(font, Gfx.fit(font, "/" + row.entry().command, Math.max(0, textWidth - aliasWidth)), card.x() + 8 + aliasWidth, card.y() + 4, Theme.TEXT);
 			String note = row.entry().note.isEmpty() ? "沒有備註" : row.entry().note;
-			gfx.text(font, font.plainSubstrByWidth(note, textWidth), card.x() + 8, card.y() + 15, row.entry().note.isEmpty() ? Theme.TEXT_DIM : Theme.TEXT_SECONDARY);
+			gfx.text(font, Gfx.fit(font, note, textWidth), card.x() + 8, card.y() + 15, row.entry().note.isEmpty() ? Theme.TEXT_DIM : Theme.TEXT_SECONDARY);
 
 			if (hovered) {
 				Action hoveredAction = null;
@@ -510,18 +501,22 @@ public final class CommandMenuScreen extends Screen {
 			return true;
 		}
 		if (Theme.backHit(font, panel().x(), panel().y(), mouseX, mouseY)) {
+			Theme.click();
 			onClose();
 			return true;
 		}
 		if (lastDeleted != null && System.currentTimeMillis() < statusUntil && undoChip().contains(mouseX, mouseY)) {
+			Theme.click();
 			undo();
 			return true;
 		}
 		if (addGroupRow().contains(mouseX, mouseY)) {
+			Theme.click();
 			openGroupDialog(null, null);
 			return true;
 		}
 		if (addCommandChip().contains(mouseX, mouseY)) {
+			Theme.click();
 			openCommandDialog(null);
 			return true;
 		}
@@ -537,6 +532,7 @@ public final class CommandMenuScreen extends Screen {
 					continue;
 				}
 				Row row = rows.get(i);
+				Theme.click();
 				if (actionChip(card, Action.KEY).contains(mouseX, mouseY)) {
 					listening = row.entry();
 					searchBox.setFocused(false);
@@ -564,6 +560,7 @@ public final class CommandMenuScreen extends Screen {
 			if (!row.contains(mouseX, mouseY)) {
 				continue;
 			}
+			Theme.click();
 			if (position == 0) {
 				select(null);
 				return;

@@ -30,8 +30,8 @@ public final class GuideScreen extends Screen {
 
 	private record Entry(int y, int h, String slug, String title, String sub) {}
 
-	private static final int HEADER = 26;
-	private static final int FOOTER = 16;
+	private static final int HEADER = Theme.HEADER_H;
+	private static final int FOOTER = Theme.FOOTER_H;
 	private static final int PAD = 7;
 	private static final int CHIP_HEIGHT = 14;
 	private static final int HEADING = 16;
@@ -279,8 +279,7 @@ public final class GuideScreen extends Screen {
 		Rect l = list();
 		Theme.panel(gfx, p.x(), p.y(), p.x() + p.w(), p.y() + p.h());
 		Theme.watermark(gfx, p.x(), p.y(), p.w(), p.h());
-		gfx.fill(p.x(), p.y(), p.x() + p.w(), p.y() + HEADER, Theme.HEADER);
-		gfx.fill(p.x(), p.y() + HEADER - 1, p.x() + p.w(), p.y() + HEADER, Theme.ACCENT_DIM);
+		Theme.header(gfx, p.x(), p.y(), p.w());
 		gfx.text(font, title.getString(), Theme.titleX(font, p.x()), p.y() + 9, Theme.ACCENT);
 		Theme.drawBack(gfx, font, p.x(), p.y(), mouseX, mouseY);
 		drawChip(gfx, browserChip(), "瀏覽器開啟", mouseX, mouseY);
@@ -350,14 +349,9 @@ public final class GuideScreen extends Screen {
 		gfx.endScissor();
 
 		int content = contentHeight() + 20;
-		if (content > l.h()) {
-			int barHeight = Math.max(16, l.h() * l.h() / content);
-			int barY = l.y() + (int) ((l.h() - barHeight) * (scroll / (content - l.h())));
-			gfx.fill(l.x() + l.w() - 2, barY, l.x() + l.w(), barY + barHeight, Theme.CHIP_HOVER);
-		}
+		Theme.scrollbar(gfx, l.x() + l.w() - Theme.SCROLLBAR_W, l.y(), l.h(), content, scroll, draggingBar || l.contains(mouseX, mouseY) && mouseX >= l.x() + l.w() - 6);
 
-		gfx.fill(p.x(), p.y() + p.h() - FOOTER, p.x() + p.w(), p.y() + p.h() - FOOTER + 1, Theme.HEADER);
-		gfx.text(font, "資料來源：輝煌官網 · 官網連結會在遊戲內開啟 · Esc 返回", p.x() + 8, p.y() + p.h() - FOOTER + 4, Theme.TEXT_DIM);
+		Theme.footer(gfx, font, p.x(), p.y() + p.h(), p.w(), "資料來源：輝煌官網 · 官網連結會在遊戲內開啟 · Esc 返回", Theme.TEXT_DIM);
 
 		if (!tooltip.isEmpty()) {
 			gfx.tooltip(font, tooltip, mouseX, mouseY);
@@ -402,10 +396,12 @@ public final class GuideScreen extends Screen {
 			return true;
 		}
 		if (Theme.backHit(font, panel().x(), panel().y(), mouseX, mouseY)) {
+			Theme.click();
 			onClose();
 			return true;
 		}
 		if (browserChip().contains(mouseX, mouseY)) {
+			Theme.click();
 			ConfirmLinkScreen.confirmLinkNow(this, URI.create(browserUrl()));
 			return true;
 		}

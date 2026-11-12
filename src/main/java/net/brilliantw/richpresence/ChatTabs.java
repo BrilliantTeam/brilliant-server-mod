@@ -189,6 +189,7 @@ public final class ChatTabs {
 		}
 		for (Chip chip : chips(screen, Minecraft.getInstance().font)) {
 			if (chip.contains(mouseX, mouseY)) {
+				Theme.click();
 				toggle(chip.tab());
 				chat().rescaleChat();
 				return true;

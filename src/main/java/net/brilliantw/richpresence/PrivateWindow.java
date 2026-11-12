@@ -224,7 +224,7 @@ public final class PrivateWindow {
 	}
 
 	private static String tabLabel(PrivateMessages.Conversation conversation) {
-		String name = font().plainSubstrByWidth(conversation.display, 70);
+		String name = Gfx.fit(font(), conversation.display, 70);
 		return conversation.unread > 0 ? name + " " + conversation.unread : name;
 	}
 
@@ -485,6 +485,7 @@ public final class PrivateWindow {
 			Rect panel = emojiPanel(frame);
 			EmojiPicker.Emoji emoji = EMOJI_PANEL.click(screen, panel.x(), panel.y(), panel.w(), panel.h(), mouseX, mouseY);
 			if (emoji != null && input != null) {
+				Theme.click();
 				input.insertText(emoji.insert());
 				screen.setFocused(input);
 			}
@@ -494,6 +495,7 @@ public final class PrivateWindow {
 			List<Rect> items = showcaseItems(frame);
 			for (int i = 0; i < items.size(); i++) {
 				if (items.get(i).contains(mouseX, mouseY) && input != null) {
+					Theme.click();
 					input.insertText(SHOWCASE.get(i)[1]);
 					screen.setFocused(input);
 					popup = Popup.NONE;
@@ -520,14 +522,17 @@ public final class PrivateWindow {
 			return true;
 		}
 		if (headerButton(frame, 0).contains(mouseX, mouseY)) {
+			Theme.click();
 			PrivateMessages.setCollapsed(true);
 			return true;
 		}
 		if (headerButton(frame, 1).contains(mouseX, mouseY)) {
+			Theme.click();
 			PrivateMessages.setHideInChat(!PrivateMessages.hideInChat());
 			return true;
 		}
 		if (selected != null && headerButton(frame, 2).contains(mouseX, mouseY)) {
+			Theme.click();
 			PrivateMessages.close(selected);
 			return true;
 		}
@@ -553,10 +558,12 @@ public final class PrivateWindow {
 				return true;
 			}
 			if (footerChip(frame, 0).contains(mouseX, mouseY)) {
+				Theme.click();
 				send();
 				return true;
 			}
 			if (footerChip(frame, 1).contains(mouseX, mouseY)) {
+				Theme.click();
 				popup = popup == Popup.EMOJI ? Popup.NONE : Popup.EMOJI;
 				if (popup == Popup.EMOJI) {
 					EMOJI_PANEL.open(screen);
@@ -564,6 +571,7 @@ public final class PrivateWindow {
 				return true;
 			}
 			if (footerChip(frame, 2).contains(mouseX, mouseY)) {
+				Theme.click();
 				popup = popup == Popup.SHOWCASE ? Popup.NONE : Popup.SHOWCASE;
 				return true;
 			}

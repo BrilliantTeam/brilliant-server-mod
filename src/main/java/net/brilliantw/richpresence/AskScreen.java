@@ -7,7 +7,6 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 //?} else {
 /*import net.minecraft.client.gui.GuiGraphics;
 *///?}
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
@@ -49,15 +48,14 @@ public final class AskScreen extends Screen {
 			input = addRenderableWidget(new EditBox(font, x, y, WIDTH - 20 - 56, 18, Component.literal("回答")));
 			input.setMaxLength(Scripts.MAX_TEXT);
 			Theme.hint(input, "輸入回答後按 Enter");
-			addRenderableWidget(Button.builder(Component.literal("確定"), b -> submit(input.getValue())).bounds(x + WIDTH - 20 - 52, y - 1, 52, 20).build());
+			addRenderableWidget(Theme.button(Component.literal("確定"), b -> submit(input.getValue()), x + WIDTH - 20 - 52, y - 1, 52, 20).primary());
 			setInitialFocus(input);
 			return;
 		}
 		int buttonWidth = (WIDTH - 26) / 2;
 		for (int i = 0; i < options.size(); i++) {
 			String option = options.get(i);
-			addRenderableWidget(Button.builder(Component.literal(option), b -> submit(option))
-					.bounds(x + (i % 2) * (buttonWidth + 6), y + (i / 2) * 24, buttonWidth, 20).build());
+			addRenderableWidget(Theme.button(Component.literal(option), b -> submit(option), x + (i % 2) * (buttonWidth + 6), y + (i / 2) * 24, buttonWidth, 20));
 		}
 	}
 
@@ -109,7 +107,7 @@ public final class AskScreen extends Screen {
 		Theme.panel(gfx, x, y, x + WIDTH, y + panelHeight());
 		gfx.fill(x, y, x + WIDTH, y + 20, Theme.HEADER);
 		gfx.label(font, options == null ? "腳本想問你" : "腳本請你選一個", x + 8, y, 20, Theme.ACCENT);
-		gfx.text(font, font.plainSubstrByWidth(question, WIDTH - 16), x + 8, y + 26, Theme.TEXT);
+		gfx.text(font, Gfx.fit(font, question, WIDTH - 16), x + 8, y + 26, Theme.TEXT);
 	}
 
 	@Override

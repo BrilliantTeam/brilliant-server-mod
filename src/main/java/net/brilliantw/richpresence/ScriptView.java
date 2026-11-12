@@ -327,7 +327,7 @@ public final class ScriptView {
 					shape(gfx, slot.slot().kind() == ScriptBlocks.SlotKind.NUMBER ? ScriptBlocks.Shape.REPORTER : ScriptBlocks.Shape.STACK,
 							slot.x(), slot.y(), slot.w(), slot.h(), 0xFFFFFFFF);
 					if (!editingThis) {
-						gfx.centered(font, font.plainSubstrByWidth(text, slot.w() - 4), slot.x(), slot.y(), slot.w(), slot.h(), SLOT_TEXT);
+						gfx.centered(font, Gfx.fit(font, text, slot.w() - 4), slot.x(), slot.y(), slot.w(), slot.h(), SLOT_TEXT);
 					}
 				}
 			}

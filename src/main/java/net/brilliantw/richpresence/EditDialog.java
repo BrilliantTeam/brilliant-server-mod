@@ -2,13 +2,11 @@ package net.brilliantw.richpresence;
 
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.ChatFormatting;
 //? if >=26.1 {
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 //?} else {
 /*import net.minecraft.client.gui.GuiGraphics;
 *///?}
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
@@ -57,7 +55,7 @@ public final class EditDialog extends Screen {
 	}
 
 	private int dialogHeight() {
-		return 28 + fields.size() * FIELD + (groups != null ? FIELD : 0) + 14 + 28;
+		return Theme.HEADER_H + 6 + fields.size() * FIELD + (groups != null ? FIELD : 0) + 14 + 28;
 	}
 
 	private int left() {
@@ -71,7 +69,7 @@ public final class EditDialog extends Screen {
 	@Override
 	protected void init() {
 		int x = left() + 10;
-		int y = top() + 28;
+		int y = top() + Theme.HEADER_H + 6;
 		List<EditBox> boxes = new ArrayList<>();
 		for (int i = 0; i < fields.size(); i++) {
 			int index = i;
@@ -94,16 +92,16 @@ public final class EditDialog extends Screen {
 			y += FIELD;
 		}
 		if (groups != null) {
-			addRenderableWidget(Button.builder(groupLabel(), button -> {
+			addRenderableWidget(Theme.button(groupLabel(), button -> {
 				groupIndex = (groupIndex + 1) % groups.size();
 				button.setMessage(groupLabel());
-			}).bounds(x, y + 11, WIDTH - 20, 20).build());
+			}, x, y + 11, WIDTH - 20, 20));
 			y += FIELD;
 		}
 		int buttonY = top() + dialogHeight() - 28;
 		int buttonWidth = (WIDTH - 26) / 2;
-		addRenderableWidget(Button.builder(Component.literal("取消"), b -> onClose()).bounds(x, buttonY, buttonWidth, 20).build());
-		addRenderableWidget(Button.builder(Component.literal("儲存").withStyle(ChatFormatting.GREEN), b -> save()).bounds(x + buttonWidth + 6, buttonY, buttonWidth, 20).build());
+		addRenderableWidget(Theme.button(Component.literal("取消"), b -> onClose(), x, buttonY, buttonWidth, 20));
+		addRenderableWidget(Theme.button(Component.literal("儲存"), b -> save(), x + buttonWidth + 6, buttonY, buttonWidth, 20).primary());
 		if (!boxes.isEmpty()) {
 			setInitialFocus(boxes.getFirst());
 		}
@@ -174,10 +172,9 @@ public final class EditDialog extends Screen {
 		int x = left();
 		int y = top();
 		Theme.panel(gfx, x, y, x + WIDTH, y + dialogHeight());
-		gfx.fill(x, y, x + WIDTH, y + 22, Theme.HEADER);
-		gfx.fill(x, y + 21, x + WIDTH, y + 22, Theme.ACCENT_DIM);
-		gfx.text(font, title.getString(), x + 10, y + 7, Theme.ACCENT);
-		int fy = y + 28;
+		Theme.header(gfx, x, y, WIDTH);
+		gfx.text(font, title.getString(), x + 10, y + 9, Theme.ACCENT);
+		int fy = y + Theme.HEADER_H + 6;
 		for (Field field : fields) {
 			gfx.text(font, field.label(), x + 10, fy, Theme.TEXT_SECONDARY);
 			fy += FIELD;

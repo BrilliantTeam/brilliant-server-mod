@@ -56,6 +56,21 @@ public final class Gfx {
 		return top + (height - font.lineHeight + 2) / 2;
 	}
 
+	public static String fit(Font font, String text, int width) {
+		if (font.width(text) <= width) {
+			return text;
+		}
+		return font.plainSubstrByWidth(text, Math.max(0, width - font.width("…"))) + "…";
+	}
+
+	public void fitText(Font font, String text, int x, int y, int width, int color, int mouseX, int mouseY) {
+		String shown = fit(font, text, width);
+		text(font, shown, x, y, color);
+		if (!shown.equals(text) && mouseX >= x && mouseX < x + width && mouseY >= y - 1 && mouseY < y + font.lineHeight) {
+			tooltip(font, List.of(Component.literal(text)), mouseX, mouseY);
+		}
+	}
+
 	public void label(Font font, String text, int x, int top, int height, int color) {
 		text(font, text, x, textTop(font, top, height), color);
 	}
