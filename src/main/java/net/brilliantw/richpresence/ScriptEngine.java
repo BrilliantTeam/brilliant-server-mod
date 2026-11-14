@@ -102,6 +102,10 @@ public final class ScriptEngine {
 	public static final int STEPS_PER_TICK = 300;
 	public static final long SEND_INTERVAL_MS = 3000;
 	public static final long DUPLICATE_MS = 10000;
+	public static final long CHAT_INTERVAL_MS = 3500;
+	public static final long CHAT_DUPLICATE_MS = 31000;
+	private static long lastChat;
+	private static String lastChatText;
 	public static final int MAX_QUEUE = 5;
 	public static final int MIN_TIMER_SECONDS = 5;
 
@@ -1033,9 +1037,9 @@ public final class ScriptEngine {
 								continue;
 							}
 							net.minecraft.world.phys.Vec3 target = switch (block.op) {
-								case "act_face_pos" -> new net.minecraft.world.phys.Vec3(number(eval(run, block.args.get(0))) + 0.5, number(eval(run, block.args.get(1))) + 0.5, number(eval(run, block.args.get(2))) + 0.5);
+								case "act_face_pos" -> scatter(new net.minecraft.world.phys.Vec3(number(eval(run, block.args.get(0))) + 0.5, number(eval(run, block.args.get(1))) + 0.5, number(eval(run, block.args.get(2))) + 0.5));
 								case "act_face_block" -> ScriptExtras.blocksNear(player, number(eval(run, block.args.get(0))), eval(run, block.args.get(1)), 1).stream().findFirst()
-										.map(net.minecraft.world.phys.Vec3::atCenterOf).orElse(null);
+										.map(pos -> scatter(net.minecraft.world.phys.Vec3.atCenterOf(pos))).orElse(null);
 								case "act_face_entity" -> java.util.Optional.ofNullable(ScriptExtras.nearestCreature(player, eval(run, block.args.getFirst())))
 										.map(net.minecraft.world.entity.Entity::getEyePosition).orElse(null);
 								default -> ScriptExtras.visiblePlayers(player, ScriptExtras.ENTITY_SIGHT).stream().findFirst()
@@ -1056,12 +1060,7 @@ public final class ScriptEngine {
 							run.targetPitch = look[1];
 						}
 					}
-					float yaw = player.getYRot() + Math.clamp(run.targetYaw - player.getYRot(), -TURN_SPEED, TURN_SPEED);
-					float pitch = player.getXRot() + Math.clamp(run.targetPitch - player.getXRot(), -TURN_SPEED, TURN_SPEED);
-					player.setYRot(yaw);
-					player.setYHeadRot(yaw);
-					player.setXRot(pitch);
-					if (Math.abs(run.targetYaw - yaw) < 0.01f && Math.abs(run.targetPitch - pitch) < 0.01f) {
+					if (turnStep(player, run.targetYaw, run.targetPitch)) {
 						run.turnBlock = null;
 						frame.index++;
 					}
@@ -2012,8 +2011,20 @@ public final class ScriptEngine {
 		if (player == null || OUTBOX.isEmpty() || now - lastSent < SEND_INTERVAL_MS) {
 			return;
 		}
-		Outgoing next = OUTBOX.poll();
+		Outgoing next = OUTBOX.peek();
+		if (!next.command() && now - lastChat < CHAT_INTERVAL_MS) {
+			return;
+		}
+		OUTBOX.poll();
 		String key = (next.command() ? "/" : "") + next.text();
+		if (!next.command()) {
+			if (next.text().equalsIgnoreCase(lastChatText) && now - lastChat < CHAT_DUPLICATE_MS) {
+				fail(next.block(), "30 秒內不會重複送出同樣的聊天內容，已略過：" + key);
+				return;
+			}
+			lastChat = now;
+			lastChatText = next.text();
+		}
 		if (key.equals(lastText) && now - lastSent < DUPLICATE_MS) {
 			fail(next.block(), "10 秒內不會重複送出同樣的內容，已略過：" + key);
 			return;
@@ -2707,10 +2718,39 @@ public final class ScriptEngine {
 			return true;
 		}
 		float target = (float) Math.toDegrees(Math.atan2(dz, dx)) - 90f;
-		float yaw = player.getYRot() + Math.clamp(net.minecraft.util.Mth.wrapDegrees(target - player.getYRot()), -TURN_SPEED, TURN_SPEED);
-		player.setYRot(yaw);
-		player.setYHeadRot(yaw);
+		turnStep(player, player.getYRot() + net.minecraft.util.Mth.wrapDegrees(target - player.getYRot()), player.getXRot());
 		hold(run, forward, now + 200, false);
+		return false;
+	}
+
+	private static long turnedAt;
+	private static double turned;
+
+	private static net.minecraft.world.phys.Vec3 scatter(net.minecraft.world.phys.Vec3 center) {
+		ThreadLocalRandom random = ThreadLocalRandom.current();
+		return center.add(random.nextDouble(0.15, 0.35) * (random.nextBoolean() ? 1 : -1), random.nextDouble(0.15, 0.35) * (random.nextBoolean() ? 1 : -1),
+				random.nextDouble(0.15, 0.35) * (random.nextBoolean() ? 1 : -1));
+	}
+
+	private static boolean turnStep(LocalPlayer player, float targetYaw, float targetPitch) {
+		double scale = Minecraft.getInstance().options.sensitivity().get() * 0.6 + 0.2;
+		double unit = scale * scale * scale * 8.0;
+		double step = unit * 0.15;
+		ThreadLocalRandom random = ThreadLocalRandom.current();
+		long now = System.currentTimeMillis();
+		double limit = Math.min(TURN_SPEED, (now - turnedAt > 150 ? 0 : turned) + 12) * (0.7 + random.nextDouble() * 0.3);
+		double ease = 0.48 + random.nextDouble() * 0.24;
+		long dx = Math.round(Math.clamp((targetYaw - player.getYRot()) * ease, -limit, limit) / step);
+		long dy = Math.round(Math.clamp((targetPitch - player.getXRot()) * ease, -limit, limit) / step);
+		if (dx == 0 && dy == 0) {
+			return true;
+		}
+		if (dy == 0) {
+			dy = random.nextBoolean() ? 1 : -1;
+		}
+		turnedAt = now;
+		turned = Math.max(Math.abs(dx), Math.abs(dy)) * step;
+		player.turn(dx * unit, dy * unit);
 		return false;
 	}
 
