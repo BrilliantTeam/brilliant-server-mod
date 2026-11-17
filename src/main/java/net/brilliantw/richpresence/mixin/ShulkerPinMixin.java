@@ -16,6 +16,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -46,9 +47,20 @@ public abstract class ShulkerPinMixin {
 		ci.cancel();
 	}
 
+	@Unique private boolean brilliant$swallowRelease;
+
 	@Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
-	private void brilliant$blockClicksWhilePinned(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
-		if (ShulkerPreview.isPinned(this)) {
+	private void brilliant$blockClicksOnPinned(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {
+		if (ShulkerPreview.consumesClick(this, event.x(), event.y())) {
+			brilliant$swallowRelease = true;
+			cir.setReturnValue(true);
+		}
+	}
+
+	@Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
+	private void brilliant$blockReleaseOnPinned(MouseButtonEvent event, CallbackInfoReturnable<Boolean> cir) {
+		if (brilliant$swallowRelease) {
+			brilliant$swallowRelease = false;
 			cir.setReturnValue(true);
 		}
 	}

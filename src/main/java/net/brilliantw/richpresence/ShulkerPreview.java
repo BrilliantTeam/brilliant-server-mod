@@ -48,6 +48,10 @@ public final class ShulkerPreview implements TooltipComponent, ClientTooltipComp
 	private static int mouseX;
 	private static int mouseY;
 	private static boolean nested;
+	private static boolean held;
+	private static int panelX;
+	private static int panelY;
+	private static int panelBottom = Integer.MIN_VALUE;
 
 	private final List<ItemStack> slots;
 
@@ -119,25 +123,41 @@ public final class ShulkerPreview implements TooltipComponent, ClientTooltipComp
 		mouseX = x;
 		mouseY = y;
 		if (!pinHeld()) {
-			pinned = null;
-			pinnedScreen = null;
+			held = false;
+			unpin();
 			return null;
 		}
-		if (pinned == null || pinnedScreen != screen) {
-			if (hovered.isEmpty() || of(hovered).isEmpty()) {
-				pinned = null;
-				return null;
-			}
-			pinned = hovered.copy();
-			pinnedScreen = screen;
-			pinX = x;
-			pinY = y;
+		boolean pressed = !held;
+		held = true;
+		if (pinned != null && pinnedScreen == screen) {
+			return pinned;
 		}
+		unpin();
+		if (!pressed || hovered.isEmpty() || of(hovered).isEmpty()) {
+			return null;
+		}
+		pinned = hovered.copy();
+		pinnedScreen = screen;
+		pinX = x;
+		pinY = y;
+		panelBottom = Integer.MIN_VALUE;
 		return pinned;
 	}
 
-	public static boolean isPinned(Object screen) {
-		return pinned != null && pinnedScreen == screen && pinHeld();
+	private static void unpin() {
+		pinned = null;
+		pinnedScreen = null;
+	}
+
+	public static boolean consumesClick(Object screen, double x, double y) {
+		if (pinned == null || pinnedScreen != screen || !pinHeld()) {
+			return false;
+		}
+		if (x >= panelX && x < panelX + PANEL_W && y >= panelY && y < panelBottom) {
+			return true;
+		}
+		unpin();
+		return false;
 	}
 
 	public static int pinX() {
@@ -184,8 +204,13 @@ public final class ShulkerPreview implements TooltipComponent, ClientTooltipComp
 		int gridX = x + BORDER + 1;
 		int gridY = y + BORDER + 1;
 		boolean interactive = !nested && pinned != null && of(pinned).orElse(null) == this;
+		if (interactive) {
+			panelX = x;
+			panelY = y;
+			panelBottom = y + BORDER * 2 + rows * SLOT;
+		}
 		int hovered = -1;
-		if (interactive && mouseX >= gridX - 1 && mouseY >= gridY - 1) {
+		if (interactive &&mouseX >= gridX - 1 && mouseY >= gridY - 1) {
 			int col = (mouseX - gridX + 1) / SLOT;
 			int index = (mouseY - gridY + 1) / SLOT * COLUMNS + col;
 			if (col < COLUMNS && index < slots.size()) {

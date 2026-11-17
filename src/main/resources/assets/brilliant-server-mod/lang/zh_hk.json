@@ -1,7 +1,7 @@
 {
 	"modmenu.nameTranslation.brilliant-server-mod": "輝煌模組",
-	"modmenu.summaryTranslation.brilliant-server-mod": "輝煌伺服器專屬客戶端模組：Discord 狀態、小地圖與大地圖、仿 Discord 的表情與貼圖選單、聊天欄選單、頻道分頁、私訊視窗、自動腳本與更多便利功能。",
-	"modmenu.descriptionTranslation.brilliant-server-mod": "輝煌伺服器（brilliantw.net）的專屬客戶端模組。\n\n• Discord 遊玩狀態：顯示所在分流與遊玩時間\n• 聊天欄選單：可搜尋，收錄公告、官網文章、聊天紀錄、常用訊息、自訂指令與動作\n• 頻道分頁與私訊視窗\n• 小地圖與大地圖：標示領地、資源再生區塊、史萊姆區塊與記錄點\n• 仿 Discord 的表情符號與貼圖選單，動態表情與貼圖在聊天欄會播放\n• 自動腳本：Scratch 式積木，打造自己的自動化，內建範本庫\n• 快捷鍵：自訂指令可綁定鍵盤或滑鼠側鍵，並可加 Ctrl／Alt／Shift\n• 指令別名與 TAB 補全\n• 斷線自動重連與自動續驗證\n• 彩色文字預覽、高清看圖、配方書修正、格子編號、鐵砧完整花費\n• 遊戲內更新通知與一鍵下載\n\n功能只會在 brilliantw.net 上啟用。",
+	"modmenu.summaryTranslation.brilliant-server-mod": "輝煌伺服器專屬客戶端模組：Discord 狀態、小地圖與大地圖、仿 Discord 的表情與貼圖選單、聊天欄選單、頻道分頁、私訊視窗、自動腳本、自由視角、界伏盒預覽與更多便利功能。",
+	"modmenu.descriptionTranslation.brilliant-server-mod": "輝煌伺服器（brilliantw.net）的專屬客戶端模組。\n\n• Discord 遊玩狀態：顯示所在分流與遊玩時間\n• 聊天欄選單：可搜尋，收錄公告、官網文章、聊天紀錄、常用訊息、自訂指令、分享座標與贊助輝煌\n• 頻道分頁、私訊視窗與聊天訊息回覆\n• 仿 Discord 的表情符號與貼圖選單，動態表情與貼圖在聊天欄會播放；Discord 圖片連結可在遊戲內高清看圖\n• 小地圖與大地圖：標示領地、公開傳送點、資源再生區塊、史萊姆區塊與記錄點，進入地底自動切換洞穴圖\n• 自動腳本：Scratch 式積木，內建範本庫、除錯工具與 Discord Webhook 積木\n• 自由視角、夜視，以及保留遠處區塊（可存到硬碟，看得比伺服器視野更遠）\n• 界伏盒預覽：以格子顯示盒內物品，按住 Shift 可固定視窗查看每個物品\n• 快捷鍵：自訂指令可綁定鍵盤或滑鼠側鍵，並可加 Ctrl／Alt／Shift\n• 指令別名與 TAB 補全\n• 斷線自動重連與自動續驗證，登入與輝煌啟動器同步\n• 彩色文字預覽、配方書修正、格子編號、鐵砧完整花費、自訂記分板位置\n• 自訂介面強調色與背景色調\n• 遊戲內更新通知與一鍵更新\n\n大部分功能只在 brilliantw.net 上啟用。",
 	"key.category.brilliant-server-mod.scripts": "輝煌模組：自動腳本",
 	"key.brilliant-server-mod.script_1": "腳本鍵 1",
 	"key.brilliant-server-mod.script_2": "腳本鍵 2",
