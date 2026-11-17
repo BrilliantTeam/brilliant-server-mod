@@ -145,6 +145,10 @@ public final class ModSettings {
 			} catch (Exception ignored) {
 			}
 			data = parse(json);
+			if (RPConfig.ANDROID) {
+				data.discordPresence = false;
+				data.updateCheck = false;
+			}
 			Theme.apply(data);
 		}
 		return data;

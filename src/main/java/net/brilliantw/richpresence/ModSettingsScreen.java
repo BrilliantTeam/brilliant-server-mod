@@ -112,9 +112,9 @@ public final class ModSettingsScreen extends Screen {
 		super(Component.literal("模組設定"));
 		this.parent = parent;
 		ModSettings.Data s = ModSettings.get();
-		rows.add(new Row("一般", "Discord 遊玩狀態", "在 Discord 個人檔案顯示所在分流與遊玩時間", () -> s.discordPresence, v -> s.discordPresence = v));
+		if (!RPConfig.ANDROID) rows.add(new Row("一般", "Discord 遊玩狀態", "在 Discord 個人檔案顯示所在分流與遊玩時間", () -> s.discordPresence, v -> s.discordPresence = v));
 		rows.add(new Row("一般", "新公告通知", "進入伺服器時提示有幾則未讀公告", () -> s.announcements, v -> s.announcements = v));
-		rows.add(new Row("一般", "自動檢查更新", "有新版本時通知，並可在遊戲內一鍵更新", () -> s.updateCheck, v -> s.updateCheck = v));
+		if (!RPConfig.ANDROID) rows.add(new Row("一般", "自動檢查更新", "有新版本時通知，並可在遊戲內一鍵更新", () -> s.updateCheck, v -> s.updateCheck = v));
 		rows.add(new Row("連線", "斷線自動重連", "被伺服器斷線時自動重新連入；在其他地方登入時不會重連", () -> s.autoReconnect, v -> s.autoReconnect = v));
 		rows.add(Row.cycle("連線", "失敗幾次後停止", "連續重連失敗達到次數就停止", () -> AutoReconnect.attemptsLabel(s.reconnectAttempts),
 				dir -> s.reconnectAttempts = cycle(AutoReconnect.ATTEMPTS, s.reconnectAttempts, dir)));

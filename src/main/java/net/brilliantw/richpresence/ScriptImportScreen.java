@@ -111,7 +111,8 @@ public final class ScriptImportScreen extends Screen {
 		int x = left() + 10;
 		int w = panelWidth() - 20;
 		int pasteWidth = 64;
-		int fileWidth = 64;
+		int fileWidth = RPConfig.ANDROID ? 0 : 64;
+		int fileGap = RPConfig.ANDROID ? 0 : 4;
 		input = addRenderableWidget(new EditBox(font, x, top() + HEADER + 16, w - pasteWidth - fileWidth - 8, 18, Component.literal("腳本代碼")));
 		input.setMaxLength(Integer.MAX_VALUE);
 		Theme.hint(input, "在這裡按 Ctrl+V 貼上 " + Scripts.EXPORT_PREFIX + "… 代碼");
@@ -120,8 +121,8 @@ public final class ScriptImportScreen extends Screen {
 			code = value;
 			update();
 		});
-		addRenderableWidget(Theme.button(Component.literal("貼上剪貼簿"), b -> setCode(minecraft.keyboardHandler.getClipboard()), x + w - pasteWidth - fileWidth - 4, top() + HEADER + 15, pasteWidth, 20));
-		addRenderableWidget(Theme.button(Component.literal("選擇檔案"), b -> FilePicker.openTextFile("選擇腳本 .txt 檔", this::loadFile), x + w - fileWidth, top() + HEADER + 15, fileWidth, 20).tip("從 .txt 檔匯入，例如 Discord 自動轉成的 message.txt\n也可以直接把檔案拖進遊戲視窗"));
+		addRenderableWidget(Theme.button(Component.literal("貼上剪貼簿"), b -> setCode(minecraft.keyboardHandler.getClipboard()), x + w - pasteWidth - fileWidth - fileGap, top() + HEADER + 15, pasteWidth, 20));
+		if (!RPConfig.ANDROID) addRenderableWidget(Theme.button(Component.literal("選擇檔案"), b -> FilePicker.openTextFile("選擇腳本 .txt 檔", this::loadFile), x + w - fileWidth, top() + HEADER + 15, fileWidth, 20).tip("從 .txt 檔匯入，例如 Discord 自動轉成的 message.txt\n也可以直接把檔案拖進遊戲視窗"));
 
 		int buttonY = top() + panelHeight() - 26;
 		int buttonWidth = (w - 6) / 2;
@@ -192,7 +193,7 @@ public final class ScriptImportScreen extends Screen {
 
 		gfx.text(font, "腳本代碼", x + 10, y + HEADER + 5, Theme.TEXT_SECONDARY);
 		String dropHint = "也可以把 .txt 檔拖進視窗";
-		gfx.text(font, dropHint, x + w - 10 - font.width(dropHint), y + HEADER + 5, Theme.TEXT_DIM);
+		if (!RPConfig.ANDROID) gfx.text(font, dropHint, x + w - 10 - font.width(dropHint), y + HEADER + 5, Theme.TEXT_DIM);
 
 		int summaryY = previewTop() - 14;
 		if (!error.isEmpty()) {

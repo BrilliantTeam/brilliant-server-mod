@@ -56,6 +56,7 @@ public final class RPConfig {
 	public static final String WEBSITE_URL = "https://www.brilliantw.net";
 	public static final String LAUNCHER_URL = WEBSITE_URL + "/launcher/";
 	public static final String LAUNCHER_VERSION = launcherVersion(System.getProperty("brilliant.launcher"));
+	public static final boolean ANDROID = Boolean.getBoolean("brilliant.android");
 
 	static String launcherVersion(String value) {
 		return value != null && value.matches("[0-9]{1,4}(\\.[0-9]{1,4}){0,3}") ? value : null;
