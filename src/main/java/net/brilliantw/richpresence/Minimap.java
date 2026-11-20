@@ -428,7 +428,7 @@ public final class Minimap {
 				? data.areas().stream().filter(a -> a.maxX() >= minX && a.minX() <= maxX && a.maxZ() >= minZ && a.minZ() <= maxZ).toList()
 				: List.of();
 		MapMarkers.Regen regen = s.mapRegen ? WorldMaps.regen(view) : null;
-		if (areas.isEmpty() && (regen == null || regen.minutes().isEmpty())) {
+		if (areas.isEmpty() && (regen == null || regen.isEmpty())) {
 			return MinimapRaster.NONE;
 		}
 		double edge = Math.max(bpp, 0.5);
@@ -440,14 +440,16 @@ public final class Minimap {
 			return MinimapRaster.NONE;
 		}
 		int[] regenCells = new int[w * h];
-		if (regen != null && !regen.minutes().isEmpty()) {
-			int elapsed = (int) ((System.currentTimeMillis() - regen.fetchedAt()) / 60000);
+		if (regen != null && !regen.isEmpty()) {
+			int elapsed = regen.elapsed();
+			long[] rows = regen.rows();
 			for (int cz = 0; cz < h; cz++) {
-				for (int cx = 0; cx < w; cx++) {
-					Integer stored = regen.minutes().get(MapMarkers.key(cx0 + cx, cz0 + cz));
-					if (stored != null) {
-						regenCells[cz * w + cx] = stored - elapsed <= 0 ? REGEN_READY : REGEN_PENDING;
+				for (int i = regen.lowerBound(cx0, cz0 + cz); i < rows.length && MapMarkers.Regen.rowZ(rows[i]) == cz0 + cz; i++) {
+					int cx = MapMarkers.Regen.rowX(rows[i]) - cx0;
+					if (cx >= w) {
+						break;
 					}
+					regenCells[cz * w + cx] = regen.stored()[i] - elapsed <= 0 ? REGEN_READY : REGEN_PENDING;
 				}
 			}
 		}
@@ -479,8 +481,7 @@ public final class Minimap {
 			if (here != null) {
 				for (MapMarkers.Area area : here) {
 					if (area.contains(wx, wz)) {
-						boolean border = !area.contains(wx - edge, wz) || !area.contains(wx + edge, wz) || !area.contains(wx, wz - edge) || !area.contains(wx, wz + edge);
-						return border ? MapMath.alpha(area.line() | 0xFF000000, 0.85) : MapMath.alpha(area.fill() | 0xFF000000, Math.min(0.32, Math.max(0.12, (area.fill() >>> 24) / 255.0)));
+						return area.border(wx, wz, edge) ? MapMath.alpha(area.line() | 0xFF000000, 0.85) : MapMath.alpha(area.fill() | 0xFF000000, Math.min(0.32, Math.max(0.12, (area.fill() >>> 24) / 255.0)));
 					}
 				}
 			}

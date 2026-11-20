@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +45,9 @@ public final class MapMarkers {
 			if (x < minX || x > maxX || z < minZ || z > maxZ) {
 				return false;
 			}
+			if (rectangle()) {
+				return x < maxX && z < maxZ;
+			}
 			boolean inside = false;
 			for (int i = 0, j = xs.length - 1; i < xs.length; j = i++) {
 				if ((zs[i] > z) != (zs[j] > z) && x < (xs[j] - xs[i]) * (z - zs[i]) / (zs[j] - zs[i]) + xs[i]) {
@@ -51,6 +55,18 @@ public final class MapMarkers {
 				}
 			}
 			return inside;
+		}
+
+		public boolean border(double x, double z, double edge) {
+			if (rectangle()) {
+				return x - edge < minX || x + edge >= maxX || z - edge < minZ || z + edge >= maxZ;
+			}
+			return !contains(x - edge, z) || !contains(x + edge, z) || !contains(x, z - edge) || !contains(x, z + edge);
+		}
+
+		public boolean rectangle() {
+			return xs.length == 4 && (xs[0] == xs[1] && zs[1] == zs[2] && xs[2] == xs[3] && zs[3] == zs[0]
+					|| zs[0] == zs[1] && xs[1] == xs[2] && zs[2] == zs[3] && xs[3] == xs[0]);
 		}
 	}
 
@@ -157,12 +173,37 @@ public final class MapMarkers {
 		});
 	}
 
-	public record Regen(Map<Long, Integer> minutes, long fetchedAt) {
-		static final Regen EMPTY = new Regen(Map.of(), 0);
+	public record Regen(long[] rows, int[] stored, long fetchedAt) {
+		static final Regen EMPTY = new Regen(new long[0], new int[0], 0);
+
+		public static long row(int chunkX, int chunkZ) {
+			return (long) chunkZ << 32 | (chunkX ^ 0x80000000) & 0xFFFFFFFFL;
+		}
+
+		public static int rowX(long row) {
+			return (int) row ^ 0x80000000;
+		}
+
+		public static int rowZ(long row) {
+			return (int) (row >> 32);
+		}
+
+		public boolean isEmpty() {
+			return rows.length == 0;
+		}
+
+		public int elapsed() {
+			return (int) ((System.currentTimeMillis() - fetchedAt) / 60000);
+		}
+
+		public int lowerBound(int chunkX, int chunkZ) {
+			int i = Arrays.binarySearch(rows, row(chunkX, chunkZ));
+			return i < 0 ? -i - 1 : i;
+		}
 
 		public Integer minutesLeft(int chunkX, int chunkZ) {
-			Integer stored = minutes.get(key(chunkX, chunkZ));
-			return stored == null ? null : stored - (int) ((System.currentTimeMillis() - fetchedAt) / 60000);
+			int i = Arrays.binarySearch(rows, row(chunkX, chunkZ));
+			return i < 0 ? null : stored[i] - elapsed();
 		}
 	}
 
@@ -221,9 +262,14 @@ public final class MapMarkers {
 		JsonArray chunks = JsonParser.parseString(json).getAsJsonObject().getAsJsonArray("chunks");
 		Map<Long, Integer> minutes = new HashMap<>(chunks.size() / 3 * 2);
 		for (int i = 0; i + 2 < chunks.size(); i += 3) {
-			minutes.put(key(chunks.get(i).getAsInt(), chunks.get(i + 1).getAsInt()), chunks.get(i + 2).getAsInt());
+			minutes.put(Regen.row(chunks.get(i).getAsInt(), chunks.get(i + 1).getAsInt()), chunks.get(i + 2).getAsInt());
 		}
-		return new Regen(minutes, System.currentTimeMillis());
+		long[] rows = minutes.keySet().stream().mapToLong(Long::longValue).sorted().toArray();
+		int[] stored = new int[rows.length];
+		for (int i = 0; i < rows.length; i++) {
+			stored[i] = minutes.get(rows[i]);
+		}
+		return new Regen(rows, stored, System.currentTimeMillis());
 	}
 
 	public static String homeOwner(Poi poi) {

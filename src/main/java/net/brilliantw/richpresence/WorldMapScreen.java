@@ -282,26 +282,45 @@ public final class WorldMapScreen extends Screen {
 			return;
 		}
 		MapMarkers.Regen regen = WorldMaps.regen(view);
-		if (regen.minutes().isEmpty()) {
+		if (regen.isEmpty()) {
 			return;
 		}
 		double[] w = visibleWorld(area);
-		for (long packed : regen.minutes().keySet()) {
-			int cx = (int) (packed >> 32);
-			int cz = (int) packed;
-			if ((cx + 1) * 16 < w[0] || cx * 16 > w[2] || (cz + 1) * 16 < w[1] || cz * 16 > w[3]) {
+		int cx0 = Math.floorDiv((int) Math.floor(w[0]), 16);
+		int cz0 = Math.floorDiv((int) Math.floor(w[1]), 16);
+		int cx1 = Math.floorDiv((int) Math.floor(w[2]), 16);
+		int cz1 = Math.floorDiv((int) Math.floor(w[3]), 16);
+		long[] rows = regen.rows();
+		int[] stored = regen.stored();
+		int elapsed = regen.elapsed();
+		for (int cz = cz0; cz <= cz1; cz++) {
+			int y0 = (int) Math.round(toScreenY(cz * 16.0));
+			int y1 = (int) Math.round(toScreenY(cz * 16.0 + 16));
+			if (y1 <= y0 && scale < 2) {
 				continue;
 			}
-			int left = regen.minutesLeft(cx, cz);
-			int x0 = (int) Math.round(toScreenX(cx * 16.0));
-			int y0 = (int) Math.round(toScreenY(cz * 16.0));
-			int x1 = (int) Math.round(toScreenX(cx * 16.0 + 16));
-			int y1 = (int) Math.round(toScreenY(cz * 16.0 + 16));
-			gfx.fill(x0, y0, x1, y1, left <= 0 ? Minimap.REGEN_READY : Minimap.REGEN_PENDING);
-			if (scale >= 2) {
-				int edge = left <= 0 ? 0x80FF4D4D : 0x70FFB020;
-				gfx.fill(x0, y0, x1, y0 + 1, edge);
-				gfx.fill(x0, y0, x0 + 1, y1, edge);
+			for (int i = regen.lowerBound(cx0, cz); i < rows.length && MapMarkers.Regen.rowZ(rows[i]) == cz; i++) {
+				int cx = MapMarkers.Regen.rowX(rows[i]);
+				if (cx > cx1) {
+					break;
+				}
+				boolean ready = stored[i] - elapsed <= 0;
+				int end = cx;
+				while (scale < 2 && end < cx1 && i + 1 < rows.length && rows[i + 1] == MapMarkers.Regen.row(end + 1, cz) && stored[i + 1] - elapsed <= 0 == ready) {
+					i++;
+					end++;
+				}
+				int x0 = (int) Math.round(toScreenX(cx * 16.0));
+				int x1 = (int) Math.round(toScreenX(end * 16.0 + 16));
+				if (x1 <= x0) {
+					continue;
+				}
+				gfx.fill(x0, y0, x1, y1, ready ? Minimap.REGEN_READY : Minimap.REGEN_PENDING);
+				if (scale >= 2) {
+					int edge = ready ? 0x80FF4D4D : 0x70FFB020;
+					gfx.fill(x0, y0, x1, y0 + 1, edge);
+					gfx.fill(x0, y0, x0 + 1, y1, edge);
+				}
 			}
 		}
 	}
@@ -354,9 +373,7 @@ public final class WorldMapScreen extends Screen {
 	private void fillPolygon(Gfx gfx, MapMarkers.Area a, int color, Rect clip) {
 		double[] xs = a.xs();
 		double[] zs = a.zs();
-		boolean rectangle = xs.length == 4 && (xs[0] == xs[1] && zs[1] == zs[2] && xs[2] == xs[3] && zs[3] == zs[0]
-				|| zs[0] == zs[1] && xs[1] == xs[2] && zs[2] == zs[3] && xs[3] == xs[0]);
-		if (rectangle) {
+		if (a.rectangle()) {
 			gfx.fill((int) Math.round(toScreenX(a.minX())), (int) Math.round(toScreenY(a.minZ())), (int) Math.round(toScreenX(a.maxX())), (int) Math.round(toScreenY(a.maxZ())), color);
 			return;
 		}
