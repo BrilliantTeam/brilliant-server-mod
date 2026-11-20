@@ -1,6 +1,8 @@
 package net.brilliantw.richpresence;
 
 import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -338,7 +340,7 @@ public final class SponsorScreen extends Screen {
 			}
 		} else {
 			if (methodId == 0) {
-				methodId = data.methods.stream().filter(m -> m.orderable).mapToInt(m -> m.id).findFirst().orElse(0);
+				methodId = data.methods.stream().filter(SponsorStore.Method::inMod).mapToInt(m -> m.id).findFirst().orElse(0);
 			}
 			int before = hits.size();
 			contentHeight = section(null, data, c, 0, -1, -1, false);
@@ -701,7 +703,7 @@ public final class SponsorScreen extends Screen {
 		int mx = rightX;
 		int my = right + 11;
 		for (SponsorStore.Method method : data.methods) {
-			if (!method.orderable) {
+			if (!method.inMod()) {
 				continue;
 			}
 			int w = font.width(method.name) + 12;
@@ -790,12 +792,16 @@ public final class SponsorScreen extends Screen {
 		if (!submitError.isEmpty()) {
 			y = paragraph(gfx, submitError, leftX, y, c.w() - 8, Theme.DANGER, draw) + 4;
 		}
-		String submitLabel = submitting ? "正在建立訂單…" : "已確認填寫資訊無誤，建立訂單";
+		SponsorStore.Method chosen = method(data, methodId);
+		boolean checkout = chosen != null && !chosen.checkout.isBlank();
+		String submitLabel = submitting ? "正在建立訂單…" : checkout ? "已確認填寫資訊無誤，前往 " + chosen.name + " 付款 ↗" : "已確認填寫資訊無誤，建立訂單";
 		if (draw) {
 			goldButton(gfx, new Rect(leftX, y, Math.min(c.w() - 6, font.width(submitLabel) + 40), 20), submitLabel, mouseX, mouseY, submitting ? null : () -> confirmSubmit(data));
 		}
 		y += 26;
-		y = paragraph(gfx, "建立訂單後會顯示繳費代碼，同時私訊到你的 Discord。繳費完成後系統會自動發放回饋，不需要回報。", leftX, y, c.w() - 8, Theme.TEXT_DIM, draw);
+		y = paragraph(gfx, checkout
+				? "按下後會開啟瀏覽器前往 " + chosen.name + " 結帳頁，可登入帳戶或直接使用信用卡付款。付款完成後系統會自動發放回饋，不需要回報。"
+				: "建立訂單後會顯示繳費代碼，同時私訊到你的 Discord。繳費完成後系統會自動發放回饋，不需要回報。", leftX, y, c.w() - 8, Theme.TEXT_DIM, draw);
 		return y + 4 - top;
 	}
 
@@ -836,6 +842,11 @@ public final class SponsorScreen extends Screen {
 		}
 		submitError = "";
 		SponsorStore.Method method = method(data, methodId);
+		if (method != null && !method.checkout.isBlank()) {
+			SponsorStore.saveDiscord(discordText);
+			open(checkoutUrl(method.checkout, orderForm(nameText, discordText, parse(amountText), 0, methodId, commentText, hideAmount, publishGame, anonymous, emailText, "")));
+			return;
+		}
 		String summary = "遊戲 ID：" + nameText + "\nDiscord：" + discordText
 				+ "\n付款方式：" + (method != null ? method.name : "#" + methodId)
 				+ "\n贊助金額：" + parse(amountText) + " 元" + (method != null && !method.fee.isBlank() ? "（另計" + method.fee + "）" : "")
@@ -846,6 +857,14 @@ public final class SponsorScreen extends Screen {
 				submit();
 			}
 		}, Component.literal("確定要建立贊助訂單嗎？"), Component.literal(summary)));
+	}
+
+	static String checkoutUrl(String base, Map<String, String> fields) {
+		Map<String, String> query = new LinkedHashMap<>(fields);
+		query.put("amount", query.remove("donateAmount"));
+		StringBuilder url = new StringBuilder(base);
+		query.forEach((key, value) -> url.append(url.indexOf("?") < 0 ? '?' : '&').append(key).append('=').append(URLEncoder.encode(value, StandardCharsets.UTF_8)));
+		return url.toString();
 	}
 
 	static Map<String, String> orderForm(String name, String discord, int amount, int cumulative, int method, String comment,
@@ -884,7 +903,7 @@ public final class SponsorScreen extends Screen {
 		int y = paragraph(gfx, "超商代碼與條碼可以直接在模組內建立訂單，點卡片查看繳費步驟；標示 ↗ 的方式會開啟官網說明。", c.x(), top, c.w() - 4, Theme.TEXT_SECONDARY, draw) + 6;
 		if (methodDetail < 0) {
 			for (int i = 0; i < data.methods.size(); i++) {
-				if (data.methods.get(i).orderable) {
+				if (data.methods.get(i).inMod()) {
 					methodDetail = i;
 					break;
 				}
@@ -907,7 +926,7 @@ public final class SponsorScreen extends Screen {
 				if (i == methodDetail) {
 					gfx.fill(r.x(), r.y() + r.h() - 1, r.x() + r.w(), r.y() + r.h(), GOLD);
 				}
-				gfx.text(font, method.name + (method.orderable ? "" : " ↗"), r.x() + 8, r.y() + 5, Theme.TEXT);
+				gfx.text(font, method.name + (method.inMod() ? "" : " ↗"), r.x() + 8, r.y() + 5, Theme.TEXT);
 				int tagW = font.width(method.tag) + 8;
 				gfx.fill(r.x() + r.w() - tagW - 6, r.y() + 3, r.x() + r.w() - 6, r.y() + 15, (tagColor & 0xFFFFFF) | 0x40000000);
 				gfx.centered(font, method.tag, r.x() + r.w() - tagW - 6, r.y() + 3, tagW, 12, tagColor);
@@ -918,7 +937,7 @@ public final class SponsorScreen extends Screen {
 				}
 				int index = i;
 				hits.add(new Hit(r, () -> {
-					if (method.orderable) {
+					if (method.inMod()) {
 						methodDetail = index;
 					} else {
 						open(method.url);

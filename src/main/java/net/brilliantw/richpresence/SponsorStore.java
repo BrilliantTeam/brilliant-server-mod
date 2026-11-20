@@ -38,6 +38,7 @@ public final class SponsorStore {
 		public String key = "";
 		public int id;
 		public boolean orderable;
+		public String checkout = "";
 		public String name = "";
 		public String tag = "";
 		public String kind = "";
@@ -46,6 +47,10 @@ public final class SponsorStore {
 		public List<String> steps = List.of();
 		public String settlement = "";
 		public String url = "";
+
+		public boolean inMod() {
+			return orderable || !checkout.isBlank();
+		}
 	}
 
 	public static final class Tier {
